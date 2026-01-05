@@ -26,11 +26,9 @@ struct AquariumMapView: View {
                 Map(position: $position, selection: $selectedAquarium) {
                     ForEach(aquariums, id: \.id) { aquarium in
                         let hasVisited = !aquarium.visits.isEmpty
-                        // カスタムアイコンの場合は汎用アイコンを使用
-                        let markerIcon = isCustomAsset(aquarium.representativeFish) ? "fish.fill" : aquarium.representativeFish
                         Marker(
                             aquarium.name,
-                            systemImage: markerIcon,
+                            systemImage: aquarium.sfSymbolName,
                             coordinate: CLLocationCoordinate2D(
                                 latitude: aquarium.latitude,
                                 longitude: aquarium.longitude

@@ -61,7 +61,7 @@ struct MyTankView: View {
                     FloatingFish(
                         index: index,
                         checkInType: visit.checkInType,
-                        representativeFish: visit.aquarium?.representativeFish ?? "Clownfish",
+                        representativeFish: visit.aquarium?.sfSymbolName ?? "fish.fill",
                         fishIconSize: visit.aquarium?.fishIconSize ?? 3,
                         totalCount: visitRecords.count
                     )

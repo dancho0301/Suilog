@@ -13,6 +13,8 @@ struct PassportView: View {
     @Query(sort: \VisitRecord.visitDate, order: .reverse) private var visitRecords: [VisitRecord]
 
     @State private var selectedVisit: VisitRecord?
+    @State private var showDeleteConfirmation = false
+    @State private var indexSetToDelete: IndexSet?
 
     var body: some View {
         NavigationStack {
@@ -34,7 +36,10 @@ struct PassportView: View {
                             }
                         }
                     }
-                    .onDelete(perform: deleteVisits)
+                    .onDelete { indexSet in
+                        indexSetToDelete = indexSet
+                        showDeleteConfirmation = true
+                    }
                 }
                 .navigationTitle("訪問記録")
                 .toolbar {
@@ -44,6 +49,19 @@ struct PassportView: View {
                 }
                 .sheet(item: $selectedVisit) { visit in
                     EditVisitRecordView(visit: visit)
+                }
+                .alert("訪問記録を削除", isPresented: $showDeleteConfirmation) {
+                    Button("キャンセル", role: .cancel) {
+                        indexSetToDelete = nil
+                    }
+                    Button("削除", role: .destructive) {
+                        if let indexSet = indexSetToDelete {
+                            deleteVisits(offsets: indexSet)
+                        }
+                        indexSetToDelete = nil
+                    }
+                } message: {
+                    Text("この訪問記録を削除しますか？\nこの操作は取り消せません。")
                 }
             }
         }
@@ -82,8 +100,8 @@ struct VisitRecordRow: View {
                         .fill(visit.checkInType.color.opacity(0.2))
                         .frame(width: 60, height: 60)
 
-                    Image(systemName: "fish.fill")
-                        .font(.system(size: 30))
+                    Image(systemName: aquarium.sfSymbolName)
+                        .font(.system(size: CGFloat(aquarium.fishIconSize * 6)))
                         .foregroundColor(visit.checkInType.color)
                 }
             }
