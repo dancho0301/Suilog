@@ -1,0 +1,740 @@
+[
+  {
+    "name": "おたる水族館",
+    "latitude": 43.1988,
+    "longitude": 141.0077,
+    "description": "小樽の海に面した歴史ある水族館。トドやアザラシのショーが人気",
+    "region": "北海道",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "サンピアザ水族館",
+    "latitude": 43.0447,
+    "longitude": 141.4815,
+    "description": "札幌市内にある都市型水族館。約200種の生き物を展示",
+    "region": "北海道",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "AOAO SAPPORO",
+    "latitude": 43.0642,
+    "longitude": 141.3545,
+    "description": "2023年開業の札幌都心部にある最新水族館",
+    "region": "北海道",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "札幌市豊平川さけ科学館",
+    "latitude": 43.0028,
+    "longitude": 141.3806,
+    "description": "サケの生態を学べる科学館",
+    "region": "北海道",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "サケのふるさと千歳水族館",
+    "latitude": 42.8194,
+    "longitude": 141.6525,
+    "description": "千歳川に面した淡水魚水族館",
+    "region": "北海道",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "登別マリンパークニクス",
+    "latitude": 42.4106,
+    "longitude": 141.1067,
+    "description": "北欧風の城が特徴的な水族館。ペンギンのパレードが人気",
+    "region": "北海道",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "室蘭水族館",
+    "latitude": 42.3622,
+    "longitude": 140.9750,
+    "description": "北海道最古の水族館",
+    "region": "北海道",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "ノシャップ寒流水族館",
+    "latitude": 45.4286,
+    "longitude": 141.6778,
+    "description": "日本最北端の水族館",
+    "region": "北海道",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "北の大地の水族館",
+    "latitude": 43.7269,
+    "longitude": 143.5697,
+    "description": "温根湯温泉内の淡水魚水族館",
+    "region": "北海道",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "オホーツクとっかりセンター",
+    "latitude": 44.3542,
+    "longitude": 143.3553,
+    "description": "紋別市のアザラシ保護施設",
+    "region": "北海道",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "浅虫水族館",
+    "latitude": 40.8931,
+    "longitude": 140.8578,
+    "description": "青森県の陸奥湾に面した水族館。イルカショーやペンギンが人気",
+    "region": "青森",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "久慈地下水族科学館 もぐらんぴあ",
+    "latitude": 40.1903,
+    "longitude": 141.7908,
+    "description": "東日本大震災から復興。トンネル水槽が特徴",
+    "region": "岩手",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "男鹿水族館GAO",
+    "latitude": 39.9447,
+    "longitude": 139.7619,
+    "description": "秋田県男鹿半島にある水族館。男鹿の海を再現した大水槽が見どころ",
+    "region": "秋田",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "鶴岡市立加茂水族館",
+    "latitude": 38.7486,
+    "longitude": 139.7739,
+    "description": "クラゲの展示種類数世界一を誇る「クラゲドリーム館」",
+    "region": "山形",
+    "representativeFish": "circle.hexagongrid",
+    "fishIconSize": 3
+  },
+  {
+    "name": "仙台うみの杜水族館",
+    "latitude": 38.2969,
+    "longitude": 141.0611,
+    "description": "三陸の海を再現した大水槽が魅力。イルカやアシカのパフォーマンスも人気",
+    "region": "宮城",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "アクアマリンふくしま",
+    "latitude": 36.9594,
+    "longitude": 140.9053,
+    "description": "福島県いわき市の小名浜港にある、潮目をテーマにした水族館",
+    "region": "福島",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "アクアワールド茨城県大洗水族館",
+    "latitude": 36.3108,
+    "longitude": 140.5892,
+    "description": "日本トップクラスのサメの飼育種類数を誇る水族館",
+    "region": "茨城",
+    "representativeFish": "drop.triangle.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "かすみがうら市水族館",
+    "latitude": 36.1542,
+    "longitude": 140.2306,
+    "description": "霞ヶ浦の淡水魚を中心に展示",
+    "region": "茨城",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "栃木県なかがわ水遊園",
+    "latitude": 36.7794,
+    "longitude": 140.1681,
+    "description": "那珂川の淡水魚を中心に展示",
+    "region": "栃木",
+    "representativeFish": "freshwaterfish",
+    "fishIconSize": 3
+  },
+  {
+    "name": "さいたま水族館",
+    "latitude": 36.1372,
+    "longitude": 139.5353,
+    "description": "羽生市の淡水魚専門水族館",
+    "region": "埼玉",
+    "representativeFish": "freshwaterfish",
+    "fishIconSize": 3
+  },
+  {
+    "name": "鴨川シーワールド",
+    "latitude": 35.11603444013599,
+    "longitude": 140.12060099179328,
+    "description": "千葉県鴨川市にある、シャチのパフォーマンスで有名な水族館",
+    "region": "千葉",
+    "representativeFish": "orca",
+    "fishIconSize": 5
+  },
+  {
+    "name": "サンシャイン水族館",
+    "latitude": 35.7289,
+    "longitude": 139.7189,
+    "description": "東京・池袋のビル屋上にある都市型水族館。天空のペンギンが人気",
+    "region": "東京",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "すみだ水族館",
+    "latitude": 35.7101,
+    "longitude": 139.8107,
+    "description": "東京スカイツリータウン内の都市型水族館。クラゲ展示が美しい",
+    "region": "東京",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "しながわ水族館",
+    "latitude": 35.5925,
+    "longitude": 139.7361,
+    "description": "品川区の区立水族館。イルカやアシカのショーが楽しめる",
+    "region": "東京",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "葛西臨海水族園",
+    "latitude": 35.6342,
+    "longitude": 139.8588,
+    "description": "東京湾に面した水族館。クロマグロの群泳が圧巻",
+    "region": "東京",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "新江ノ島水族館",
+    "latitude": 35.3056,
+    "longitude": 139.4811,
+    "description": "湘南・江の島の目の前に位置する水族館。相模湾の生き物を展示",
+    "region": "神奈川",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "横浜・八景島シーパラダイス",
+    "latitude": 35.3464,
+    "longitude": 139.6458,
+    "description": "日本最大級の水族館を含む複合型海洋レジャー施設",
+    "region": "神奈川",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "カワスイ 川崎水族館",
+    "latitude": 35.5314,
+    "longitude": 139.7028,
+    "description": "川崎駅前の都市型水族館。世界の淡水魚を展示",
+    "region": "神奈川",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "相模川ふれあい科学館 アクアリウムさがみはら",
+    "latitude": 35.5569,
+    "longitude": 139.3456,
+    "description": "相模川の淡水魚を中心に展示",
+    "region": "神奈川",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "新潟市水族館 マリンピア日本海",
+    "latitude": 37.8847,
+    "longitude": 138.9711,
+    "description": "日本海側最大級の水族館。イルカショーが人気",
+    "region": "新潟",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "上越市立水族博物館 うみがたり",
+    "latitude": 37.1542,
+    "longitude": 138.2542,
+    "description": "2018年にリニューアル。日本海の魚を中心に展示",
+    "region": "新潟",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "寺泊水族博物館",
+    "latitude": 37.5286,
+    "longitude": 138.7539,
+    "description": "長岡市寺泊の海岸沿いにある水族館",
+    "region": "新潟",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "魚津水族館",
+    "latitude": 36.8308,
+    "longitude": 137.4036,
+    "description": "日本最古の水族館の一つ。富山湾の深海魚が人気",
+    "region": "富山",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "のとじま水族館",
+    "latitude": 37.1011,
+    "longitude": 136.9789,
+    "description": "能登半島にある水族館。ジンベエザメが見られる",
+    "region": "石川",
+    "representativeFish": "figure.walk.motion",
+    "fishIconSize": 3
+  },
+  {
+    "name": "越前松島水族館",
+    "latitude": 36.2247,
+    "longitude": 136.0864,
+    "description": "福井県坂井市にある水族館。イルカショーやペンギンが人気",
+    "region": "福井",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "森の中の水族館。",
+    "latitude": 35.5883,
+    "longitude": 138.7322,
+    "description": "山梨県忍野村の淡水魚水族館。富士山の湧水を使用",
+    "region": "山梨",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "蓼科アミューズメント水族館",
+    "latitude": 36.0300,
+    "longitude": 138.3100,
+    "description": "長野県茅野市の標高1,750mにある日本一高い場所の水族館",
+    "region": "長野",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "世界淡水魚園水族館 アクア・トト ぎふ",
+    "latitude": 35.3908,
+    "longitude": 136.6644,
+    "description": "世界最大級の淡水魚水族館。長良川の魚を展示",
+    "region": "岐阜",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "沼津港深海水族館",
+    "latitude": 35.0840,
+    "longitude": 138.8582,
+    "description": "深海生物の展示に特化した珍しい水族館",
+    "region": "静岡",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "伊豆・三津シーパラダイス",
+    "latitude": 35.0492,
+    "longitude": 138.9247,
+    "description": "駿河湾に面した水族館。イルカやアシカのショーが楽しめる",
+    "region": "静岡",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "下田海中水族館",
+    "latitude": 34.6611,
+    "longitude": 138.9472,
+    "description": "入り江を利用した天然の水族館。イルカと触れ合える",
+    "region": "静岡",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "あわしまマリンパーク",
+    "latitude": 35.0142,
+    "longitude": 138.8711,
+    "description": "淡島の島全体が水族館。カエル館も併設",
+    "region": "静岡",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "東海大学海洋科学博物館",
+    "latitude": 34.9703,
+    "longitude": 138.5286,
+    "description": "静岡市清水区の海洋博物館",
+    "region": "静岡",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "名古屋港水族館",
+    "latitude": 35.0928,
+    "longitude": 136.8844,
+    "description": "日本最大級の屋外水槽を持つ、名古屋港に面した大型水族館",
+    "region": "愛知",
+    "representativeFish": "orca",
+    "fishIconSize": 5
+  },
+  {
+    "name": "南知多ビーチランド",
+    "latitude": 34.7086,
+    "longitude": 136.9256,
+    "description": "イルカやアシカと触れ合える体験型水族館",
+    "region": "愛知",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "碧南海浜水族館",
+    "latitude": 34.8722,
+    "longitude": 136.9981,
+    "description": "日本の淡水魚を中心に展示する水族館",
+    "region": "愛知",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "竹島水族館",
+    "latitude": 34.7894,
+    "longitude": 137.2342,
+    "description": "蒲郡市の小規模水族館。珍しい深海魚の展示が人気",
+    "region": "愛知",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "鳥羽水族館",
+    "latitude": 34.4822,
+    "longitude": 136.8453,
+    "description": "飼育種類数日本一を誇る水族館。ジュゴンが見られる",
+    "region": "三重",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "志摩マリンランド",
+    "latitude": 34.3319,
+    "longitude": 136.8269,
+    "description": "伊勢志摩にある水族館。マンボウが人気",
+    "region": "三重",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "伊勢夫婦岩ふれあい水族館シーパラダイス",
+    "latitude": 34.5431,
+    "longitude": 136.8161,
+    "description": "二見浦の水族館。セイウチやアシカのショーが人気",
+    "region": "三重",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "琵琶湖博物館",
+    "latitude": 35.0989,
+    "longitude": 135.9739,
+    "description": "滋賀県の琵琶湖をテーマにした博物館。淡水魚の展示も充実",
+    "region": "滋賀",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "京都水族館",
+    "latitude": 34.9876,
+    "longitude": 135.7441,
+    "description": "京都駅近くにある、内陸型水族館。オオサンショウウオの展示が充実",
+    "region": "京都",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "海遊館",
+    "latitude": 34.6547,
+    "longitude": 135.4289,
+    "description": "大阪の天保山にある世界最大級の水族館。太平洋を再現した大水槽が圧巻",
+    "region": "大阪",
+    "representativeFish": "figure.walk.motion",
+    "fishIconSize": 3
+  },
+  {
+    "name": "ニフレル",
+    "latitude": 34.8106,
+    "longitude": 135.5342,
+    "description": "万博記念公園内の新感覚ミュージアム。生き物の個性に注目",
+    "region": "大阪",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "城崎マリンワールド",
+    "latitude": 35.6308,
+    "longitude": 134.8044,
+    "description": "日本海に面した体験型水族館。イルカやアシカのショーが人気",
+    "region": "兵庫",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "神戸須磨シーワールド",
+    "latitude": 34.6386,
+    "longitude": 135.1111,
+    "description": "2024年リニューアル。須磨海岸に面した水族館",
+    "region": "兵庫",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "姫路市立水族館",
+    "latitude": 34.8542,
+    "longitude": 134.6836,
+    "description": "姫路城近くにある水族館。播磨の海を再現",
+    "region": "兵庫",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "アドベンチャーワールド",
+    "latitude": 33.6825,
+    "longitude": 135.3625,
+    "description": "和歌山県白浜町にあるテーマパーク。水族館エリアも充実",
+    "region": "和歌山",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "串本海中公園",
+    "latitude": 33.4667,
+    "longitude": 135.7833,
+    "description": "日本初の海中公園。サンゴ礁と熱帯魚が見られる",
+    "region": "和歌山",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "京都大学白浜水族館",
+    "latitude": 33.6903,
+    "longitude": 135.3381,
+    "description": "白浜町の小規模研究用水族館",
+    "region": "和歌山",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "太地町立くじらの博物館",
+    "latitude": 33.5983,
+    "longitude": 135.9456,
+    "description": "クジラとイルカの博物館。イルカショーも開催",
+    "region": "和歌山",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "とっとり賀露かにっこ館",
+    "latitude": 35.5297,
+    "longitude": 134.1772,
+    "description": "鳥取県のカニ専門水族館",
+    "region": "鳥取",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "しまね海洋館アクアス",
+    "latitude": 34.9808,
+    "longitude": 132.2431,
+    "description": "中四国最大級の水族館。シロイルカのパフォーマンスが人気",
+    "region": "島根",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "玉野海洋博物館",
+    "latitude": 34.5047,
+    "longitude": 133.9525,
+    "description": "岡山県玉野市の水族館。瀬戸内海の魚を展示",
+    "region": "岡山",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "宮島水族館",
+    "latitude": 34.2958,
+    "longitude": 132.3194,
+    "description": "宮島にある水族館。瀬戸内海の生き物を展示",
+    "region": "広島",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "マリホ水族館",
+    "latitude": 34.3714,
+    "longitude": 132.3508,
+    "description": "広島市のショッピングモール内の水族館",
+    "region": "広島",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "海響館",
+    "latitude": 33.9531,
+    "longitude": 130.9308,
+    "description": "下関市の関門海峡に面した水族館。フグの展示が充実",
+    "region": "山口",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "四国水族館",
+    "latitude": 34.2944,
+    "longitude": 133.7697,
+    "description": "2020年開業の新しい水族館。瀬戸内海と太平洋の生き物を展示",
+    "region": "香川",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "新屋島水族館",
+    "latitude": 34.3550,
+    "longitude": 134.0931,
+    "description": "高松市屋島山上の水族館",
+    "region": "香川",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "日本ドルフィンセンター",
+    "latitude": 34.2794,
+    "longitude": 134.0792,
+    "description": "香川県さぬき市のイルカ触れ合い施設",
+    "region": "香川",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "桂浜水族館",
+    "latitude": 33.4931,
+    "longitude": 133.5672,
+    "description": "高知市桂浜にある水族館。カワウソが人気",
+    "region": "高知",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "足摺海洋館SATOUMI",
+    "latitude": 32.7344,
+    "longitude": 133.0128,
+    "description": "2020年リニューアル。足摺の海を再現",
+    "region": "高知",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "マリンワールド海の中道",
+    "latitude": 33.6845,
+    "longitude": 130.4089,
+    "description": "福岡市の海の中道にある、九州の海を体感できる水族館",
+    "region": "福岡",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "やながわ有明海水族館",
+    "latitude": 33.1619,
+    "longitude": 130.4078,
+    "description": "有明海の珍しい生き物を展示する水族館",
+    "region": "福岡",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "長崎ペンギン水族館",
+    "latitude": 32.7364,
+    "longitude": 129.8508,
+    "description": "ペンギンの飼育種類数日本一を誇る水族館",
+    "region": "長崎",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "九十九島水族館 海きらら",
+    "latitude": 33.1647,
+    "longitude": 129.7906,
+    "description": "九十九島の海を再現した水族館。イルカのプールが屋外にある",
+    "region": "長崎",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "わくわく海中水族館シードーナツ",
+    "latitude": 32.3869,
+    "longitude": 130.3864,
+    "description": "熊本県天草市の海上水族館",
+    "region": "熊本",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "すみえファミリー水族館",
+    "latitude": 32.5828,
+    "longitude": 130.6317,
+    "description": "熊本県上天草市の小規模水族館",
+    "region": "熊本",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "大分マリーンパレス水族館 うみたまご",
+    "latitude": 33.2633,
+    "longitude": 131.5867,
+    "description": "別府湾に面した水族館。セイウチやトドが人気",
+    "region": "大分",
+    "representativeFish": "seal.fill",
+    "fishIconSize": 3
+  },
+  {
+    "name": "いおワールド かごしま水族館",
+    "latitude": 31.5950,
+    "longitude": 130.5622,
+    "description": "鹿児島市の錦江湾に面した水族館。ジンベエザメが人気",
+    "region": "鹿児島",
+    "representativeFish": "figure.walk.motion",
+    "fishIconSize": 3
+  },
+  {
+    "name": "沖縄美ら海水族館",
+    "latitude": 26.6943,
+    "longitude": 127.8779,
+    "description": "世界最大級の水槽「黒潮の海」でジンベエザメが泳ぐ、沖縄を代表する水族館",
+    "region": "沖縄",
+    "representativeFish": "figure.walk.motion",
+    "fishIconSize": 3
+  },
+  {
+    "name": "DMMかりゆし水族館",
+    "latitude": 26.2347,
+    "longitude": 127.6933,
+    "description": "2020年開業の都市型エンタメ水族館。最新技術を駆使した展示が特徴",
+    "region": "沖縄",
+    "representativeFish": "fish.fill",
+    "fishIconSize": 3
+  }
+]

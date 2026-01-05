@@ -6,5 +6,11 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>水族館の位置を確認してチェックインするために位置情報を使用します</string>
+	<key>NSCameraUsageDescription</key>
+	<string>訪問記録に写真を追加するためにカメラを使用します</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>訪問記録に写真を追加するためにフォトライブラリにアクセスします</string>
 </dict>
 </plist>
