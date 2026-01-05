@@ -6,6 +6,14 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>水族館の位置を確認してチェックインするために位置情報を使用します</string>
 	<key>NSCameraUsageDescription</key>
