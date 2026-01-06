@@ -93,8 +93,10 @@ struct LocationCheckInView: View {
             }
             .onChange(of: selectedPhoto) { _, newValue in
                 Task {
-                    if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                        photoData = data
+                    if let data = try? await newValue?.loadTransferable(type: Data.self),
+                       let image = UIImage(data: data),
+                       let compressedData = image.jpegData(compressionQuality: 0.8) {
+                        photoData = compressedData
                     }
                 }
             }

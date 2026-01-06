@@ -286,7 +286,7 @@ struct FloatingFish: View {
         let isIPad = UIDevice.current.userInterfaceIdiom == .pad
         // iPhone: 5%〜60%、iPad: 5%〜70%
         let topLimit = -screenHeight * 0.45
-        let bottomLimit = isIPad ? screenHeight * 0.20 : screenHeight * 0.10
+        let bottomLimit = isIPad ? screenHeight * 0.30 : screenHeight * 0.20  // 範囲を広げて消えないように
 
         // indexに基づいて高さを分散（レーン分け）
         let assignedHeight = calculateAssignedHeight(topLimit: topLimit, bottomLimit: bottomLimit)
@@ -322,7 +322,7 @@ struct FloatingFish: View {
         let isIPad = UIDevice.current.userInterfaceIdiom == .pad
         // iPhone: 5%〜60%、iPad: 5%〜70%
         let topLimit = -screenHeight * 0.45
-        let bottomLimit = isIPad ? screenHeight * 0.20 : screenHeight * 0.10
+        let bottomLimit = isIPad ? screenHeight * 0.30 : screenHeight * 0.20  // 範囲を広げて消えないように
 
         // 画面の右端を超えたら左端に戻る
         let currentX = offset.width
@@ -330,8 +330,8 @@ struct FloatingFish: View {
         // indexに基づいた割り当て高さ
         let assignedHeight = calculateAssignedHeight(topLimit: topLimit, bottomLimit: bottomLimit)
 
-        // 右端に到達したかチェック
-        if currentX > screenWidth/2 + fishSize {
+        // 右端に到達したかチェック（より余裕を持たせる）
+        if currentX > screenWidth/2 + fishSize * 2 {
             // 左端にリセット（割り当てられた高さ付近に戻る）
             offset = CGSize(
                 width: -screenWidth/2 - fishSize,
@@ -370,7 +370,7 @@ struct FloatingFish: View {
     // MARK: - クラゲ用浮上アニメーション
     private func startFloatUpAnimation(screenWidth: CGFloat, screenHeight: CGFloat) {
         let isIPad = UIDevice.current.userInterfaceIdiom == .pad
-        let bottomLimit = isIPad ? screenHeight * 0.20 : screenHeight * 0.10
+        let bottomLimit = isIPad ? screenHeight * 0.30 : screenHeight * 0.20  // 範囲を広げて消えないように
 
         // 画面下部のランダムな位置から開始
         offset = CGSize(
@@ -395,10 +395,10 @@ struct FloatingFish: View {
     private func floatUp(screenWidth: CGFloat, screenHeight: CGFloat) {
         let isIPad = UIDevice.current.userInterfaceIdiom == .pad
         let topLimit = -screenHeight * 0.45
-        let bottomLimit = isIPad ? screenHeight * 0.20 : screenHeight * 0.10
+        let bottomLimit = isIPad ? screenHeight * 0.30 : screenHeight * 0.20  // 範囲を広げて消えないように
 
-        // 上端に到達したら下端にリセット
-        if offset.height < topLimit {
+        // 上端に到達したら下端にリセット（より余裕を持たせる）
+        if offset.height < topLimit - fishSize {
             offset = CGSize(
                 width: CGFloat.random(in: -screenWidth * 0.3...screenWidth * 0.3),
                 height: bottomLimit + fishSize
