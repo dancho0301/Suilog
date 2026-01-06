@@ -109,7 +109,7 @@ struct EditVisitRecordView: View {
                 }
             }
             .onChange(of: selectedPhoto) { _, newValue in
-                Task {
+                Task { @MainActor in
                     if let data = try? await newValue?.loadTransferable(type: Data.self),
                        let image = UIImage(data: data),
                        let compressedData = image.jpegData(compressionQuality: 0.8) {
