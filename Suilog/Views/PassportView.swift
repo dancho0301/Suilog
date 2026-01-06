@@ -100,9 +100,21 @@ struct VisitRecordRow: View {
                         .fill(visit.checkInType.color.opacity(0.2))
                         .frame(width: 60, height: 60)
 
-                    Image(systemName: aquarium.sfSymbolName)
-                        .font(.system(size: CGFloat(aquarium.fishIconSize * 6)))
-                        .foregroundColor(visit.checkInType.color)
+                    Group {
+                        if isCustomAsset(aquarium.representativeFish) {
+                            // カスタムアセット
+                            Image(aquarium.representativeFish)
+                                .renderingMode(.original)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 50, height: 50)
+                        } else {
+                            // SF Symbols
+                            Image(systemName: aquarium.representativeFish)
+                                .font(.system(size: CGFloat(aquarium.fishIconSize * 6)))
+                                .foregroundColor(visit.checkInType.color)
+                        }
+                    }
                 }
             }
 
@@ -157,6 +169,13 @@ struct VisitRecordRow: View {
         }
         .padding(.vertical, 8)
     }
+}
+
+/// SF Symbolsかカスタムアセットかを判定するヘルパー関数
+/// SF Symbolsは必ず "." を含む（例: fish.fill, seal.fill）
+/// カスタムアセットは "." を含まない（例: orca, Dolphin, freshwaterfish）
+fileprivate func isCustomAsset(_ name: String) -> Bool {
+    return !name.contains(".")
 }
 
 #Preview {
