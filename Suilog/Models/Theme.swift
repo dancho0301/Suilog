@@ -55,6 +55,22 @@ struct Theme: Identifiable, Codable, Equatable {
         return isIPad ? backgroundImageiPad : backgroundImageiPhone
     }
 
+    /// テーマに応じた生き物の画像名を返す
+    /// - Parameter creatureName: 生き物の名前（例: "Dolphin", "clownfish"）
+    /// - Returns: テーマフォルダを含む画像名（例: "Themes/Default/Dolphin"）
+    func creatureImageName(_ creatureName: String) -> String {
+        // デフォルトテーマの場合
+        if id == "default" {
+            return "Themes/Default/\(creatureName)"
+        }
+        // ゆめかわテーマの場合
+        else if id == "yumekawa" {
+            return "Themes/Yumekawa/\(creatureName)"
+        }
+        // その他のテーマ（フォールバック）
+        return "Themes/Default/\(creatureName)"
+    }
+
     // MARK: - Equatable
 
     static func == (lhs: Theme, rhs: Theme) -> Bool {
@@ -72,8 +88,8 @@ extension Theme {
         description: "青い海をイメージした基本テーマ",
         productId: nil,
         isDefault: true,
-        backgroundImageiPhone: "background_iphone",
-        backgroundImageiPad: "background_ipad",
+        backgroundImageiPhone: "Themes/Default/background_iphone",
+        backgroundImageiPad: "Themes/Default/background_ipad",
         primaryColorHex: "#007AFF",
         bubbleColorHex: "#FFFFFF",
         locationCheckInColorsHex: ["#FFFF00", "#FFA500", "#FFD700"],  // yellow, orange, gold
@@ -81,60 +97,26 @@ extension Theme {
         statisticsBackgroundColorHex: "#007AFF4D"  // blue with 0.3 opacity
     )
 
-    /// サンゴ礁テーマ
-    static let coralReef = Theme(
-        id: "coral_reef",
-        name: "サンゴ礁",
-        description: "カラフルなサンゴ礁の世界",
-        productId: "com.suilog.theme.coral_reef",
+    /// ゆめかわテーマ
+    static let yumekawa = Theme(
+        id: "yumekawa",
+        name: "ゆめかわ",
+        description: "パステルカラーの夢かわいい世界",
+        productId: "com.suilog.theme.yumekawa",
         isDefault: false,
-        backgroundImageiPhone: "background_coral_reef_iphone",
-        backgroundImageiPad: "background_coral_reef_ipad",
-        primaryColorHex: "#FF6B9D",
-        bubbleColorHex: "#FFE4EC",
-        locationCheckInColorsHex: ["#FF6B9D", "#FF8FB3", "#FFB3C9"],  // coral pink shades
-        manualCheckInColorsHex: ["#9DDCDC", "#B8E8E8", "#D4F4F4"],    // turquoise shades
-        statisticsBackgroundColorHex: "#FF6B9D4D"
-    )
-
-    /// 深海テーマ
-    static let deepSea = Theme(
-        id: "deep_sea",
-        name: "深海",
-        description: "神秘的な深海の世界",
-        productId: "com.suilog.theme.deep_sea",
-        isDefault: false,
-        backgroundImageiPhone: "background_deep_sea_iphone",
-        backgroundImageiPad: "background_deep_sea_ipad",
-        primaryColorHex: "#1A237E",
-        bubbleColorHex: "#82B1FF",
-        locationCheckInColorsHex: ["#00E5FF", "#18FFFF", "#84FFFF"],  // bioluminescent cyan
-        manualCheckInColorsHex: ["#7C4DFF", "#B388FF", "#D1C4E9"],    // purple shades
-        statisticsBackgroundColorHex: "#1A237E4D"
-    )
-
-    /// トロピカルテーマ
-    static let tropical = Theme(
-        id: "tropical",
-        name: "トロピカル",
-        description: "南国の透き通る海",
-        productId: "com.suilog.theme.tropical",
-        isDefault: false,
-        backgroundImageiPhone: "background_tropical_iphone",
-        backgroundImageiPad: "background_tropical_ipad",
-        primaryColorHex: "#00BFA5",
-        bubbleColorHex: "#E0F7FA",
-        locationCheckInColorsHex: ["#FFD54F", "#FFCA28", "#FFC107"],  // tropical yellow
-        manualCheckInColorsHex: ["#4DD0E1", "#80DEEA", "#B2EBF2"],    // aqua shades
-        statisticsBackgroundColorHex: "#00BFA54D"
+        backgroundImageiPhone: "Themes/Yumekawa/background_iphone",
+        backgroundImageiPad: "Themes/Yumekawa/background_ipad",
+        primaryColorHex: "#FFB3E6",
+        bubbleColorHex: "#FFFFFF",
+        locationCheckInColorsHex: ["#FFD6E8", "#FFADD6", "#FF85C8"],  // pastel pink shades
+        manualCheckInColorsHex: ["#D6E8FF", "#ADD6FF", "#85C8FF"],    // pastel blue shades
+        statisticsBackgroundColorHex: "#FFB3E64D"
     )
 
     /// 全テーマのリスト
     static let allThemes: [Theme] = [
         .defaultTheme,
-        .coralReef,
-        .deepSea,
-        .tropical
+        .yumekawa
     ]
 }
 

@@ -79,6 +79,7 @@ struct PassportView: View {
 struct VisitRecordRow: View {
     let visit: VisitRecord
     let aquarium: Aquarium
+    @EnvironmentObject private var themeManager: ThemeManager
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
@@ -102,8 +103,8 @@ struct VisitRecordRow: View {
 
                     Group {
                         if isCustomAsset(aquarium.representativeFish) {
-                            // カスタムアセット
-                            Image(aquarium.representativeFish)
+                            // カスタムアセット（テーマフォルダから取得）
+                            Image(themeManager.currentTheme.creatureImageName(aquarium.representativeFish))
                                 .renderingMode(.original)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)

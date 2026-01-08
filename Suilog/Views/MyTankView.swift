@@ -60,7 +60,8 @@ struct MyTankView: View {
                         fishIconSize: visit.aquarium?.fishIconSize ?? 3,
                         totalCount: visitRecords.count,
                         locationColors: themeManager.currentTheme.locationCheckInColors,
-                        manualColors: themeManager.currentTheme.manualCheckInColors
+                        manualColors: themeManager.currentTheme.manualCheckInColors,
+                        theme: themeManager.currentTheme
                     )
                 }
 
@@ -141,6 +142,7 @@ struct FloatingFish: View {
     let totalCount: Int
     let locationColors: [Color]
     let manualColors: [Color]
+    let theme: Theme  // テーマ
 
     @State private var offset: CGSize = .zero
     @State private var wobble: CGFloat = 0  // 左右の揺れ（クラゲ用）
@@ -158,8 +160,8 @@ struct FloatingFish: View {
     var body: some View {
         Group {
             if isCustomAsset(representativeFish) {
-                // カスタムアセット
-                Image(representativeFish)
+                // カスタムアセット（テーマフォルダから取得）
+                Image(theme.creatureImageName(representativeFish))
                     .renderingMode(.original)
                     .resizable()
                     .aspectRatio(contentMode: .fit)

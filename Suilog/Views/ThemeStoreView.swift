@@ -47,6 +47,7 @@ struct ThemeStoreView: View {
                 ThemePreviewView(theme: theme)
                     .environmentObject(storeManager)
                     .environmentObject(themeManager)
+                    .presentationDetents([.large])
             }
             .alert("エラー", isPresented: $showingPurchaseError) {
                 Button("OK") { }
@@ -315,125 +316,119 @@ struct ThemePreviewView: View {
 
     var body: some View {
         NavigationStack {
-            ZStack {
-                // 背景プレビュー
-                Image(theme.backgroundImageName)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .ignoresSafeArea()
+            GeometryReader { geometry in
+                VStack(spacing: 0) {
+                    // 背景プレビュー（上部2/3）
+                    Image(theme.backgroundImageName)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: geometry.size.width, height: geometry.size.height * 0.5)
+                        .clipped()
 
-                // オーバーレイ
-                VStack {
-                    Spacer()
+                    // テーマ情報とボタン（下部1/3 + スクロール可能）
+                    ScrollView {
+                        VStack(spacing: 16) {
+                            Text(theme.name)
+                                .font(.title)
+                                .fontWeight(.bold)
 
-                    // テーマ情報
-                    VStack(spacing: 16) {
-                        Text(theme.name)
-                            .font(.title)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
+                            Text(theme.description)
+                                .font(.body)
+                                .foregroundColor(.secondary)
 
-                        Text(theme.description)
-                            .font(.body)
-                            .foregroundColor(.white.opacity(0.9))
+                            // 色サンプル
+                            HStack(spacing: 12) {
+                                VStack {
+                                    Text("位置情報")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                    HStack(spacing: 4) {
+                                        ForEach(0..<min(theme.locationCheckInColors.count, 3), id: \.self) { index in
+                                            Circle()
+                                                .fill(theme.locationCheckInColors[index])
+                                                .frame(width: 20, height: 20)
+                                        }
+                                    }
+                                }
 
-                        // 色サンプル
-                        HStack(spacing: 12) {
-                            VStack {
-                                Text("位置情報")
-                                    .font(.caption)
-                                    .foregroundColor(.white.opacity(0.8))
-                                HStack(spacing: 4) {
-                                    ForEach(0..<min(theme.locationCheckInColors.count, 3), id: \.self) { index in
-                                        Circle()
-                                            .fill(theme.locationCheckInColors[index])
-                                            .frame(width: 20, height: 20)
+                                Divider()
+                                    .frame(height: 40)
+
+                                VStack {
+                                    Text("手動")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                    HStack(spacing: 4) {
+                                        ForEach(0..<min(theme.manualCheckInColors.count, 3), id: \.self) { index in
+                                            Circle()
+                                                .fill(theme.manualCheckInColors[index])
+                                                .frame(width: 20, height: 20)
+                                        }
                                     }
                                 }
                             }
 
-                            Divider()
-                                .frame(height: 40)
-                                .background(Color.white.opacity(0.5))
-
-                            VStack {
-                                Text("手動")
-                                    .font(.caption)
-                                    .foregroundColor(.white.opacity(0.8))
-                                HStack(spacing: 4) {
-                                    ForEach(0..<min(theme.manualCheckInColors.count, 3), id: \.self) { index in
-                                        Circle()
-                                            .fill(theme.manualCheckInColors[index])
-                                            .frame(width: 20, height: 20)
-                                    }
-                                }
-                            }
-                        }
-
-                        // アクションボタン
-                        if isPurchased {
-                            if themeManager.currentTheme.id == theme.id {
-                                Text("このテーマを使用中")
-                                    .font(.headline)
-                                    .foregroundColor(.white)
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(Color.green)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                            } else {
-                                Button {
-                                    themeManager.selectTheme(theme)
-                                    dismiss()
-                                } label: {
-                                    Text("このテーマを使用する")
+                            // アクションボタン
+                            if isPurchased {
+                                if themeManager.currentTheme.id == theme.id {
+                                    Text("このテーマを使用中")
                                         .font(.headline)
                                         .foregroundColor(.white)
                                         .padding()
                                         .frame(maxWidth: .infinity)
-                                        .background(Color.blue)
+                                        .background(Color.green)
                                         .clipShape(RoundedRectangle(cornerRadius: 12))
+                                } else {
+                                    Button {
+                                        themeManager.selectTheme(theme)
+                                        dismiss()
+                                    } label: {
+                                        Text("このテーマを使用する")
+                                            .font(.headline)
+                                            .foregroundColor(.white)
+                                            .padding()
+                                            .frame(maxWidth: .infinity)
+                                            .background(Color.blue)
+                                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    }
                                 }
-                            }
-                        } else {
-                            if let product = storeManager.product(for: theme.productId ?? "") {
-                                Button {
-                                    Task {
-                                        let success = await storeManager.purchase(product)
-                                        if success {
-                                            // 購入成功後にテーマを適用
-                                            await MainActor.run {
-                                                themeManager.updatePurchasedProducts(storeManager.purchasedProductIds)
-                                                themeManager.selectTheme(theme)
-                                                dismiss()
+                            } else {
+                                if let product = storeManager.product(for: theme.productId ?? "") {
+                                    Button {
+                                        Task {
+                                            let success = await storeManager.purchase(product)
+                                            if success {
+                                                // 購入成功後にテーマを適用
+                                                await MainActor.run {
+                                                    themeManager.updatePurchasedProducts(storeManager.purchasedProductIds)
+                                                    themeManager.selectTheme(theme)
+                                                    dismiss()
+                                                }
                                             }
                                         }
-                                    }
-                                } label: {
-                                    HStack {
-                                        if storeManager.isPurchasing {
-                                            ProgressView()
-                                                .tint(.white)
-                                        } else {
-                                            Text("\(product.displayPrice) で購入")
+                                    } label: {
+                                        HStack {
+                                            if storeManager.isPurchasing {
+                                                ProgressView()
+                                                    .tint(.white)
+                                            } else {
+                                                Text("\(product.displayPrice) で購入")
+                                            }
                                         }
+                                        .font(.headline)
+                                        .foregroundColor(.white)
+                                        .padding()
+                                        .frame(maxWidth: .infinity)
+                                        .background(Color.orange)
+                                        .clipShape(RoundedRectangle(cornerRadius: 12))
                                     }
-                                    .font(.headline)
-                                    .foregroundColor(.white)
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(Color.orange)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    .disabled(storeManager.isPurchasing)
                                 }
-                                .disabled(storeManager.isPurchasing)
                             }
                         }
+                        .padding(24)
                     }
-                    .padding(24)
-                    .background(
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(.ultraThinMaterial)
-                    )
-                    .padding()
+                    .background(Color(.systemBackground))
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -444,10 +439,11 @@ struct ThemePreviewView: View {
                     } label: {
                         Image(systemName: "xmark.circle.fill")
                             .font(.title2)
-                            .foregroundStyle(.white.opacity(0.8))
+                            .foregroundStyle(.secondary)
                     }
                 }
             }
+            .ignoresSafeArea(edges: .top)
             .alert("エラー", isPresented: $showingPurchaseError) {
                 Button("OK") { }
             } message: {
