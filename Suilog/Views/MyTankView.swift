@@ -11,6 +11,7 @@ import Combine
 
 struct MyTankView: View {
     @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject var themeManager: ThemeManager
     @Query private var visitRecords: [VisitRecord]
 
     var visitedAquariumsCount: Int {
@@ -25,34 +26,28 @@ struct MyTankView: View {
         visitRecords.filter { $0.checkInType == .manual }.count
     }
 
-    // デバイスに応じた背景画像名
-    private var backgroundImageName: String {
-        let isIPad = UIDevice.current.userInterfaceIdiom == .pad
-        return isIPad ? "background_ipad" : "background_iphone"
-    }
-
     var body: some View {
         ZStack {
-            // 背景画像
-            Image(backgroundImageName)
+            // 背景画像（テーマから取得）
+            Image(themeManager.currentTheme.backgroundImageName)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .ignoresSafeArea()
 
-            // 泡のアニメーション
-            BubblesView()
+            // 泡のアニメーション（テーマの色を使用）
+            BubblesView(bubbleColor: themeManager.currentTheme.bubbleColor)
 
             if visitedAquariumsCount == 0 {
                 // 訪問がない場合のメッセージ
                 VStack(spacing: 20) {
                     Image(systemName: "fish")
                         .font(.system(size: 80))
-                        .foregroundColor(.blue.opacity(0.3))
+                        .foregroundColor(themeManager.currentTheme.primaryColor.opacity(0.3))
 
                     Text("水族館に行って魚を見つけよう！")
                         .font(.title2)
                         .fontWeight(.medium)
-                        .foregroundColor(.blue)
+                        .foregroundColor(themeManager.currentTheme.primaryColor)
                 }
             } else {
                 // 訪問記録ごとに魚を表示（チェックイン種別で色分け）
@@ -63,7 +58,9 @@ struct MyTankView: View {
                         checkInType: visit.checkInType,
                         representativeFish: visit.aquarium?.representativeFish ?? "fish.fill",
                         fishIconSize: visit.aquarium?.fishIconSize ?? 3,
-                        totalCount: visitRecords.count
+                        totalCount: visitRecords.count,
+                        locationColors: themeManager.currentTheme.locationCheckInColors,
+                        manualColors: themeManager.currentTheme.manualCheckInColors
                     )
                 }
 
@@ -92,7 +89,7 @@ struct MyTankView: View {
                             VStack {
                                 HStack {
                                     Image(systemName: "circle.fill")
-                                        .foregroundColor(.yellow)
+                                        .foregroundColor(themeManager.currentTheme.locationCheckInColors.first ?? .yellow)
                                     Text("\(locationCheckInCount)")
                                         .font(.title3)
                                         .fontWeight(.bold)
@@ -105,7 +102,7 @@ struct MyTankView: View {
                             VStack {
                                 HStack {
                                     Image(systemName: "circle.fill")
-                                        .foregroundColor(.gray)
+                                        .foregroundColor(themeManager.currentTheme.manualCheckInColors.first ?? .gray)
                                     Text("\(manualCheckInCount)")
                                         .font(.title3)
                                         .fontWeight(.bold)
@@ -120,7 +117,7 @@ struct MyTankView: View {
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 20)
-                            .fill(Color.blue.opacity(0.3))
+                            .fill(themeManager.currentTheme.statisticsBackgroundColor)
                             .shadow(radius: 10)
                     )
                     .padding(.bottom, 40)
@@ -142,6 +139,8 @@ struct FloatingFish: View {
     let representativeFish: String
     let fishIconSize: Int  // 1-5のサイズ指定
     let totalCount: Int
+    let locationColors: [Color]
+    let manualColors: [Color]
 
     @State private var offset: CGSize = .zero
     @State private var wobble: CGFloat = 0  // 左右の揺れ（クラゲ用）
@@ -255,16 +254,16 @@ struct FloatingFish: View {
     }
 
     private var fishColor: Color {
-        // チェックイン種別で基本色を決定
+        // チェックイン種別で基本色を決定（テーマから取得）
         switch checkInType {
         case .location:
-            // 位置情報チェックインはゴールド系
-            let goldColors: [Color] = [.yellow, .orange, Color(red: 1.0, green: 0.84, blue: 0.0)]
-            return goldColors[index % goldColors.count]
+            // 位置情報チェックインはテーマのlocationColors
+            guard !locationColors.isEmpty else { return .yellow }
+            return locationColors[index % locationColors.count]
         case .manual:
-            // 手動チェックインはシルバー系
-            let silverColors: [Color] = [.gray, Color(white: 0.75), Color(white: 0.85)]
-            return silverColors[index % silverColors.count]
+            // 手動チェックインはテーマのmanualColors
+            guard !manualColors.isEmpty else { return .gray }
+            return manualColors[index % manualColors.count]
         }
     }
 
@@ -425,8 +424,14 @@ struct FloatingFish: View {
 
 // MARK: - Bubbles View
 struct BubblesView: View {
+    let bubbleColor: Color
+
     @State private var bubbles: [BubbleData] = []
     private let timer = Timer.publish(every: 0.8, on: .main, in: .common).autoconnect()
+
+    init(bubbleColor: Color = .white) {
+        self.bubbleColor = bubbleColor
+    }
 
     var body: some View {
         GeometryReader { geometry in
@@ -436,7 +441,8 @@ struct BubblesView: View {
                         startX: bubble.startX,
                         size: bubble.size,
                         duration: bubble.duration,
-                        screenHeight: geometry.size.height
+                        screenHeight: geometry.size.height,
+                        bubbleColor: bubbleColor
                     )
                 }
             }
@@ -484,18 +490,27 @@ struct Bubble: View {
     let size: CGFloat
     let duration: Double
     let screenHeight: CGFloat
+    let bubbleColor: Color
 
     @State private var yPosition: CGFloat = 0
     @State private var opacity: Double = 0.7
+
+    init(startX: CGFloat, size: CGFloat, duration: Double, screenHeight: CGFloat, bubbleColor: Color = .white) {
+        self.startX = startX
+        self.size = size
+        self.duration = duration
+        self.screenHeight = screenHeight
+        self.bubbleColor = bubbleColor
+    }
 
     var body: some View {
         Circle()
             .fill(
                 RadialGradient(
                     gradient: Gradient(colors: [
-                        Color.white.opacity(0.9),
-                        Color.white.opacity(0.5),
-                        Color.white.opacity(0.2)
+                        bubbleColor.opacity(0.9),
+                        bubbleColor.opacity(0.5),
+                        bubbleColor.opacity(0.2)
                     ]),
                     center: .topLeading,
                     startRadius: 0,
@@ -505,7 +520,7 @@ struct Bubble: View {
             .frame(width: size, height: size)
             .overlay(
                 Circle()
-                    .stroke(Color.white.opacity(0.4), lineWidth: 0.5)
+                    .stroke(bubbleColor.opacity(0.4), lineWidth: 0.5)
             )
             .position(x: startX, y: yPosition)
             .opacity(opacity)
@@ -529,4 +544,5 @@ struct Bubble: View {
 #Preview {
     MyTankView()
         .modelContainer(for: VisitRecord.self, inMemory: true)
+        .environmentObject(ThemeManager())
 }

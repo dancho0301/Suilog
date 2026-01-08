@@ -1,0 +1,149 @@
+{
+  "identifier" : "F3D8E7A2-1234-5678-9ABC-DEF012345678",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "160",
+      "familyShareable" : true,
+      "internalID" : "coral_reef_theme",
+      "localizations" : [
+        {
+          "description" : "カラフルなサンゴ礁の世界をテーマにした背景と色合い",
+          "displayName" : "サンゴ礁テーマ",
+          "locale" : "ja"
+        },
+        {
+          "description" : "A colorful coral reef themed background and colors",
+          "displayName" : "Coral Reef Theme",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.suilog.theme.coral_reef",
+      "referenceName" : "Coral Reef Theme",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "160",
+      "familyShareable" : true,
+      "internalID" : "deep_sea_theme",
+      "localizations" : [
+        {
+          "description" : "神秘的な深海の世界をテーマにした背景と色合い",
+          "displayName" : "深海テーマ",
+          "locale" : "ja"
+        },
+        {
+          "description" : "A mysterious deep sea themed background and colors",
+          "displayName" : "Deep Sea Theme",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.suilog.theme.deep_sea",
+      "referenceName" : "Deep Sea Theme",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "160",
+      "familyShareable" : true,
+      "internalID" : "tropical_theme",
+      "localizations" : [
+        {
+          "description" : "南国の透き通る海をテーマにした背景と色合い",
+          "displayName" : "トロピカルテーマ",
+          "locale" : "ja"
+        },
+        {
+          "description" : "A tropical clear ocean themed background and colors",
+          "displayName" : "Tropical Theme",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.suilog.theme.tropical",
+      "referenceName" : "Tropical Theme",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "370",
+      "familyShareable" : true,
+      "internalID" : "all_themes_pack",
+      "localizations" : [
+        {
+          "description" : "すべてのテーマが含まれたお得なパック",
+          "displayName" : "全テーマパック",
+          "locale" : "ja"
+        },
+        {
+          "description" : "All themes bundle at a discounted price",
+          "displayName" : "All Themes Pack",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.suilog.theme.all_pack",
+      "referenceName" : "All Themes Pack",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "1234567890",
+    "_developerTeamID" : "XXXXXXXXXX",
+    "_failTransactionsEnabled" : false,
+    "_locale" : "ja",
+    "_storefront" : "JPN",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

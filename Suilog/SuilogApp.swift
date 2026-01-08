@@ -11,6 +11,8 @@ import SwiftData
 @main
 struct SuilogApp: App {
     @StateObject private var locationManager = LocationManager()
+    @StateObject private var storeManager = StoreManager()
+    @StateObject private var themeManager = ThemeManager()
 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -33,9 +35,15 @@ struct SuilogApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(locationManager)
+                .environmentObject(storeManager)
+                .environmentObject(themeManager)
                 .task {
                     // 初回起動時にサンプルデータを挿入
                     await seedDataIfNeeded()
+                }
+                .onReceive(storeManager.$purchasedProductIds) { productIds in
+                    // 購入状態が変わったらThemeManagerに通知
+                    themeManager.updatePurchasedProducts(productIds)
                 }
         }
         .modelContainer(sharedModelContainer)
