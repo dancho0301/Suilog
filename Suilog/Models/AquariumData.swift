@@ -16,3 +16,8 @@ struct AquariumData: Codable {
     let representativeFish: String
     let fishIconSize: Int
 }
+
+struct AquariumResponse: Codable {
+    let version: Int
+    let aquariums: [AquariumData]
+}

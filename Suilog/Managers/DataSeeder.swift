@@ -12,40 +12,50 @@ import SwiftData
 class DataSeeder {
     // データバージョン管理用のキー
     private static let dataVersionKey = "AquariumDataVersion"
-    // 現在のデータバージョン（水族館データを更新するたびにインクリメント）
-    private static let currentDataVersion = 9
 
-    static func seedAquariums(context: ModelContext) {
-        // 保存されているデータバージョンを取得
-        let savedVersion = UserDefaults.standard.integer(forKey: dataVersionKey)
-
-        // データバージョンが最新の場合は何もしない
-        if savedVersion >= currentDataVersion {
-            print("✅ 水族館データは最新です (v\(savedVersion))")
-            return
-        }
-
+    static func seedAquariums(context: ModelContext) async {
         // 既存の水族館データを取得
         let descriptor = FetchDescriptor<Aquarium>()
         let existingAquariums = (try? context.fetch(descriptor)) ?? []
 
+        // Webから最新のデータを取得
+        guard let response = await AquariumJSONLoader.fetchAquariums() else {
+            // Web取得失敗時の処理
+            if existingAquariums.isEmpty {
+                // 初回起動時（データベースが空）の場合はエラー
+                print("❌ 初回起動時のデータ取得に失敗しました。オンライン環境で再起動してください。")
+            } else {
+                // 既存データがある場合は静かにスキップ（オフライン対応）
+                print("ℹ️ オフラインのため更新をスキップしました。既存データで起動します。")
+            }
+            return
+        }
+
+        // 保存されているデータバージョンを取得
+        let savedVersion = UserDefaults.standard.integer(forKey: dataVersionKey)
+        let latestVersion = response.version
+
+        // データバージョンが最新の場合は何もしない
+        if savedVersion >= latestVersion {
+            print("✅ 水族館データは最新です (v\(savedVersion))")
+            return
+        }
+
         // 既存データがある場合は更新、ない場合は新規追加
         if !existingAquariums.isEmpty {
-            print("🔄 水族館データを更新します (v\(savedVersion) → v\(currentDataVersion))")
-            updateAquariums(context: context, existing: existingAquariums)
+            print("🔄 水族館データを更新します (v\(savedVersion) → v\(latestVersion))")
+            updateAquariums(context: context, existing: existingAquariums, newData: response.aquariums)
         } else {
-            print("➕ 水族館データを新規追加します (v\(currentDataVersion))")
-            insertAquariums(context: context)
+            print("➕ 水族館データを新規追加します (v\(latestVersion))")
+            insertAquariums(context: context, aquariumData: response.aquariums)
         }
 
         // データバージョンを更新
-        UserDefaults.standard.set(currentDataVersion, forKey: dataVersionKey)
+        UserDefaults.standard.set(latestVersion, forKey: dataVersionKey)
     }
 
     /// 既存の水族館データを更新（訪問記録を保持）
-    private static func updateAquariums(context: ModelContext, existing: [Aquarium]) {
-        let newData = getAquariumData()
-
+    private static func updateAquariums(context: ModelContext, existing: [Aquarium], newData: [AquariumData]) {
         // 名前をキーにした辞書を作成
         var existingDict: [String: Aquarium] = [:]
         for aquarium in existing {
@@ -98,9 +108,7 @@ class DataSeeder {
     }
 
     /// 新規に水族館データを挿入
-    private static func insertAquariums(context: ModelContext) {
-        let aquariumData = getAquariumData()
-
+    private static func insertAquariums(context: ModelContext, aquariumData: [AquariumData]) {
         for data in aquariumData {
             let aquarium = Aquarium(
                 name: data.name,
@@ -119,23 +127,6 @@ class DataSeeder {
             print("✅ \(aquariumData.count)件の水族館データを追加しました")
         } catch {
             print("❌ データの保存に失敗しました: \(error)")
-        }
-    }
-
-    /// 水族館データの取得（JSONファイルから読み込み）
-    private static func getAquariumData() -> [(name: String, latitude: Double, longitude: Double, description: String, region: String, representativeFish: String, fishIconSize: Int)] {
-        let aquariumDataArray = AquariumJSONLoader.loadAquariums()
-
-        return aquariumDataArray.map { aquarium in
-            (
-                name: aquarium.name,
-                latitude: aquarium.latitude,
-                longitude: aquarium.longitude,
-                description: aquarium.description,
-                region: aquarium.region,
-                representativeFish: aquarium.representativeFish,
-                fishIconSize: aquarium.fishIconSize
-            )
         }
     }
 }

@@ -52,6 +52,6 @@ struct SuilogApp: App {
     @MainActor
     private func seedDataIfNeeded() async {
         let context = sharedModelContainer.mainContext
-        DataSeeder.seedAquariums(context: context)
+        await DataSeeder.seedAquariums(context: context)
     }
 }
