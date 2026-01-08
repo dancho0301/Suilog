@@ -349,8 +349,10 @@ struct AquariumDetailView: View {
                                 }
                             }
                         }
+                        .padding()
+                        .background(Color(.systemGray6).opacity(0.5))
+                        .cornerRadius(10)
                         .padding(.horizontal)
-                        .padding(.vertical, 8)
                     }
 
                     Divider()

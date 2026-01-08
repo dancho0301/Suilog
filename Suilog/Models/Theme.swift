@@ -94,7 +94,7 @@ extension Theme {
         bubbleColorHex: "#FFFFFF",
         locationCheckInColorsHex: ["#FFFF00", "#FFA500", "#FFD700"],  // yellow, orange, gold
         manualCheckInColorsHex: ["#808080", "#BFBFBF", "#D9D9D9"],    // gray shades
-        statisticsBackgroundColorHex: "#007AFF4D"  // blue with 0.3 opacity
+        statisticsBackgroundColorHex: "#4D007AFF"  // blue with 0.3 opacity (AARRGGBB format)
     )
 
     /// ゆめかわテーマ
@@ -110,7 +110,7 @@ extension Theme {
         bubbleColorHex: "#FFFFFF",
         locationCheckInColorsHex: ["#FFD6E8", "#FFADD6", "#FF85C8"],  // pastel pink shades
         manualCheckInColorsHex: ["#D6E8FF", "#ADD6FF", "#85C8FF"],    // pastel blue shades
-        statisticsBackgroundColorHex: "#FFB3E64D"
+        statisticsBackgroundColorHex: "#4DFFB3E6"  // pastel pink with 0.3 opacity (AARRGGBB format)
     )
 
     /// 全テーマのリスト
