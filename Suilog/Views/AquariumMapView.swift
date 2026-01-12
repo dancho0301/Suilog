@@ -254,6 +254,38 @@ struct AquariumDetailView: View {
                     }
                     .padding(.horizontal)
 
+                    Divider()
+
+                    // 住所
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("住所")
+                            .font(.headline)
+                        Text(aquarium.address)
+                            .foregroundColor(.secondary)
+                            .lineSpacing(4)
+                    }
+                    .padding(.horizontal)
+
+                    // チケット購入
+                    if let affiliateLink = aquarium.affiliateLink, !affiliateLink.isEmpty {
+                        Divider()
+
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("チケット購入")
+                                .font(.headline)
+                            Link(destination: URL(string: affiliateLink)!) {
+                                HStack {
+                                    Text("オンラインでチケットを購入")
+                                        .foregroundColor(.blue)
+                                    Spacer()
+                                    Image(systemName: "arrow.up.right.square")
+                                        .foregroundColor(.blue)
+                                }
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+
                     // 訪問履歴
                     if !aquarium.visits.isEmpty {
                         Divider()
