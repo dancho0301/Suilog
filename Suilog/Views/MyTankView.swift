@@ -70,73 +70,60 @@ struct MyTankView: View {
                 VStack {
                     Spacer()
 
-                    VStack(spacing: 12) {
-                        Text("訪問した水族館")
-                            .font(.headline)
+                    NavigationLink(destination: StatisticsView()) {
+                        VStack(spacing: 12) {
+                            Text("訪問した水族館")
+                                .font(.headline)
+                                .foregroundColor(themeManager.currentTheme.textColor)
+
+                            HStack(alignment: .lastTextBaseline, spacing: 4) {
+                                Text("\(visitedAquariumsCount)")
+                                    .font(.system(size: 60, weight: .bold))
+                                Text("か所")
+                                    .font(.title3)
+                            }
                             .foregroundColor(themeManager.currentTheme.textColor)
 
-                        HStack(alignment: .lastTextBaseline, spacing: 4) {
-                            Text("\(visitedAquariumsCount)")
-                                .font(.system(size: 60, weight: .bold))
-                            Text("か所")
-                                .font(.title3)
-                        }
-                        .foregroundColor(themeManager.currentTheme.textColor)
+                            Divider()
+                                .background(themeManager.currentTheme.textColor.opacity(0.5))
+                                .padding(.vertical, 4)
 
-                        Divider()
-                            .background(themeManager.currentTheme.textColor.opacity(0.5))
-                            .padding(.vertical, 4)
-
-                        HStack(spacing: 20) {
-                            VStack {
-                                HStack {
-                                    Image(systemName: "circle.fill")
-                                        .foregroundColor(themeManager.currentTheme.locationCheckInColors.first ?? .yellow)
-                                    Text("\(locationCheckInCount)")
-                                        .font(.title3)
-                                        .fontWeight(.bold)
+                            HStack(spacing: 20) {
+                                VStack {
+                                    HStack {
+                                        Image(systemName: "circle.fill")
+                                            .foregroundColor(themeManager.currentTheme.locationCheckInColors.first ?? .yellow)
+                                        Text("\(locationCheckInCount)")
+                                            .font(.title3)
+                                            .fontWeight(.bold)
+                                    }
+                                    Text("位置情報")
+                                        .font(.caption)
+                                        .foregroundColor(themeManager.currentTheme.secondaryTextColor)
                                 }
-                                Text("位置情報")
-                                    .font(.caption)
-                                    .foregroundColor(themeManager.currentTheme.secondaryTextColor)
-                            }
 
-                            VStack {
-                                HStack {
-                                    Image(systemName: "circle.fill")
-                                        .foregroundColor(themeManager.currentTheme.manualCheckInColors.first ?? .gray)
-                                    Text("\(manualCheckInCount)")
-                                        .font(.title3)
-                                        .fontWeight(.bold)
+                                VStack {
+                                    HStack {
+                                        Image(systemName: "circle.fill")
+                                            .foregroundColor(themeManager.currentTheme.manualCheckInColors.first ?? .gray)
+                                        Text("\(manualCheckInCount)")
+                                            .font(.title3)
+                                            .fontWeight(.bold)
+                                    }
+                                    Text("手動")
+                                        .font(.caption)
+                                        .foregroundColor(themeManager.currentTheme.secondaryTextColor)
                                 }
-                                Text("手動")
-                                    .font(.caption)
-                                    .foregroundColor(themeManager.currentTheme.secondaryTextColor)
                             }
+                            .foregroundColor(themeManager.currentTheme.textColor)
                         }
-                        .foregroundColor(themeManager.currentTheme.textColor)
-
-                        // 統計ビューへのリンク
-                        NavigationLink(destination: StatisticsView()) {
-                            HStack {
-                                Image(systemName: "chart.bar.fill")
-                                    .font(.caption)
-                                Text("詳細な統計を見る")
-                                    .font(.caption)
-                                    .fontWeight(.semibold)
-                                Image(systemName: "chevron.right")
-                                    .font(.caption2)
-                            }
-                            .foregroundColor(themeManager.currentTheme.primaryColor)
-                            .padding(.top, 8)
-                        }
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(themeManager.currentTheme.statisticsBackgroundColor)
+                                .shadow(radius: 10)
+                        )
                     }
-                    .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(themeManager.currentTheme.statisticsBackgroundColor)
-                            .shadow(radius: 10)
-                    )
                     .padding(.bottom, 40)
                 }
             }
