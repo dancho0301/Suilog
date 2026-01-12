@@ -200,10 +200,10 @@
 				};
 			};
 			buildConfigurationList = 5A63BA372F050779003C6494 /* Build configuration list for PBXProject "Suilog" */;
-			developmentRegion = en;
+			developmentRegion = ja;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
+				ja,
 				Base,
 			);
 			mainGroup = 5A63BA332F050779003C6494;
