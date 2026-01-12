@@ -18,3 +18,8 @@ struct AquariumData: Codable {
     let address: String
     let affiliateLink: String?
 }
+
+struct AquariumResponse: Codable {
+    let version: Int
+    let aquariums: [AquariumData]
+}

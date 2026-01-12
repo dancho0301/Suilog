@@ -12,6 +12,7 @@ import MapKit
 struct AquariumMapView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var locationManager: LocationManager
+    @EnvironmentObject private var themeManager: ThemeManager
     @Query private var aquariums: [Aquarium]
     @Query private var visitRecords: [VisitRecord] // 変更を検知するために追加
 
@@ -85,6 +86,7 @@ struct AquariumListView: View {
     @Query private var visitRecords: [VisitRecord] // 変更を検知するために追加
     @Binding var selectedAquarium: Aquarium?
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var themeManager: ThemeManager
 
     /// 地域の順序（北から南へ）
     private let regionOrder: [String] = [
@@ -126,8 +128,8 @@ struct AquariumListView: View {
                         // 代表的な魚のアイコン
                         Group {
                             if isCustomAsset(aquarium.representativeFish) {
-                                // カスタムアセット
-                                Image(aquarium.representativeFish)
+                                // カスタムアセット（テーマフォルダから取得）
+                                Image(themeManager.currentTheme.creatureImageName(aquarium.representativeFish))
                                     .renderingMode(.original)
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
@@ -176,6 +178,7 @@ struct AquariumDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var locationManager: LocationManager
+    @EnvironmentObject private var themeManager: ThemeManager
 
     let aquarium: Aquarium
 
@@ -205,8 +208,8 @@ struct AquariumDetailView: View {
                             Spacer()
                             Group {
                                 if isCustomAsset(aquarium.representativeFish) {
-                                    // カスタムアセット
-                                    Image(aquarium.representativeFish)
+                                    // カスタムアセット（テーマフォルダから取得）
+                                    Image(themeManager.currentTheme.creatureImageName(aquarium.representativeFish))
                                         .renderingMode(.original)
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
@@ -348,8 +351,10 @@ struct AquariumDetailView: View {
                                 }
                             }
                         }
+                        .padding()
+                        .background(Color(.systemGray6).opacity(0.5))
+                        .cornerRadius(10)
                         .padding(.horizontal)
-                        .padding(.vertical, 8)
                     }
 
                     Divider()
