@@ -22,22 +22,23 @@ Suilog is an iOS SwiftUI application that helps users track their visits to aqua
 
 ### Build the project
 ```bash
-xcodebuild -scheme Suilog -project Suilog.xcodeproj build
+# シミュレータ向けビルド
+xcodebuild -scheme Suilog -project Suilog.xcodeproj -destination 'platform=iOS Simulator,name=iPhone 17 Pro' build
 ```
 
 ### Run tests
 ```bash
 # Run all tests
-xcodebuild test -scheme Suilog -project Suilog.xcodeproj
+xcodebuild test -scheme Suilog -project Suilog.xcodeproj -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 
 # Run unit tests only
-xcodebuild test -scheme Suilog -project Suilog.xcodeproj -only-testing:SuilogTests
+xcodebuild test -scheme Suilog -project Suilog.xcodeproj -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -only-testing:SuilogTests
 
 # Run UI tests only
-xcodebuild test -scheme Suilog -project Suilog.xcodeproj -only-testing:SuilogUITests
+xcodebuild test -scheme Suilog -project Suilog.xcodeproj -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -only-testing:SuilogUITests
 
 # Run specific test
-xcodebuild test -scheme Suilog -project Suilog.xcodeproj -only-testing:SuilogTests/SuilogTests/example
+xcodebuild test -scheme Suilog -project Suilog.xcodeproj -destination 'platform=iOS Simulator,name=iPhone 17 Pro' -only-testing:SuilogTests/SuilogTests/example
 ```
 
 ## Architecture
