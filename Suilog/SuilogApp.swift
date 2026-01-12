@@ -14,6 +14,11 @@ struct SuilogApp: App {
     @StateObject private var storeManager = StoreManager()
     @StateObject private var themeManager = ThemeManager()
 
+    // エラー状態
+    @State private var showingInitialError = false
+    @State private var initialErrorMessage = ""
+    @State private var isRetrying = false
+
     var sharedModelContainer: ModelContainer = {
         let modelConfiguration = ModelConfiguration(isStoredInMemoryOnly: false)
 
@@ -46,6 +51,31 @@ struct SuilogApp: App {
                     // 購入状態が変わったらThemeManagerに通知
                     themeManager.updatePurchasedProducts(productIds)
                 }
+                .alert("データの読み込みに失敗しました", isPresented: $showingInitialError) {
+                    Button("再試行") {
+                        Task {
+                            isRetrying = true
+                            await seedDataIfNeeded()
+                            isRetrying = false
+                        }
+                    }
+                    Button("キャンセル", role: .cancel) { }
+                } message: {
+                    Text(initialErrorMessage)
+                }
+                .overlay {
+                    if isRetrying {
+                        ZStack {
+                            Color.black.opacity(0.3)
+                                .ignoresSafeArea()
+                            ProgressView("再試行中...")
+                                .padding()
+                                .background(Color(.systemBackground))
+                                .cornerRadius(10)
+                                .shadow(radius: 10)
+                        }
+                    }
+                }
         }
         .modelContainer(sharedModelContainer)
     }
@@ -53,6 +83,17 @@ struct SuilogApp: App {
     @MainActor
     private func seedDataIfNeeded() async {
         let context = sharedModelContainer.mainContext
-        await DataSeeder.seedAquariums(context: context)
+        let result = await DataSeeder.seedAquariums(context: context)
+
+        switch result {
+        case .success, .skippedOffline:
+            break // 正常
+        case .errorNoData(let message):
+            initialErrorMessage = message
+            showingInitialError = true
+        case .errorSaveFailed(let message):
+            initialErrorMessage = message
+            showingInitialError = true
+        }
     }
 }

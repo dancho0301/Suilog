@@ -26,7 +26,8 @@ struct AquariumMapView: View {
                 // マップ表示
                 Map(position: $position, selection: $selectedAquarium) {
                     ForEach(aquariums, id: \.id) { aquarium in
-                        let hasVisited = !aquarium.visits.isEmpty
+                        // visitRecordsを使うことで変更検知を確実にする
+                        let hasVisited = visitRecords.contains { $0.aquarium?.id == aquarium.id }
                         // カスタムアイコンの場合は汎用アイコンを使用
                         let markerIcon = isCustomAsset(aquarium.representativeFish) ? "fish.fill" : aquarium.representativeFish
                         Marker(
@@ -96,8 +97,9 @@ struct AquariumListView: View {
     /// ソート済み水族館リスト（訪問済み→未訪問、北から南へ）
     private var sortedAquariums: [Aquarium] {
         aquariums.sorted { a, b in
-            let aVisited = !a.visits.isEmpty
-            let bVisited = !b.visits.isEmpty
+            // visitRecordsを使うことで変更検知を確実にする
+            let aVisited = visitRecords.contains { $0.aquarium?.id == a.id }
+            let bVisited = visitRecords.contains { $0.aquarium?.id == b.id }
 
             // 1. 訪問済みを上に
             if aVisited != bVisited {
@@ -137,7 +139,7 @@ struct AquariumListView: View {
                             } else {
                                 Image(systemName: aquarium.representativeFish)
                                     .font(.system(size: 40))
-                                    .foregroundColor(!aquarium.visits.isEmpty ? .blue : .gray.opacity(0.5))
+                                    .foregroundColor(visitRecords.contains { $0.aquarium?.id == aquarium.id } ? .blue : .gray.opacity(0.5))
                             }
                         }
                         .frame(width: 56, height: 56)
@@ -153,7 +155,7 @@ struct AquariumListView: View {
 
                         Spacer()
 
-                        if !aquarium.visits.isEmpty {
+                        if visitRecords.contains(where: { $0.aquarium?.id == aquarium.id }) {
                             Image(systemName: "checkmark.circle.fill")
                                 .foregroundColor(.blue)
                         }

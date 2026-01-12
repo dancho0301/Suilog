@@ -21,6 +21,8 @@ struct ManualCheckInView: View {
     @State private var photoData: Data?
     @State private var showingCamera = false
     @State private var showingSuccess = false
+    @State private var showingError = false
+    @State private var errorMessage = ""
 
     var body: some View {
         NavigationStack {
@@ -122,6 +124,11 @@ struct ManualCheckInView: View {
             } message: {
                 Text("\(aquarium.name)にチェックインしました！")
             }
+            .alert("エラー", isPresented: $showingError) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(errorMessage)
+            }
         }
     }
 
@@ -140,6 +147,9 @@ struct ManualCheckInView: View {
             showingSuccess = true
         } catch {
             print("❌ チェックインに失敗: \(error)")
+            modelContext.rollback()
+            errorMessage = "チェックインの保存に失敗しました。\nもう一度お試しください。"
+            showingError = true
         }
     }
 }

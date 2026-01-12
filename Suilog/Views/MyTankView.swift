@@ -47,7 +47,7 @@ struct MyTankView: View {
                     Text("水族館に行って魚を見つけよう！")
                         .font(.title2)
                         .fontWeight(.medium)
-                        .foregroundColor(themeManager.currentTheme.primaryColor)
+                        .foregroundColor(themeManager.currentTheme.textColor)
                 }
             } else {
                 // 訪問記録ごとに魚を表示（チェックイン種別で色分け）
@@ -72,7 +72,7 @@ struct MyTankView: View {
                     VStack(spacing: 12) {
                         Text("訪問した水族館")
                             .font(.headline)
-                            .foregroundColor(.white)
+                            .foregroundColor(themeManager.currentTheme.textColor)
 
                         HStack(alignment: .lastTextBaseline, spacing: 4) {
                             Text("\(visitedAquariumsCount)")
@@ -80,10 +80,10 @@ struct MyTankView: View {
                             Text("か所")
                                 .font(.title3)
                         }
-                        .foregroundColor(.white)
+                        .foregroundColor(themeManager.currentTheme.textColor)
 
                         Divider()
-                            .background(Color.white.opacity(0.5))
+                            .background(themeManager.currentTheme.textColor.opacity(0.5))
                             .padding(.vertical, 4)
 
                         HStack(spacing: 20) {
@@ -97,7 +97,7 @@ struct MyTankView: View {
                                 }
                                 Text("位置情報")
                                     .font(.caption)
-                                    .foregroundColor(.white.opacity(0.8))
+                                    .foregroundColor(themeManager.currentTheme.secondaryTextColor)
                             }
 
                             VStack {
@@ -110,10 +110,10 @@ struct MyTankView: View {
                                 }
                                 Text("手動")
                                     .font(.caption)
-                                    .foregroundColor(.white.opacity(0.8))
+                                    .foregroundColor(themeManager.currentTheme.secondaryTextColor)
                             }
                         }
-                        .foregroundColor(.white)
+                        .foregroundColor(themeManager.currentTheme.textColor)
                     }
                     .padding()
                     .background(

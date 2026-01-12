@@ -31,9 +31,7 @@ class StoreManager: ObservableObject {
 
     /// テーマ商品のProduct ID一覧
     static let themeProductIds: Set<String> = [
-        "com.suilog.theme.coral_reef",
-        "com.suilog.theme.deep_sea",
-        "com.suilog.theme.tropical",
+        "com.suilog.theme.yumekawa",
         "com.suilog.theme.all_pack"
     ]
 
@@ -158,7 +156,7 @@ class StoreManager: ObservableObject {
 
     /// トランザクションの更新をリッスンする
     private func listenForTransactions() -> Task<Void, Error> {
-        Task.detached { [weak self] in
+        Task { [weak self] in
             for await result in Transaction.updates {
                 if case .verified(let transaction) = result {
                     await self?.updatePurchasedProducts()

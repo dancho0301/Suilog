@@ -7,61 +7,21 @@
     {
       "displayPrice" : "160",
       "familyShareable" : true,
-      "internalID" : "coral_reef_theme",
+      "internalID" : "yumekawa_theme",
       "localizations" : [
         {
-          "description" : "カラフルなサンゴ礁の世界をテーマにした背景と色合い",
-          "displayName" : "サンゴ礁テーマ",
+          "description" : "パステルカラーの夢かわいい世界",
+          "displayName" : "ゆめかわ",
           "locale" : "ja"
         },
         {
-          "description" : "A colorful coral reef themed background and colors",
-          "displayName" : "Coral Reef Theme",
+          "description" : "A dreamy pastel colored world",
+          "displayName" : "Yumekawa",
           "locale" : "en_US"
         }
       ],
-      "productID" : "com.suilog.theme.coral_reef",
-      "referenceName" : "Coral Reef Theme",
-      "type" : "NonConsumable"
-    },
-    {
-      "displayPrice" : "160",
-      "familyShareable" : true,
-      "internalID" : "deep_sea_theme",
-      "localizations" : [
-        {
-          "description" : "神秘的な深海の世界をテーマにした背景と色合い",
-          "displayName" : "深海テーマ",
-          "locale" : "ja"
-        },
-        {
-          "description" : "A mysterious deep sea themed background and colors",
-          "displayName" : "Deep Sea Theme",
-          "locale" : "en_US"
-        }
-      ],
-      "productID" : "com.suilog.theme.deep_sea",
-      "referenceName" : "Deep Sea Theme",
-      "type" : "NonConsumable"
-    },
-    {
-      "displayPrice" : "160",
-      "familyShareable" : true,
-      "internalID" : "tropical_theme",
-      "localizations" : [
-        {
-          "description" : "南国の透き通る海をテーマにした背景と色合い",
-          "displayName" : "トロピカルテーマ",
-          "locale" : "ja"
-        },
-        {
-          "description" : "A tropical clear ocean themed background and colors",
-          "displayName" : "Tropical Theme",
-          "locale" : "en_US"
-        }
-      ],
-      "productID" : "com.suilog.theme.tropical",
-      "referenceName" : "Tropical Theme",
+      "productID" : "com.suilog.theme.yumekawa",
+      "referenceName" : "Yumekawa Theme",
       "type" : "NonConsumable"
     },
     {
