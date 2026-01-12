@@ -14,7 +14,9 @@ Suilog is an iOS SwiftUI application that helps users track their visits to aqua
 - Photo and memo functionality for each visit
 - Map view with real-time location tracking
 - Passport (visit log) view
-- SwiftData for persistent storage with version-controlled data updates
+- SwiftData for persistent storage with schema migration support
+- Theme system with StoreKit integration for in-app purchases
+- Remote data updates via Firebase-hosted JSON
 
 ## Building and Testing
 
@@ -33,10 +35,7 @@ xcodebuild test -scheme Suilog -project Suilog.xcodeproj -only-testing:SuilogTes
 
 # Run UI tests only
 xcodebuild test -scheme Suilog -project Suilog.xcodeproj -only-testing:SuilogUITests
-```
 
-### Run a single test
-```bash
 # Run specific test
 xcodebuild test -scheme Suilog -project Suilog.xcodeproj -only-testing:SuilogTests/SuilogTests/example
 ```
@@ -44,64 +43,68 @@ xcodebuild test -scheme Suilog -project Suilog.xcodeproj -only-testing:SuilogTes
 ## Architecture
 
 ### Data Layer
-- **SwiftData**: The app uses SwiftData as its persistence framework with a `ModelContainer` configured in `SuilogApp.swift`
+
+#### SwiftData with Schema Migration
+The app uses SwiftData with versioned schemas and migration support:
+
+- **Current Schema**: `AquariumSchemaV4` (version 4.0.0)
+- **Schema Files**: `AquariumSchemaV1.swift` → `AquariumSchemaV4.swift`
+- **Migration Plan**: `AquariumMigrationPlan.swift` defines lightweight migrations between versions
 - **Model Definitions**:
-  - `Aquarium.swift` - 水族館マスターデータ（id, name, latitude, longitude, description, region）
-  - `VisitRecord.swift` - 訪問記録（id, visitDate, memo, photoData, checkInType, aquarium）
+  - `Aquarium` - 水族館マスターデータ（id, name, latitude, longitude, description, region, representativeFish, fishIconSize, address, affiliateLink）
+  - `VisitRecord` - 訪問記録（id, visitDate, memo, photoData, checkInType, aquarium）
 - **Relationships**: `Aquarium` has one-to-many relationship with `VisitRecord` using `@Relationship(deleteRule: .cascade)`
-- **Storage Configuration**: Data is persisted to disk (not in-memory) via `ModelConfiguration`
 
-### Data Seeding and Version Management
-**IMPORTANT**: The app uses a version-controlled data seeding system to safely update aquarium master data without losing user's visit records.
+**IMPORTANT**: When adding new fields to models:
+1. Create a new schema version file (e.g., `AquariumSchemaV5.swift`)
+2. Add new migration stage in `AquariumMigrationPlan.swift`
+3. Use lightweight migration if possible (new optional fields with defaults)
 
-#### Version Control System (`DataSeeder.swift`)
-- Uses `UserDefaults` to track data version with key `"AquariumDataVersion"`
-- Current version is stored in `currentDataVersion` constant
-- On app launch, `seedDataIfNeeded()` is called to check version and update data if needed
+### Remote Data Management
 
-#### How to Update Aquarium Data
-When adding or modifying aquarium data in future app updates:
+#### Firebase-hosted JSON Data
+Aquarium master data is fetched from Firebase Hosting instead of being bundled in the app:
 
-1. **Edit the data** in `DataSeeder.swift` → `getAquariumData()` method
-2. **Increment version** by changing `currentDataVersion` (e.g., from `1` to `2`)
-3. **Build and release** the app
+- **Data URL**: `https://suilog-3a94e.web.app/aquariums.json`
+- **Loader**: `AquariumJSONLoader.swift` - Async fetch with error handling
+- **Seeder**: `DataSeeder.swift` - Version-controlled updates via `UserDefaults`
+- **Data Model**: `AquariumData.swift` - JSON response structure
 
 #### Update Behavior
-- **Existing aquariums**: Updates latitude, longitude, description, and region while preserving all visit records
-- **New aquariums**: Automatically added to the database
-- **Removed aquariums**:
-  - If has visit records → kept in database (保持)
-  - If no visit records → deleted from database (削除)
+- **Version check**: Compares `UserDefaults("AquariumDataVersion")` with JSON `version` field
+- **Offline support**: If existing data exists, silently skips update on network failure
+- **First launch**: Requires network connection to fetch initial data
+- **Existing aquariums**: Updates all fields while preserving visit records
+- **New aquariums**: Automatically added
+- **Removed aquariums**: Kept if has visit records, deleted otherwise
 
-#### Data Structure
-Current aquarium count: 82 facilities
-- 北海道: 10施設
-- 東北: 6施設
-- 関東: 13施設
-- 中部: 18施設
-- 関西: 14施設
-- 中国・四国: 11施設
-- 九州・沖縄: 10施設
+**To update aquarium data**: Edit `firebase/public/aquariums.json` and increment the `version` field, then deploy to Firebase Hosting.
 
-**CRITICAL**: Never modify the version control logic without careful consideration. User data (visit records, photos, memos) must always be preserved during updates.
+### Theme System
+
+#### Theme Architecture
+- **Theme Model**: `Theme.swift` - Defines colors, backgrounds, and assets per theme
+- **ThemeManager**: `ThemeManager.swift` - ObservableObject managing current theme selection
+- **StoreManager**: `StoreManager.swift` - StoreKit 2 integration for in-app purchases
+
+#### Adding New Themes
+1. Add theme definition in `Theme.allThemes`
+2. Add product ID in `StoreManager.themeProductIds`
+3. Add theme assets in `Assets.xcassets/Themes/[ThemeName]/`
+4. Configure product in App Store Connect
 
 ### App Structure
-- **Entry Point**: `SuilogApp.swift` - Defines the app lifecycle, sets up the shared `ModelContainer`, and calls `seedDataIfNeeded()` on app launch
-- **Main View**: `ContentView.swift` - Tab-based interface with three tabs:
-  1. マイ水槽 (My Tank) - Home view showing visit statistics
+- **Entry Point**: `SuilogApp.swift` - Sets up ModelContainer with migration plan, calls `DataSeeder.seedAquariums()` on launch
+- **Main View**: `ContentView.swift` - Tab-based interface:
+  1. マイ水槽 (My Tank) - Visit statistics with animated fish
   2. マップ・検索 (Map/Search) - Map view with aquarium markers
   3. パスポート (Passport) - Visit log/history view
-- **Views**:
-  - `MyTankView.swift` - Displays user's visit statistics and achievements
-  - `AquariumMapView.swift` - Map with markers, list view, and detail sheets
-  - `PassportView.swift` - Visit history with photos and memos
-  - `LocationCheckInView.swift` - Location-based check-in (gold badge)
-  - `ManualCheckInView.swift` - Manual check-in with date picker (silver badge)
-  - `EditVisitRecordView.swift` - Edit existing visit records
 - **Managers**:
-  - `LocationManager.swift` - Handles GPS permissions and distance calculations
-  - `DataSeeder.swift` - Version-controlled aquarium data seeding
-- **Data Access**: Uses `@Query` property wrapper for reactive data fetching from SwiftData
+  - `LocationManager.swift` - GPS permissions and distance calculations
+  - `ThemeManager.swift` - Theme state management
+  - `StoreManager.swift` - In-app purchase handling
+  - `DataSeeder.swift` - Remote data seeding
+  - `AquariumJSONLoader.swift` - Firebase JSON fetching
 
 ### SwiftData Update Patterns
 **IMPORTANT**: SwiftData computed properties do NOT trigger view updates. Always follow these patterns:
@@ -135,11 +138,6 @@ struct AquariumMapView: View {
     }
 }
 ```
-
-This pattern is used in:
-- `AquariumMapView.swift:16` - Map marker updates
-- `AquariumListView.swift:80` - List checkmark updates
-- `AquariumDetailView.swift` - Visit history display
 
 ### CloudKit Integration
 The app is configured for CloudKit services (see `Suilog.entitlements`):
