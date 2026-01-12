@@ -12,7 +12,7 @@ import Charts
 struct StatisticsView: View {
     @Query private var aquariums: [Aquarium]
     @Query private var visitRecords: [VisitRecord]
-    @Environment(ThemeManager.self) private var themeManager
+    @EnvironmentObject private var themeManager: ThemeManager
 
     /// 地域の順序（北から南へ）
     private let regionOrder: [String] = [
@@ -416,5 +416,5 @@ struct StatisticsView: View {
 #Preview {
     StatisticsView()
         .modelContainer(for: Aquarium.self, inMemory: true)
-        .environment(ThemeManager())
+        .environmentObject(ThemeManager())
 }
