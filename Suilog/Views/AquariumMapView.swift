@@ -262,14 +262,16 @@ struct AquariumDetailView: View {
                     Divider()
 
                     // 住所
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("住所")
-                            .font(.headline)
-                        Text(aquarium.address)
-                            .foregroundColor(.secondary)
-                            .lineSpacing(4)
+                    if let address = aquarium.address, !address.isEmpty {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("住所")
+                                .font(.headline)
+                            Text(address)
+                                .foregroundColor(.secondary)
+                                .lineSpacing(4)
+                        }
+                        .padding(.horizontal)
                     }
-                    .padding(.horizontal)
 
                     // チケット購入
                     if let affiliateLink = aquarium.affiliateLink, !affiliateLink.isEmpty {

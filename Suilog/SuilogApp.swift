@@ -20,15 +20,16 @@ struct SuilogApp: App {
     @State private var isRetrying = false
 
     var sharedModelContainer: ModelContainer = {
-        let modelConfiguration = ModelConfiguration(isStoredInMemoryOnly: false)
-
         do {
             // マイグレーションプランを使用してModelContainerを作成
-            // これにより、スキーマV1→V2→V3への自動マイグレーションが実行され、
+            // これにより、スキーマV1→V2→V3→V4への自動マイグレーションが実行され、
             // 既存の訪問データは保持されます
+            let schema = Schema([Aquarium.self, VisitRecord.self])
+            let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
             let container = try ModelContainer(
-                for: AquariumMigrationPlan.self,
-                configurations: [modelConfiguration]
+                for: schema,
+                migrationPlan: AquariumMigrationPlan.self,
+                configurations: modelConfiguration
             )
             print("✅ ModelContainerを作成しました（マイグレーションプラン使用）")
             return container

@@ -9,9 +9,9 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-typealias CheckInType = AquariumSchemaV3.CheckInTypeV3
+typealias CheckInType = AquariumSchemaV4.CheckInTypeV4
 
-extension AquariumSchemaV3.CheckInTypeV3 {
+extension AquariumSchemaV4.CheckInTypeV4 {
     var color: Color {
         switch self {
         case .location:
@@ -31,4 +31,4 @@ extension AquariumSchemaV3.CheckInTypeV3 {
     }
 }
 
-typealias VisitRecord = AquariumSchemaV3.VisitRecord
+typealias VisitRecord = AquariumSchemaV4.VisitRecord

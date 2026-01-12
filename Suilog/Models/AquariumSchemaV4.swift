@@ -30,7 +30,7 @@ enum AquariumSchemaV4: VersionedSchema {
         var region: String
         var representativeFish: String
         var fishIconSize: Int  // 1-5のサイズ指定（1=最小、5=最大）
-        var address: String
+        var address: String?
         var affiliateLink: String?
 
         @Relationship(deleteRule: .cascade, inverse: \VisitRecord.aquarium)
@@ -45,7 +45,7 @@ enum AquariumSchemaV4: VersionedSchema {
             region: String,
             representativeFish: String = "fish.fill",
             fishIconSize: Int = 3,
-            address: String = "",
+            address: String? = nil,
             affiliateLink: String? = nil
         ) {
             self.id = id

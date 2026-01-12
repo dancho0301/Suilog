@@ -160,23 +160,4 @@ class DataSeeder {
             return error
         }
     }
-
-    /// 水族館データの取得（JSONファイルから読み込み）
-    private static func getAquariumData() -> [(name: String, latitude: Double, longitude: Double, description: String, region: String, representativeFish: String, fishIconSize: Int, address: String, affiliateLink: String?)] {
-        let aquariumDataArray = AquariumJSONLoader.loadAquariums()
-
-        return aquariumDataArray.map { aquarium in
-            (
-                name: aquarium.name,
-                latitude: aquarium.latitude,
-                longitude: aquarium.longitude,
-                description: aquarium.description,
-                region: aquarium.region,
-                representativeFish: aquarium.representativeFish,
-                fishIconSize: aquarium.fishIconSize,
-                address: aquarium.address,
-                affiliateLink: aquarium.affiliateLink
-            )
-        }
-    }
 }

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-typealias Aquarium = AquariumSchemaV3.Aquarium
+typealias Aquarium = AquariumSchemaV4.Aquarium
 
 extension Aquarium {
     var hasVisited: Bool {
