@@ -89,39 +89,89 @@ struct AquariumListView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var themeManager: ThemeManager
 
+    // 検索・フィルタ用のState変数
+    @State private var searchText = ""
+    @State private var selectedRegions: Set<String> = []
+    @State private var visitStatusFilter: VisitStatus = .all
+    @State private var showFilterSheet = false
+
+    /// 訪問ステータスフィルタの列挙型
+    enum VisitStatus: String, CaseIterable, Identifiable {
+        case all = "すべて"
+        case visited = "訪問済み"
+        case notVisited = "未訪問"
+
+        var id: String { self.rawValue }
+    }
+
     /// 地域の順序（北から南へ）
     private let regionOrder: [String] = [
         "北海道", "東北", "関東", "中部", "近畿", "中国・四国", "九州・沖縄"
     ]
 
-    /// ソート済み水族館リスト（訪問済み→未訪問、北から南へ）
-    private var sortedAquariums: [Aquarium] {
-        aquariums.sorted { a, b in
-            // visitRecordsを使うことで変更検知を確実にする
-            let aVisited = visitRecords.contains { $0.aquarium?.id == a.id }
-            let bVisited = visitRecords.contains { $0.aquarium?.id == b.id }
-
-            // 1. 訪問済みを上に
-            if aVisited != bVisited {
-                return aVisited
+    /// フィルタ済み＆ソート済み水族館リスト
+    private var filteredAndSortedAquariums: [Aquarium] {
+        aquariums
+            .filter { aquarium in
+                // 検索テキストフィルタ
+                if !searchText.isEmpty {
+                    return aquarium.name.localizedCaseInsensitiveContains(searchText)
+                }
+                return true
             }
-
-            // 2. 地域順（北から南へ）
-            let aRegionIndex = regionOrder.firstIndex(of: a.region) ?? Int.max
-            let bRegionIndex = regionOrder.firstIndex(of: b.region) ?? Int.max
-
-            if aRegionIndex != bRegionIndex {
-                return aRegionIndex < bRegionIndex
+            .filter { aquarium in
+                // 地域フィルタ
+                if !selectedRegions.isEmpty {
+                    return selectedRegions.contains(aquarium.region)
+                }
+                return true
             }
+            .filter { aquarium in
+                // 訪問ステータスフィルタ
+                let hasVisited = visitRecords.contains { $0.aquarium?.id == aquarium.id }
+                switch visitStatusFilter {
+                case .all:
+                    return true
+                case .visited:
+                    return hasVisited
+                case .notVisited:
+                    return !hasVisited
+                }
+            }
+            .sorted { a, b in
+                // visitRecordsを使うことで変更検知を確実にする
+                let aVisited = visitRecords.contains { $0.aquarium?.id == a.id }
+                let bVisited = visitRecords.contains { $0.aquarium?.id == b.id }
 
-            // 3. 同じ地域内では名前順
-            return a.name < b.name
-        }
+                // 1. 訪問済みを上に
+                if aVisited != bVisited {
+                    return aVisited
+                }
+
+                // 2. 地域順（北から南へ）
+                let aRegionIndex = regionOrder.firstIndex(of: a.region) ?? Int.max
+                let bRegionIndex = regionOrder.firstIndex(of: b.region) ?? Int.max
+
+                if aRegionIndex != bRegionIndex {
+                    return aRegionIndex < bRegionIndex
+                }
+
+                // 3. 同じ地域内では名前順
+                return a.name < b.name
+            }
+    }
+
+    /// アクティブなフィルタ数
+    private var activeFilterCount: Int {
+        var count = 0
+        if !selectedRegions.isEmpty { count += 1 }
+        if visitStatusFilter != .all { count += 1 }
+        return count
     }
 
     var body: some View {
         NavigationStack {
-            List(sortedAquariums, id: \.id) { aquarium in
+            List(filteredAndSortedAquariums, id: \.id) { aquarium in
                 Button {
                     selectedAquarium = aquarium
                     dismiss()
@@ -165,12 +215,40 @@ struct AquariumListView: View {
             }
             .navigationTitle("水族館リスト")
             .navigationBarTitleDisplayMode(.inline)
+            .searchable(text: $searchText, prompt: "水族館を検索")
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        showFilterSheet = true
+                    } label: {
+                        HStack(spacing: 4) {
+                            Image(systemName: "line.3.horizontal.decrease.circle")
+                            if activeFilterCount > 0 {
+                                Text("\(activeFilterCount)")
+                                    .font(.caption2)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 6)
+                                    .padding(.vertical, 2)
+                                    .background(Color.red)
+                                    .clipShape(Capsule())
+                            }
+                        }
+                    }
+                }
+
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("閉じる") {
                         dismiss()
                     }
                 }
+            }
+            .sheet(isPresented: $showFilterSheet) {
+                FilterSheet(
+                    selectedRegions: $selectedRegions,
+                    visitStatusFilter: $visitStatusFilter,
+                    regionOrder: regionOrder
+                )
             }
         }
     }
@@ -430,6 +508,81 @@ struct AquariumDetailView: View {
                 ManualCheckInView(aquarium: aquarium)
             }
         }
+    }
+}
+
+/// フィルタシートビュー
+struct FilterSheet: View {
+    @Binding var selectedRegions: Set<String>
+    @Binding var visitStatusFilter: AquariumListView.VisitStatus
+    let regionOrder: [String]
+
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                // 訪問ステータスセクション
+                Section {
+                    Picker("訪問ステータス", selection: $visitStatusFilter) {
+                        ForEach(AquariumListView.VisitStatus.allCases) { status in
+                            Text(status.rawValue).tag(status)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                } header: {
+                    Text("訪問ステータス")
+                }
+
+                // 地域セクション
+                Section {
+                    ForEach(regionOrder, id: \.self) { region in
+                        Toggle(isOn: Binding(
+                            get: { selectedRegions.contains(region) },
+                            set: { isOn in
+                                if isOn {
+                                    selectedRegions.insert(region)
+                                } else {
+                                    selectedRegions.remove(region)
+                                }
+                            }
+                        )) {
+                            Text(region)
+                        }
+                    }
+                } header: {
+                    HStack {
+                        Text("地域")
+                        Spacer()
+                        if !selectedRegions.isEmpty {
+                            Button("すべて解除") {
+                                selectedRegions.removeAll()
+                            }
+                            .font(.caption)
+                            .foregroundColor(.blue)
+                        }
+                    }
+                }
+            }
+            .navigationTitle("フィルタ")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("リセット") {
+                        selectedRegions.removeAll()
+                        visitStatusFilter = .all
+                    }
+                }
+
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("完了") {
+                        dismiss()
+                    }
+                    .fontWeight(.semibold)
+                }
+            }
+        }
+        .presentationDetents([.medium, .large])
     }
 }
 
