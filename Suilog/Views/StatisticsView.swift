@@ -128,17 +128,7 @@ struct StatisticsView: View {
             }
             .padding()
         }
-        .background(
-            LinearGradient(
-                colors: [
-                    Color(red: 0.94, green: 0.97, blue: 1.0),
-                    Color(red: 0.98, green: 0.95, blue: 1.0)
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
-        )
+        .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .navigationTitle("統計")
         .navigationBarTitleDisplayMode(.large)
         .onAppear {
@@ -216,7 +206,7 @@ struct StatisticsView: View {
         .padding(.vertical, 24)
         .background(
             RoundedRectangle(cornerRadius: 24)
-                .fill(.white)
+                .fill(Color(.secondarySystemBackground))
                 .shadow(color: Color.purple.opacity(0.15), radius: 20, x: 0, y: 10)
         )
     }
@@ -230,6 +220,7 @@ struct StatisticsView: View {
                 Text("地域別")
                     .font(.title2)
                     .fontWeight(.bold)
+                    .foregroundColor(.primary)
             }
 
             LazyVGrid(columns: [
@@ -258,6 +249,7 @@ struct StatisticsView: View {
                 Text("訪問トレンド")
                     .font(.title2)
                     .fontWeight(.bold)
+                    .foregroundColor(.primary)
             }
 
             if visitRecords.isEmpty {
@@ -307,7 +299,7 @@ struct StatisticsView: View {
                 .padding()
                 .background(
                     RoundedRectangle(cornerRadius: 20)
-                        .fill(.white)
+                        .fill(Color(.secondarySystemBackground))
                         .shadow(color: Color.blue.opacity(0.1), radius: 15, x: 0, y: 5)
                 )
             }
@@ -323,6 +315,7 @@ struct StatisticsView: View {
                 Text("よく行く水族館")
                     .font(.title2)
                     .fontWeight(.bold)
+                    .foregroundColor(.primary)
             }
 
             if topAquariums.isEmpty {
@@ -344,7 +337,7 @@ struct StatisticsView: View {
                 }
                 .background(
                     RoundedRectangle(cornerRadius: 20)
-                        .fill(.white)
+                        .fill(Color(.secondarySystemBackground))
                         .shadow(color: Color.orange.opacity(0.1), radius: 15, x: 0, y: 5)
                 )
             }
@@ -360,6 +353,7 @@ struct StatisticsView: View {
                 Text("まとめ")
                     .font(.title2)
                     .fontWeight(.bold)
+                    .foregroundColor(.primary)
             }
 
             HStack(spacing: 12) {
@@ -421,13 +415,14 @@ struct RegionalCard: View {
             Text(region)
                 .font(.subheadline)
                 .fontWeight(.bold)
+                .foregroundColor(.primary)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             // ミニプログレスバー
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 4)
-                        .fill(Color.gray.opacity(0.15))
+                        .fill(Color.gray.opacity(0.2))
                         .frame(height: 8)
 
                     RoundedRectangle(cornerRadius: 4)
@@ -455,8 +450,8 @@ struct RegionalCard: View {
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(.white)
-                .shadow(color: Color.black.opacity(0.06), radius: 10, x: 0, y: 4)
+                .fill(Color(.secondarySystemBackground))
+                .shadow(color: Color.primary.opacity(0.06), radius: 10, x: 0, y: 4)
         )
     }
 }
@@ -497,13 +492,14 @@ struct RankingRow: View {
                 Text("\(rank)")
                     .font(.headline)
                     .fontWeight(.bold)
-                    .foregroundColor(.gray)
+                    .foregroundColor(.secondary)
                     .frame(width: 36)
             }
 
             Text(name)
                 .font(.subheadline)
                 .fontWeight(.medium)
+                .foregroundColor(.primary)
                 .lineLimit(1)
 
             Spacer()
@@ -522,12 +518,12 @@ struct RankingRow: View {
                 .padding(.vertical, 6)
                 .background(
                     Capsule()
-                        .fill(Color.purple.opacity(0.1))
+                        .fill(Color.purple.opacity(0.15))
                 )
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 14)
-        .background(Color.white)
+        .background(Color(.secondarySystemBackground))
         .clipShape(
             .rect(
                 topLeadingRadius: isFirst ? 20 : 0,
@@ -569,7 +565,7 @@ struct StatBubble: View {
         .padding(.vertical, 16)
         .background(
             RoundedRectangle(cornerRadius: 20)
-                .fill(.white)
+                .fill(Color(.secondarySystemBackground))
                 .shadow(color: color.opacity(0.2), radius: 10, x: 0, y: 4)
         )
     }
@@ -594,8 +590,8 @@ struct EmptyStateCard: View {
         .padding(.vertical, 40)
         .background(
             RoundedRectangle(cornerRadius: 20)
-                .fill(.white)
-                .shadow(color: Color.gray.opacity(0.1), radius: 15, x: 0, y: 5)
+                .fill(Color(.secondarySystemBackground))
+                .shadow(color: Color.primary.opacity(0.1), radius: 15, x: 0, y: 5)
         )
     }
 }
