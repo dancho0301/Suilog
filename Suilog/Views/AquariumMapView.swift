@@ -254,36 +254,6 @@ struct AquariumDetailView: View {
                     }
                     .padding(.horizontal)
 
-                    Divider()
-
-                    // 位置情報
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("位置情報")
-                            .font(.headline)
-                        HStack {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("緯度")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                Text(String(format: "%.4f", aquarium.latitude))
-                                    .font(.callout)
-                                    .fontDesign(.monospaced)
-                            }
-
-                            Spacer()
-
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("経度")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                Text(String(format: "%.4f", aquarium.longitude))
-                                    .font(.callout)
-                                    .fontDesign(.monospaced)
-                            }
-                        }
-                    }
-                    .padding(.horizontal)
-
                     // 訪問履歴
                     if !aquarium.visits.isEmpty {
                         Divider()
