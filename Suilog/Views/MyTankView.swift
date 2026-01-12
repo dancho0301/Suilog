@@ -27,15 +27,16 @@ struct MyTankView: View {
     }
 
     var body: some View {
-        ZStack {
-            // 背景画像（テーマから取得）
-            Image(themeManager.currentTheme.backgroundImageName)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .ignoresSafeArea()
+        NavigationStack {
+            ZStack {
+                // 背景画像（テーマから取得）
+                Image(themeManager.currentTheme.backgroundImageName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .ignoresSafeArea()
 
-            // 泡のアニメーション（テーマの色を使用）
-            BubblesView(bubbleColor: themeManager.currentTheme.bubbleColor)
+                // 泡のアニメーション（テーマの色を使用）
+                BubblesView(bubbleColor: themeManager.currentTheme.bubbleColor)
 
             if visitedAquariumsCount == 0 {
                 // 訪問がない場合のメッセージ
@@ -114,6 +115,21 @@ struct MyTankView: View {
                             }
                         }
                         .foregroundColor(themeManager.currentTheme.textColor)
+
+                        // 統計ビューへのリンク
+                        NavigationLink(destination: StatisticsView()) {
+                            HStack {
+                                Image(systemName: "chart.bar.fill")
+                                    .font(.caption)
+                                Text("詳細な統計を見る")
+                                    .font(.caption)
+                                    .fontWeight(.semibold)
+                                Image(systemName: "chevron.right")
+                                    .font(.caption2)
+                            }
+                            .foregroundColor(themeManager.currentTheme.primaryColor)
+                            .padding(.top, 8)
+                        }
                     }
                     .padding()
                     .background(
@@ -123,6 +139,7 @@ struct MyTankView: View {
                     )
                     .padding(.bottom, 40)
                 }
+            }
             }
         }
     }
