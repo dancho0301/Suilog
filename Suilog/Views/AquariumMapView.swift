@@ -259,33 +259,35 @@ struct AquariumDetailView: View {
 
                     Divider()
 
-                    // 位置情報
+                    // 住所
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("位置情報")
+                        Text("住所")
                             .font(.headline)
-                        HStack {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("緯度")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                Text(String(format: "%.4f", aquarium.latitude))
-                                    .font(.callout)
-                                    .fontDesign(.monospaced)
-                            }
-
-                            Spacer()
-
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text("経度")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                Text(String(format: "%.4f", aquarium.longitude))
-                                    .font(.callout)
-                                    .fontDesign(.monospaced)
-                            }
-                        }
+                        Text(aquarium.address)
+                            .foregroundColor(.secondary)
+                            .lineSpacing(4)
                     }
                     .padding(.horizontal)
+
+                    // チケット購入
+                    if let affiliateLink = aquarium.affiliateLink, !affiliateLink.isEmpty {
+                        Divider()
+
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("チケット購入")
+                                .font(.headline)
+                            Link(destination: URL(string: affiliateLink)!) {
+                                HStack {
+                                    Text("オンラインでチケットを購入")
+                                        .foregroundColor(.blue)
+                                    Spacer()
+                                    Image(systemName: "arrow.up.right.square")
+                                        .foregroundColor(.blue)
+                                }
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
 
                     // 訪問履歴
                     if !aquarium.visits.isEmpty {

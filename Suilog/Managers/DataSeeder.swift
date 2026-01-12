@@ -71,6 +71,8 @@ class DataSeeder {
                 existingAquarium.region = newAquarium.region
                 existingAquarium.representativeFish = newAquarium.representativeFish
                 existingAquarium.fishIconSize = newAquarium.fishIconSize
+                existingAquarium.address = newAquarium.address
+                existingAquarium.affiliateLink = newAquarium.affiliateLink
                 print("  📝 更新: \(newAquarium.name)")
             } else {
                 // 新規データの場合は追加
@@ -81,7 +83,9 @@ class DataSeeder {
                     description: newAquarium.description,
                     region: newAquarium.region,
                     representativeFish: newAquarium.representativeFish,
-                    fishIconSize: newAquarium.fishIconSize
+                    fishIconSize: newAquarium.fishIconSize,
+                    address: newAquarium.address,
+                    affiliateLink: newAquarium.affiliateLink
                 )
                 context.insert(aquarium)
                 print("  ➕ 追加: \(newAquarium.name)")
@@ -117,7 +121,9 @@ class DataSeeder {
                 description: data.description,
                 region: data.region,
                 representativeFish: data.representativeFish,
-                fishIconSize: data.fishIconSize
+                fishIconSize: data.fishIconSize,
+                address: data.address,
+                affiliateLink: data.affiliateLink
             )
             context.insert(aquarium)
         }
@@ -127,6 +133,25 @@ class DataSeeder {
             print("✅ \(aquariumData.count)件の水族館データを追加しました")
         } catch {
             print("❌ データの保存に失敗しました: \(error)")
+        }
+    }
+
+    /// 水族館データの取得（JSONファイルから読み込み）
+    private static func getAquariumData() -> [(name: String, latitude: Double, longitude: Double, description: String, region: String, representativeFish: String, fishIconSize: Int, address: String, affiliateLink: String?)] {
+        let aquariumDataArray = AquariumJSONLoader.loadAquariums()
+
+        return aquariumDataArray.map { aquarium in
+            (
+                name: aquarium.name,
+                latitude: aquarium.latitude,
+                longitude: aquarium.longitude,
+                description: aquarium.description,
+                region: aquarium.region,
+                representativeFish: aquarium.representativeFish,
+                fishIconSize: aquarium.fishIconSize,
+                address: aquarium.address,
+                affiliateLink: aquarium.affiliateLink
+            )
         }
     }
 }

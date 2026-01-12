@@ -15,6 +15,8 @@ struct AquariumData: Codable {
     let region: String
     let representativeFish: String
     let fishIconSize: Int
+    let address: String
+    let affiliateLink: String?
 }
 
 struct AquariumResponse: Codable {
