@@ -11,6 +11,7 @@ import Foundation
 @testable import Suilog
 
 /// 水族館のソート機能をテストする
+@Suite(.serialized)
 struct AquariumSortingTests {
 
     // MARK: - Test Helpers
@@ -36,7 +37,7 @@ struct AquariumSortingTests {
                 name: "札幌水族館",
                 latitude: 43.06,
                 longitude: 141.35,
-                aquariumDescription: "テスト",
+                description: "テスト",
                 region: "北海道",
                 representativeFish: "fish.fill",
                 fishIconSize: 3,
@@ -49,7 +50,7 @@ struct AquariumSortingTests {
                 name: "サンシャイン水族館",
                 latitude: 35.72,
                 longitude: 139.72,
-                aquariumDescription: "テスト",
+                description: "テスト",
                 region: "関東",
                 representativeFish: "fish.fill",
                 fishIconSize: 3,
@@ -62,7 +63,7 @@ struct AquariumSortingTests {
                 name: "新江ノ島水族館",
                 latitude: 35.30,
                 longitude: 139.48,
-                aquariumDescription: "テスト",
+                description: "テスト",
                 region: "関東",
                 representativeFish: "fish.fill",
                 fishIconSize: 3,
@@ -75,7 +76,7 @@ struct AquariumSortingTests {
                 name: "美ら海水族館",
                 latitude: 26.69,
                 longitude: 127.88,
-                aquariumDescription: "テスト",
+                description: "テスト",
                 region: "九州・沖縄",
                 representativeFish: "fish.fill",
                 fishIconSize: 3,
@@ -88,7 +89,7 @@ struct AquariumSortingTests {
                 name: "海遊館",
                 latitude: 34.65,
                 longitude: 135.43,
-                aquariumDescription: "テスト",
+                description: "テスト",
                 region: "近畿",
                 representativeFish: "fish.fill",
                 fishIconSize: 3,
@@ -101,7 +102,7 @@ struct AquariumSortingTests {
                 name: "アクアパーク品川",
                 latitude: 35.62,
                 longitude: 139.74,
-                aquariumDescription: "テスト",
+                description: "テスト",
                 region: "関東",
                 representativeFish: "fish.fill",
                 fishIconSize: 3,

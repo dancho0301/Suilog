@@ -11,6 +11,7 @@ import Foundation
 @testable import Suilog
 
 /// 統計計算のロジックをテストする
+@Suite(.serialized)
 struct StatisticsTests {
 
     // MARK: - Test Helpers
@@ -35,7 +36,7 @@ struct StatisticsTests {
                 name: "北海道水族館",
                 latitude: 43.06,
                 longitude: 141.35,
-                aquariumDescription: "テスト用水族館",
+                description: "テスト用水族館",
                 region: "北海道",
                 representativeFish: "fish.fill",
                 fishIconSize: 3,
@@ -47,7 +48,7 @@ struct StatisticsTests {
                 name: "東北水族館",
                 latitude: 38.26,
                 longitude: 140.87,
-                aquariumDescription: "テスト用水族館",
+                description: "テスト用水族館",
                 region: "東北",
                 representativeFish: "fish.fill",
                 fishIconSize: 3,
@@ -59,7 +60,7 @@ struct StatisticsTests {
                 name: "関東水族館1",
                 latitude: 35.68,
                 longitude: 139.76,
-                aquariumDescription: "テスト用水族館",
+                description: "テスト用水族館",
                 region: "関東",
                 representativeFish: "fish.fill",
                 fishIconSize: 3,
@@ -71,7 +72,7 @@ struct StatisticsTests {
                 name: "関東水族館2",
                 latitude: 35.44,
                 longitude: 139.63,
-                aquariumDescription: "テスト用水族館",
+                description: "テスト用水族館",
                 region: "関東",
                 representativeFish: "fish.fill",
                 fishIconSize: 3,
@@ -83,7 +84,7 @@ struct StatisticsTests {
                 name: "九州水族館",
                 latitude: 33.59,
                 longitude: 130.42,
-                aquariumDescription: "テスト用水族館",
+                description: "テスト用水族館",
                 region: "九州・沖縄",
                 representativeFish: "fish.fill",
                 fishIconSize: 3,
@@ -294,12 +295,12 @@ struct StatisticsTests {
 
         // 北海道水族館が1位（2回訪問）
         #expect(topAquariums.count == 2)
-        #expect(topAquariums[0].aquarium.name == "北海道水族館")
-        #expect(topAquariums[0].visitCount == 2)
+        #expect(topAquariums[0].0.name == "北海道水族館")
+        #expect(topAquariums[0].1 == 2)
 
         // 関東水族館1が2位（1回訪問）
-        #expect(topAquariums[1].aquarium.name == "関東水族館1")
-        #expect(topAquariums[1].visitCount == 1)
+        #expect(topAquariums[1].0.name == "関東水族館1")
+        #expect(topAquariums[1].1 == 1)
     }
 
     // MARK: - Top Region Tests
