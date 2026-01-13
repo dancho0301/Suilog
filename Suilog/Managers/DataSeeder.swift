@@ -115,7 +115,7 @@ class DataSeeder {
 
         // 削除された水族館の処理（訪問記録がある場合は保持、ない場合は削除）
         for (name, aquarium) in existingDict {
-            if aquarium.visits.isEmpty {
+            if aquarium.safeVisits.isEmpty {
                 context.delete(aquarium)
                 print("  🗑️ 削除: \(name)")
             } else {

@@ -182,14 +182,14 @@ struct AquariumSortingTests {
         let sorted = sortAquariums(aquariums: aquariums, visitRecords: visitRecords)
 
         // 最初の3つは訪問済み
-        #expect(!sorted[0].visits.isEmpty)
-        #expect(!sorted[1].visits.isEmpty)
-        #expect(!sorted[2].visits.isEmpty)
+        #expect(!sorted[0].safeVisits.isEmpty)
+        #expect(!sorted[1].safeVisits.isEmpty)
+        #expect(!sorted[2].safeVisits.isEmpty)
 
         // 残りは未訪問
-        #expect(sorted[3].visits.isEmpty)
-        #expect(sorted[4].visits.isEmpty)
-        #expect(sorted[5].visits.isEmpty)
+        #expect(sorted[3].safeVisits.isEmpty)
+        #expect(sorted[4].safeVisits.isEmpty)
+        #expect(sorted[5].safeVisits.isEmpty)
     }
 
     // MARK: - Region Sort Tests

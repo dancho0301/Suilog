@@ -34,21 +34,21 @@ struct StatisticsView: View {
 
     /// 全体の達成率
     private var achievementRate: Double {
-        let visitedCount = aquariums.filter { !$0.visits.isEmpty }.count
+        let visitedCount = aquariums.filter { !$0.safeVisits.isEmpty }.count
         guard !aquariums.isEmpty else { return 0.0 }
         return Double(visitedCount) / Double(aquariums.count)
     }
 
     /// 訪問済み水族館数
     private var visitedCount: Int {
-        aquariums.filter { !$0.visits.isEmpty }.count
+        aquariums.filter { !$0.safeVisits.isEmpty }.count
     }
 
     /// 地域別訪問統計
     private var regionalStats: [(region: String, visitedCount: Int, totalCount: Int)] {
         regionOrder.map { region in
             let regionAquariums = aquariums.filter { $0.region == region }
-            let visitedInRegion = regionAquariums.filter { !$0.visits.isEmpty }.count
+            let visitedInRegion = regionAquariums.filter { !$0.safeVisits.isEmpty }.count
             return (region: region, visitedCount: visitedInRegion, totalCount: regionAquariums.count)
         }
     }
@@ -80,8 +80,8 @@ struct StatisticsView: View {
     /// 最も訪問した水族館（トップ5）
     private var topAquariums: [(aquarium: Aquarium, visitCount: Int)] {
         aquariums
-            .filter { !$0.visits.isEmpty }
-            .map { ($0, $0.visits.count) }
+            .filter { !$0.safeVisits.isEmpty }
+            .map { ($0, $0.safeVisits.count) }
             .sorted { $0.1 > $1.1 }
             .prefix(5)
             .map { $0 }

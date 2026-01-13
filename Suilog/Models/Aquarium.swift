@@ -8,18 +8,23 @@
 import Foundation
 import SwiftData
 
-typealias Aquarium = AquariumSchemaV4.Aquarium
+typealias Aquarium = AquariumSchemaV5.Aquarium
 
 extension Aquarium {
+    /// 訪問記録の安全なアクセサ（CloudKit互換のためvisitsがオプショナル）
+    var safeVisits: [VisitRecord] {
+        visits ?? []
+    }
+
     var hasVisited: Bool {
-        !visits.isEmpty
+        !safeVisits.isEmpty
     }
 
     var visitCount: Int {
-        visits.count
+        safeVisits.count
     }
 
     var lastVisitDate: Date? {
-        visits.sorted(by: { $0.visitDate > $1.visitDate }).first?.visitDate
+        safeVisits.sorted(by: { $0.visitDate > $1.visitDate }).first?.visitDate
     }
 }

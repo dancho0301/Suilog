@@ -162,7 +162,7 @@ struct StatisticsTests {
         try context.save()
 
         // 5館中2館訪問済み（北海道と関東1）
-        let visitedCount = aquariums.filter { !$0.visits.isEmpty }.count
+        let visitedCount = aquariums.filter { !$0.safeVisits.isEmpty }.count
         let achievementRate = Double(visitedCount) / Double(aquariums.count)
 
         #expect(visitedCount == 2)
@@ -178,7 +178,7 @@ struct StatisticsTests {
         let aquariums = createTestAquariums(context: context)
         try context.save()
 
-        let visitedCount = aquariums.filter { !$0.visits.isEmpty }.count
+        let visitedCount = aquariums.filter { !$0.safeVisits.isEmpty }.count
         let achievementRate = Double(visitedCount) / Double(aquariums.count)
 
         #expect(visitedCount == 0)
@@ -201,7 +201,7 @@ struct StatisticsTests {
         let regionOrder = ["北海道", "東北", "関東", "中部", "近畿", "中国・四国", "九州・沖縄"]
         let regionalStats = regionOrder.map { region in
             let regionAquariums = aquariums.filter { $0.region == region }
-            let visitedInRegion = regionAquariums.filter { !$0.visits.isEmpty }.count
+            let visitedInRegion = regionAquariums.filter { !$0.safeVisits.isEmpty }.count
             return (region: region, visitedCount: visitedInRegion, totalCount: regionAquariums.count)
         }
 
@@ -287,8 +287,8 @@ struct StatisticsTests {
         try context.save()
 
         let topAquariums = aquariums
-            .filter { !$0.visits.isEmpty }
-            .map { ($0, $0.visits.count) }
+            .filter { !$0.safeVisits.isEmpty }
+            .map { ($0, $0.safeVisits.count) }
             .sorted { $0.1 > $1.1 }
             .prefix(5)
             .map { $0 }

@@ -439,22 +439,22 @@ struct AquariumDetailView: View {
                     }
 
                     // 訪問履歴
-                    if !aquarium.visits.isEmpty {
+                    if !aquarium.safeVisits.isEmpty {
                         Divider()
 
                         VStack(alignment: .leading, spacing: 12) {
                             Text("訪問履歴")
                                 .font(.headline)
 
-                            let locationCheckIns = aquarium.visits.filter { $0.checkInType == .location }.count
-                            let manualCheckIns = aquarium.visits.filter { $0.checkInType == .manual }.count
+                            let locationCheckIns = aquarium.safeVisits.filter { $0.checkInType == .location }.count
+                            let manualCheckIns = aquarium.safeVisits.filter { $0.checkInType == .manual }.count
 
                             HStack(spacing: 20) {
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text("訪問回数")
                                         .font(.caption)
                                         .foregroundColor(.secondary)
-                                    Text("\(aquarium.visits.count)回")
+                                    Text("\(aquarium.safeVisits.count)回")
                                         .font(.title3)
                                         .fontWeight(.semibold)
                                 }
@@ -481,7 +481,7 @@ struct AquariumDetailView: View {
                                 }
                             }
 
-                            if let lastVisit = aquarium.visits.sorted(by: { $0.visitDate > $1.visitDate }).first {
+                            if let lastVisit = aquarium.safeVisits.sorted(by: { $0.visitDate > $1.visitDate }).first {
                                 Divider()
 
                                 VStack(alignment: .leading, spacing: 4) {
