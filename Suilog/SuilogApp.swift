@@ -20,18 +20,29 @@ struct SuilogApp: App {
     @State private var isRetrying = false
 
     var sharedModelContainer: ModelContainer = {
+        let schema = Schema([Aquarium.self, VisitRecord.self])
+
+        // シミュレータではCloudKit同期を無効化（iCloudサインインが不安定なため）
+        #if targetEnvironment(simulator)
+        let cloudKitSetting: ModelConfiguration.CloudKitDatabase = .none
+        let modeDescription = "ローカルのみ（シミュレータ）"
+        #else
+        let cloudKitSetting: ModelConfiguration.CloudKitDatabase = .automatic
+        let modeDescription = "CloudKit同期有効"
+        #endif
+
         do {
-            // マイグレーションプランを使用してModelContainerを作成
-            // これにより、スキーマV1→V2→V3→V4への自動マイグレーションが実行され、
-            // 既存の訪問データは保持されます
-            let schema = Schema([Aquarium.self, VisitRecord.self])
-            let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+            let modelConfiguration = ModelConfiguration(
+                schema: schema,
+                isStoredInMemoryOnly: false,
+                cloudKitDatabase: cloudKitSetting
+            )
             let container = try ModelContainer(
                 for: schema,
                 migrationPlan: AquariumMigrationPlan.self,
                 configurations: modelConfiguration
             )
-            print("✅ ModelContainerを作成しました（マイグレーションプラン使用）")
+            print("✅ ModelContainerを作成しました（\(modeDescription)）")
             return container
         } catch {
             fatalError("Could not create ModelContainer: \(error)")

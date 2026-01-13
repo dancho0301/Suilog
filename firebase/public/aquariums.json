@@ -1,5 +1,5 @@
 {
-  "version": 12,
+  "version": 13,
   "aquariums": [
     {
       "name": "新さっぽろサンピアザ水族館",
@@ -890,17 +890,6 @@
       "representativeFish": "Clownfish",
       "fishIconSize": 1,
       "address": "沖縄県豊見城市豊崎3-35",
-      "affiliateLink": null
-    },
-    {
-      "name": "ららぽーと柏の葉水族館（テスト用）",
-      "latitude": 35.894722253246634,
-      "longitude": 139.951321465026,
-      "description": "さまざまなブティック、飲食店、食料品店が入る明るいショッピング モール。",
-      "region": "関東",
-      "representativeFish": "Whale",
-      "fishIconSize": 1,
-      "address": "千葉県柏市若柴175",
       "affiliateLink": null
     }
   ]
