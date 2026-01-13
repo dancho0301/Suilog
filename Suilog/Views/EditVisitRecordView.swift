@@ -20,6 +20,14 @@ struct EditVisitRecordView: View {
     @State private var photoData: Data?
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var showingCamera = false
+    @State private var showingDiscardAlert = false
+
+    /// 変更があるかどうかを判定
+    private var hasChanges: Bool {
+        visitDate != visit.visitDate ||
+        memo != visit.memo ||
+        photoData != visit.photoData
+    }
 
     init(visit: VisitRecord) {
         self.visit = visit
@@ -98,7 +106,11 @@ struct EditVisitRecordView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("キャンセル") {
-                        dismiss()
+                        if hasChanges {
+                            showingDiscardAlert = true
+                        } else {
+                            dismiss()
+                        }
                     }
                 }
 
@@ -107,6 +119,14 @@ struct EditVisitRecordView: View {
                         saveChanges()
                     }
                 }
+            }
+            .alert("変更を破棄しますか？", isPresented: $showingDiscardAlert) {
+                Button("編集を続ける", role: .cancel) { }
+                Button("破棄", role: .destructive) {
+                    dismiss()
+                }
+            } message: {
+                Text("保存されていない変更があります。")
             }
             .onChange(of: selectedPhoto) { _, newValue in
                 Task { @MainActor in

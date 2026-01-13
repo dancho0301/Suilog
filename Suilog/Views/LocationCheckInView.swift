@@ -22,12 +22,27 @@ struct LocationCheckInView: View {
     @State private var showingSuccess = false
     @State private var showingError = false
     @State private var errorMessage = ""
+    @State private var isLoadingPhoto = false
+    @State private var isCheckingIn = false
 
     var body: some View {
         NavigationStack {
             Form {
                 Section(header: Text("写真（任意）")) {
-                    if let photoData = photoData,
+                    if isLoadingPhoto {
+                        HStack {
+                            Spacer()
+                            VStack(spacing: 12) {
+                                ProgressView()
+                                    .scaleEffect(1.5)
+                                Text("写真を読み込み中...")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                            .frame(height: 100)
+                            Spacer()
+                        }
+                    } else if let photoData = photoData,
                        let uiImage = UIImage(data: photoData) {
                         HStack {
                             Spacer()
@@ -75,13 +90,20 @@ struct LocationCheckInView: View {
                     } label: {
                         HStack {
                             Spacer()
-                            Image(systemName: "location.circle.fill")
-                            Text("チェックインする")
+                            if isCheckingIn {
+                                ProgressView()
+                                    .tint(.black)
+                                Text("チェックイン中...")
+                            } else {
+                                Image(systemName: "location.circle.fill")
+                                Text("チェックインする")
+                            }
                             Spacer()
                         }
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(.yellow)
+                    .disabled(isCheckingIn)
                 }
             }
             .navigationTitle("位置情報チェックイン")
@@ -94,7 +116,10 @@ struct LocationCheckInView: View {
                 }
             }
             .onChange(of: selectedPhoto) { _, newValue in
+                guard newValue != nil else { return }
+                isLoadingPhoto = true
                 Task { @MainActor in
+                    defer { isLoadingPhoto = false }
                     if let data = try? await newValue?.loadTransferable(type: Data.self),
                        let image = UIImage(data: data),
                        let compressedData = image.jpegData(compressionQuality: 0.8) {
@@ -121,6 +146,8 @@ struct LocationCheckInView: View {
     }
 
     private func checkIn() {
+        isCheckingIn = true
+
         let visit = VisitRecord(
             memo: memo,
             photoData: photoData,
@@ -131,10 +158,12 @@ struct LocationCheckInView: View {
 
         do {
             try modelContext.save()
+            isCheckingIn = false
             showingSuccess = true
         } catch {
             print("❌ チェックインに失敗: \(error)")
             modelContext.rollback()
+            isCheckingIn = false
             errorMessage = "チェックインの保存に失敗しました。\nもう一度お試しください。"
             showingError = true
         }
