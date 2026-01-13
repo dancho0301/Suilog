@@ -9,26 +9,83 @@ import SwiftUI
 import SwiftData
 import MapKit
 
+/// 訪問ステータスフィルタの列挙型
+enum VisitStatus: String, CaseIterable, Identifiable {
+    case all = "すべて"
+    case visited = "訪問済み"
+    case notVisited = "未訪問"
+
+    var id: String { self.rawValue }
+}
+
 struct AquariumMapView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var locationManager: LocationManager
     @EnvironmentObject private var themeManager: ThemeManager
     @Query private var aquariums: [Aquarium]
-    @Query private var visitRecords: [VisitRecord] // 変更を検知するために追加
+    @Query private var visitRecords: [VisitRecord]
 
     @State private var position: MapCameraPosition = .automatic
     @State private var selectedAquarium: Aquarium?
     @State private var showingList = false
 
+    // フィルタ状態（親で管理）
+    @State private var searchText = ""
+    @State private var selectedRegions: Set<String> = []
+    @State private var visitStatusFilter: VisitStatus = .all
+
+    /// 地域の順序（北から南へ）
+    private let regionOrder: [String] = [
+        "北海道", "東北", "関東", "中部", "近畿", "中国・四国", "九州・沖縄"
+    ]
+
+    /// フィルタ済み水族館リスト
+    private var filteredAquariums: [Aquarium] {
+        aquariums
+            .filter { aquarium in
+                // 検索テキストフィルタ
+                if !searchText.isEmpty {
+                    return aquarium.name.localizedCaseInsensitiveContains(searchText)
+                }
+                return true
+            }
+            .filter { aquarium in
+                // 地域フィルタ
+                if !selectedRegions.isEmpty {
+                    return selectedRegions.contains(aquarium.region)
+                }
+                return true
+            }
+            .filter { aquarium in
+                // 訪問ステータスフィルタ
+                let hasVisited = visitRecords.contains { $0.aquarium?.id == aquarium.id }
+                switch visitStatusFilter {
+                case .all:
+                    return true
+                case .visited:
+                    return hasVisited
+                case .notVisited:
+                    return !hasVisited
+                }
+            }
+    }
+
+    /// アクティブなフィルタ数
+    private var activeFilterCount: Int {
+        var count = 0
+        if !searchText.isEmpty { count += 1 }
+        if !selectedRegions.isEmpty { count += 1 }
+        if visitStatusFilter != .all { count += 1 }
+        return count
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
-                // マップ表示
+                // マップ表示（フィルタ済みの水族館のみ表示）
                 Map(position: $position, selection: $selectedAquarium) {
-                    ForEach(aquariums, id: \.id) { aquarium in
-                        // visitRecordsを使うことで変更検知を確実にする
+                    ForEach(filteredAquariums, id: \.id) { aquarium in
                         let hasVisited = visitRecords.contains { $0.aquarium?.id == aquarium.id }
-                        // カスタムアイコンの場合は汎用アイコンを使用
                         let markerIcon = isCustomAsset(aquarium.representativeFish) ? "fish.fill" : aquarium.representativeFish
                         Marker(
                             aquarium.name,
@@ -47,21 +104,41 @@ struct AquariumMapView: View {
                     MapCompass()
                 }
 
-                // リスト表示ボタン
+                // リスト表示ボタン＆フィルタバッジ
                 VStack {
                     Spacer()
-                    Button {
-                        showingList.toggle()
-                    } label: {
-                        Label(
-                            showingList ? "マップを表示" : "リストを表示",
-                            systemImage: showingList ? "map.fill" : "list.bullet"
-                        )
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .shadow(radius: 5)
+                    HStack {
+                        // フィルタバッジ（フィルタがアクティブな場合）
+                        if activeFilterCount > 0 {
+                            HStack(spacing: 4) {
+                                Image(systemName: "line.3.horizontal.decrease.circle.fill")
+                                Text("\(filteredAquariums.count)件表示中")
+                                    .font(.caption)
+                                    .fontWeight(.semibold)
+                            }
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(Color.orange)
+                            .foregroundColor(.white)
+                            .cornerRadius(20)
+                            .shadow(radius: 5)
+                        }
+
+                        Spacer()
+
+                        Button {
+                            showingList.toggle()
+                        } label: {
+                            Label(
+                                showingList ? "マップを表示" : "リストを表示",
+                                systemImage: showingList ? "map.fill" : "list.bullet"
+                            )
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                            .shadow(radius: 5)
+                        }
                     }
                     .padding()
                 }
@@ -73,7 +150,13 @@ struct AquariumMapView: View {
                     .presentationDragIndicator(.visible)
             }
             .sheet(isPresented: $showingList) {
-                AquariumListView(selectedAquarium: $selectedAquarium)
+                AquariumListView(
+                    selectedAquarium: $selectedAquarium,
+                    searchText: $searchText,
+                    selectedRegions: $selectedRegions,
+                    visitStatusFilter: $visitStatusFilter,
+                    regionOrder: regionOrder
+                )
             }
             .onAppear {
                 locationManager.requestPermission()
@@ -84,30 +167,18 @@ struct AquariumMapView: View {
 
 struct AquariumListView: View {
     @Query private var aquariums: [Aquarium]
-    @Query private var visitRecords: [VisitRecord] // 変更を検知するために追加
+    @Query private var visitRecords: [VisitRecord]
     @Binding var selectedAquarium: Aquarium?
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var themeManager: ThemeManager
 
-    // 検索・フィルタ用のState変数
-    @State private var searchText = ""
-    @State private var selectedRegions: Set<String> = []
-    @State private var visitStatusFilter: VisitStatus = .all
+    // フィルタ用のBinding変数（親から受け取る）
+    @Binding var searchText: String
+    @Binding var selectedRegions: Set<String>
+    @Binding var visitStatusFilter: VisitStatus
+    let regionOrder: [String]
+
     @State private var showFilterSheet = false
-
-    /// 訪問ステータスフィルタの列挙型
-    enum VisitStatus: String, CaseIterable, Identifiable {
-        case all = "すべて"
-        case visited = "訪問済み"
-        case notVisited = "未訪問"
-
-        var id: String { self.rawValue }
-    }
-
-    /// 地域の順序（北から南へ）
-    private let regionOrder: [String] = [
-        "北海道", "東北", "関東", "中部", "近畿", "中国・四国", "九州・沖縄"
-    ]
 
     /// フィルタ済み＆ソート済み水族館リスト
     private var filteredAndSortedAquariums: [Aquarium] {
@@ -139,7 +210,6 @@ struct AquariumListView: View {
                 }
             }
             .sorted { a, b in
-                // visitRecordsを使うことで変更検知を確実にする
                 let aVisited = visitRecords.contains { $0.aquarium?.id == a.id }
                 let bVisited = visitRecords.contains { $0.aquarium?.id == b.id }
 
@@ -180,7 +250,6 @@ struct AquariumListView: View {
                         // 代表的な魚のアイコン
                         Group {
                             if isCustomAsset(aquarium.representativeFish) {
-                                // カスタムアセット（テーマフォルダから取得）
                                 Image(themeManager.currentTheme.creatureImageName(aquarium.representativeFish))
                                     .renderingMode(.original)
                                     .resizable()
@@ -288,14 +357,12 @@ struct AquariumDetailView: View {
                             Spacer()
                             Group {
                                 if isCustomAsset(aquarium.representativeFish) {
-                                    // カスタムアセット（テーマフォルダから取得）
                                     Image(themeManager.currentTheme.creatureImageName(aquarium.representativeFish))
                                         .renderingMode(.original)
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                         .frame(width: 100, height: 100)
                                 } else {
-                                    // SF Symbols
                                     Image(systemName: aquarium.representativeFish)
                                         .font(.system(size: 80))
                                         .foregroundColor(.blue.opacity(0.7))
@@ -379,7 +446,6 @@ struct AquariumDetailView: View {
                             Text("訪問履歴")
                                 .font(.headline)
 
-                            // 訪問回数と種別の集計
                             let locationCheckIns = aquarium.visits.filter { $0.checkInType == .location }.count
                             let manualCheckIns = aquarium.visits.filter { $0.checkInType == .manual }.count
 
@@ -443,7 +509,6 @@ struct AquariumDetailView: View {
 
                     // チェックインボタン
                     VStack(spacing: 12) {
-                        // 位置情報ベースのチェックイン（ゴールド）
                         Button {
                             showingLocationCheckInForm = true
                         } label: {
@@ -468,7 +533,6 @@ struct AquariumDetailView: View {
                                 .foregroundColor(.secondary)
                         }
 
-                        // 手動チェックイン（シルバー）
                         Button {
                             showingManualCheckIn = true
                         } label: {
@@ -514,7 +578,7 @@ struct AquariumDetailView: View {
 /// フィルタシートビュー
 struct FilterSheet: View {
     @Binding var selectedRegions: Set<String>
-    @Binding var visitStatusFilter: AquariumListView.VisitStatus
+    @Binding var visitStatusFilter: VisitStatus
     let regionOrder: [String]
 
     @Environment(\.dismiss) private var dismiss
@@ -525,7 +589,7 @@ struct FilterSheet: View {
                 // 訪問ステータスセクション
                 Section {
                     Picker("訪問ステータス", selection: $visitStatusFilter) {
-                        ForEach(AquariumListView.VisitStatus.allCases) { status in
+                        ForEach(VisitStatus.allCases) { status in
                             Text(status.rawValue).tag(status)
                         }
                     }
@@ -587,8 +651,6 @@ struct FilterSheet: View {
 }
 
 /// SF Symbolsかカスタムアセットかを判定するヘルパー関数
-/// SF Symbolsは必ず "." を含む（例: fish.fill, seal.fill）
-/// カスタムアセットは "." を含まない（例: orca, Dolphin, freshwaterfish）
 fileprivate func isCustomAsset(_ name: String) -> Bool {
     return !name.contains(".")
 }
