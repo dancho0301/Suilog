@@ -80,13 +80,15 @@ struct ManualCheckInView: View {
                             }
                             .buttonStyle(.bordered)
 
-                            Button {
-                                showingCamera = true
-                            } label: {
-                                Label("撮影", systemImage: "camera")
-                                    .frame(maxWidth: .infinity)
+                            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                                Button {
+                                    showingCamera = true
+                                } label: {
+                                    Label("撮影", systemImage: "camera")
+                                        .frame(maxWidth: .infinity)
+                                }
+                                .buttonStyle(.bordered)
                             }
-                            .buttonStyle(.bordered)
                         }
                     }
                 }

@@ -76,15 +76,39 @@ class DataSeeder {
     /// 既存の水族館データを更新（訪問記録を保持）
     /// - Returns: 保存エラーがあれば返す
     private static func updateAquariums(context: ModelContext, existing: [Aquarium], newData: [AquariumData]) -> Error? {
-        // 名前をキーにした辞書を作成
-        var existingDict: [String: Aquarium] = [:]
+        // stableIdをキーにした辞書を作成（既存ユーザー用）
+        var existingByStableId: [String: Aquarium] = [:]
+        // 名前をキーにした辞書を作成（stableIdがない既存データ用のフォールバック）
+        var existingByName: [String: Aquarium] = [:]
+
         for aquarium in existing {
-            existingDict[aquarium.name] = aquarium
+            // stableIdが設定されている場合はそれを優先
+            if !aquarium.stableId.isEmpty {
+                existingByStableId[aquarium.stableId] = aquarium
+            }
+            // 名前でも検索できるようにする（フォールバック用）
+            existingByName[aquarium.name] = aquarium
         }
 
+        // マッチ済みの水族館を追跡（重複処理を防ぐ）
+        var matchedAquariumIds: Set<UUID> = []
+
         for newAquarium in newData {
-            if let existingAquarium = existingDict[newAquarium.name] {
-                // 既存データの場合は、位置情報と説明のみ更新（訪問記録は保持）
+            var existingAquarium: Aquarium?
+
+            // 1. まずstableIdでマッチングを試みる
+            if let stableId = newAquarium.stableId, !stableId.isEmpty {
+                existingAquarium = existingByStableId[stableId]
+            }
+
+            // 2. stableIdでマッチしなかった場合は名前でフォールバック
+            if existingAquarium == nil {
+                existingAquarium = existingByName[newAquarium.name]
+            }
+
+            if let existingAquarium = existingAquarium {
+                // 既存データの場合は更新（訪問記録は保持）
+                existingAquarium.name = newAquarium.name  // 名称変更に対応
                 existingAquarium.latitude = newAquarium.latitude
                 existingAquarium.longitude = newAquarium.longitude
                 existingAquarium.aquariumDescription = newAquarium.description
@@ -93,6 +117,11 @@ class DataSeeder {
                 existingAquarium.fishIconSize = newAquarium.fishIconSize
                 existingAquarium.address = newAquarium.address
                 existingAquarium.affiliateLink = newAquarium.affiliateLink
+                // stableIdを設定（既存データにstableIdがなければ設定）
+                if let stableId = newAquarium.stableId, !stableId.isEmpty {
+                    existingAquarium.stableId = stableId
+                }
+                matchedAquariumIds.insert(existingAquarium.id)
                 print("  📝 更新: \(newAquarium.name)")
             } else {
                 // 新規データの場合は追加
@@ -105,21 +134,23 @@ class DataSeeder {
                     representativeFish: newAquarium.representativeFish,
                     fishIconSize: newAquarium.fishIconSize,
                     address: newAquarium.address,
-                    affiliateLink: newAquarium.affiliateLink
+                    affiliateLink: newAquarium.affiliateLink,
+                    stableId: newAquarium.stableId ?? ""
                 )
                 context.insert(aquarium)
                 print("  ➕ 追加: \(newAquarium.name)")
             }
-            existingDict.removeValue(forKey: newAquarium.name)
         }
 
         // 削除された水族館の処理（訪問記録がある場合は保持、ない場合は削除）
-        for (name, aquarium) in existingDict {
-            if aquarium.safeVisits.isEmpty {
-                context.delete(aquarium)
-                print("  🗑️ 削除: \(name)")
-            } else {
-                print("  ⚠️ 訪問記録があるため保持: \(name)")
+        for aquarium in existing {
+            if !matchedAquariumIds.contains(aquarium.id) {
+                if aquarium.safeVisits.isEmpty {
+                    context.delete(aquarium)
+                    print("  🗑️ 削除: \(aquarium.name)")
+                } else {
+                    print("  ⚠️ 訪問記録があるため保持: \(aquarium.name)")
+                }
             }
         }
 
@@ -146,7 +177,8 @@ class DataSeeder {
                 representativeFish: data.representativeFish,
                 fishIconSize: data.fishIconSize,
                 address: data.address,
-                affiliateLink: data.affiliateLink
+                affiliateLink: data.affiliateLink,
+                stableId: data.stableId ?? ""
             )
             context.insert(aquarium)
         }

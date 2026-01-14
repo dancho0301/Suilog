@@ -39,6 +39,11 @@ struct AquariumMapView: View {
         "北海道", "東北", "関東", "中部", "近畿", "中国・四国", "九州・沖縄"
     ]
 
+    /// 訪問済み水族館IDのSet（O(1)で判定可能）
+    private var visitedAquariumIds: Set<UUID> {
+        Set(visitRecords.compactMap { $0.aquarium?.id })
+    }
+
     /// フィルタ済み水族館リスト
     private var filteredAquariums: [Aquarium] {
         aquariums
@@ -58,14 +63,13 @@ struct AquariumMapView: View {
             }
             .filter { aquarium in
                 // 訪問ステータスフィルタ
-                let hasVisited = visitRecords.contains { $0.aquarium?.id == aquarium.id }
                 switch visitStatusFilter {
                 case .all:
                     return true
                 case .visited:
-                    return hasVisited
+                    return visitedAquariumIds.contains(aquarium.id)
                 case .notVisited:
-                    return !hasVisited
+                    return !visitedAquariumIds.contains(aquarium.id)
                 }
             }
     }
@@ -85,7 +89,7 @@ struct AquariumMapView: View {
                 // マップ表示（フィルタ済みの水族館のみ表示）
                 Map(position: $position, selection: $selectedAquarium) {
                     ForEach(filteredAquariums, id: \.id) { aquarium in
-                        let hasVisited = visitRecords.contains { $0.aquarium?.id == aquarium.id }
+                        let hasVisited = visitedAquariumIds.contains(aquarium.id)
                         let markerIcon = isCustomAsset(aquarium.representativeFish) ? "fish.fill" : aquarium.representativeFish
                         Marker(
                             aquarium.name,
@@ -180,6 +184,11 @@ struct AquariumListView: View {
 
     @State private var showFilterSheet = false
 
+    /// 訪問済み水族館IDのSet（O(1)で判定可能）
+    private var visitedAquariumIds: Set<UUID> {
+        Set(visitRecords.compactMap { $0.aquarium?.id })
+    }
+
     /// フィルタ済み＆ソート済み水族館リスト
     private var filteredAndSortedAquariums: [Aquarium] {
         aquariums
@@ -199,19 +208,18 @@ struct AquariumListView: View {
             }
             .filter { aquarium in
                 // 訪問ステータスフィルタ
-                let hasVisited = visitRecords.contains { $0.aquarium?.id == aquarium.id }
                 switch visitStatusFilter {
                 case .all:
                     return true
                 case .visited:
-                    return hasVisited
+                    return visitedAquariumIds.contains(aquarium.id)
                 case .notVisited:
-                    return !hasVisited
+                    return !visitedAquariumIds.contains(aquarium.id)
                 }
             }
             .sorted { a, b in
-                let aVisited = visitRecords.contains { $0.aquarium?.id == a.id }
-                let bVisited = visitRecords.contains { $0.aquarium?.id == b.id }
+                let aVisited = visitedAquariumIds.contains(a.id)
+                let bVisited = visitedAquariumIds.contains(b.id)
 
                 // 1. 訪問済みを上に
                 if aVisited != bVisited {
@@ -258,7 +266,7 @@ struct AquariumListView: View {
                             } else {
                                 Image(systemName: aquarium.representativeFish)
                                     .font(.system(size: 40))
-                                    .foregroundColor(visitRecords.contains { $0.aquarium?.id == aquarium.id } ? .blue : .gray.opacity(0.5))
+                                    .foregroundColor(visitedAquariumIds.contains(aquarium.id) ? .blue : .gray.opacity(0.5))
                             }
                         }
                         .frame(width: 56, height: 56)
@@ -274,7 +282,7 @@ struct AquariumListView: View {
 
                         Spacer()
 
-                        if visitRecords.contains(where: { $0.aquarium?.id == aquarium.id }) {
+                        if visitedAquariumIds.contains(aquarium.id) {
                             Image(systemName: "checkmark.circle.fill")
                                 .foregroundColor(.blue)
                         }
@@ -419,13 +427,14 @@ struct AquariumDetailView: View {
                     }
 
                     // チケット購入
-                    if let affiliateLink = aquarium.affiliateLink, !affiliateLink.isEmpty {
+                    if let affiliateLink = aquarium.affiliateLink, !affiliateLink.isEmpty,
+                       let url = URL(string: affiliateLink) {
                         Divider()
 
                         VStack(alignment: .leading, spacing: 8) {
                             Text("チケット購入")
                                 .font(.headline)
-                            Link(destination: URL(string: affiliateLink)!) {
+                            Link(destination: url) {
                                 HStack {
                                     Text("オンラインでチケットを購入")
                                         .foregroundColor(.blue)

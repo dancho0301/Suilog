@@ -150,6 +150,7 @@ struct FloatingFish: View {
 
     @State private var offset: CGSize = .zero
     @State private var wobble: CGFloat = 0  // 左右の揺れ（クラゲ用）
+    @State private var calculatedFishSize: CGFloat?
 
     // 魚の種類に応じた動きを決定
     private var movementType: FishMovementType {
@@ -162,6 +163,7 @@ struct FloatingFish: View {
     }
 
     var body: some View {
+        let size = calculatedFishSize ?? calculateFishSize()
         Group {
             if isCustomAsset(representativeFish) {
                 // カスタムアセット（テーマフォルダから取得）
@@ -169,16 +171,19 @@ struct FloatingFish: View {
                     .renderingMode(.original)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: fishSize, height: fishSize)
+                    .frame(width: size, height: size)
             } else {
                 // SF Symbols
                 Image(systemName: representativeFish)
-                    .font(.system(size: fishSize))
+                    .font(.system(size: size))
                     .foregroundColor(fishColor)
             }
         }
         .offset(x: offset.width + wobble, y: offset.height)
         .onAppear {
+            if calculatedFishSize == nil {
+                calculatedFishSize = calculateFishSize()
+            }
             startAnimation()
         }
     }
@@ -190,7 +195,7 @@ struct FloatingFish: View {
         return !name.contains(".")
     }
 
-    private var fishSize: CGFloat {
+    private func calculateFishSize() -> CGFloat {
         // デバイスタイプを判定
         let isIPad = UIDevice.current.userInterfaceIdiom == .pad
 
@@ -287,6 +292,7 @@ struct FloatingFish: View {
 
     // MARK: - 水平移動アニメーション（デフォルト）
     private func startHorizontalAnimation(screenWidth: CGFloat, screenHeight: CGFloat) {
+        let size = calculatedFishSize ?? calculateFishSize()
         // 魚が泳ぐ範囲（デバイスによって調整）
         let isIPad = UIDevice.current.userInterfaceIdiom == .pad
         // iPhone: 5%〜60%、iPad: 5%〜70%
@@ -300,7 +306,7 @@ struct FloatingFish: View {
         let startOffset = CGFloat(index % 5) * (screenWidth / 5)
 
         offset = CGSize(
-            width: -screenWidth/2 - fishSize - startOffset,
+            width: -screenWidth/2 - size - startOffset,
             height: assignedHeight
         )
 
@@ -323,6 +329,7 @@ struct FloatingFish: View {
     }
 
     private func swimLeftToRight(screenWidth: CGFloat, screenHeight: CGFloat) {
+        let size = calculatedFishSize ?? calculateFishSize()
         // 魚が泳ぐ範囲（デバイスによって調整）
         let isIPad = UIDevice.current.userInterfaceIdiom == .pad
         // iPhone: 5%〜60%、iPad: 5%〜70%
@@ -336,10 +343,10 @@ struct FloatingFish: View {
         let assignedHeight = calculateAssignedHeight(topLimit: topLimit, bottomLimit: bottomLimit)
 
         // 右端に到達したかチェック（より余裕を持たせる）
-        if currentX > screenWidth/2 + fishSize * 2 {
+        if currentX > screenWidth/2 + size * 2 {
             // 左端にリセット（割り当てられた高さ付近に戻る）
             offset = CGSize(
-                width: -screenWidth/2 - fishSize,
+                width: -screenWidth/2 - size,
                 height: assignedHeight
             )
         }
@@ -374,13 +381,14 @@ struct FloatingFish: View {
 
     // MARK: - クラゲ用浮上アニメーション
     private func startFloatUpAnimation(screenWidth: CGFloat, screenHeight: CGFloat) {
+        let size = calculatedFishSize ?? calculateFishSize()
         let isIPad = UIDevice.current.userInterfaceIdiom == .pad
         let bottomLimit = isIPad ? screenHeight * 0.30 : screenHeight * 0.20  // 範囲を広げて消えないように
 
         // 画面下部のランダムな位置から開始
         offset = CGSize(
             width: CGFloat.random(in: -screenWidth * 0.3...screenWidth * 0.3),
-            height: bottomLimit + fishSize
+            height: bottomLimit + size
         )
 
         // 左右の揺れを開始
@@ -398,15 +406,16 @@ struct FloatingFish: View {
     }
 
     private func floatUp(screenWidth: CGFloat, screenHeight: CGFloat) {
+        let size = calculatedFishSize ?? calculateFishSize()
         let isIPad = UIDevice.current.userInterfaceIdiom == .pad
         let topLimit = -screenHeight * 0.45
         let bottomLimit = isIPad ? screenHeight * 0.30 : screenHeight * 0.20  // 範囲を広げて消えないように
 
         // 上端に到達したら下端にリセット（より余裕を持たせる）
-        if offset.height < topLimit - fishSize {
+        if offset.height < topLimit - size {
             offset = CGSize(
                 width: CGFloat.random(in: -screenWidth * 0.3...screenWidth * 0.3),
-                height: bottomLimit + fishSize
+                height: bottomLimit + size
             )
         }
 

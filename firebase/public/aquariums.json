@@ -1,7 +1,8 @@
 {
-  "version": 13,
+  "version": 14,
   "aquariums": [
     {
+      "stableId": "sunpiazza-aquarium",
       "name": "新さっぽろサンピアザ水族館",
       "latitude": 43.037,
       "longitude": 141.47,
@@ -13,6 +14,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "sapporo-salmon-museum",
       "name": "札幌市豊平川さけ科学館",
       "latitude": 43.001491,
       "longitude": 141.343735,
@@ -24,6 +26,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "aoao-sapporo",
       "name": "AOAO SAPPORO",
       "latitude": 43.057679,
       "longitude": 141.353348,
@@ -35,6 +38,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "otaru-aquarium",
       "name": "おたる水族館",
       "latitude": 43.236806,
       "longitude": 141.01125,
@@ -46,6 +50,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "noshappu-aquarium",
       "name": "稚内市立ノシャップ寒流水族館",
       "latitude": 45.449253,
       "longitude": 141.644848,
@@ -57,6 +62,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "bifuka-sturgeon-museum",
       "name": "美深チョウザメ館",
       "latitude": 44.557054,
       "longitude": 142.324472,
@@ -68,6 +74,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "onneyu-aquarium",
       "name": "おんねゆ温泉 北の大地の水族館 -山の水族館-",
       "latitude": 43.753456,
       "longitude": 143.501498,
@@ -79,6 +86,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "chitose-aquarium",
       "name": "サケのふるさと 千歳水族館",
       "latitude": 42.832823,
       "longitude": 141.659074,
@@ -90,6 +98,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "noboribetsu-marine-park-nixe",
       "name": "登別マリンパークニクス",
       "latitude": 42.454972,
       "longitude": 141.182194,
@@ -101,6 +110,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "asamushi-aquarium",
       "name": "青森県営浅虫水族館",
       "latitude": 40.897539,
       "longitude": 140.862743,
@@ -112,6 +122,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "sendai-uminomori-aquarium",
       "name": "仙台うみの杜水族館",
       "latitude": 38.2709199,
       "longitude": 140.9804876,
@@ -123,6 +134,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "oga-aquarium-gao",
       "name": "男鹿水族館GAO",
       "latitude": 39.942697,
       "longitude": 139.704526,
@@ -134,6 +146,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "kamo-aquarium",
       "name": "鶴岡市立加茂水族館",
       "latitude": 38.761674,
       "longitude": 139.724652,
@@ -145,6 +158,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "aquamarine-fukushima",
       "name": "ふくしま海洋科学館 アクアマリンふくしま",
       "latitude": 36.945,
       "longitude": 140.9,
@@ -156,6 +170,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "inawashiro-kawasemi-aquarium",
       "name": "アクアマリンいなわしろカワセミ水族館",
       "latitude": 37.561389,
       "longitude": 140.074583,
@@ -167,6 +182,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "aqua-world-oarai",
       "name": "アクアワールド・大洗",
       "latitude": 36.33334,
       "longitude": 140.59394,
@@ -178,6 +194,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "nakagawa-aquatic-park",
       "name": "栃木県なかがわ水遊園",
       "latitude": 36.789139,
       "longitude": 140.128694,
@@ -189,6 +206,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "saitama-aquarium",
       "name": "さいたま水族館",
       "latitude": 36.173139,
       "longitude": 139.597861,
@@ -200,6 +218,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "kamogawa-sea-world",
       "name": "鴨川シーワールド",
       "latitude": 35.11605,
       "longitude": 140.12054,
@@ -211,6 +230,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "sunshine-aquarium",
       "name": "サンシャイン水族館",
       "latitude": 35.729,
       "longitude": 139.718,
@@ -222,6 +242,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "maxell-aqua-park-shinagawa",
       "name": "マクセル アクアパーク品川",
       "latitude": 35.6282839,
       "longitude": 139.7352393,
@@ -233,6 +254,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "shinagawa-aquarium",
       "name": "しながわ水族館",
       "latitude": 35.588554,
       "longitude": 139.737585,
@@ -244,6 +266,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "sumida-aquarium",
       "name": "すみだ水族館",
       "latitude": 35.709889,
       "longitude": 139.809861,
@@ -255,6 +278,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "kasai-rinkai-aquarium",
       "name": "葛西臨海水族園",
       "latitude": 35.640039,
       "longitude": 139.862209,
@@ -266,6 +290,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "hakkeijima-sea-paradise",
       "name": "横浜・八景島シーパラダイス",
       "latitude": 35.3358,
       "longitude": 139.6417,
@@ -277,6 +302,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "enoshima-aquarium",
       "name": "新江ノ島水族館",
       "latitude": 35.309774,
       "longitude": 139.479754,
@@ -288,6 +314,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "kawasui-kawasaki-aquarium",
       "name": "カワスイ 川崎水族館",
       "latitude": 35.529565,
       "longitude": 139.696656,
@@ -299,6 +326,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "hakone-en-aquarium",
       "name": "箱根園水族館",
       "latitude": 35.212255,
       "longitude": 139.00913,
@@ -310,6 +338,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "marinepia-nihonkai",
       "name": "新潟市水族館 マリンピア日本海",
       "latitude": 37.923779,
       "longitude": 139.028087,
@@ -321,6 +350,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "umigatari-aquarium",
       "name": "上越市立水族博物館うみがたり",
       "latitude": 37.173485,
       "longitude": 138.232951,
@@ -332,6 +362,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "uozu-aquarium",
       "name": "魚津水族館",
       "latitude": 36.798407,
       "longitude": 137.388119,
@@ -343,6 +374,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "notojima-aquarium",
       "name": "のとじま臨海公園水族館",
       "latitude": 37.14917,
       "longitude": 136.98222,
@@ -354,6 +386,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "echizen-matsushima-aquarium",
       "name": "越前松島水族館",
       "latitude": 36.252723,
       "longitude": 136.147,
@@ -365,6 +398,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "fuji-yusuin-aquarium",
       "name": "山梨県立富士湧水の里水族館",
       "latitude": 35.455569,
       "longitude": 138.824003,
@@ -376,6 +410,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "aqua-toto-gifu",
       "name": "岐阜県世界淡水魚園水族館 アクア・トトぎふ",
       "latitude": 35.371845,
       "longitude": 136.81033,
@@ -387,6 +422,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "izu-mito-sea-paradise",
       "name": "伊豆・三津シーパラダイス",
       "latitude": 35.0195,
       "longitude": 138.896,
@@ -398,6 +434,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "numazu-deep-sea-aquarium",
       "name": "沼津港深海水族館",
       "latitude": 35.084034,
       "longitude": 138.858201,
@@ -409,6 +446,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "shimoda-aquarium",
       "name": "下田海中水族館",
       "latitude": 34.666056,
       "longitude": 138.945972,
@@ -420,6 +458,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "tokai-university-marine-science-museum",
       "name": "東海大学海洋科学博物館",
       "latitude": 35.019134,
       "longitude": 138.518258,
@@ -431,6 +470,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "nagoya-port-aquarium",
       "name": "名古屋港水族館",
       "latitude": 35.0906,
       "longitude": 136.8782,
@@ -442,6 +482,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "takeshima-aquarium",
       "name": "竹島水族館",
       "latitude": 34.817254,
       "longitude": 137.231922,
@@ -453,6 +494,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "hekinan-seaside-aquarium",
       "name": "碧南海浜水族館",
       "latitude": 34.8801,
       "longitude": 136.9819,
@@ -464,6 +506,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "minamichita-beach-land",
       "name": "南知多ビーチランド",
       "latitude": 34.786363,
       "longitude": 136.855779,
@@ -475,6 +518,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "sealife-nagoya",
       "name": "シーライフ名古屋",
       "latitude": 35.049902,
       "longitude": 136.846182,
@@ -486,6 +530,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "toba-aquarium",
       "name": "鳥羽水族館",
       "latitude": 34.481951,
       "longitude": 136.845061,
@@ -497,6 +542,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "ise-sea-paradise",
       "name": "伊勢夫婦岩ふれあい水族館シーパラダイス",
       "latitude": 34.50722,
       "longitude": 136.79194,
@@ -508,6 +554,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "biwa-lake-museum",
       "name": "滋賀県立琵琶湖博物館",
       "latitude": 35.074139,
       "longitude": 135.934917,
@@ -519,6 +566,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "kyoto-aquarium",
       "name": "京都水族館",
       "latitude": 34.987556,
       "longitude": 135.747611,
@@ -530,6 +578,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "kaiyukan",
       "name": "海遊館",
       "latitude": 34.654542,
       "longitude": 135.428954,
@@ -541,6 +590,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "nifrel",
       "name": "NIFREL",
       "latitude": 34.806254,
       "longitude": 135.533644,
@@ -552,6 +602,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "wakayama-nature-museum",
       "name": "和歌山県立自然博物館",
       "latitude": 34.158639,
       "longitude": 135.192083,
@@ -563,6 +614,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "taiji-whale-museum",
       "name": "太地町立くじらの博物館",
       "latitude": 33.601896,
       "longitude": 135.945738,
@@ -574,6 +626,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "kushimoto-marine-park",
       "name": "串本海中公園",
       "latitude": 33.480861,
       "longitude": 135.744972,
@@ -585,6 +638,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "adventure-world",
       "name": "アドベンチャーワールド",
       "latitude": 33.667903,
       "longitude": 135.376272,
@@ -596,6 +650,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "shirahama-aquarium",
       "name": "京都大学白浜水族館",
       "latitude": 33.692889,
       "longitude": 135.338278,
@@ -607,6 +662,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "ebi-kani-aquarium",
       "name": "すさみ町立エビとカニの水族館",
       "latitude": 33.505931,
       "longitude": 135.60031,
@@ -618,6 +674,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "kinosaki-marine-world",
       "name": "城崎マリンワールド",
       "latitude": 35.65583,
       "longitude": 134.824861,
@@ -629,6 +686,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "atoa",
       "name": "アトア",
       "latitude": 34.683202,
       "longitude": 135.193687,
@@ -640,6 +698,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "kobe-suma-sea-world",
       "name": "神戸須磨シーワールド",
       "latitude": 34.643972,
       "longitude": 135.128441,
@@ -651,6 +710,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "himeji-city-aquarium",
       "name": "姫路市立水族館",
       "latitude": 34.822722,
       "longitude": 134.676028,
@@ -662,6 +722,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "tamano-marine-museum",
       "name": "玉野市立玉野海洋博物館",
       "latitude": 34.455014,
       "longitude": 133.905287,
@@ -673,6 +734,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "miyajima-aquarium",
       "name": "宮島水族館 みやじマリン",
       "latitude": 34.295392,
       "longitude": 132.315356,
@@ -684,6 +746,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "tottori-karo-crab-aquarium",
       "name": "鳥取県立とっとり賀露かにっこ館",
       "latitude": 35.534533,
       "longitude": 134.178775,
@@ -695,6 +758,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "aquas-shimane",
       "name": "島根県立しまね海洋館アクアス",
       "latitude": 34.959477,
       "longitude": 132.144554,
@@ -706,6 +770,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "gobius",
       "name": "宍道湖自然館ゴビウス",
       "latitude": 35.447222,
       "longitude": 132.864444,
@@ -717,6 +782,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "kaikyokan",
       "name": "下関市立しものせき水族館 海響館",
       "latitude": 33.954479,
       "longitude": 130.942398,
@@ -728,6 +794,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "nagisa-aquarium",
       "name": "なぎさ水族館",
       "latitude": 33.95125,
       "longitude": 132.437917,
@@ -739,6 +806,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "new-yashima-aquarium",
       "name": "新屋島水族館",
       "latitude": 34.358472,
       "longitude": 134.1,
@@ -750,6 +818,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "shikoku-aquarium",
       "name": "四国水族館",
       "latitude": 34.312452,
       "longitude": 133.807759,
@@ -761,6 +830,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "caretta-turtle-museum",
       "name": "日和佐うみがめ博物館カレッタ",
       "latitude": 33.734621,
       "longitude": 134.541003,
@@ -772,6 +842,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "katsurahama-aquarium",
       "name": "桂浜水族館",
       "latitude": 33.49694,
       "longitude": 133.57361,
@@ -783,6 +854,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "ashizuri-oceanarium-satoumi",
       "name": "足摺海洋館 SATOUMI",
       "latitude": 32.791333,
       "longitude": 132.862861,
@@ -794,6 +866,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "muroto-schoolhouse-aquarium",
       "name": "むろと廃校水族館",
       "latitude": 33.325767,
       "longitude": 134.195118,
@@ -805,6 +878,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "marine-world-uminonakamichi",
       "name": "マリンワールド海の中道",
       "latitude": 33.66083,
       "longitude": 130.36333,
@@ -816,6 +890,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "nagasaki-penguin-aquarium",
       "name": "長崎ペンギン水族館",
       "latitude": 32.7581,
       "longitude": 129.9467,
@@ -827,6 +902,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "kujukushima-pearl-sea-resort",
       "name": "九十九島パールシーリゾート",
       "latitude": 33.161535,
       "longitude": 129.679288,
@@ -838,6 +914,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "umitamago",
       "name": "大分マリーンパレス水族館 うみたまご",
       "latitude": 33.258778,
       "longitude": 131.535556,
@@ -849,6 +926,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "sea-donut",
       "name": "わくわく海中水族館シードーナツ",
       "latitude": 32.529833,
       "longitude": 130.428361,
@@ -860,6 +938,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "kagoshima-aquarium",
       "name": "いおワールドかごしま水族館",
       "latitude": 31.596112,
       "longitude": 130.564669,
@@ -871,6 +950,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "churaumi-aquarium",
       "name": "沖縄美ら海水族館",
       "latitude": 26.6944,
       "longitude": 127.8778,
@@ -882,6 +962,7 @@
       "affiliateLink": null
     },
     {
+      "stableId": "dmm-kariyushi-aquarium",
       "name": "DMMかりゆし水族館",
       "latitude": 26.156425,
       "longitude": 127.650461,

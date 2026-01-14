@@ -10,11 +10,11 @@ import SwiftData
 
 enum AquariumMigrationPlan: SchemaMigrationPlan {
     static var schemas: [any VersionedSchema.Type] {
-        [AquariumSchemaV1.self, AquariumSchemaV2.self, AquariumSchemaV3.self, AquariumSchemaV4.self, AquariumSchemaV5.self]
+        [AquariumSchemaV1.self, AquariumSchemaV2.self, AquariumSchemaV3.self, AquariumSchemaV4.self, AquariumSchemaV5.self, AquariumSchemaV6.self]
     }
 
     static var stages: [MigrationStage] {
-        [migrateV1toV2, migrateV2toV3, migrateV3toV4, migrateV4toV5]
+        [migrateV1toV2, migrateV2toV3, migrateV3toV4, migrateV4toV5, migrateV5toV6]
     }
 
     static let migrateV1toV2 = MigrationStage.lightweight(
@@ -36,5 +36,11 @@ enum AquariumMigrationPlan: SchemaMigrationPlan {
     static let migrateV4toV5 = MigrationStage.lightweight(
         fromVersion: AquariumSchemaV4.self,
         toVersion: AquariumSchemaV5.self
+    )
+
+    // V5→V6: 安定ID対応（stableIdフィールド追加、デフォルト空文字で軽量マイグレーション）
+    static let migrateV5toV6 = MigrationStage.lightweight(
+        fromVersion: AquariumSchemaV5.self,
+        toVersion: AquariumSchemaV6.self
     )
 }
