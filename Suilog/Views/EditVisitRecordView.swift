@@ -21,6 +21,8 @@ struct EditVisitRecordView: View {
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var showingCamera = false
     @State private var showingDiscardAlert = false
+    @State private var showingSaveErrorAlert = false
+    @State private var saveErrorMessage = ""
 
     /// 変更があるかどうかを判定
     private var hasChanges: Bool {
@@ -77,13 +79,15 @@ struct EditVisitRecordView: View {
                             }
                             .buttonStyle(.bordered)
 
-                            Button {
-                                showingCamera = true
-                            } label: {
-                                Label("撮影", systemImage: "camera")
-                                    .frame(maxWidth: .infinity)
+                            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                                Button {
+                                    showingCamera = true
+                                } label: {
+                                    Label("撮影", systemImage: "camera")
+                                        .frame(maxWidth: .infinity)
+                                }
+                                .buttonStyle(.bordered)
                             }
-                            .buttonStyle(.bordered)
                         }
                     }
                 }
@@ -128,6 +132,11 @@ struct EditVisitRecordView: View {
             } message: {
                 Text("保存されていない変更があります。")
             }
+            .alert("保存に失敗しました", isPresented: $showingSaveErrorAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(saveErrorMessage)
+            }
             .onChange(of: selectedPhoto) { _, newValue in
                 Task { @MainActor in
                     if let data = try? await newValue?.loadTransferable(type: Data.self),
@@ -153,6 +162,8 @@ struct EditVisitRecordView: View {
             dismiss()
         } catch {
             print("❌ 保存に失敗: \(error)")
+            saveErrorMessage = error.localizedDescription
+            showingSaveErrorAlert = true
         }
     }
 }

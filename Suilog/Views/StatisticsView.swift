@@ -16,6 +16,13 @@ struct StatisticsView: View {
     @State private var animateProgress = false
     @State private var showConfetti = false
 
+    // キャッシュされた集計結果
+    @State private var cachedAchievementRate: Double = 0.0
+    @State private var cachedVisitedCount: Int = 0
+    @State private var cachedRegionalStats: [(region: String, visitedCount: Int, totalCount: Int)] = []
+    @State private var cachedMonthlyStats: [(month: Date, count: Int)] = []
+    @State private var cachedTopAquariums: [(aquarium: Aquarium, visitCount: Int)] = []
+
     /// 地域の順序（北から南へ）
     private let regionOrder: [String] = [
         "北海道", "東北", "関東", "中部", "近畿", "中国・四国", "九州・沖縄"
@@ -32,60 +39,20 @@ struct StatisticsView: View {
         "九州・沖縄": "🌺"
     ]
 
-    /// 全体の達成率
-    private var achievementRate: Double {
-        let visitedCount = aquariums.filter { !$0.safeVisits.isEmpty }.count
-        guard !aquariums.isEmpty else { return 0.0 }
-        return Double(visitedCount) / Double(aquariums.count)
-    }
+    /// 全体の達成率（キャッシュ使用）
+    private var achievementRate: Double { cachedAchievementRate }
 
-    /// 訪問済み水族館数
-    private var visitedCount: Int {
-        aquariums.filter { !$0.safeVisits.isEmpty }.count
-    }
+    /// 訪問済み水族館数（キャッシュ使用）
+    private var visitedCount: Int { cachedVisitedCount }
 
-    /// 地域別訪問統計
-    private var regionalStats: [(region: String, visitedCount: Int, totalCount: Int)] {
-        regionOrder.map { region in
-            let regionAquariums = aquariums.filter { $0.region == region }
-            let visitedInRegion = regionAquariums.filter { !$0.safeVisits.isEmpty }.count
-            return (region: region, visitedCount: visitedInRegion, totalCount: regionAquariums.count)
-        }
-    }
+    /// 地域別訪問統計（キャッシュ使用）
+    private var regionalStats: [(region: String, visitedCount: Int, totalCount: Int)] { cachedRegionalStats }
 
-    /// 月別訪問統計（過去12ヶ月）
-    private var monthlyStats: [(month: Date, count: Int)] {
-        let calendar = Calendar.current
-        let now = Date()
-        var stats: [(Date, Int)] = []
+    /// 月別訪問統計（キャッシュ使用）
+    private var monthlyStats: [(month: Date, count: Int)] { cachedMonthlyStats }
 
-        for i in (0..<12).reversed() {
-            guard let monthStart = calendar.date(byAdding: .month, value: -i, to: now),
-                  let monthComponents = calendar.dateComponents([.year, .month], from: monthStart) as DateComponents? else {
-                continue
-            }
-
-            let count = visitRecords.filter { visit in
-                let visitComponents = calendar.dateComponents([.year, .month], from: visit.visitDate)
-                return visitComponents.year == monthComponents.year &&
-                       visitComponents.month == monthComponents.month
-            }.count
-
-            stats.append((monthStart, count))
-        }
-
-        return stats
-    }
-
-    /// 最も訪問した水族館（トップ5）
-    private var topAquariums: [(aquarium: Aquarium, visitCount: Int)] {
-        aquariums
-            .filter { !$0.safeVisits.isEmpty }
-            .map { ($0, $0.safeVisits.count) }
-            .sorted { $0.1 > $1.1 }
-            .prefix(5)
-            .map { $0 }
-    }
+    /// 最も訪問した水族館（キャッシュ使用）
+    private var topAquariums: [(aquarium: Aquarium, visitCount: Int)] { cachedTopAquariums }
 
     /// 達成度に応じたメッセージ
     private var achievementMessage: (emoji: String, title: String, subtitle: String) {
@@ -106,6 +73,47 @@ struct StatisticsView: View {
         default:
             return ("👑", "完全制覇！", "すべての水族館を巡ったよ！")
         }
+    }
+
+    /// キャッシュを再計算
+    private func recalculateStats() {
+        // 達成率
+        let visited = aquariums.filter { !$0.safeVisits.isEmpty }.count
+        cachedVisitedCount = visited
+        cachedAchievementRate = aquariums.isEmpty ? 0.0 : Double(visited) / Double(aquariums.count)
+
+        // 地域別統計
+        cachedRegionalStats = regionOrder.map { region in
+            let regionAquariums = aquariums.filter { $0.region == region }
+            let visitedInRegion = regionAquariums.filter { !$0.safeVisits.isEmpty }.count
+            return (region: region, visitedCount: visitedInRegion, totalCount: regionAquariums.count)
+        }
+
+        // 月別統計
+        let calendar = Calendar.current
+        let now = Date()
+        var monthStats: [(Date, Int)] = []
+        for i in (0..<12).reversed() {
+            guard let monthStart = calendar.date(byAdding: .month, value: -i, to: now),
+                  let monthComponents = calendar.dateComponents([.year, .month], from: monthStart) as DateComponents? else {
+                continue
+            }
+            let count = visitRecords.filter { visit in
+                let visitComponents = calendar.dateComponents([.year, .month], from: visit.visitDate)
+                return visitComponents.year == monthComponents.year &&
+                       visitComponents.month == monthComponents.month
+            }.count
+            monthStats.append((monthStart, count))
+        }
+        cachedMonthlyStats = monthStats
+
+        // トップ水族館
+        cachedTopAquariums = aquariums
+            .filter { !$0.safeVisits.isEmpty }
+            .map { ($0, $0.safeVisits.count) }
+            .sorted { $0.1 > $1.1 }
+            .prefix(5)
+            .map { $0 }
     }
 
     var body: some View {
@@ -132,9 +140,16 @@ struct StatisticsView: View {
         .navigationTitle("統計")
         .navigationBarTitleDisplayMode(.large)
         .onAppear {
+            recalculateStats()
             withAnimation(.spring(response: 0.8, dampingFraction: 0.6)) {
                 animateProgress = true
             }
+        }
+        .onChange(of: aquariums.count) { _, _ in
+            recalculateStats()
+        }
+        .onChange(of: visitRecords.count) { _, _ in
+            recalculateStats()
         }
     }
 

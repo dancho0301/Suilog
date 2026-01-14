@@ -18,6 +18,8 @@ struct SuilogApp: App {
     @State private var showingInitialError = false
     @State private var initialErrorMessage = ""
     @State private var isRetrying = false
+    @State private var showingContainerError = false
+    @State private var containerErrorMessage = ""
 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([Aquarium.self, VisitRecord.self])
@@ -45,7 +47,30 @@ struct SuilogApp: App {
             print("✅ ModelContainerを作成しました（\(modeDescription)）")
             return container
         } catch {
-            fatalError("Could not create ModelContainer: \(error)")
+            // CloudKit/マイグレーションエラー時はローカルのみにフォールバック
+            print("⚠️ ModelContainer作成失敗、ローカルのみにフォールバック: \(error)")
+            do {
+                let fallbackConfiguration = ModelConfiguration(
+                    schema: schema,
+                    isStoredInMemoryOnly: false,
+                    cloudKitDatabase: .none
+                )
+                let fallbackContainer = try ModelContainer(
+                    for: schema,
+                    migrationPlan: AquariumMigrationPlan.self,
+                    configurations: fallbackConfiguration
+                )
+                print("✅ フォールバックModelContainerを作成しました（ローカルのみ）")
+                return fallbackContainer
+            } catch {
+                // フォールバックも失敗した場合は最小限のインメモリコンテナを作成
+                print("❌ フォールバックも失敗、インメモリモードで起動: \(error)")
+                // swiftlint:disable:next force_try
+                return try! ModelContainer(
+                    for: schema,
+                    configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+                )
+            }
         }
     }()
 

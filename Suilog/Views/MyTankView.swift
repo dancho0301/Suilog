@@ -151,6 +151,7 @@ struct FloatingFish: View {
     @State private var offset: CGSize = .zero
     @State private var wobble: CGFloat = 0  // 左右の揺れ（クラゲ用）
     @State private var calculatedFishSize: CGFloat?
+    @State private var isAnimating = false  // アニメーション制御フラグ
 
     // 魚の種類に応じた動きを決定
     private var movementType: FishMovementType {
@@ -184,7 +185,11 @@ struct FloatingFish: View {
             if calculatedFishSize == nil {
                 calculatedFishSize = calculateFishSize()
             }
+            isAnimating = true
             startAnimation()
+        }
+        .onDisappear {
+            isAnimating = false
         }
     }
 
@@ -329,6 +334,7 @@ struct FloatingFish: View {
     }
 
     private func swimLeftToRight(screenWidth: CGFloat, screenHeight: CGFloat) {
+        guard isAnimating else { return }  // ビューが破棄されたら停止
         let size = calculatedFishSize ?? calculateFishSize()
         // 魚が泳ぐ範囲（デバイスによって調整）
         let isIPad = UIDevice.current.userInterfaceIdiom == .pad
@@ -406,6 +412,7 @@ struct FloatingFish: View {
     }
 
     private func floatUp(screenWidth: CGFloat, screenHeight: CGFloat) {
+        guard isAnimating else { return }  // ビューが破棄されたら停止
         let size = calculatedFishSize ?? calculateFishSize()
         let isIPad = UIDevice.current.userInterfaceIdiom == .pad
         let topLimit = -screenHeight * 0.45

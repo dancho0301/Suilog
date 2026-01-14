@@ -25,6 +25,6 @@ extension Aquarium {
     }
 
     var lastVisitDate: Date? {
-        safeVisits.sorted(by: { $0.visitDate > $1.visitDate }).first?.visitDate
+        safeVisits.max(by: { $0.visitDate < $1.visitDate })?.visitDate
     }
 }

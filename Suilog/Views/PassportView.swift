@@ -15,6 +15,8 @@ struct PassportView: View {
     @State private var selectedVisit: VisitRecord?
     @State private var showDeleteConfirmation = false
     @State private var indexSetToDelete: IndexSet?
+    @State private var showingDeleteError = false
+    @State private var deleteErrorMessage = ""
 
     var body: some View {
         NavigationStack {
@@ -63,6 +65,11 @@ struct PassportView: View {
                 } message: {
                     Text("この訪問記録を削除しますか？\nこの操作は取り消せません。")
                 }
+                .alert("削除に失敗しました", isPresented: $showingDeleteError) {
+                    Button("OK", role: .cancel) { }
+                } message: {
+                    Text(deleteErrorMessage)
+                }
             }
         }
     }
@@ -72,6 +79,14 @@ struct PassportView: View {
             for index in offsets {
                 modelContext.delete(visitRecords[index])
             }
+        }
+
+        do {
+            try modelContext.save()
+        } catch {
+            print("❌ 削除の保存に失敗: \(error)")
+            deleteErrorMessage = error.localizedDescription
+            showingDeleteError = true
         }
     }
 }
