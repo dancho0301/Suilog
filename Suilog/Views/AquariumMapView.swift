@@ -341,6 +341,7 @@ struct AquariumDetailView: View {
 
     @State private var showingLocationCheckInForm = false
     @State private var showingManualCheckIn = false
+    @State private var isPulsing = false
 
     var distanceText: String {
         if let distance = locationManager.distance(to: CLLocationCoordinate2D(latitude: aquarium.latitude, longitude: aquarium.longitude)) {
@@ -518,23 +519,63 @@ struct AquariumDetailView: View {
 
                     // チェックインボタン
                     VStack(spacing: 12) {
-                        Button {
-                            showingLocationCheckInForm = true
-                        } label: {
-                            HStack {
-                                Image(systemName: "location.circle.fill")
-                                Text("位置情報でチェックイン")
-                                Spacer()
-                                Image(systemName: "circle.fill")
-                                    .foregroundColor(.yellow)
+                        // 位置情報チェックインボタン
+                        ZStack(alignment: .topTrailing) {
+                            Button {
+                                showingLocationCheckInForm = true
+                            } label: {
+                                HStack {
+                                    Image(systemName: canLocationCheckIn ? "location.circle.fill" : "location.slash")
+                                    Text("位置情報でチェックイン")
+                                    Spacer()
+                                    Image(systemName: "circle.fill")
+                                        .foregroundColor(.yellow)
+                                }
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(canLocationCheckIn ? Color.yellow : Color.gray.opacity(0.3))
+                                .foregroundColor(canLocationCheckIn ? .black : .secondary)
+                                .cornerRadius(10)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(canLocationCheckIn ? Color.yellow : Color.gray.opacity(0.5), lineWidth: canLocationCheckIn ? 0 : 1)
+                                )
                             }
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(canLocationCheckIn ? Color.yellow.opacity(0.8) : Color.gray)
-                            .foregroundColor(canLocationCheckIn ? .black : .white)
-                            .cornerRadius(10)
+                            .disabled(!canLocationCheckIn)
+                            .opacity(canLocationCheckIn ? 1.0 : 0.5)
+                            .scaleEffect(canLocationCheckIn && isPulsing ? 1.02 : 1.0)
+                            .animation(
+                                canLocationCheckIn
+                                    ? .easeInOut(duration: 1.0).repeatForever(autoreverses: true)
+                                    : .default,
+                                value: isPulsing
+                            )
+                            .accessibilityLabel(canLocationCheckIn ? "位置情報でチェックイン、チェックイン可能" : "位置情報でチェックイン、水族館から1km以内で利用可能")
+
+                            // チェックイン可能バッジ
+                            if canLocationCheckIn {
+                                Text("チェックイン可能！")
+                                    .font(.caption2)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 4)
+                                    .background(Color.green)
+                                    .cornerRadius(8)
+                                    .offset(x: 8, y: -8)
+                                    .accessibilityHidden(true)
+                            }
                         }
-                        .disabled(!canLocationCheckIn)
+                        .onAppear {
+                            if canLocationCheckIn {
+                                isPulsing = true
+                            }
+                        }
+                        .onChange(of: canLocationCheckIn) { _, newValue in
+                            withAnimation(newValue ? .default : nil) {
+                                isPulsing = newValue
+                            }
+                        }
 
                         if !canLocationCheckIn {
                             Text("※ 水族館から1km以内で利用可能")

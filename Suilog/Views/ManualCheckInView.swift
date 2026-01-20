@@ -55,7 +55,7 @@ struct ManualCheckInView: View {
                     .environment(\.locale, Locale(identifier: "ja_JP"))
                 }
 
-                Section(header: Text("写真（任意）")) {
+                Section {
                     if isLoadingPhoto {
                         HStack {
                             Spacer()
@@ -117,6 +117,15 @@ struct ManualCheckInView: View {
                             }
                         }
                     }
+                } header: {
+                    Text("写真（任意）")
+                } footer: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "sparkles")
+                            .foregroundColor(.yellow)
+                        Text("水族館で撮影した位置情報付きの写真を選択すると、ゴールドチェックインになります")
+                    }
+                    .font(.caption)
                 }
 
                 // 写真の位置情報が有効な場合、チェックインタイプを選択可能
