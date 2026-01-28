@@ -124,7 +124,7 @@ struct MyTankView: View {
                                 .shadow(radius: 10)
                         )
                     }
-                    .padding(.bottom, 40)
+                    .padding(.bottom, 100)
                 }
             }
             }
