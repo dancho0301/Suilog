@@ -341,7 +341,6 @@ struct AquariumDetailView: View {
 
     @State private var showingLocationCheckInForm = false
     @State private var showingManualCheckIn = false
-    @State private var isPulsing = false
 
     var distanceText: String {
         if let distance = locationManager.distance(to: CLLocationCoordinate2D(latitude: aquarium.latitude, longitude: aquarium.longitude)) {
@@ -543,13 +542,6 @@ struct AquariumDetailView: View {
                             }
                             .disabled(!canLocationCheckIn)
                             .opacity(canLocationCheckIn ? 1.0 : 0.5)
-                            .scaleEffect(canLocationCheckIn && isPulsing ? 1.02 : 1.0)
-                            .animation(
-                                canLocationCheckIn
-                                    ? .easeInOut(duration: 1.0).repeatForever(autoreverses: true)
-                                    : .default,
-                                value: isPulsing
-                            )
                             .accessibilityLabel(canLocationCheckIn ? "位置情報でチェックイン、チェックイン可能" : "位置情報でチェックイン、水族館から1km以内で利用可能")
 
                             // チェックイン可能バッジ
@@ -564,16 +556,6 @@ struct AquariumDetailView: View {
                                     .cornerRadius(8)
                                     .offset(x: 8, y: -8)
                                     .accessibilityHidden(true)
-                            }
-                        }
-                        .onAppear {
-                            if canLocationCheckIn {
-                                isPulsing = true
-                            }
-                        }
-                        .onChange(of: canLocationCheckIn) { _, newValue in
-                            withAnimation(newValue ? .default : nil) {
-                                isPulsing = newValue
                             }
                         }
 
