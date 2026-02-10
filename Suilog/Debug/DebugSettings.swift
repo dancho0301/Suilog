@@ -67,6 +67,20 @@ final class DebugSettings: ObservableObject {
         CLLocation(latitude: fakeLatitude, longitude: fakeLongitude)
     }
 
+    // MARK: - データURL
+
+    /// カスタムaquariums.json URLを使用する
+    var useCustomDataURL: Bool {
+        get { Self.defaults.bool(forKey: "debug_useCustomDataURL") }
+        set { objectWillChange.send(); Self.defaults.set(newValue, forKey: "debug_useCustomDataURL") }
+    }
+
+    /// カスタムaquariums.json URL
+    var customDataURL: String {
+        get { Self.defaults.string(forKey: "debug_customDataURL") ?? "" }
+        set { objectWillChange.send(); Self.defaults.set(newValue, forKey: "debug_customDataURL") }
+    }
+
     // MARK: - Computed
 
     /// 常時チェックインが有効か（マスタースイッチ & 個別設定の両方がON）
@@ -82,6 +96,11 @@ final class DebugSettings: ObservableObject {
     /// 位置偽装が有効か
     var isFakeLocationActive: Bool {
         isDebugModeEnabled && useFakeLocation
+    }
+
+    /// カスタムデータURLが有効か
+    var isCustomDataURLActive: Bool {
+        isDebugModeEnabled && useCustomDataURL && !customDataURL.isEmpty
     }
 
     /// 有効な距離閾値を返す

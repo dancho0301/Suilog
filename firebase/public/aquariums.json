@@ -1,5 +1,5 @@
 {
-  "version": 14,
+  "version": 18,
   "aquariums": [
     {
       "stableId": "sunpiazza-aquarium",
@@ -11,7 +11,8 @@
       "representativeFish": "Seal",
       "fishIconSize": 3,
       "address": "北海道札幌市厚別区厚別中央2条5丁目7-5",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.sunpiazza-aquarium.com/"
     },
     {
       "stableId": "sapporo-salmon-museum",
@@ -23,7 +24,8 @@
       "representativeFish": "salmon",
       "fishIconSize": 2,
       "address": "北海道札幌市南区真駒内公園2-1",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://salmon-museum.jp/"
     },
     {
       "stableId": "aoao-sapporo",
@@ -35,7 +37,8 @@
       "representativeFish": "Penguin",
       "fishIconSize": 2,
       "address": "北海道札幌市中央区南2条西3-20 moyuk SAPPORO 4階-6階",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://aoao-sapporo.blue"
     },
     {
       "stableId": "otaru-aquarium",
@@ -47,7 +50,8 @@
       "representativeFish": "SeaLion",
       "fishIconSize": 4,
       "address": "北海道小樽市祝津3-303",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://otaru-aq.jp/"
     },
     {
       "stableId": "noshappu-aquarium",
@@ -59,7 +63,8 @@
       "representativeFish": "Hucho",
       "fishIconSize": 3,
       "address": "北海道稚内市ノシャップ2丁目2-17",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.city.wakkanai.hokkaido.jp/suizokukan/"
     },
     {
       "stableId": "bifuka-sturgeon-museum",
@@ -71,7 +76,47 @@
       "representativeFish": "Sturgeon",
       "fishIconSize": 3,
       "address": "北海道中川郡美深町紋穂内（森林公園びふかアイランド内）",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://bifukaonsen.com/"
+    },
+    {
+      "stableId": "oohotsuku-tokkari-center",
+      "name": "オホーツクとっかりセンター",
+      "latitude": 44.333583,
+      "longitude": 143.373528,
+      "description": "アザラシの保護・飼育に特化した施設。愛らしいアザラシを間近で観察できる。",
+      "region": "北海道",
+      "representativeFish": "Seal",
+      "fishIconSize": 3,
+      "address": "北海道紋別市海洋公園2番地",
+      "affiliateLink": null,
+      "officialUrl": "https://o-tower.co.jp"
+    },
+    {
+      "stableId": "oohotsuku-tower",
+      "name": "オホーツクタワー",
+      "latitude": 44.334126,
+      "longitude": 143.375168,
+      "description": "流氷と海洋生物をテーマにした科学館。冬には流氷下の様子を観察できる。",
+      "region": "北海道",
+      "representativeFish": "Clione",
+      "fishIconSize": 1,
+      "address": "北海道紋別市海洋公園1番地",
+      "affiliateLink": null,
+      "officialUrl": "https://www.o-tower.co.jp/"
+    },
+    {
+      "stableId": "shibetsu-salmon-museum",
+      "name": "標津サーモン科学館",
+      "latitude": 43.660083,
+      "longitude": 145.116139,
+      "description": "サケの仲間を常時30種以上展示する、サケ科魚類に特化した世界有数の施設。",
+      "region": "北海道",
+      "representativeFish": "salmon",
+      "fishIconSize": 2,
+      "address": "北海道標津郡標津町北1条西6丁目1-1-1",
+      "affiliateLink": null,
+      "officialUrl": "http://shibetsu-salmon.org/"
     },
     {
       "stableId": "onneyu-aquarium",
@@ -83,7 +128,8 @@
       "representativeFish": "Hucho",
       "fishIconSize": 3,
       "address": "北海道北見市留辺蘂町松山1番地4",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.aquarium.onneyu.com/"
     },
     {
       "stableId": "chitose-aquarium",
@@ -95,7 +141,21 @@
       "representativeFish": "Hucho",
       "fishIconSize": 2,
       "address": "北海道千歳市花園2丁目312",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://chitose-aq.jp/"
+    },
+    {
+      "stableId": "muroran-aquarium",
+      "name": "市立室蘭水族館",
+      "latitude": 42.3397,
+      "longitude": 140.9437,
+      "description": "北海道で最も歴史のある水族館。観覧車などのアトラクションも併設。",
+      "region": "北海道",
+      "representativeFish": "Seal",
+      "fishIconSize": 3,
+      "address": "北海道室蘭市祝津町3丁目3-12",
+      "affiliateLink": null,
+      "officialUrl": "https://muroran-aquarium.jp/"
     },
     {
       "stableId": "noboribetsu-marine-park-nixe",
@@ -107,7 +167,21 @@
       "representativeFish": "Penguin",
       "fishIconSize": 2,
       "address": "北海道登別市登別東町1丁目22",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.nixe.co.jp"
+    },
+    {
+      "stableId": "kushiro-aquarium-pukupuku",
+      "name": "くしろ水族館 ぷくぷく",
+      "latitude": 43.006733,
+      "longitude": 144.404338,
+      "description": "釧路の魚介類を中心に展示する地域密着型の小さな水族館。",
+      "region": "北海道",
+      "representativeFish": "Pufferfish",
+      "fishIconSize": 1,
+      "address": "北海道釧路郡釧路町光和4-11 釧之助本店内",
+      "affiliateLink": null,
+      "officialUrl": "http://www.sennosuke.net/pukupuku/"
     },
     {
       "stableId": "asamushi-aquarium",
@@ -119,7 +193,47 @@
       "representativeFish": "Dolphin",
       "fishIconSize": 3,
       "address": "青森県青森市浅虫字馬場山1-25",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://asamushi-aqua.com/"
+    },
+    {
+      "stableId": "marient",
+      "name": "八戸市水産科学館 マリエント",
+      "latitude": 40.539682,
+      "longitude": 141.562722,
+      "description": "八戸の海や水産業について学べる施設。ウミネコの繁殖地である蕪島に近い。",
+      "region": "東北",
+      "representativeFish": "SeaGull",
+      "fishIconSize": 2,
+      "address": "青森県八戸市大字鮫町字下松苗場14-33",
+      "affiliateLink": null,
+      "officialUrl": "https://marient.org/"
+    },
+    {
+      "stableId": "moguranpia",
+      "name": "もぐらんぴあ 久慈地下水族科学館",
+      "latitude": 40.221222,
+      "longitude": 141.81583,
+      "description": "石油備蓄基地のトンネルを再利用した、日本で唯一の地下水族館。",
+      "region": "東北",
+      "representativeFish": "Clione",
+      "fishIconSize": 1,
+      "address": "岩手県久慈市侍浜町麦生1-43-7",
+      "affiliateLink": null,
+      "officialUrl": "https://www.moguranpia.com/"
+    },
+    {
+      "stableId": "iwate-fisheries-science-museum",
+      "name": "岩手県立水産科学館",
+      "latitude": 39.6485,
+      "longitude": 141.976024,
+      "description": "三陸の漁業や海洋生物について学べる施設。津波からの復興のシンボルでもある。",
+      "region": "東北",
+      "representativeFish": "salmon",
+      "fishIconSize": 2,
+      "address": "岩手県宮古市日立浜町32-28",
+      "affiliateLink": null,
+      "officialUrl": "https://www.city.miyako.iwate.jp/index/sosiki/suisankagakukan.html"
     },
     {
       "stableId": "sendai-uminomori-aquarium",
@@ -131,7 +245,21 @@
       "representativeFish": "Dolphin",
       "fishIconSize": 3,
       "address": "宮城県仙台市宮城野区中野4丁目6番地",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.uminomori.jp"
+    },
+    {
+      "stableId": "aquaterrace-nishikigaoka",
+      "name": "アクアテラス錦ヶ丘",
+      "latitude": 38.257111,
+      "longitude": 140.765056,
+      "description": "光と水のきらめきがテーマの美しい水族館。ショッピングモール内に併設されている。",
+      "region": "東北",
+      "representativeFish": "Arowana",
+      "fishIconSize": 3,
+      "address": "宮城県仙台市青葉区錦ケ丘1-3-1",
+      "affiliateLink": null,
+      "officialUrl": "https://aquaterrace.co.jp/"
     },
     {
       "stableId": "oga-aquarium-gao",
@@ -143,7 +271,8 @@
       "representativeFish": "Seal",
       "fishIconSize": 3,
       "address": "秋田県男鹿市戸賀塩浜",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.gao-aqua.jp"
     },
     {
       "stableId": "kamo-aquarium",
@@ -155,7 +284,8 @@
       "representativeFish": "Jellyfish",
       "fishIconSize": 1,
       "address": "山形県鶴岡市今泉字大久保657-1",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://kamo-kurage.jp/"
     },
     {
       "stableId": "aquamarine-fukushima",
@@ -167,7 +297,8 @@
       "representativeFish": "Coelacanth",
       "fishIconSize": 3,
       "address": "福島県いわき市小名浜辰巳町50",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.aquamarine.or.jp/"
     },
     {
       "stableId": "inawashiro-kawasemi-aquarium",
@@ -179,7 +310,8 @@
       "representativeFish": "Freshwater Fish",
       "fishIconSize": 2,
       "address": "福島県耶麻郡猪苗代町大字長田字東中丸3447番地4",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.aquamarine-inawashiro.jp/"
     },
     {
       "stableId": "aqua-world-oarai",
@@ -191,7 +323,21 @@
       "representativeFish": "Shark",
       "fishIconSize": 4,
       "address": "茨城県東茨城郡大洗町磯浜町8252-3",
-      "affiliateLink": null
+      "affiliateLink": "https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3761048&pid=892483316&vc_url=https%3A%2F%2Fwww.asoview.com%2Fbase%2F154299%2F",
+      "officialUrl": "https://www.aquaworld-oarai.com/"
+    },
+    {
+      "stableId": "kasumigaura-aquarium",
+      "name": "かすみがうら市水族館",
+      "latitude": 36.071688,
+      "longitude": 140.376023,
+      "description": "霞ヶ浦の自然や生物を紹介する水族館。淡水魚を中心に展示。",
+      "region": "関東",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 2,
+      "address": "茨城県かすみがうら市坂910-1",
+      "affiliateLink": null,
+      "officialUrl": "http://www.dane-kerry.com/aquarium/"
     },
     {
       "stableId": "nakagawa-aquatic-park",
@@ -203,7 +349,34 @@
       "representativeFish": "Arapaima",
       "fishIconSize": 4,
       "address": "栃木県大田原市佐良土2686",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://tnap.jp"
+    },
+    {
+      "stableId": "fish-and-forest-observation-garden",
+      "name": "さかなと森の観察園",
+      "latitude": 36.75497,
+      "longitude": 139.451696,
+      "description": "森の中の清流に生息する魚たちを中心に、自然の生態系を観察できる施設。",
+      "region": "関東",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 2,
+      "address": "栃木県日光市中宮祠2482-3",
+      "affiliateLink": null,
+      "officialUrl": "https://www.fra.go.jp/nikko/"
+    },
+    {
+      "stableId": "fisheries-learning-center",
+      "name": "水産学習館",
+      "latitude": 36.7648187,
+      "longitude": 138.9683198,
+      "description": "群馬県の川や湖の魚たちを紹介。体験学習を通じて水産について学べる。",
+      "region": "関東",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 2,
+      "address": "群馬県利根郡みなかみ町湯原１６８１−１",
+      "affiliateLink": null,
+      "officialUrl": "https://mizunofurusato.com"
     },
     {
       "stableId": "saitama-aquarium",
@@ -215,7 +388,21 @@
       "representativeFish": "Freshwater Fish",
       "fishIconSize": 2,
       "address": "埼玉県羽生市三田ヶ谷751-1",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "http://www.parks.or.jp/suizokukan/"
+    },
+    {
+      "stableId": "okesai-aquarium",
+      "name": "桶西水族館",
+      "latitude": 35.98433,
+      "longitude": 139.531585,
+      "description": "埼玉県立桶川西高等学校内にあるユニークな水族館。",
+      "region": "関東",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "埼玉県桶川市川田谷１５３１−２",
+      "affiliateLink": null,
+      "officialUrl": "https://okegawanishi-h.spec.ed.jp/%E6%B0%B4%E6%97%8F%E9%A4%A8"
     },
     {
       "stableId": "kamogawa-sea-world",
@@ -227,7 +414,34 @@
       "representativeFish": "Orca",
       "fishIconSize": 5,
       "address": "千葉県鴨川市東町1464-18",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.kamogawa-seaworld.jp/"
+    },
+    {
+      "stableId": "chiba-univ-marine-biosystem-aquarium",
+      "name": "千葉大学海洋バイオシステム研究センター水族館",
+      "latitude": 35.120804,
+      "longitude": 140.184306,
+      "description": "千葉大学の研究施設に併設された水族館で、海洋生物の研究成果などを公開。",
+      "region": "関東",
+      "representativeFish": "Coral Fish",
+      "fishIconSize": 1,
+      "address": "千葉県鴨川市内浦1",
+      "affiliateLink": null,
+      "officialUrl": "http://www-es.s.chiba-u.ac.jp/kominato/"
+    },
+    {
+      "stableId": "smallest-aquarium-in-the-world",
+      "name": "世界一ちっちゃな水族館",
+      "latitude": 35.70711,
+      "longitude": 140.84042,
+      "description": "その名の通り、非常に小さな規模ながらもユニークな展示が楽しめる。",
+      "region": "関東",
+      "representativeFish": "Clownfish",
+      "fishIconSize": 1,
+      "address": "千葉県銚子市潮見町15-9",
+      "affiliateLink": null,
+      "officialUrl": "https://choshi-aquarium.jimdofree.com/"
     },
     {
       "stableId": "sunshine-aquarium",
@@ -239,7 +453,21 @@
       "representativeFish": "Penguin",
       "fishIconSize": 2,
       "address": "東京都豊島区東池袋3-1 サンシャインシティ ワールドインポートマートビル 屋上",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://sunshinecity.jp/aquarium/"
+    },
+    {
+      "stableId": "itabashi-tropical-botanical-garden",
+      "name": "板橋区立熱帯環境植物館",
+      "latitude": 35.79191,
+      "longitude": 139.664101,
+      "description": "熱帯雨林を再現した植物館で、熱帯魚や水生生物も展示されている。",
+      "region": "関東",
+      "representativeFish": "Piranha",
+      "fishIconSize": 2,
+      "address": "東京都板橋区高島平8丁目29-2",
+      "affiliateLink": null,
+      "officialUrl": "https://www.seibu-la.co.jp/nettaikan/"
     },
     {
       "stableId": "maxell-aqua-park-shinagawa",
@@ -251,7 +479,8 @@
       "representativeFish": "Dolphin",
       "fishIconSize": 3,
       "address": "東京都港区高輪4-10-30",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.aqua-park.jp/aqua/"
     },
     {
       "stableId": "shinagawa-aquarium",
@@ -263,7 +492,21 @@
       "representativeFish": "Seal",
       "fishIconSize": 3,
       "address": "東京都品川区勝島3-2-1",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.aquarium.gr.jp/"
+    },
+    {
+      "stableId": "adachi-biological-garden",
+      "name": "足立区生物園",
+      "latitude": 35.792444,
+      "longitude": 139.807222,
+      "description": "昆虫、鳥、魚など様々な生き物が展示されており、ふれあい体験もできる。",
+      "region": "関東",
+      "representativeFish": "Butterfly",
+      "fishIconSize": 1,
+      "address": "東京都足立区保木間二丁目17番1号",
+      "affiliateLink": null,
+      "officialUrl": "https://seibutuen.jp/"
     },
     {
       "stableId": "sumida-aquarium",
@@ -275,7 +518,8 @@
       "representativeFish": "Penguin",
       "fishIconSize": 2,
       "address": "東京都墨田区押上一丁目1番2号 東京スカイツリータウン・ソラマチ5F・6F",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.sumida-aquarium.com/"
     },
     {
       "stableId": "kasai-rinkai-aquarium",
@@ -287,7 +531,47 @@
       "representativeFish": "Tuna",
       "fishIconSize": 4,
       "address": "東京都江戸川区臨海町6-2-3",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.tokyo-zoo.net/zoo/kasai/"
+    },
+    {
+      "stableId": "inokashira-park-zoo-aquarium",
+      "name": "井の頭自然文化園付属水生物館",
+      "latitude": 35.700398,
+      "longitude": 139.575424,
+      "description": "井の頭恩賜公園内にある動物園に併設された水生生物専門の施設。",
+      "region": "関東",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 2,
+      "address": "東京都武蔵野市御殿山1-17-6",
+      "affiliateLink": null,
+      "officialUrl": "https://www.tokyo-zoo.net/zoo/ino/"
+    },
+    {
+      "stableId": "ogasawara-ocean-center",
+      "name": "小笠原海洋センター",
+      "latitude": 27.09,
+      "longitude": 142.19,
+      "description": "小笠原諸島の海洋生物の保護・研究を行う施設。ウミガメの保護活動が有名。",
+      "region": "関東",
+      "representativeFish": "Sea Turtle",
+      "fishIconSize": 3,
+      "address": "東京都小笠原村父島字屏風谷",
+      "affiliateLink": null,
+      "officialUrl": "https://bonin-ocean.net/"
+    },
+    {
+      "stableId": "ogasawara-fisheries-center",
+      "name": "小笠原水産センター",
+      "latitude": 27.0975863,
+      "longitude": 142.1984498,
+      "description": "小笠原の漁業や水産資源について学べる施設。",
+      "region": "関東",
+      "representativeFish": "Tuna",
+      "fishIconSize": 4,
+      "address": "東京都小笠原村父島清瀬",
+      "affiliateLink": null,
+      "officialUrl": "https://www.ifarc.metro.tokyo.lg.jp/"
     },
     {
       "stableId": "hakkeijima-sea-paradise",
@@ -299,7 +583,47 @@
       "representativeFish": "Beluga Whale",
       "fishIconSize": 4,
       "address": "神奈川県横浜市金沢区八景島",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.seaparadise.co.jp/"
+    },
+    {
+      "stableId": "yokohama-fortune-aquarium",
+      "name": "横浜開運水族館 フォーチュンアクアリウム",
+      "latitude": 35.443126,
+      "longitude": 139.644548,
+      "description": "横浜中華街にある、占いをテーマにしたユニークな水族館。",
+      "region": "関東",
+      "representativeFish": "Clownfish",
+      "fishIconSize": 1,
+      "address": "神奈川県横浜市中区山下町144 チャイナスクエア3F",
+      "affiliateLink": null,
+      "officialUrl": "https://fortune-aquarium.com/"
+    },
+    {
+      "stableId": "makado-sea-marine-park",
+      "name": "横浜市立間門小学校附属海水水族館 まかどシーマリンパーク",
+      "latitude": 35.417935,
+      "longitude": 139.655011,
+      "description": "小学校に併設された珍しい海水水族館。地域と連携した教育活動が特徴。",
+      "region": "関東",
+      "representativeFish": "Coral Fish",
+      "fishIconSize": 1,
+      "address": "神奈川県横浜市中区本牧間門29-1",
+      "affiliateLink": null,
+      "officialUrl": "https://www.edu.city.yokohama.lg.jp/school/es/makado/"
+    },
+    {
+      "stableId": "kannon-saki-natural-museum",
+      "name": "観音崎自然博物館",
+      "latitude": 35.251816,
+      "longitude": 139.742233,
+      "description": "三浦半島の自然や生物を紹介。海の生き物の展示も充実。",
+      "region": "関東",
+      "representativeFish": "Crab",
+      "fishIconSize": 1,
+      "address": "神奈川県横須賀市鴨居4丁目1120",
+      "affiliateLink": null,
+      "officialUrl": "https://kannonzaki-nature-museum.jimdo.com/"
     },
     {
       "stableId": "enoshima-aquarium",
@@ -311,7 +635,8 @@
       "representativeFish": "Jellyfish",
       "fishIconSize": 1,
       "address": "神奈川県藤沢市片瀬海岸2-19-1",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.enosui.com/"
     },
     {
       "stableId": "kawasui-kawasaki-aquarium",
@@ -323,7 +648,34 @@
       "representativeFish": "Freshwater Fish",
       "fishIconSize": 2,
       "address": "神奈川県川崎市川崎区日進町1-11 ルフロン川崎",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://kawa-sui.com/"
+    },
+    {
+      "stableId": "sagamihara-aquarium",
+      "name": "相模川ふれあい科学館 アクアリウムさがみはら",
+      "latitude": 35.54741901,
+      "longitude": 139.32896867,
+      "description": "相模川の自然や水生生物をテーマにした科学館。",
+      "region": "関東",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 2,
+      "address": "神奈川県相模原市中央区水郷田名1-5-1",
+      "affiliateLink": null,
+      "officialUrl": "https://sagamigawa-fureai.com/"
+    },
+    {
+      "stableId": "kurasato-aquarium-lab",
+      "name": "北里アクアリウムラボ",
+      "latitude": 35.54053692438243,
+      "longitude": 139.39504583333334,
+      "description": "北里大学の海洋生物研究施設。一般公開されており、様々な海洋生物を観察できる。",
+      "region": "関東",
+      "representativeFish": "Jellyfish",
+      "fishIconSize": 1,
+      "address": "神奈川県相模原市南区北里1丁目15-1",
+      "affiliateLink": null,
+      "officialUrl": "https://www.kitasato-u.ac.jp/mb/faculty/aquarium/"
     },
     {
       "stableId": "hakone-en-aquarium",
@@ -335,7 +687,8 @@
       "representativeFish": "Seal",
       "fishIconSize": 3,
       "address": "神奈川県足柄下郡箱根町元箱根139",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.princehotels.co.jp/amuse/hakone-en/suizokukan/"
     },
     {
       "stableId": "marinepia-nihonkai",
@@ -347,7 +700,8 @@
       "representativeFish": "Dolphin",
       "fishIconSize": 3,
       "address": "新潟県新潟市中央区西船見町5932-445",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "http://www.marinepia.or.jp/"
     },
     {
       "stableId": "umigatari-aquarium",
@@ -359,7 +713,8 @@
       "representativeFish": "Penguin",
       "fishIconSize": 2,
       "address": "新潟県上越市五智2丁目15-15",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "http://www.umigatari.jp/joetsu/"
     },
     {
       "stableId": "uozu-aquarium",
@@ -371,7 +726,8 @@
       "representativeFish": "Deep-sea Fish",
       "fishIconSize": 2,
       "address": "富山県魚津市三ケ1390",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.uozu-aquarium.jp/"
     },
     {
       "stableId": "notojima-aquarium",
@@ -383,7 +739,8 @@
       "representativeFish": "Whale Shark",
       "fishIconSize": 5,
       "address": "石川県七尾市能登島曲町15部40",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.notoaqua.jp/"
     },
     {
       "stableId": "echizen-matsushima-aquarium",
@@ -395,7 +752,8 @@
       "representativeFish": "Sea Turtle",
       "fishIconSize": 3,
       "address": "福井県坂井市三国町崎74-2-3",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.echizen-aquarium.com/"
     },
     {
       "stableId": "fuji-yusuin-aquarium",
@@ -407,7 +765,8 @@
       "representativeFish": "Freshwater Fish",
       "fishIconSize": 2,
       "address": "山梨県南都留郡忍野村忍草3098-1",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "http://www.morinonakano-suizokukan.com/"
     },
     {
       "stableId": "aqua-toto-gifu",
@@ -419,7 +778,8 @@
       "representativeFish": "Mekonggiantcatfish",
       "fishIconSize": 4,
       "address": "岐阜県各務原市川島笠田町1453",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://aquatotto.com/"
     },
     {
       "stableId": "izu-mito-sea-paradise",
@@ -431,7 +791,8 @@
       "representativeFish": "Dolphin",
       "fishIconSize": 3,
       "address": "静岡県沼津市内浦長浜3-1",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.mitosea.com"
     },
     {
       "stableId": "numazu-deep-sea-aquarium",
@@ -443,7 +804,8 @@
       "representativeFish": "Coelacanth",
       "fishIconSize": 3,
       "address": "静岡県沼津市千本港町83",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "http://www.numazu-deepsea.com/"
     },
     {
       "stableId": "shimoda-aquarium",
@@ -455,19 +817,8 @@
       "representativeFish": "Dolphin",
       "fishIconSize": 3,
       "address": "静岡県下田市3-22-31",
-      "affiliateLink": null
-    },
-    {
-      "stableId": "tokai-university-marine-science-museum",
-      "name": "東海大学海洋科学博物館",
-      "latitude": 35.019134,
-      "longitude": 138.518258,
-      "description": "海洋研究を目的とした博物館で、深海生物の展示が充実。",
-      "region": "中部",
-      "representativeFish": "Deep-sea Fish",
-      "fishIconSize": 2,
-      "address": "静岡県静岡市清水区三保2389",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "http://shimoda-aquarium.com"
     },
     {
       "stableId": "nagoya-port-aquarium",
@@ -479,7 +830,8 @@
       "representativeFish": "Orca",
       "fishIconSize": 5,
       "address": "愛知県名古屋市港区港町1-3",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://nagoyaaqua.jp/"
     },
     {
       "stableId": "takeshima-aquarium",
@@ -491,7 +843,8 @@
       "representativeFish": "Deep-sea Fish",
       "fishIconSize": 2,
       "address": "愛知県蒲郡市竹島町1-6",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.takeshima-aquarium.jp/"
     },
     {
       "stableId": "hekinan-seaside-aquarium",
@@ -503,7 +856,8 @@
       "representativeFish": "Pufferfish",
       "fishIconSize": 1,
       "address": "愛知県碧南市浜町2-3",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "http://www.city.hekinan.lg.jp/aquarium/"
     },
     {
       "stableId": "minamichita-beach-land",
@@ -515,7 +869,8 @@
       "representativeFish": "Dolphin",
       "fishIconSize": 3,
       "address": "愛知県知多郡美浜町奥田428-1",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://beachland.jp/"
     },
     {
       "stableId": "sealife-nagoya",
@@ -527,7 +882,8 @@
       "representativeFish": "Clownfish",
       "fishIconSize": 1,
       "address": "愛知県名古屋市港区金城ふ頭2-2-1",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.legoland.jp/resort-guide/sealife-nagoya/"
     },
     {
       "stableId": "toba-aquarium",
@@ -539,11 +895,12 @@
       "representativeFish": "Dugong",
       "fishIconSize": 3,
       "address": "三重県鳥羽市鳥羽3丁目3-6",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "http://www.aquarium.co.jp/"
     },
     {
       "stableId": "ise-sea-paradise",
-      "name": "伊勢夫婦岩ふれあい水族館シーパラダイス",
+      "name": "ゼロ距離水族館伊勢シーパラダイス",
       "latitude": 34.50722,
       "longitude": 136.79194,
       "description": "動物との距離が非常に近い「ふれあい」をテーマにした水族館。",
@@ -551,7 +908,8 @@
       "representativeFish": "Walrus",
       "fishIconSize": 4,
       "address": "三重県伊勢市二見町江580",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://ise-seaparadise.com"
     },
     {
       "stableId": "biwa-lake-museum",
@@ -563,7 +921,8 @@
       "representativeFish": "Biwa Catfish",
       "fishIconSize": 2,
       "address": "滋賀県草津市下物町1091",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.biwahaku.jp/"
     },
     {
       "stableId": "kyoto-aquarium",
@@ -575,7 +934,8 @@
       "representativeFish": "Giant Salamander",
       "fishIconSize": 2,
       "address": "京都府京都市下京区観喜寺町35-1",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.kyoto-aquarium.com/"
     },
     {
       "stableId": "kaiyukan",
@@ -587,7 +947,8 @@
       "representativeFish": "Whale Shark",
       "fishIconSize": 5,
       "address": "大阪府大阪市港区海岸通1丁目1番10号",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.kaiyukan.com/"
     },
     {
       "stableId": "nifrel",
@@ -599,7 +960,8 @@
       "representativeFish": "Coral Fish",
       "fishIconSize": 1,
       "address": "大阪府吹田市千里万博公園2-1",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.nifrel.jp/"
     },
     {
       "stableId": "wakayama-nature-museum",
@@ -611,7 +973,8 @@
       "representativeFish": "Sea Turtle",
       "fishIconSize": 1,
       "address": "和歌山県海南市船尾370-1",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.shizenhaku.wakayama-c.ed.jp/"
     },
     {
       "stableId": "taiji-whale-museum",
@@ -623,7 +986,8 @@
       "representativeFish": "Whale",
       "fishIconSize": 5,
       "address": "和歌山県東牟婁郡太地町太地2934-2",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "http://www.kujirakan.jp/"
     },
     {
       "stableId": "kushimoto-marine-park",
@@ -635,7 +999,8 @@
       "representativeFish": "Coral Fish",
       "fishIconSize": 1,
       "address": "和歌山県東牟婁郡串本町有田1157",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "http://www.kushimoto.co.jp/"
     },
     {
       "stableId": "adventure-world",
@@ -647,7 +1012,8 @@
       "representativeFish": "Dolphin",
       "fishIconSize": 3,
       "address": "和歌山県西牟婁郡白浜町堅田2399",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.adventureworld.co.jp/"
     },
     {
       "stableId": "shirahama-aquarium",
@@ -659,7 +1025,8 @@
       "representativeFish": "Jellyfish",
       "fishIconSize": 1,
       "address": "和歌山県西牟婁郡白浜町459",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.seto.kyoto-u.ac.jp/aquarium/"
     },
     {
       "stableId": "ebi-kani-aquarium",
@@ -671,7 +1038,8 @@
       "representativeFish": "Crab",
       "fishIconSize": 1,
       "address": "和歌山県西牟婁郡すさみ町江住567-1",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://ebikani-aquarium.com/"
     },
     {
       "stableId": "kinosaki-marine-world",
@@ -683,7 +1051,8 @@
       "representativeFish": "Dolphin",
       "fishIconSize": 3,
       "address": "兵庫県豊岡市瀬戸1090",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://marineworld.hiyoriyama.co.jp/"
     },
     {
       "stableId": "atoa",
@@ -695,7 +1064,8 @@
       "representativeFish": "Piranha",
       "fishIconSize": 2,
       "address": "兵庫県神戸市中央区新港町7-2",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://atoa-kobe.jp/"
     },
     {
       "stableId": "kobe-suma-sea-world",
@@ -707,7 +1077,8 @@
       "representativeFish": "Orca",
       "fishIconSize": 5,
       "address": "兵庫県神戸市須磨区若宮町1丁目3-5",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://kobesuma-seaworld.jp/"
     },
     {
       "stableId": "himeji-city-aquarium",
@@ -719,11 +1090,12 @@
       "representativeFish": "Sea Turtle",
       "fishIconSize": 3,
       "address": "兵庫県姫路市西延末440",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.city.himeji.lg.jp/aqua/"
     },
     {
       "stableId": "tamano-marine-museum",
-      "name": "玉野市立玉野海洋博物館",
+      "name": "玉野海洋博物館愛称（渋川マリン水族館）",
       "latitude": 34.455014,
       "longitude": 133.905287,
       "description": "瀬戸内海の生き物を中心に展示する、渋川海岸にある博物館。",
@@ -731,7 +1103,8 @@
       "representativeFish": "Pufferfish",
       "fishIconSize": 1,
       "address": "岡山県玉野市渋川2-6-1",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "https://www.city.tamano.lg.jp/site/kaihaku/"
     },
     {
       "stableId": "miyajima-aquarium",
@@ -743,7 +1116,8 @@
       "representativeFish": "Finlessporpoise",
       "fishIconSize": 3,
       "address": "広島県廿日市市宮島町10-3",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": "http://www.miyajima-aqua.jp/"
     },
     {
       "stableId": "tottori-karo-crab-aquarium",
@@ -755,7 +1129,8 @@
       "representativeFish": "Crab",
       "fishIconSize": 1,
       "address": "鳥取県鳥取市賀露町西3丁目27-2",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": null
     },
     {
       "stableId": "aquas-shimane",
@@ -767,7 +1142,8 @@
       "representativeFish": "Beluga Whale",
       "fishIconSize": 4,
       "address": "島根県浜田市久代町1117-2",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": null
     },
     {
       "stableId": "gobius",
@@ -779,7 +1155,8 @@
       "representativeFish": "Eel",
       "fishIconSize": 2,
       "address": "島根県出雲市園町1659-5",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": null
     },
     {
       "stableId": "kaikyokan",
@@ -791,7 +1168,8 @@
       "representativeFish": "Pufferfish",
       "fishIconSize": 1,
       "address": "山口県下関市あるかぽーと6-1",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": null
     },
     {
       "stableId": "nagisa-aquarium",
@@ -803,19 +1181,8 @@
       "representativeFish": "Crab",
       "fishIconSize": 1,
       "address": "山口県大島郡周防大島町伊保田2211-3",
-      "affiliateLink": null
-    },
-    {
-      "stableId": "new-yashima-aquarium",
-      "name": "新屋島水族館",
-      "latitude": 34.358472,
-      "longitude": 134.1,
-      "description": "標高約300mの屋島の山上にある珍しい水族館。",
-      "region": "中国・四国",
-      "representativeFish": "Manatee",
-      "fishIconSize": 4,
-      "address": "香川県高松市屋島東町1785-1",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": null
     },
     {
       "stableId": "shikoku-aquarium",
@@ -827,7 +1194,8 @@
       "representativeFish": "Dolphin",
       "fishIconSize": 3,
       "address": "香川県綾歌郡宇多津町浜一番丁4",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": null
     },
     {
       "stableId": "caretta-turtle-museum",
@@ -839,7 +1207,8 @@
       "representativeFish": "Sea Turtle",
       "fishIconSize": 3,
       "address": "徳島県海部郡美波町日和佐浦369",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": null
     },
     {
       "stableId": "katsurahama-aquarium",
@@ -851,7 +1220,8 @@
       "representativeFish": "SeaLion",
       "fishIconSize": 4,
       "address": "高知県高知市浦戸778",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": null
     },
     {
       "stableId": "ashizuri-oceanarium-satoumi",
@@ -863,7 +1233,8 @@
       "representativeFish": "Coral Fish",
       "fishIconSize": 1,
       "address": "高知県土佐清水市三崎4032",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": null
     },
     {
       "stableId": "muroto-schoolhouse-aquarium",
@@ -875,7 +1246,8 @@
       "representativeFish": "Shark",
       "fishIconSize": 4,
       "address": "高知県室戸市室戸岬町533-2",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": null
     },
     {
       "stableId": "marine-world-uminonakamichi",
@@ -887,7 +1259,8 @@
       "representativeFish": "Dolphin",
       "fishIconSize": 3,
       "address": "福岡県福岡市東区西戸崎18-28",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": null
     },
     {
       "stableId": "nagasaki-penguin-aquarium",
@@ -899,7 +1272,8 @@
       "representativeFish": "Penguin",
       "fishIconSize": 2,
       "address": "長崎県長崎市宿町3-16",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": null
     },
     {
       "stableId": "kujukushima-pearl-sea-resort",
@@ -911,7 +1285,8 @@
       "representativeFish": "Dolphin",
       "fishIconSize": 3,
       "address": "長崎県佐世保市鹿子前町1008",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": null
     },
     {
       "stableId": "umitamago",
@@ -923,7 +1298,8 @@
       "representativeFish": "Walrus",
       "fishIconSize": 4,
       "address": "大分県大分市大字神崎3078-22",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": null
     },
     {
       "stableId": "sea-donut",
@@ -935,7 +1311,8 @@
       "representativeFish": "Dolphin",
       "fishIconSize": 1,
       "address": "熊本県上天草市松島町合津6225-7",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": null
     },
     {
       "stableId": "kagoshima-aquarium",
@@ -947,7 +1324,8 @@
       "representativeFish": "Whale Shark",
       "fishIconSize": 5,
       "address": "鹿児島県鹿児島市本港新町3-1",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": null
     },
     {
       "stableId": "churaumi-aquarium",
@@ -959,7 +1337,8 @@
       "representativeFish": "Whale Shark",
       "fishIconSize": 5,
       "address": "沖縄県国頭郡本部町石川424番地",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": null
     },
     {
       "stableId": "dmm-kariyushi-aquarium",
@@ -971,7 +1350,619 @@
       "representativeFish": "Clownfish",
       "fishIconSize": 1,
       "address": "沖縄県豊見城市豊崎3-35",
-      "affiliateLink": null
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "nature-aquarium-gallery",
+      "name": "ネイチャーアクアリウムギャラリー",
+      "latitude": 37.79097,
+      "longitude": 138.90672,
+      "description": "アクアデザインアマノ（ADA）本社に併設された、ネイチャーアクアリウムのギャラリー。世界レベルの水草レイアウトが多数展示されており、「アクアリストの聖地」とも呼ばれている。現在は不定期での特別開館となっている。",
+      "region": "中部",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "新潟県新潟市西蒲区漆山8554-1",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "iyoboya-kaikan",
+      "name": "イヨボヤ会館",
+      "latitude": 38.227775,
+      "longitude": 139.471603,
+      "description": "新潟県村上市にある鮭の博物館。村上の方言で鮭を意味する「イヨボヤ」を冠しており、鮭の歴史や文化、生態を学べる。三面川を遡上する鮭を観察できる施設も併設されている。",
+      "region": "中部",
+      "representativeFish": "salmon",
+      "fishIconSize": 1,
+      "address": "新潟県村上市塩町13-34",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "teradomari-aquarium",
+      "name": "寺泊水族博物館",
+      "latitude": 37.63389,
+      "longitude": 138.76028,
+      "description": "日本海に浮かぶ八角形の建物が特徴の水族館。世界各地の約400種、1万点の生物を飼育している。ダイバーによる餌付けショーや、ヒトデなどに触れるタッチングプールがある。",
+      "region": "中部",
+      "representativeFish": "Penguin",
+      "fishIconSize": 1,
+      "address": "新潟県長岡市寺泊花立9353-158",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "shinanogawa-fish-house",
+      "name": "信濃川水系フィッシュハウス",
+      "latitude": 37.343198,
+      "longitude": 139.164123,
+      "description": "魚沼市にある淡水魚の水族館です。信濃川水系に生息する淡水魚を中心に展示しており、地域の自然について学ぶことができます。",
+      "region": "中部",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "新潟県魚沼市大白川",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "alps-azumino-park-classroom",
+      "name": "国営アルプスあづみの公園 理科教室",
+      "latitude": 36.314486,
+      "longitude": 137.841841,
+      "description": "国営アルプスあづみの公園内にある施設。安曇野の清流に生息するイワナやヤマメ、信州サーモンなどを展示しており、水族館のように楽しめる。",
+      "region": "中部",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "長野県安曇野市堀金烏川33-4",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "tateshina-amusement-aquarium",
+      "name": "蓼科アミューズメント水族館",
+      "latitude": 36.066346,
+      "longitude": 138.302852,
+      "description": "標高1,750mに位置する日本で最も標高の高い水族館。世界中の淡水魚を専門に展示しており、ピラルクなどの巨大魚も見ることができる。ペット同伴可能。",
+      "region": "中部",
+      "representativeFish": "Arapaima",
+      "fishIconSize": 1,
+      "address": "長野県茅野市北山4035-2409",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "mori-no-aquarium",
+      "name": "森の水族館",
+      "latitude": 36.176938,
+      "longitude": 137.374985,
+      "description": "飛騨高山の古い民家を利用した、世界最小ともいわれる淡水魚水族館。巨大なイワナやイトウなど、珍しい川魚を展示している。ドクターフィッシュの体験もできる。",
+      "region": "中部",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "岐阜県高山市丹生川町根方532",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "awashima-marine-park",
+      "name": "あわしまマリンパーク",
+      "latitude": 35.033556,
+      "longitude": 138.89,
+      "description": "駿河湾に浮かぶ淡島全体がテーマパークとなっている水族館。船で島に渡る。イルカやアシカのショーのほか、カエルの展示も充実している。※2024年2月25日をもって一時閉園。",
+      "region": "中部",
+      "representativeFish": "Dolphin",
+      "fishIconSize": 1,
+      "address": "静岡県沼津市内浦重寺186",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "yougyo-aquarium",
+      "name": "幼魚水族館",
+      "latitude": 35.109563,
+      "longitude": 138.901194,
+      "description": "世界初の幼魚専門水族館。「令和のお魚王子」こと鈴木香里武氏が館長を務める。100種類以上の幼魚を展示し、そのユニークな生態を観察できる。",
+      "region": "中部",
+      "representativeFish": "Coral Fish",
+      "fishIconSize": 1,
+      "address": "静岡県駿東郡清水町伏見52-1 サントムーン柿田川 オアシス3階",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "hamanako-wotto",
+      "name": "浜名湖体験学習施設 ウォット",
+      "latitude": 34.697463,
+      "longitude": 137.605863,
+      "description": "浜名湖のほとりにある体験型学習施設。浜名湖の豊かな自然や生物について学ぶことができる。タッチプールや展望デッキなどの施設も充実している。",
+      "region": "中部",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "静岡県浜松市中央区舞阪町弁天島5005-3",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "smart-aquarium-shizuoka",
+      "name": "スマートアクアリウム静岡",
+      "latitude": 34.973195,
+      "longitude": 138.388114,
+      "description": "松坂屋静岡店内にある都市型水族館。「暮らしに寄り添うスタイリッシュな水族館」をコンセプトに、約140種2200点の生物を展示している。",
+      "region": "中部",
+      "representativeFish": "Coral Fish",
+      "fishIconSize": 1,
+      "address": "静岡県静岡市葵区御幸町10-2 松坂屋静岡店 本館7階",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "gyogyo-land",
+      "name": "ぎょぎょランド",
+      "latitude": 34.84725,
+      "longitude": 137.3578806,
+      "description": "赤塚山公園内にある淡水魚専門水族館。豊川水系に生息する魚を中心に、約100種2000匹を展示している。国の天然記念物「ネコギギ」も見ることができる。入館無料。",
+      "region": "中部",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "愛知県豊川市市田町東堤上1-30（赤塚山公園内）",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "yatomi-kingyo-aquarium",
+      "name": "弥富金魚水族館 YaToMi AQUA",
+      "latitude": 35.106954,
+      "longitude": 136.722172,
+      "description": "金魚のまち、愛知県弥富市にある金魚専門の水族館。弥富生まれの金魚を中心に約30種類を展示しており、宇宙に行った金魚の子孫も見ることができる。",
+      "region": "中部",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "愛知県弥富市前ケ須町南本田347 弥富まちなか交流館1階",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "iruka-jima-marine-leisure-land",
+      "name": "イルカ島海洋遊園地",
+      "latitude": 34.504599,
+      "longitude": 136.835408,
+      "description": "鳥羽湾に浮かぶ無人島にあるレジャー施設。イルカやアシカのショーが楽しめるほか、イルカとのふれあい体験もできる。島へは遊覧船で渡る。",
+      "region": "近畿",
+      "representativeFish": "Dolphin",
+      "fishIconSize": 1,
+      "address": "三重県鳥羽市小浜町",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "kihou-cho-umigame-park",
+      "name": "紀宝町ウミガメ公園",
+      "latitude": 33.770137,
+      "longitude": 136.028669,
+      "description": "日本で唯一ウミガメの水族館を併設した道の駅。ウミガメの保護・飼育・啓発活動を行っており、泳ぐウミガメを間近で観察できる。ウミガメ以外にも10種類以上のカメを展示している。",
+      "region": "近畿",
+      "representativeFish": "Sea Turtle",
+      "fishIconSize": 1,
+      "address": "三重県南牟婁郡紀宝町井田568-7",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "akame-falls-aquarium",
+      "name": "赤目滝水族館",
+      "latitude": 34.563312,
+      "longitude": 136.085616,
+      "description": "赤目四十八滝の入り口にあり、「日本サンショウウオセンター」からリニューアル。国の特別天然記念物であるオオサンショウウオをはじめ、赤目地域に生息する生物を展示している。",
+      "region": "近畿",
+      "representativeFish": "Giant Salamander",
+      "fishIconSize": 1,
+      "address": "三重県名張市赤目町長坂861-1",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "hanazono-church-aquarium",
+      "name": "花園教会水族館",
+      "latitude": 35.015662,
+      "longitude": 135.719648,
+      "description": "キリスト教会が運営する入場無料の私設水族館。約190種類の生き物を展示しており、そのほとんどが外来種。外来種問題の啓発活動にも力を入れている。",
+      "region": "近畿",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "京都府京都市右京区太秦安井辻ノ内町10-1",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "aquapia-akutagawa",
+      "name": "高槻市立自然博物館 あくあぴあ芥川",
+      "latitude": 34.86418,
+      "longitude": 135.592135,
+      "description": "高槻市の芥川沿いにある入館無料の自然博物館。高槻の自然をテーマに、淡水魚や鳥類、昆虫などを展示している。芥川の生態系を再現した大型水槽などがある。",
+      "region": "近畿",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "大阪府高槻市南平台5丁目59-1",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "nara-kingyo-museum",
+      "name": "奈良金魚ミュージアム",
+      "latitude": 34.685166,
+      "longitude": 135.802142,
+      "description": "商業施設「ミ・ナーラ」内にある金魚専門のエンターテイメントアクアリウム。プロジェクションマッピングなどを用いたアート性の高い展示が特徴。日本三大金魚産地である大和郡山市の金魚を中心に、約40種3000匹が展示されている。",
+      "region": "近畿",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "奈良県奈良市二条大路南1-3-1 ミ・ナーラ4F",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "koriyama-kingyo-museum",
+      "name": "金魚のふる里 郡山金魚資料館",
+      "latitude": 34.641609,
+      "longitude": 135.777912,
+      "description": "日本有数の金魚の産地、大和郡山市にある私設の資料館。約40種類の金魚を「泳ぐ金魚図鑑」として展示するほか、金魚養殖に関する歴史的な資料も紹介している。入館無料。",
+      "region": "近畿",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "奈良県大和郡山市新木町107",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "dolphin-resort",
+      "name": "ドルフィンリゾート",
+      "latitude": 33.598471,
+      "longitude": 135.936767,
+      "description": "古式捕鯨発祥の地、太地町にあるイルカとのふれあい施設。イルカと一緒に泳いだり、トレーナー体験などができる。アザラシやウミガメなどの動物もいる。",
+      "region": "近畿",
+      "representativeFish": "Dolphin",
+      "fishIconSize": 1,
+      "address": "和歌山県東牟婁郡太地町森浦703-17",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "minatoyama-aquarium",
+      "name": "みなとやま水族館",
+      "latitude": 34.689497,
+      "longitude": 135.16503,
+      "description": "廃校になった旧湊山小学校をリノベーションした複合施設「NATURE STUDIO」内にある水族館。靴を脱いでくつろげるスペースなど、ユニークな展示が特徴。ニジマス釣りやドクターフィッシュの体験もできる。",
+      "region": "近畿",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "兵庫県神戸市兵庫区雪御所町2-24",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "aqua-tojo",
+      "name": "アクア東条",
+      "latitude": 34.928722,
+      "longitude": 135.066611,
+      "description": "東条湖畔にある無料の淡水魚水族館。東条川などに生息するメダカやタナゴを展示しているほか、カメに触れるコーナーやザリガニ釣りイベントも開催される。",
+      "region": "近畿",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "兵庫県加東市黒谷1197-23",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "awaji-janohire-dolphin-farm",
+      "name": "淡路じゃのひれドルフィンファーム",
+      "latitude": 34.240103,
+      "longitude": 134.714012,
+      "description": "「淡路じゃのひれアウトドアリゾート」内にある体験型施設。イルカと触れ合ったり、一緒に泳いだりすることができる。",
+      "region": "近畿",
+      "representativeFish": "Dolphin",
+      "fishIconSize": 1,
+      "address": "兵庫県南あわじ市阿万塩屋町2660",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "fukuyama-univ-marine-bio-center-aquarium",
+      "name": "福山大学マリンバイオセンター水族館",
+      "latitude": 34.348605,
+      "longitude": 133.175064,
+      "description": "福山大学の研究施設内にある無料の水族館。瀬戸内海に生息する約150種類の海の生き物を展示している。学生が主体となって運営しており、タッチングプールもある。",
+      "region": "中国・四国",
+      "representativeFish": "Coral Fish",
+      "fishIconSize": 1,
+      "address": "広島県尾道市因島大浜町452-10",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "shimantogawa-learning-center-osakanakan",
+      "name": "四万十川学習センターおさかな館",
+      "latitude": 33.22917,
+      "longitude": 132.71028,
+      "description": "道の駅「虹の森公園まつの」内にある水族館。日本最後の清流・四万十川の自然をテーマに、源流から河口までの生物を展示している。幻の魚「アカメ」や、ピラルク、コツメカワウソなども見ることができる。",
+      "region": "中国・四国",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "愛媛県北宇和郡松野町延野々1510-1",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "nagahama-high-school-aquarium",
+      "name": "長高水族館",
+      "latitude": 33.615503,
+      "longitude": 132.479182,
+      "description": "愛媛県立長浜高等学校の生徒が運営する全国でも珍しい高校内水族館。愛媛近海の生物を中心に約150種2000点を飼育展示している。2024年4月に移転リニューアルオープンした。",
+      "region": "中国・四国",
+      "representativeFish": "Coral Fish",
+      "fishIconSize": 1,
+      "address": "愛媛県大洲市長浜甲576",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "dolphin-farm-shimanami",
+      "name": "ドルフィンファームしまなみ",
+      "latitude": 34.20062,
+      "longitude": 133.076051,
+      "description": "日本最大級のイルカとのふれあい体験施設。イルカと一緒に泳いだり、生態を学んだりできる様々なプログラムが用意されている。オートキャンプ場も併設。",
+      "region": "中国・四国",
+      "representativeFish": "Dolphin",
+      "fishIconSize": 1,
+      "address": "愛媛県今治市伯方町叶浦1673",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "japan-dolphin-center",
+      "name": "日本ドルフィンセンター",
+      "latitude": 34.287918,
+      "longitude": 134.267779,
+      "description": "瀬戸内海に面したイルカとのふれあい体験施設。餌やり体験やドルフィンスイムなどができる。ドルフィンセラピーや環境教育にも力を入れている。",
+      "region": "中国・四国",
+      "representativeFish": "Dolphin",
+      "fishIconSize": 1,
+      "address": "香川県さぬき市津田町鶴羽1520-130",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "molasco-mugi",
+      "name": "モラスコむぎ",
+      "latitude": 33.667056,
+      "longitude": 134.443611,
+      "description": "世界中の約2,000種の貝類を展示する資料館と、地元の魚介類を展示する水族館を併設した施設。巻貝と二枚貝をイメージした特徴的な木造建築も魅力。",
+      "region": "中国・四国",
+      "representativeFish": "Crab",
+      "fishIconSize": 1,
+      "address": "徳島県海部郡牟岐町灘下浜辺198-1",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "marine-jam",
+      "name": "海洋自然博物館 マリンジャム",
+      "latitude": 33.547458,
+      "longitude": 134.31713,
+      "description": "竹ヶ島海域公園内にある体験型施設。海中観光船「ブルーマリン」でサンゴや熱帯魚を鑑賞できるほか、「島のちいさな水族館」やタッチプール、シーカヤックなどのマリンスポーツも楽しめる。",
+      "region": "中国・四国",
+      "representativeFish": "Clownfish",
+      "fishIconSize": 1,
+      "address": "徳島県海部郡海陽町宍喰浦字竹ケ島28-45",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "shimantogawa-gakuyukan-sakanakan",
+      "name": "四万十川学遊館さかな館",
+      "latitude": 32.989287,
+      "longitude": 132.91541,
+      "description": "四万十市トンボ自然公園内にある自然史博物館。「さかな館」ではアカメをはじめとする四万十川水系の魚類を中心に展示し、「とんぼ館」では世界一の数のトンボ標本を展示している。",
+      "region": "中国・四国",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "高知県四万十市具同8055-5",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "kurume-us",
+      "name": "くるめウス",
+      "latitude": 33.322944,
+      "longitude": 130.53591,
+      "description": "筑後川防災施設。筑後川の歴史や自然、防災について学べる。館内には筑後川に生息する魚を展示するジオラマ水槽があり、水族館としても楽しめる。ニッポンバラタナゴの学名が愛称の由来。",
+      "region": "九州・沖縄",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "福岡県久留米市新合川1丁目1-3",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "yanagawa-ariake-aquarium",
+      "name": "やながわ有明海水族館",
+      "latitude": 33.159181,
+      "longitude": 130.395174,
+      "description": "NPO法人が運営する小さな水族館。有明海のユニークな生き物や絶滅危惧種を展示している。学生が館長を務めていることでも知られる。",
+      "region": "九州・沖縄",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "福岡県柳川市稲荷町29",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "higata-nanami",
+      "name": "干潟交流館 なな海",
+      "latitude": 33.075915,
+      "longitude": 130.145956,
+      "description": "有明海の干潟や生物に親しむための施設。道の駅鹿島の隣に位置し、ミニ水族館やタッチプール、展望デッキなどがある。干潟体験の受付も行っている。",
+      "region": "九州・沖縄",
+      "representativeFish": "Crab",
+      "fishIconSize": 1,
+      "address": "佐賀県鹿島市大字音成甲4427-5",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "mutsugoro-aquarium",
+      "name": "むつごろう水族館",
+      "latitude": 32.847011,
+      "longitude": 130.088799,
+      "description": "「諫早ゆうゆうランド干拓の里」内にある水族館。本明川と有明海に生息する生物を展示しており、国内最大級の干潟水槽ではムツゴロウなどを観察できる。※令和4年10月1日から臨時休館中。",
+      "region": "九州・沖縄",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "長崎県諫早市小野島町2232",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "iki-iruka-park-resort",
+      "name": "壱岐イルカパーク＆リゾート",
+      "latitude": 33.8604,
+      "longitude": 129.704453,
+      "description": "壱岐島北部の天然の入り江を利用したイルカとのふれあい施設。イルカに餌をあげたり、一緒に泳いだりするなどの体験プログラムが充実している。カフェやキャンプ場も併設。",
+      "region": "九州・沖縄",
+      "representativeFish": "Dolphin",
+      "fishIconSize": 1,
+      "address": "長崎県壱岐市勝本町東触2668-3",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "tsukumi-iruka-jima",
+      "name": "うみたま体験パーク「つくみイルカ島」",
+      "latitude": 33.07013,
+      "longitude": 131.954756,
+      "description": "水族館「うみたまご」と津久見市がコラボした体験型レジャー施設。自然の海を舞台にしたイルカのパフォーマンスや、イルカと一緒に泳ぐなどのふれあい体験ができる。",
+      "region": "九州・沖縄",
+      "representativeFish": "Dolphin",
+      "fishIconSize": 1,
+      "address": "大分県津久見市大字四浦2218-10",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "banjou-osakanakan",
+      "name": "番匠おさかな館",
+      "latitude": 32.963851,
+      "longitude": 131.838152,
+      "description": "道の駅「やよい」に併設された淡水魚専門の水族館。九州屈指の清流である番匠川に生息する生き物を中心に展示し、身近な自然の大切さを伝えている。世界の熱帯淡水魚も展示されている。",
+      "region": "九州・沖縄",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "大分県佐伯市弥生大字上小倉898-1",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "omoshiro-aquarium-aqua",
+      "name": "おもしろ水族感アクア",
+      "latitude": 32.897592,
+      "longitude": 131.004331,
+      "description": "阿蘇ファームランド内にあるミニ水族館。サメやエイに触れることができるタッチプールや、世界のカブトムシ・クワガタムシの展示もある。",
+      "region": "九州・沖縄",
+      "representativeFish": "Shark",
+      "fishIconSize": 1,
+      "address": "熊本県阿蘇郡南阿蘇村河陽5579-3",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "takachiho-freshwater-aquarium",
+      "name": "高千穂峡淡水魚水族館",
+      "latitude": 32.702251,
+      "longitude": 131.300687,
+      "description": "観光名所・高千穂峡内にある淡水魚専門の水族館。五ヶ瀬川水系に生息するヤマメなどを中心に、約100種類の魚を展示している。",
+      "region": "九州・沖縄",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "宮崎県西臼杵郡高千穂町向山60-1",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "sumie-family-aquarium",
+      "name": "すみえファミリー水族館",
+      "latitude": 32.661743,
+      "longitude": 131.768116,
+      "description": "須美江家族旅行村内にある水族館。五ヶ瀬川水系や日向灘の魚を中心に、約150種800匹を展示している。希少な「アカメ」も見ることができる。",
+      "region": "九州・沖縄",
+      "representativeFish": "Coral Fish",
+      "fishIconSize": 1,
+      "address": "宮崎県延岡市須美江町69-1",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "idenoyama-freshwater-fish-aquarium",
+      "name": "出の山淡水魚水族館",
+      "latitude": 31.98083,
+      "longitude": 130.94556,
+      "description": "名水百選に選ばれた湧水を利用した淡水魚専門の水族館。宮崎県内に生息する魚を中心に、オオサンショウウオやチョウザメなど約130種1500匹を展示している。",
+      "region": "九州・沖縄",
+      "representativeFish": "Sturgeon",
+      "fishIconSize": 1,
+      "address": "宮崎県小林市南西方1091",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "oyodogawa-learning-center",
+      "name": "大淀川学習館",
+      "latitude": 31.948861,
+      "longitude": 131.4065,
+      "description": "大淀川流域の自然をテーマにした科学館。館内には大淀川の魚を展示する「生体展示ホール」があり、幻の魚アカメも見ることができる。チョウが舞う「自然楽習園」も併設。",
+      "region": "九州・沖縄",
+      "representativeFish": "Freshwater Fish",
+      "fishIconSize": 1,
+      "address": "宮崎県宮崎市下北方町二反五瀬5348-1",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "shibushiwan-daikoku-iruka-land",
+      "name": "志布志湾大黒イルカランド",
+      "latitude": 31.460245,
+      "longitude": 131.161315,
+      "description": "イルカとのふれあいをテーマにした体験型レジャースポット。イルカのパフォーマンスや一緒に泳ぐ体験のほか、ペンギンの散歩やポニー乗馬、釣り堀などもある。",
+      "region": "九州・沖縄",
+      "representativeFish": "Dolphin",
+      "fishIconSize": 1,
+      "address": "宮崎県串間市大字高松1481-3",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "amami-marine-exhibition-hall",
+      "name": "奄美海洋展示館",
+      "latitude": 28.402233,
+      "longitude": 129.454687,
+      "description": "大浜海浜公園内にある、巻貝をモチーフにした円形の建物が特徴の施設。「海と人との共生」をテーマに、ウミガメやサメ、奄美固有の熱帯魚などを展示している。",
+      "region": "九州・沖縄",
+      "representativeFish": "Sea Turtle",
+      "fishIconSize": 1,
+      "address": "鹿児島県奄美市名瀬小宿大浜701-1",
+      "affiliateLink": null,
+      "officialUrl": null
+    },
+    {
+      "stableId": "okinawa-marine-research-center",
+      "name": "オキナワマリンリサーチセンター",
+      "latitude": 26.3408,
+      "longitude": 127.7836,
+      "description": "「楽しく遊びながら学ぶ」をテーマに、イルカなどの海洋生物とのふれあい体験を提供する施設。収益はイルカや海棲生物の研究・保護・教育活動に役立てられている。",
+      "region": "九州・沖縄",
+      "representativeFish": "Dolphin",
+      "fishIconSize": 1,
+      "address": "沖縄県国頭郡恩納村字仲泊1379-11",
+      "affiliateLink": null,
+      "officialUrl": null
     }
   ]
 }

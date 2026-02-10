@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-typealias Aquarium = AquariumSchemaV6.Aquarium
+typealias Aquarium = AquariumSchemaV7.Aquarium
 
 extension Aquarium {
     /// 訪問記録の安全なアクセサ（CloudKit互換のためvisitsがオプショナル）

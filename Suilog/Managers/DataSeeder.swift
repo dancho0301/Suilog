@@ -117,6 +117,7 @@ class DataSeeder {
                 existingAquarium.fishIconSize = newAquarium.fishIconSize
                 existingAquarium.address = newAquarium.address
                 existingAquarium.affiliateLink = newAquarium.affiliateLink
+                existingAquarium.officialUrl = newAquarium.officialUrl
                 // stableIdを設定（既存データにstableIdがなければ設定）
                 if let stableId = newAquarium.stableId, !stableId.isEmpty {
                     existingAquarium.stableId = stableId
@@ -135,7 +136,8 @@ class DataSeeder {
                     fishIconSize: newAquarium.fishIconSize,
                     address: newAquarium.address,
                     affiliateLink: newAquarium.affiliateLink,
-                    stableId: newAquarium.stableId ?? ""
+                    stableId: newAquarium.stableId ?? "",
+                    officialUrl: newAquarium.officialUrl
                 )
                 context.insert(aquarium)
                 print("  ➕ 追加: \(newAquarium.name)")
@@ -178,7 +180,8 @@ class DataSeeder {
                 fishIconSize: data.fishIconSize,
                 address: data.address,
                 affiliateLink: data.affiliateLink,
-                stableId: data.stableId ?? ""
+                stableId: data.stableId ?? "",
+                officialUrl: data.officialUrl
             )
             context.insert(aquarium)
         }

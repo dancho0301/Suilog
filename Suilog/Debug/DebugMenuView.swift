@@ -19,6 +19,8 @@ struct DebugMenuView: View {
     @Query private var visitRecords: [VisitRecord]
 
     @State private var showingDeleteConfirmation = false
+    @State private var isRefreshing = false
+    @State private var refreshResult: String?
 
     var body: some View {
         NavigationStack {
@@ -90,8 +92,49 @@ struct DebugMenuView: View {
                         }
                     }
 
+                    // データURL
+                    Section {
+                        Toggle("カスタムURLを使用", isOn: $settings.useCustomDataURL)
+
+                        if settings.useCustomDataURL {
+                            TextField("aquariums.json URL", text: $settings.customDataURL)
+                                .textInputAutocapitalization(.never)
+                                .autocorrectionDisabled()
+                                .keyboardType(.URL)
+                                .font(.caption)
+                        }
+                    } header: {
+                        Text("データURL")
+                    } footer: {
+                        if settings.isCustomDataURLActive {
+                            Text("カスタムURL: \(settings.customDataURL)")
+                                .font(.caption2)
+                        } else {
+                            Text("デフォルト: Firebase Hosting")
+                        }
+                    }
+
                     // データ操作
-                    Section("データ操作") {
+                    Section {
+                        Button {
+                            Task { await forceRefreshAquariums() }
+                        } label: {
+                            HStack {
+                                Label("水族館リストを強制更新", systemImage: "arrow.clockwise")
+                                Spacer()
+                                if isRefreshing {
+                                    ProgressView()
+                                }
+                            }
+                        }
+                        .disabled(isRefreshing)
+
+                        if let refreshResult {
+                            Text(refreshResult)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+
                         Button(role: .destructive) {
                             showingDeleteConfirmation = true
                         } label: {
@@ -116,6 +159,9 @@ struct DebugMenuView: View {
                         }
                         LabeledContent("位置偽装") {
                             statusBadge(settings.isFakeLocationActive)
+                        }
+                        LabeledContent("カスタムデータURL") {
+                            statusBadge(settings.isCustomDataURLActive)
                         }
                     }
                 }
@@ -175,6 +221,25 @@ struct DebugMenuView: View {
     }
 
     // MARK: - Actions
+
+    private func forceRefreshAquariums() async {
+        isRefreshing = true
+        refreshResult = nil
+        // バージョンを0にリセットして強制更新
+        UserDefaults.standard.set(0, forKey: "AquariumDataVersion")
+        let result = await DataSeeder.seedAquariums(context: modelContext)
+        switch result {
+        case .success:
+            refreshResult = "更新完了（v\(UserDefaults.standard.integer(forKey: "AquariumDataVersion"))）"
+        case .skippedOffline:
+            refreshResult = "オフラインのためスキップ"
+        case .errorNoData(let msg):
+            refreshResult = "エラー: \(msg)"
+        case .errorSaveFailed(let msg):
+            refreshResult = "保存失敗: \(msg)"
+        }
+        isRefreshing = false
+    }
 
     private func deleteAllVisitRecords() {
         for record in visitRecords {

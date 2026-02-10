@@ -19,6 +19,8 @@ struct AquariumData: Codable {
     let affiliateLink: String?
     /// 安定ID: 名称変更に対応するための一意識別子（後方互換のためオプショナル）
     let stableId: String?
+    /// 公式HPのURL
+    let officialUrl: String?
 }
 
 struct AquariumResponse: Codable {

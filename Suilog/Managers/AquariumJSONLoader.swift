@@ -29,12 +29,24 @@ enum AquariumLoadError: Error {
 }
 
 struct AquariumJSONLoader {
-    private static let jsonURL = "https://suilog-3a94e.web.app/aquariums.json"
+    private static let defaultURL = "https://suilog-3a94e.web.app/aquariums.json"
+
+    private static var jsonURL: String {
+        #if DEBUG
+        let settings = DebugSettings.shared
+        if settings.isCustomDataURLActive {
+            return settings.customDataURL
+        }
+        #endif
+        return defaultURL
+    }
 
     /// Webから水族館データを非同期で取得（バックグラウンドで実行）
+    @MainActor
     static func fetchAquariums() async -> Result<AquariumResponse, AquariumLoadError> {
-        guard let url = URL(string: jsonURL) else {
-            print("❌ 無効なURL: \(jsonURL)")
+        let urlString = jsonURL
+        guard let url = URL(string: urlString) else {
+            print("❌ 無効なURL: \(urlString)")
             return .failure(.invalidURL)
         }
 

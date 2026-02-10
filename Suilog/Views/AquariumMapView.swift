@@ -427,6 +427,27 @@ struct AquariumDetailView: View {
                         .padding(.horizontal)
                     }
 
+                    // 公式HP
+                    if let officialUrl = aquarium.officialUrl, !officialUrl.isEmpty,
+                       let url = URL(string: officialUrl) {
+                        Divider()
+
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("公式HP")
+                                .font(.headline)
+                            Link(destination: url) {
+                                HStack {
+                                    Text("公式サイトを開く")
+                                        .foregroundColor(.blue)
+                                    Spacer()
+                                    Image(systemName: "safari")
+                                        .foregroundColor(.blue)
+                                }
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+
                     // チケット購入
                     if let affiliateLink = aquarium.affiliateLink, !affiliateLink.isEmpty,
                        let url = URL(string: affiliateLink) {
