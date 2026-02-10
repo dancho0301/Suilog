@@ -21,6 +21,9 @@ struct ContentView: View {
     @State private var nearbyAquarium: Aquarium?
     @State private var showingCheckInSheet = false
     @State private var hasCheckedNearbyOnLaunch = false
+    #if DEBUG
+    @State private var showingDebugMenu = false
+    #endif
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -43,6 +46,35 @@ struct ContentView: View {
                     .padding(.top, 60)
                     .padding(.trailing, 16)
                 }
+                #if DEBUG
+                .overlay(alignment: .topLeading) {
+                    Button {
+                        showingDebugMenu = true
+                    } label: {
+                        Image(systemName: "ladybug.fill")
+                            .font(.title2)
+                            .foregroundStyle(.white)
+                            .padding(12)
+                            .background(
+                                Circle()
+                                    .fill(Color.red.opacity(0.8))
+                                    .shadow(radius: 4)
+                            )
+                    }
+                    .padding(.top, 60)
+                    .padding(.leading, 16)
+                }
+                .overlay(alignment: .top) {
+                    if DebugSettings.shared.isDebugModeEnabled {
+                        Text("DEBUG MODE")
+                            .font(.caption.bold())
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 4)
+                            .background(Color.red.opacity(0.9))
+                    }
+                }
+                #endif
                 .tabItem {
                     Label("マイ水槽", systemImage: "fish.fill")
                 }
@@ -66,6 +98,11 @@ struct ContentView: View {
                 .environmentObject(storeManager)
                 .environmentObject(themeManager)
         }
+        #if DEBUG
+        .sheet(isPresented: $showingDebugMenu) {
+            DebugMenuView()
+        }
+        #endif
         .sheet(isPresented: $showingCheckInSheet) {
             if let aquarium = nearbyAquarium {
                 LocationCheckInView(aquarium: aquarium)

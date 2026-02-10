@@ -118,9 +118,20 @@ enum PhotoMetadataExtractor {
         of aquarium: Aquarium,
         radius: CLLocationDistance = 1000
     ) -> Bool {
+        #if DEBUG
+        let debug = DebugSettings.shared
+        if debug.isAlwaysAllowCheckInActive {
+            return true
+        }
+        #endif
         let photoLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         let aquariumLocation = CLLocation(latitude: aquarium.latitude, longitude: aquarium.longitude)
         let distance = photoLocation.distance(from: aquariumLocation)
+        #if DEBUG
+        if debug.isCustomRadiusActive {
+            return distance <= debug.effectiveRadius
+        }
+        #endif
         return distance <= radius
     }
 
