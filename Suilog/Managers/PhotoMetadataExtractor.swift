@@ -113,7 +113,7 @@ enum PhotoMetadataExtractor {
     ///   - aquarium: 対象の水族館
     ///   - radius: 許容範囲（メートル）デフォルトは1000m
     /// - Returns: 範囲内ならtrue
-    static func isWithinRange(
+    @MainActor static func isWithinRange(
         coordinate: CLLocationCoordinate2D,
         of aquarium: Aquarium,
         radius: CLLocationDistance = 1000
