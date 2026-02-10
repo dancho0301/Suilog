@@ -14,30 +14,53 @@ import CoreLocation
 final class DebugSettings: ObservableObject {
     static let shared = DebugSettings()
 
+    private static let defaults = UserDefaults.standard
+
     /// デバッグモードのマスタースイッチ
-    @Published var isDebugModeEnabled = false
+    var isDebugModeEnabled: Bool {
+        get { Self.defaults.bool(forKey: "debug_isDebugModeEnabled") }
+        set { objectWillChange.send(); Self.defaults.set(newValue, forKey: "debug_isDebugModeEnabled") }
+    }
 
     // MARK: - チェックイン設定
 
     /// 距離判定を常にtrueにする
-    @Published var alwaysAllowCheckIn = false
+    var alwaysAllowCheckIn: Bool {
+        get { Self.defaults.bool(forKey: "debug_alwaysAllowCheckIn") }
+        set { objectWillChange.send(); Self.defaults.set(newValue, forKey: "debug_alwaysAllowCheckIn") }
+    }
 
     /// カスタム距離閾値を使用する
-    @Published var useCustomRadius = false
+    var useCustomRadius: Bool {
+        get { Self.defaults.bool(forKey: "debug_useCustomRadius") }
+        set { objectWillChange.send(); Self.defaults.set(newValue, forKey: "debug_useCustomRadius") }
+    }
 
     /// カスタム距離閾値（メートル）
-    @Published var customRadius: Double = 1000
+    var customRadius: Double {
+        get { Self.defaults.double(forKey: "debug_customRadius") }
+        set { objectWillChange.send(); Self.defaults.set(newValue, forKey: "debug_customRadius") }
+    }
 
     // MARK: - 位置偽装
 
     /// GPS位置を偽装する
-    @Published var useFakeLocation = false
+    var useFakeLocation: Bool {
+        get { Self.defaults.bool(forKey: "debug_useFakeLocation") }
+        set { objectWillChange.send(); Self.defaults.set(newValue, forKey: "debug_useFakeLocation") }
+    }
 
     /// 偽装する緯度
-    @Published var fakeLatitude: Double = 35.6762
+    var fakeLatitude: Double {
+        get { Self.defaults.double(forKey: "debug_fakeLatitude") }
+        set { objectWillChange.send(); Self.defaults.set(newValue, forKey: "debug_fakeLatitude") }
+    }
 
     /// 偽装する経度
-    @Published var fakeLongitude: Double = 139.6503
+    var fakeLongitude: Double {
+        get { Self.defaults.double(forKey: "debug_fakeLongitude") }
+        set { objectWillChange.send(); Self.defaults.set(newValue, forKey: "debug_fakeLongitude") }
+    }
 
     /// 偽装位置のCLLocation
     var fakeLocation: CLLocation {
@@ -69,7 +92,13 @@ final class DebugSettings: ObservableObject {
         return 1000 // デフォルト1km
     }
 
-    private init() {}
+    private init() {
+        Self.defaults.register(defaults: [
+            "debug_customRadius": 1000.0,
+            "debug_fakeLatitude": 35.6762,
+            "debug_fakeLongitude": 139.6503,
+        ])
+    }
 }
 
 /// 水族館の位置プリセット
