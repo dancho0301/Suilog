@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Overview
 
 Suilog is an iOS SwiftUI application that helps users track their visits to aquariums across Japan. It features:
-- 82 aquariums across all regions of Japan (Hokkaido to Okinawa)
+- 154 aquariums across all regions of Japan (Hokkaido to Okinawa)
 - Two check-in types: location-based (gold) and manual (silver)
 - Photo and memo functionality for each visit
 - Map view with real-time location tracking
