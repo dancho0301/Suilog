@@ -201,7 +201,7 @@ struct DebugMenuView: View {
                 Text("\(visitedCount) / \(aquariums.count)")
             }
             LabeledContent("データバージョン") {
-                let version = UserDefaults.standard.integer(forKey: "AquariumDataVersion")
+                let version = CloudSettingsManager.shared.integer(forKey: CloudSettingsManager.aquariumDataVersionKey)
                 Text("v\(version)")
             }
             LabeledContent("現在位置") {
@@ -226,11 +226,11 @@ struct DebugMenuView: View {
         isRefreshing = true
         refreshResult = nil
         // バージョンを0にリセットして強制更新
-        UserDefaults.standard.set(0, forKey: "AquariumDataVersion")
+        CloudSettingsManager.shared.set(0, forKey: CloudSettingsManager.aquariumDataVersionKey)
         let result = await DataSeeder.seedAquariums(context: modelContext)
         switch result {
         case .success:
-            refreshResult = "更新完了（v\(UserDefaults.standard.integer(forKey: "AquariumDataVersion"))）"
+            refreshResult = "更新完了（v\(CloudSettingsManager.shared.integer(forKey: CloudSettingsManager.aquariumDataVersionKey))）"
         case .skippedOffline:
             refreshResult = "オフラインのためスキップ"
         case .errorNoData(let msg):
