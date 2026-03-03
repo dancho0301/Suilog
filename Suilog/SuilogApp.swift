@@ -12,7 +12,13 @@ import SwiftData
 struct SuilogApp: App {
     @StateObject private var locationManager = LocationManager()
     @StateObject private var storeManager = StoreManager()
-    @StateObject private var themeManager = ThemeManager()
+    @StateObject private var themeManager: ThemeManager
+
+    init() {
+        // iCloud Key-Value Storeの同期を開始（ThemeManager初期化前に実行）
+        CloudSettingsManager.shared.setup()
+        _themeManager = StateObject(wrappedValue: ThemeManager())
+    }
 
     // エラー状態
     @State private var showingInitialError = false

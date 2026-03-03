@@ -19,7 +19,8 @@ enum SeedResult {
 @MainActor
 class DataSeeder {
     // データバージョン管理用のキー
-    private static let dataVersionKey = "AquariumDataVersion"
+    private static let dataVersionKey = CloudSettingsManager.aquariumDataVersionKey
+    private static let cloudSettings = CloudSettingsManager.shared
 
     static func seedAquariums(context: ModelContext) async -> SeedResult {
         // 既存の水族館データを取得
@@ -43,8 +44,8 @@ class DataSeeder {
             }
 
         case .success(let response):
-            // 保存されているデータバージョンを取得
-            let savedVersion = UserDefaults.standard.integer(forKey: dataVersionKey)
+            // 保存されているデータバージョンを取得（iCloud KVS優先）
+            let savedVersion = cloudSettings.integer(forKey: dataVersionKey)
             let latestVersion = response.version
 
             // データバージョンが最新の場合は何もしない
@@ -67,8 +68,8 @@ class DataSeeder {
                 return .errorSaveFailed("データの保存に失敗しました: \(error.localizedDescription)")
             }
 
-            // データバージョンを更新
-            UserDefaults.standard.set(latestVersion, forKey: dataVersionKey)
+            // データバージョンを更新（iCloud KVSとUserDefaultsの両方に保存）
+            cloudSettings.set(latestVersion, forKey: dataVersionKey)
             return .success
         }
     }

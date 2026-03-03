@@ -20,15 +20,35 @@ class ThemeManager: ObservableObject {
     /// 購入済みのProduct ID一覧（StoreManagerから更新される）
     @Published var purchasedProductIds: Set<String> = []
 
-    private let selectedThemeKey = "SelectedThemeId"
+    private let selectedThemeKey = CloudSettingsManager.selectedThemeIdKey
+    private let cloudSettings = CloudSettingsManager.shared
 
     init() {
-        // 保存されているテーマを読み込む
-        if let savedThemeId = UserDefaults.standard.string(forKey: selectedThemeKey),
+        // 保存されているテーマを読み込む（iCloud KVS優先）
+        if let savedThemeId = cloudSettings.string(forKey: selectedThemeKey),
            let savedTheme = Theme.allThemes.first(where: { $0.id == savedThemeId }) {
             self.currentTheme = savedTheme
         } else {
             self.currentTheme = Theme.defaultTheme
+        }
+
+        // iCloudからのテーマ変更を監視
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleCloudThemeChange(_:)),
+            name: .cloudThemeDidChange,
+            object: nil
+        )
+    }
+
+    @objc private func handleCloudThemeChange(_ notification: Notification) {
+        guard let themeId = notification.userInfo?["themeId"] as? String,
+              let theme = Theme.allThemes.first(where: { $0.id == themeId }),
+              isUnlocked(theme) else {
+            return
+        }
+        Task { @MainActor in
+            self.currentTheme = theme
         }
     }
 
@@ -59,7 +79,7 @@ class ThemeManager: ObservableObject {
         }
 
         currentTheme = theme
-        UserDefaults.standard.set(theme.id, forKey: selectedThemeKey)
+        cloudSettings.set(theme.id, forKey: selectedThemeKey)
         return true
     }
 
