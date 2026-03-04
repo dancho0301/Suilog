@@ -21,7 +21,6 @@ struct ManualCheckInView: View {
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var photoData: Data?
     @State private var photoMetadata: PhotoMetadata?
-    @State private var useLocationCheckIn = false
     @State private var showingCamera = false
     @State private var showingSuccess = false
     @State private var showingError = false
@@ -39,6 +38,11 @@ struct ManualCheckInView: View {
     private var distanceFromPhoto: CLLocationDistance? {
         guard let coordinate = photoMetadata?.coordinate else { return nil }
         return PhotoMetadataExtractor.distance(from: coordinate, to: aquarium)
+    }
+
+    /// 判定されたチェックインタイプ（写真があれば自動判定、なければ手動）
+    private var determinedCheckInType: CheckInType {
+        isPhotoLocationValid ? .location : .manual
     }
 
     var body: some View {
@@ -94,7 +98,6 @@ struct ManualCheckInView: View {
                             self.photoData = nil
                             self.selectedPhoto = nil
                             self.photoMetadata = nil
-                            self.useLocationCheckIn = false
                         } label: {
                             Label("写真を削除", systemImage: "trash")
                         }
@@ -120,31 +123,40 @@ struct ManualCheckInView: View {
                 } header: {
                     Text("写真（任意）")
                 } footer: {
-                    HStack(spacing: 4) {
-                        Image(systemName: "sparkles")
-                            .foregroundColor(.yellow)
-                        Text("水族館で撮影した位置情報付きの写真を選択すると、ゴールドチェックインになります")
-                    }
-                    .font(.caption)
+                    Text("写真をアップすると、撮影日時が訪問日に自動設定され、位置情報からチェックインタイプが自動判定されます")
+                        .font(.caption)
                 }
 
-                // 写真の位置情報が有効な場合、チェックインタイプを選択可能
-                if isPhotoLocationValid {
+                // 写真がある場合、チェックインタイプの判定結果を表示
+                if photoData != nil {
                     Section(header: Text("チェックインタイプ")) {
-                        Toggle(isOn: $useLocationCheckIn) {
-                            HStack {
-                                Image(systemName: "location.circle.fill")
-                                    .foregroundColor(.yellow)
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text("位置情報チェックイン")
-                                        .font(.body)
-                                    Text("写真の撮影場所が水族館の近くです")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                }
+                        HStack {
+                            Image(systemName: determinedCheckInType == .location ? "location.circle.fill" : "hand.tap")
+                                .foregroundColor(determinedCheckInType == .location ? .yellow : .gray)
+                            Text("チェックインタイプ")
+                            Spacer()
+                            HStack(spacing: 4) {
+                                Image(systemName: "circle.fill")
+                                    .font(.caption2)
+                                    .foregroundColor(determinedCheckInType.color)
+                                Text(determinedCheckInType.displayName)
+                                    .foregroundColor(.secondary)
                             }
                         }
-                        .tint(.yellow)
+
+                        if isPhotoLocationValid {
+                            Text("写真の撮影場所が水族館の近く（1km以内）のため、位置情報チェックイン（ゴールド）になります")
+                                .font(.caption)
+                                .foregroundColor(.green)
+                        } else if photoMetadata?.hasLocation == true {
+                            Text("写真の撮影場所が水族館から1km以上離れているため、手動チェックイン（シルバー）になります")
+                                .font(.caption)
+                                .foregroundColor(.orange)
+                        } else {
+                            Text("写真に位置情報がないため、手動チェックイン（シルバー）になります")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
                     }
                 }
 
@@ -161,24 +173,18 @@ struct ManualCheckInView: View {
                             Spacer()
                             if isCheckingIn {
                                 ProgressView()
-                                    .tint(useLocationCheckIn ? .black : .white)
+                                    .tint(determinedCheckInType == .location ? .black : .white)
                                 Text("チェックイン中...")
                             } else {
-                                Image(systemName: useLocationCheckIn ? "location.circle.fill" : "checkmark.circle.fill")
+                                Image(systemName: determinedCheckInType == .location ? "location.circle.fill" : "checkmark.circle.fill")
                                 Text("チェックインする")
                             }
                             Spacer()
                         }
                     }
                     .buttonStyle(.borderedProminent)
-                    .tint(useLocationCheckIn ? .yellow : .gray)
+                    .tint(determinedCheckInType == .location ? .yellow : .gray)
                     .disabled(isCheckingIn)
-
-                    if useLocationCheckIn {
-                        Text("写真の位置情報を使って位置情報チェックイン（ゴールド）を行います")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
                 }
             }
             .navigationTitle("手動チェックイン")
@@ -203,12 +209,6 @@ struct ManualCheckInView: View {
                         // 撮影日時があれば訪問日に設定
                         if let dateTaken = metadata.dateTaken, dateTaken <= Date() {
                             visitDate = dateTaken
-                        }
-
-                        // 位置情報が有効な場合は自動的に位置情報チェックインを有効化
-                        if let coordinate = metadata.coordinate,
-                           PhotoMetadataExtractor.isWithinRange(coordinate: coordinate, of: aquarium) {
-                            useLocationCheckIn = true
                         }
 
                         // 表示・保存用に圧縮
@@ -240,14 +240,11 @@ struct ManualCheckInView: View {
     private func checkIn() {
         isCheckingIn = true
 
-        // 位置情報チェックインが有効で、写真の位置情報が有効な場合はlocationタイプ
-        let checkInType: CheckInType = useLocationCheckIn && isPhotoLocationValid ? .location : .manual
-
         let visit = VisitRecord(
             visitDate: visitDate,
             memo: memo,
             photoData: photoData,
-            checkInType: checkInType,
+            checkInType: determinedCheckInType,
             aquarium: aquarium
         )
         modelContext.insert(visit)

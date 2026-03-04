@@ -341,7 +341,6 @@ struct AquariumDetailView: View {
 
     @State private var showingLocationCheckInForm = false
     @State private var showingManualCheckIn = false
-    @State private var showingPhotoCheckIn = false
 
     var distanceText: String {
         if let distance = locationManager.distance(to: CLLocationCoordinate2D(latitude: aquarium.latitude, longitude: aquarium.longitude)) {
@@ -604,34 +603,7 @@ struct AquariumDetailView: View {
                             .cornerRadius(10)
                         }
 
-                        Text("※ 手動チェックインは訪問日を自由に設定できます")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-
-                        Button {
-                            showingPhotoCheckIn = true
-                        } label: {
-                            HStack {
-                                Image(systemName: "camera.fill")
-                                Text("写真でチェックイン")
-                                Spacer()
-                                HStack(spacing: 2) {
-                                    Image(systemName: "circle.fill")
-                                        .foregroundColor(.yellow)
-                                    Text("/")
-                                        .foregroundColor(.white.opacity(0.7))
-                                    Image(systemName: "circle.fill")
-                                        .foregroundColor(.gray)
-                                }
-                            }
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.blue.opacity(0.8))
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                        }
-
-                        Text("※ 写真の撮影日と位置情報からチェックインタイプを自動判定します")
+                        Text("※ 訪問日を自由に設定できます。写真をアップすると撮影日時と位置情報から自動判定します")
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -651,9 +623,6 @@ struct AquariumDetailView: View {
             }
             .sheet(isPresented: $showingManualCheckIn) {
                 ManualCheckInView(aquarium: aquarium)
-            }
-            .sheet(isPresented: $showingPhotoCheckIn) {
-                PhotoCheckInView(aquarium: aquarium)
             }
         }
     }
