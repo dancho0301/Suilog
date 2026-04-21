@@ -3,6 +3,7 @@
 //  Suilog
 //
 //  Created by dancho on 2025/12/31.
+//  Redesigned per design_handoff_suilog spec.
 //
 
 import SwiftUI
@@ -10,191 +11,252 @@ import SwiftData
 
 struct PassportView: View {
     @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject private var themeManager: ThemeManager
     @Query(sort: \VisitRecord.visitDate, order: .reverse) private var visitRecords: [VisitRecord]
 
     @State private var selectedVisit: VisitRecord?
     @State private var showDeleteConfirmation = false
-    @State private var indexSetToDelete: IndexSet?
+    @State private var visitToDelete: VisitRecord?
     @State private var showingDeleteError = false
     @State private var deleteErrorMessage = ""
+    @State private var showingAquariumPicker = false
+    @State private var pickerSelectedAquarium: Aquarium?
+    @State private var pickerSearchText = ""
+    @State private var pickerSelectedRegions: Set<String> = []
+    @State private var pickerVisitStatus: VisitStatus = .all
+
+    private let regionOrder: [String] = [
+        "北海道", "東北", "関東", "中部", "近畿", "中国・四国", "九州・沖縄"
+    ]
+
+    private var theme: Theme { themeManager.currentTheme }
 
     var body: some View {
         NavigationStack {
-            if visitRecords.isEmpty {
-                // 訪問履歴がない場合
-                ContentUnavailableView(
-                    "まだ訪問記録がありません",
-                    systemImage: "book.closed",
-                    description: Text("水族館にチェックインして\n訪問記録を残そう！")
-                )
-            } else {
-                List {
-                    ForEach(visitRecords, id: \.id) { visit in
-                        if let aquarium = visit.aquarium {
-                            Button {
-                                selectedVisit = visit
-                            } label: {
-                                VisitRecordRow(visit: visit, aquarium: aquarium)
+            ZStack {
+                theme.primaryBg.ignoresSafeArea()
+
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        header
+                        if visitRecords.isEmpty {
+                            emptyState
+                        } else {
+                            VStack(spacing: SuiSpacing.cardGap) {
+                                ForEach(visitRecords, id: \.id) { visit in
+                                    if let aquarium = visit.aquarium {
+                                        VisitRecordCard(
+                                            visit: visit,
+                                            aquarium: aquarium,
+                                            theme: theme
+                                        )
+                                        .onTapGesture { selectedVisit = visit }
+                                        .contextMenu {
+                                            Button("編集") { selectedVisit = visit }
+                                            Button("削除", role: .destructive) {
+                                                visitToDelete = visit
+                                                showDeleteConfirmation = true
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
-                    .onDelete { indexSet in
-                        indexSetToDelete = indexSet
-                        showDeleteConfirmation = true
-                    }
+                    .padding(.horizontal, SuiSpacing.screenHorizontal)
+                    .padding(.top, 12)
+                    .padding(.bottom, 40)
                 }
-                .navigationTitle("訪問記録")
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        EditButton()
-                    }
+            }
+            .navigationBarHidden(true)
+            .sheet(item: $selectedVisit) { visit in
+                EditVisitRecordView(visit: visit)
+            }
+            .sheet(isPresented: $showingAquariumPicker) {
+                AquariumListView(
+                    selectedAquarium: $pickerSelectedAquarium,
+                    searchText: $pickerSearchText,
+                    selectedRegions: $pickerSelectedRegions,
+                    visitStatusFilter: $pickerVisitStatus,
+                    regionOrder: regionOrder
+                )
+            }
+            .sheet(item: $pickerSelectedAquarium) { aquarium in
+                AquariumDetailView(aquarium: aquarium)
+                    .presentationDetents([.large])
+                    .presentationDragIndicator(.visible)
+            }
+            .alert("訪問記録を削除", isPresented: $showDeleteConfirmation) {
+                Button("キャンセル", role: .cancel) { visitToDelete = nil }
+                Button("削除", role: .destructive) {
+                    if let visit = visitToDelete { deleteVisit(visit) }
+                    visitToDelete = nil
                 }
-                .sheet(item: $selectedVisit) { visit in
-                    EditVisitRecordView(visit: visit)
-                }
-                .alert("訪問記録を削除", isPresented: $showDeleteConfirmation) {
-                    Button("キャンセル", role: .cancel) {
-                        indexSetToDelete = nil
-                    }
-                    Button("削除", role: .destructive) {
-                        if let indexSet = indexSetToDelete {
-                            deleteVisits(offsets: indexSet)
-                        }
-                        indexSetToDelete = nil
-                    }
-                } message: {
-                    Text("この訪問記録を削除しますか？\nこの操作は取り消せません。")
-                }
-                .alert("削除に失敗しました", isPresented: $showingDeleteError) {
-                    Button("OK", role: .cancel) { }
-                } message: {
-                    Text(deleteErrorMessage)
-                }
+            } message: {
+                Text("この訪問記録を削除しますか？\nこの操作は取り消せません。")
+            }
+            .alert("削除に失敗しました", isPresented: $showingDeleteError) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(deleteErrorMessage)
             }
         }
     }
 
-    private func deleteVisits(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(visitRecords[index])
+    private var header: some View {
+        HStack(alignment: .center) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("\(visitRecords.count) 件の記録")
+                    .font(SuiFont.label)
+                    .foregroundColor(SuiColor.midText)
+                Text("訪問記録")
+                    .font(SuiFont.screenTitle)
+                    .foregroundColor(SuiColor.heading)
+            }
+            Spacer()
+            Button {
+                showingAquariumPicker = true
+            } label: {
+                HStack(spacing: 4) {
+                    Image(systemName: "plus")
+                        .font(.system(size: 14, weight: .bold))
+                    Text("追加")
+                        .font(.system(size: 14, weight: .semibold))
+                }
+                .foregroundColor(.white)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 10)
+                .background(Capsule().fill(theme.primaryColor))
+                .suiShadow(.primaryButton(primary: theme.primaryColor))
             }
         }
+    }
 
+    private var emptyState: some View {
+        VStack(spacing: 14) {
+            Image(systemName: "book.closed")
+                .font(.system(size: 56))
+                .foregroundColor(theme.primaryColor.opacity(0.5))
+            Text("まだ訪問記録がありません")
+                .font(SuiFont.heading)
+                .foregroundColor(SuiColor.heading)
+            Text("水族館にチェックインして\n訪問記録を残そう！")
+                .font(SuiFont.body)
+                .foregroundColor(SuiColor.midText)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 40)
+    }
+
+    private func deleteVisit(_ visit: VisitRecord) {
+        withAnimation {
+            modelContext.delete(visit)
+        }
         do {
             try modelContext.save()
         } catch {
-            print("❌ 削除の保存に失敗: \(error)")
             deleteErrorMessage = error.localizedDescription
             showingDeleteError = true
         }
     }
 }
 
-struct VisitRecordRow: View {
+// MARK: - 訪問記録カード（リデザイン）
+
+private struct VisitRecordCard: View {
     let visit: VisitRecord
     let aquarium: Aquarium
-    @EnvironmentObject private var themeManager: ThemeManager
+    let theme: Theme
+
+    private var dateString: String {
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "ja_JP")
+        f.dateFormat = "yyyy/MM/dd"
+        return f.string(from: visit.visitDate)
+    }
+
+    private var emoji: String {
+        let n = aquarium.representativeFish.lowercased()
+        if n.contains("whale") || n.contains("orca") { return "🐋" }
+        if n.contains("penguin") { return "🐧" }
+        if n.contains("shark") { return "🦈" }
+        if n.contains("jellyfish") { return "🪼" }
+        if n.contains("dolphin") { return "🐬" }
+        return "🐠"
+    }
 
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            // 写真またはスタンプアイコン（チェックイン種別で色分け）
-            if let photoData = visit.photoData,
-               let uiImage = UIImage(data: photoData) {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 60, height: 60)
-                    .clipShape(Circle())
-                    .overlay(
-                        Circle()
-                            .stroke(visit.checkInType.color, lineWidth: 2)
-                    )
-            } else {
-                ZStack {
-                    Circle()
-                        .fill(visit.checkInType.color.opacity(0.2))
-                        .frame(width: 60, height: 60)
-
-                    Group {
-                        if isCustomAsset(aquarium.representativeFish) {
-                            // カスタムアセット（テーマフォルダから取得）
-                            Image(themeManager.currentTheme.creatureImageName(aquarium.representativeFish))
-                                .renderingMode(.original)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 50, height: 50)
-                        } else {
-                            // SF Symbols
-                            Image(systemName: aquarium.representativeFish)
-                                .font(.system(size: CGFloat(aquarium.fishIconSize * 6)))
-                                .foregroundColor(visit.checkInType.color)
+        SuiCard(radius: SuiRadius.cardLarge, padding: 14) {
+            VStack(alignment: .leading, spacing: 10) {
+                // 上段: アイコン + 名前/日付 + 矢印
+                HStack(spacing: 12) {
+                    photoOrEmoji
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(aquarium.name)
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundColor(SuiColor.heading)
+                            .lineLimit(1)
+                        HStack(spacing: 6) {
+                            Text(dateString)
+                                .font(SuiFont.caption)
+                                .foregroundColor(SuiColor.subText)
+                            Text("・")
+                                .font(SuiFont.caption)
+                                .foregroundColor(SuiColor.subText)
+                            Text(aquarium.region)
+                                .font(SuiFont.caption)
+                                .foregroundColor(SuiColor.subText)
                         }
                     }
-                }
-            }
-
-            // 訪問情報
-            VStack(alignment: .leading, spacing: 4) {
-                Text(aquarium.name)
-                    .font(.headline)
-                    .foregroundColor(.primary)
-
-                HStack {
-                    Image(systemName: "mappin.circle.fill")
-                        .font(.caption)
-                        .foregroundColor(.red)
-                    Text(aquarium.region)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(SuiColor.subText)
                 }
 
-                HStack {
-                    Image(systemName: "calendar")
-                        .font(.caption)
-                        .foregroundColor(.blue)
-                    Text(visit.visitDate.formatted(Date.FormatStyle(date: .numeric).year(.defaultDigits).month(.twoDigits).day(.twoDigits).locale(Locale(identifier: "ja_JP"))))
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
+                // 中段: チェックインバッジ
+                CheckInBadge(type: visit.checkInType)
 
-                HStack {
-                    Image(systemName: "circle.fill")
-                        .font(.caption)
-                        .foregroundColor(visit.checkInType.color)
-                    Text(visit.checkInType.displayName)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-
+                // 下段: メモ（あれば）
                 if !visit.memo.isEmpty {
                     Text(visit.memo)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .lineLimit(2)
-                        .padding(.top, 4)
+                        .font(SuiFont.body)
+                        .foregroundColor(SuiColor.midText)
+                        .lineLimit(3)
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(12)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                .fill(theme.primaryBg)
+                        )
                 }
             }
-
-            Spacer()
-
-            // 編集アイコン
-            Image(systemName: "chevron.right")
-                .font(.caption)
-                .foregroundColor(.secondary)
         }
-        .padding(.vertical, 8)
     }
-}
 
-/// SF Symbolsかカスタムアセットかを判定するヘルパー関数
-/// SF Symbolsは必ず "." を含む（例: fish.fill, seal.fill）
-/// カスタムアセットは "." を含まない（例: orca, Dolphin, freshwaterfish）
-fileprivate func isCustomAsset(_ name: String) -> Bool {
-    return !name.contains(".")
+    @ViewBuilder
+    private var photoOrEmoji: some View {
+        if let data = visit.photoData, let ui = UIImage(data: data) {
+            Image(uiImage: ui)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 50, height: 50)
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        } else {
+            ZStack {
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .fill(theme.primaryBg)
+                    .frame(width: 50, height: 50)
+                Text(emoji).font(.system(size: 26))
+            }
+        }
+    }
 }
 
 #Preview {
     PassportView()
         .modelContainer(for: VisitRecord.self, inMemory: true)
+        .environmentObject(ThemeManager())
 }

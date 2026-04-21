@@ -83,71 +83,42 @@ struct AquariumMapView: View {
         return count
     }
 
+    private var theme: Theme { themeManager.currentTheme }
+
+    /// 現在地から近い順にソート（上位5件）
+    private var nearbyAquariums: [Aquarium] {
+        guard let here = locationManager.currentLocation else {
+            return Array(filteredAquariums.prefix(5))
+        }
+        return filteredAquariums
+            .sorted { a, b in
+                let da = here.distance(from: CLLocation(latitude: a.latitude, longitude: a.longitude))
+                let db = here.distance(from: CLLocation(latitude: b.latitude, longitude: b.longitude))
+                return da < db
+            }
+            .prefix(5)
+            .map { $0 }
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
-                // マップ表示（フィルタ済みの水族館のみ表示）
-                Map(position: $position, selection: $selectedAquarium) {
-                    ForEach(filteredAquariums, id: \.id) { aquarium in
-                        let hasVisited = visitedAquariumIds.contains(aquarium.id)
-                        let markerIcon = isCustomAsset(aquarium.representativeFish) ? "fish.fill" : aquarium.representativeFish
-                        Marker(
-                            aquarium.name,
-                            systemImage: markerIcon,
-                            coordinate: CLLocationCoordinate2D(
-                                latitude: aquarium.latitude,
-                                longitude: aquarium.longitude
-                            )
-                        )
-                        .tint(hasVisited ? .blue : .gray)
-                        .tag(aquarium)
+                theme.primaryBg.ignoresSafeArea()
+
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        header
+                        searchCard
+                        mapCard
+                        nearbySection
+                        filterActionRow
                     }
-                }
-                .mapControls {
-                    MapUserLocationButton()
-                    MapCompass()
-                }
-
-                // リスト表示ボタン＆フィルタバッジ
-                VStack {
-                    Spacer()
-                    HStack {
-                        // フィルタバッジ（フィルタがアクティブな場合）
-                        if activeFilterCount > 0 {
-                            HStack(spacing: 4) {
-                                Image(systemName: "line.3.horizontal.decrease.circle.fill")
-                                Text("\(filteredAquariums.count)件表示中")
-                                    .font(.caption)
-                                    .fontWeight(.semibold)
-                            }
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 8)
-                            .background(Color.orange)
-                            .foregroundColor(.white)
-                            .cornerRadius(20)
-                            .shadow(radius: 5)
-                        }
-
-                        Spacer()
-
-                        Button {
-                            showingList.toggle()
-                        } label: {
-                            Label(
-                                showingList ? "マップを表示" : "リストを表示",
-                                systemImage: showingList ? "map.fill" : "list.bullet"
-                            )
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                            .shadow(radius: 5)
-                        }
-                    }
-                    .padding()
+                    .padding(.horizontal, SuiSpacing.screenHorizontal)
+                    .padding(.top, 12)
+                    .padding(.bottom, 40)
                 }
             }
-            .navigationTitle("水族館マップ")
+            .navigationBarHidden(true)
             .sheet(item: $selectedAquarium) { aquarium in
                 AquariumDetailView(aquarium: aquarium)
                     .presentationDetents([.large])
@@ -166,6 +137,261 @@ struct AquariumMapView: View {
                 locationManager.requestPermission()
             }
         }
+    }
+
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("どこへ行く？")
+                .font(SuiFont.label)
+                .foregroundColor(SuiColor.midText)
+            Text("マップ")
+                .font(SuiFont.screenTitle)
+                .foregroundColor(SuiColor.heading)
+        }
+    }
+
+    private var searchCard: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "magnifyingglass")
+                .foregroundColor(SuiColor.subText)
+            TextField("水族館を検索", text: $searchText)
+                .font(SuiFont.body)
+                .foregroundColor(SuiColor.heading)
+                .autocorrectionDisabled()
+                .textInputAutocapitalization(.never)
+            if !searchText.isEmpty {
+                Button {
+                    searchText = ""
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(SuiColor.subText)
+                }
+            }
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 12)
+        .background(
+            RoundedRectangle(cornerRadius: SuiRadius.cardSmall, style: .continuous)
+                .fill(SuiColor.cardSurface)
+        )
+        .suiShadow(.card)
+    }
+
+    private var mapCard: some View {
+        ZStack(alignment: .bottomTrailing) {
+            Map(position: $position, selection: $selectedAquarium) {
+                ForEach(filteredAquariums, id: \.id) { aquarium in
+                    let hasVisited = visitedAquariumIds.contains(aquarium.id)
+                    Annotation(
+                        aquarium.name,
+                        coordinate: CLLocationCoordinate2D(
+                            latitude: aquarium.latitude,
+                            longitude: aquarium.longitude
+                        )
+                    ) {
+                        MapPin(isVisited: hasVisited, theme: theme)
+                            .onTapGesture { selectedAquarium = aquarium }
+                    }
+                    .tag(aquarium)
+                }
+            }
+            .frame(height: 240)
+            .clipShape(RoundedRectangle(cornerRadius: SuiRadius.cardLarge, style: .continuous))
+            .suiShadow(.card)
+
+            legendOverlay
+                .padding(12)
+        }
+    }
+
+    private var legendOverlay: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 6) {
+                Circle().fill(theme.primaryColor).frame(width: 10, height: 10)
+                Text("訪問済み")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(SuiColor.heading)
+            }
+            HStack(spacing: 6) {
+                ZStack {
+                    Circle().fill(Color.white).frame(width: 10, height: 10)
+                        .overlay(Circle().stroke(SuiColor.fieldBorder, lineWidth: 1))
+                    Circle().fill(theme.accent).frame(width: 4, height: 4)
+                        .offset(x: 3, y: -3)
+                }
+                Text("未訪問")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(SuiColor.heading)
+            }
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 8)
+        .background(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(Color.white.opacity(0.9))
+        )
+        .suiShadow(.card)
+    }
+
+    private var nearbySection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            SectionHeader("近くの水族館") {
+                Button("すべて見る") { showingList = true }
+                    .font(SuiFont.label)
+                    .foregroundColor(theme.primaryColor)
+            }
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 12) {
+                    if nearbyAquariums.isEmpty {
+                        Text("該当する水族館がありません")
+                            .font(SuiFont.body)
+                            .foregroundColor(SuiColor.midText)
+                            .padding(.horizontal, 4)
+                    } else {
+                        ForEach(nearbyAquariums, id: \.id) { aquarium in
+                            NearbyAquariumCard(
+                                aquarium: aquarium,
+                                visited: visitedAquariumIds.contains(aquarium.id),
+                                distanceMeters: distanceTo(aquarium),
+                                theme: theme
+                            )
+                            .onTapGesture { selectedAquarium = aquarium }
+                        }
+                    }
+                }
+                .padding(.horizontal, 2)
+            }
+        }
+    }
+
+    private var filterActionRow: some View {
+        HStack(spacing: 12) {
+            Button {
+                showingList = true
+            } label: {
+                HStack {
+                    Image(systemName: "list.bullet")
+                    Text("リスト・フィルタ")
+                        .font(SuiFont.bodyMedium)
+                    if activeFilterCount > 0 {
+                        Text("\(activeFilterCount)")
+                            .font(.system(size: 11, weight: .bold))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(Capsule().fill(theme.accent))
+                    }
+                }
+                .foregroundColor(.white)
+                .padding(.vertical, 14)
+                .frame(maxWidth: .infinity)
+                .background(
+                    RoundedRectangle(cornerRadius: SuiRadius.button, style: .continuous)
+                        .fill(theme.primaryColor)
+                )
+                .suiShadow(.primaryButton(primary: theme.primaryColor))
+            }
+        }
+    }
+
+    private func distanceTo(_ aquarium: Aquarium) -> Double? {
+        locationManager.distance(to: CLLocationCoordinate2D(latitude: aquarium.latitude, longitude: aquarium.longitude))
+    }
+}
+
+// MARK: - カスタムマップピン
+
+private struct MapPin: View {
+    let isVisited: Bool
+    let theme: Theme
+
+    var body: some View {
+        ZStack {
+            if isVisited {
+                Circle()
+                    .fill(theme.primaryColor)
+                    .frame(width: 22, height: 22)
+                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                    .suiShadow(.card)
+            } else {
+                Circle()
+                    .fill(Color.white)
+                    .frame(width: 22, height: 22)
+                    .overlay(Circle().stroke(theme.primaryColor.opacity(0.6), lineWidth: 2))
+                    .suiShadow(.card)
+                Circle()
+                    .fill(theme.accent)
+                    .frame(width: 8, height: 8)
+                    .offset(x: 8, y: -8)
+            }
+        }
+    }
+}
+
+// MARK: - 「近くの水族館」横スクロールカード
+
+private struct NearbyAquariumCard: View {
+    let aquarium: Aquarium
+    let visited: Bool
+    let distanceMeters: Double?
+    let theme: Theme
+
+    private var emoji: String {
+        let n = aquarium.representativeFish.lowercased()
+        if n.contains("whale") || n.contains("orca") { return "🐋" }
+        if n.contains("penguin") { return "🐧" }
+        if n.contains("shark") { return "🦈" }
+        if n.contains("jellyfish") { return "🪼" }
+        if n.contains("dolphin") { return "🐬" }
+        return "🌊"
+    }
+
+    private var distanceText: String {
+        guard let d = distanceMeters else { return aquarium.region }
+        if d < 1000 { return "\(Int(d))m" }
+        return String(format: "%.1fkm", d / 1000)
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .fill(theme.primaryBg)
+                        .frame(width: 44, height: 44)
+                    Text(emoji).font(.system(size: 22))
+                }
+                Spacer()
+                if visited {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundColor(theme.primaryColor)
+                        .font(.system(size: 18))
+                }
+            }
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(aquarium.name)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(SuiColor.heading)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+                HStack(spacing: 4) {
+                    Image(systemName: "location.fill")
+                        .font(.system(size: 10))
+                    Text(distanceText)
+                        .font(.system(size: 12))
+                }
+                .foregroundColor(SuiColor.subText)
+            }
+        }
+        .padding(14)
+        .frame(width: 180, height: 140, alignment: .topLeading)
+        .background(
+            RoundedRectangle(cornerRadius: SuiRadius.cardMedium, style: .continuous)
+                .fill(SuiColor.cardSurface)
+        )
+        .suiShadow(.card)
     }
 }
 

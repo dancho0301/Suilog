@@ -27,25 +27,10 @@ struct ContentView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            MyTankView()
-                .overlay(alignment: .topTrailing) {
-                    // テーマストアへのボタン
-                    Button {
-                        showingThemeStore = true
-                    } label: {
-                        Image(systemName: "paintpalette.fill")
-                            .font(.title2)
-                            .foregroundStyle(.white)
-                            .padding(12)
-                            .background(
-                                Circle()
-                                    .fill(themeManager.currentTheme.primaryColor.opacity(0.8))
-                                    .shadow(radius: 4)
-                            )
-                    }
-                    .padding(.top, 60)
-                    .padding(.trailing, 16)
-                }
+            MyTankView(
+                onTapAvatar: { showingThemeStore = true },
+                onSeeAllVisits: { selectedTab = 2 }
+            )
                 #if DEBUG
                 .overlay(alignment: .topLeading) {
                     Button {
@@ -88,11 +73,23 @@ struct ContentView: View {
 
             PassportView()
                 .tabItem {
-                    Label("訪問記録", systemImage: "book.closed.fill")
+                    Label("記録", systemImage: "book.closed.fill")
                 }
                 .tag(2)
+
+            ProfileView()
+                .tabItem {
+                    Label("プロフィール", systemImage: "person.crop.circle.fill")
+                }
+                .tag(3)
         }
-        .accentColor(.blue)
+        .tint(themeManager.currentTheme.primaryColor)
+        .onAppear {
+            TabBarAppearance.apply(primary: themeManager.currentTheme.primaryColor)
+        }
+        .onChange(of: themeManager.currentTheme) { _, newTheme in
+            TabBarAppearance.apply(primary: newTheme.primaryColor)
+        }
         .sheet(isPresented: $showingThemeStore) {
             ThemeStoreView()
                 .environmentObject(storeManager)
