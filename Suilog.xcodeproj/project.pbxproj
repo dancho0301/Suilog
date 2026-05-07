@@ -184,7 +184,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2600;
-				LastUpgradeCheck = 2600;
+				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					5A63BA3B2F050779003C6494 = {
 						CreatedOnToolsVersion = 26.0;
@@ -409,6 +409,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -466,6 +467,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -565,7 +567,7 @@
 				5A63BA642F05077B003C6494 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		5A63BA602F05077B003C6494 /* Build configuration list for PBXNativeTarget "Suilog" */ = {
 			isa = XCConfigurationList;
@@ -574,7 +576,7 @@
 				5A63BA622F05077B003C6494 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		5A63BA652F05077B003C6494 /* Build configuration list for PBXNativeTarget "SuilogTests" */ = {
 			isa = XCConfigurationList;
@@ -583,7 +585,7 @@
 				5A63BA672F05077B003C6494 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		5A63BA682F05077B003C6494 /* Build configuration list for PBXNativeTarget "SuilogUITests" */ = {
 			isa = XCConfigurationList;
@@ -592,7 +594,7 @@
 				5A63BA6A2F05077B003C6494 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

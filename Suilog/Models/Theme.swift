@@ -112,6 +112,10 @@ struct Theme: Identifiable, Codable, Equatable {
         else if id == "yumekawa" {
             return "Themes/Yumekawa/\(creatureName)"
         }
+        // 16ビットテーマの場合
+        else if id == "16bit" {
+            return "Themes/16bit/\(creatureName)"
+        }
         // その他のテーマ（フォールバック）
         return "Themes/Default/\(creatureName)"
     }
@@ -223,12 +227,37 @@ extension Theme {
         tankBottomHex: "#FF85C8"
     )
 
+    /// 16ビットテーマ（無料）
+    static let sixteenBit = Theme(
+        id: "16bit",
+        name: "16ビット",
+        description: "レトロゲーム風の明るい水槽テーマ",
+        productId: nil,
+        isDefault: true,
+        backgroundImageiPhone: "Themes/16bit/background_iphone",
+        backgroundImageiPad: "Themes/16bit/background_ipad",
+        primaryColorHex: "#2A6496",
+        bubbleColorHex: "#DFF8FF",
+        locationCheckInColorsHex: ["#FFE066", "#FFB84D", "#FFD43B"],
+        manualCheckInColorsHex: ["#B7D7E8", "#8FB9CF", "#D0EAF5"],
+        statisticsBackgroundColorHex: "#EEFFFFFF",
+        textColorHex: "#0A1628",
+        secondaryTextColorHex: "#8AAEC8",
+        primaryDarkHex: "#0A4A78",
+        primaryLightHex: "#8FD3F4",
+        primaryBgHex: "#EAF8FF",
+        accentHex: "#FFB84D",
+        tankTopHex: "#8FD3F4",
+        tankBottomHex: "#2A6496"
+    )
+
     /// 全テーマのリスト
     static let allThemes: [Theme] = [
         .defaultTheme,
         .mint,
         .coral,
-        .yumekawa
+        .yumekawa,
+        .sixteenBit
     ]
 }
 

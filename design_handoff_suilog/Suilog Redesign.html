@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suilog Redesign</title>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: linear-gradient(135deg, #C8E8F7 0%, #D8EEF5 50%, #BFD8E8 100%);
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  font-family: -apple-system, system-ui, sans-serif;
+}
+::-webkit-scrollbar { display: none; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "theme": "blue",
+  "fontRound": true
+}/*EDITMODE-END*/;
+
+const THEMES = {
+  blue: {
+    primary: '#3FA8CB',
+    primaryDark: '#2C87A8',
+    primaryLight: '#B8DFEF',
+    primaryBg: '#EEF7FF',
+    accent: '#FF8F6B',
+    tankTop: '#A8D8EF',
+    tankBottom: '#6BBBD8',
+    name: '🌊 オーシャンブルー'
+  },
+  mint: {
+    primary: '#3CAF88',
+    primaryDark: '#2E8C6C',
+    primaryLight: '#A4E0C6',
+    primaryBg: '#F0FCF6',
+    accent: '#FFB347',
+    tankTop: '#A4E0C6',
+    tankBottom: '#5CC49A',
+    name: '🌿 フレッシュミント'
+  },
+  coral: {
+    primary: '#E06B5A',
+    primaryDark: '#C0523F',
+    primaryLight: '#F5BDB4',
+    primaryBg: '#FFF5F3',
+    accent: '#4BA8CB',
+    tankTop: '#F5BDB4',
+    tankBottom: '#E8806F',
+    name: '🪸 サンセットコーラル'
+  }
+};
+
+// ── SVG Creatures ──
+function FishA({ color, flip, size = 44 }) {
+  return (
+    <svg width={size} height={size * 0.62} viewBox="0 0 52 32" style={{ transform: flip ? 'scaleX(-1)' : 'none' }}>
+      <ellipse cx="22" cy="16" rx="17" ry="11" fill={color}/>
+      <polygon points="39,16 52,6 52,26" fill={color}/>
+      <ellipse cx="21" cy="11" rx="6" ry="2.5" fill="rgba(255,255,255,0.3)"/>
+      <circle cx="11" cy="14" r="3" fill="white"/>
+      <circle cx="11.8" cy="14" r="1.5" fill="#2A3A4A"/>
+      <circle cx="12.4" cy="13.3" r="0.5" fill="white"/>
+    </svg>
+  );
+}
+function FishB({ color, flip, size = 34 }) {
+  return (
+    <svg width={size} height={size * 0.7} viewBox="0 0 40 28" style={{ transform: flip ? 'scaleX(-1)' : 'none' }}>
+      <ellipse cx="17" cy="14" rx="13" ry="9" fill={color}/>
+      <polygon points="30,14 40,6 40,22" fill={color}/>
+      <line x1="14" y1="7" x2="14" y2="21" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2"/>
+      <line x1="19" y1="6" x2="19" y2="22" stroke="rgba(255,255,255,0.25)" strokeWidth="1"/>
+      <circle cx="9" cy="12" r="2" fill="white"/>
+      <circle cx="9.6" cy="12" r="1" fill="#2A3A4A"/>
+    </svg>
+  );
+}
+function Jellyfish({ color, size = 36 }) {
+  return (
+    <svg width={size} height={size * 1.3} viewBox="0 0 36 47">
+      <ellipse cx="18" cy="15" rx="15" ry="13" fill={color}/>
+      <ellipse cx="18" cy="15" rx="11" ry="8" fill="rgba(255,255,255,0.22)"/>
+      <path d="M7,26 Q5,38 9,44" stroke={color} strokeWidth="2.2" fill="none" strokeLinecap="round"/>
+      <path d="M12,27 Q11,40 14,45" stroke={color} strokeWidth="2" fill="none" strokeLinecap="round"/>
+      <path d="M18,28 Q18,41 19,46" stroke={color} strokeWidth="2" fill="none" strokeLinecap="round"/>
+      <path d="M24,27 Q25,40 22,45" stroke={color} strokeWidth="2" fill="none" strokeLinecap="round"/>
+      <path d="M29,26 Q31,38 27,44" stroke={color} strokeWidth="2.2" fill="none" strokeLinecap="round"/>
+    </svg>
+  );
+}
+function Seaweed({ color, h = 60 }) {
+  return (
+    <svg width="18" height={h} viewBox={`0 0 18 ${h}`}>
+      <path d={`M9,${h} Q4,${h*0.78} 11,${h*0.58} Q17,${h*0.42} 7,${h*0.25} Q2,${h*0.1} 9,0`}
+        stroke={color} strokeWidth="3.5" fill="none" strokeLinecap="round"/>
+    </svg>
+  );
+}
+function Coral({ color, size = 38 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 38 38">
+      <line x1="19" y1="36" x2="19" y2="18" stroke={color} strokeWidth="3.2" strokeLinecap="round"/>
+      <line x1="19" y1="26" x2="9" y2="14" stroke={color} strokeWidth="2.5" strokeLinecap="round"/>
+      <line x1="19" y1="26" x2="29" y2="14" stroke={color} strokeWidth="2.5" strokeLinecap="round"/>
+      <line x1="19" y1="20" x2="11" y2="10" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+      <line x1="19" y1="20" x2="27" y2="10" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+      <circle cx="19" cy="18" r="3" fill={color}/>
+      <circle cx="9" cy="14" r="2.8" fill={color}/>
+      <circle cx="29" cy="14" r="2.8" fill={color}/>
+      <circle cx="11" cy="10" r="2.4" fill={color}/>
+      <circle cx="27" cy="10" r="2.4" fill={color}/>
+    </svg>
+  );
+}
+
+function Bubble({ x, y, r }) {
+  return (
+    <circle cx={x} cy={y} r={r} fill="rgba(255,255,255,0.5)" stroke="rgba(255,255,255,0.7)" strokeWidth="0.8"/>
+  );
+}
+
+// ── Aquarium Tank SVG ──
+function AquariumTank({ theme, width = 350, height = 200, rounded = true }) {
+  const t = THEMES[theme];
+  const r = rounded ? 20 : 0;
+  return (
+    <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} style={{ borderRadius: r, display: 'block' }}>
+      <defs>
+        <linearGradient id={`water-${theme}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={t.tankTop}/>
+          <stop offset="100%" stopColor={t.tankBottom}/>
+        </linearGradient>
+        <clipPath id={`tank-clip-${theme}`}>
+          <rect width={width} height={height} rx={r} ry={r}/>
+        </clipPath>
+      </defs>
+      <g clipPath={`url(#tank-clip-${theme})`}>
+        {/* Water */}
+        <rect width={width} height={height} fill={`url(#water-${theme})`}/>
+        {/* Shimmer */}
+        <rect width={width} height={10} fill="rgba(255,255,255,0.35)" rx="0"/>
+        {/* Sand */}
+        <rect y={height - 38} width={width} height={38} fill="#EDD87A"/>
+        <rect y={height - 38} width={width} height={6} fill="#F5E88A"/>
+        {/* Rocks */}
+        <ellipse cx="85" cy={height - 30} rx="18" ry="10" fill="#C8A87A"/>
+        <ellipse cx={width - 100} cy={height - 28} rx="14" ry="9" fill="#D4B080"/>
+        {/* Seaweed group 1 */}
+        <g transform={`translate(28, ${height - 38})`}><Seaweed color="#4CAF7A" h={70}/></g>
+        <g transform={`translate(48, ${height - 38})`}><Seaweed color="#56CC8A" h={50}/></g>
+        {/* Seaweed group 2 */}
+        <g transform={`translate(${width - 56}, ${height - 38})`}><Seaweed color="#3FA070" h={68}/></g>
+        <g transform={`translate(${width - 38}, ${height - 38})`}><Seaweed color="#5ACC90" h={46}/></g>
+        {/* Coral */}
+        <g transform={`translate(80, ${height - 66})`}><Coral color={t.accent} size={36}/></g>
+        <g transform={`translate(${width - 120}, ${height - 58})`}><Coral color={t.primary} size={26}/></g>
+        {/* Fish A - large */}
+        <g transform="translate(38, 50)"><FishA color="#FFB347" size={50}/></g>
+        {/* Fish A - small flipped */}
+        <g transform={`translate(${width - 90}, 28)`}><FishA color="#FF8F6B" size={34} flip/></g>
+        {/* Fish B */}
+        <g transform={`translate(${width - 120}, 95)`}><FishB color={t.primaryLight} size={42} flip/></g>
+        {/* Jellyfish */}
+        <g transform={`translate(${width / 2 - 18}, 10)`}><Jellyfish color="#C8A8E8" size={40}/></g>
+        {/* Bubbles */}
+        <svg>
+          <Bubble x={55} y={130} r={3.5}/>
+          <Bubble x={62} y={110} r={2}/>
+          <Bubble x={width/2 + 10} y={145} r={3}/>
+          <Bubble x={width - 60} y={130} r={2.5}/>
+          <Bubble x={width - 55} y={112} r={1.5}/>
+          <Bubble x={160} y={80} r={2}/>
+        </svg>
+      </g>
+    </svg>
+  );
+}
+
+// ── Tab Bar ──
+function TabBar({ activeTab, onTabChange, theme }) {
+  const t = THEMES[theme];
+  const tabs = [
+    { id: 'tank', label: 'マイ水槽', icon: (active) => (
+      <svg width="26" height="22" viewBox="0 0 26 22" fill="none">
+        <rect x="1" y="4" width="24" height="16" rx="4" stroke={active ? t.primary : '#C0C0CC'} strokeWidth="2" fill={active ? t.primaryBg : 'none'}/>
+        <ellipse cx="9" cy="12" rx="4" ry="2.5" fill={active ? t.primary : '#C0C0CC'} opacity="0.7"/>
+        <ellipse cx="18" cy="10" rx="3" ry="2" fill={active ? t.accent : '#D0D0DA'} opacity="0.8"/>
+        <path d="M1 8h24" stroke={active ? t.primaryLight : '#D8D8E0'} strokeWidth="1.5"/>
+      </svg>
+    )},
+    { id: 'map', label: 'マップ', icon: (active) => (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke={active ? t.primary : '#C0C0CC'} strokeWidth="2" fill={active ? t.primaryBg : 'none'}/>
+        <circle cx="12" cy="9" r="2.5" fill={active ? t.primary : '#C0C0CC'}/>
+      </svg>
+    )},
+    { id: 'records', label: '記録', icon: (active) => (
+      <svg width="22" height="24" viewBox="0 0 22 24" fill="none">
+        <rect x="2" y="1" width="18" height="22" rx="4" stroke={active ? t.primary : '#C0C0CC'} strokeWidth="2" fill={active ? t.primaryBg : 'none'}/>
+        <line x1="6" y1="8" x2="16" y2="8" stroke={active ? t.primary : '#C8C8D4'} strokeWidth="1.8" strokeLinecap="round"/>
+        <line x1="6" y1="13" x2="14" y2="13" stroke={active ? t.primary : '#C8C8D4'} strokeWidth="1.8" strokeLinecap="round"/>
+        <line x1="6" y1="18" x2="11" y2="18" stroke={active ? t.primary : '#C8C8D4'} strokeWidth="1.8" strokeLinecap="round"/>
+      </svg>
+    )},
+    { id: 'profile', label: 'プロフィール', icon: (active) => (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="8" r="4" stroke={active ? t.primary : '#C0C0CC'} strokeWidth="2" fill={active ? t.primaryBg : 'none'}/>
+        <path d="M4 20c0-4 3.58-7 8-7s8 3 8 7" stroke={active ? t.primary : '#C0C0CC'} strokeWidth="2" strokeLinecap="round" fill="none"/>
+      </svg>
+    )},
+  ];
+  return (
+    <div style={{
+      display: 'flex', background: 'rgba(255,255,255,0.92)',
+      borderTop: '0.5px solid rgba(0,0,0,0.08)',
+      backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
+      paddingBottom: 26, paddingTop: 8,
+    }}>
+      {tabs.map(tab => {
+        const active = activeTab === tab.id;
+        return (
+          <button key={tab.id} onClick={() => onTabChange(tab.id)} style={{
+            flex: 1, background: 'none', border: 'none', cursor: 'pointer',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
+            padding: '6px 0',
+          }}>
+            {tab.icon(active)}
+            <span style={{
+              fontSize: 10, fontWeight: active ? 600 : 400,
+              color: active ? THEMES[theme].primary : 'rgba(60,60,67,0.5)',
+              fontFamily: '-apple-system, system-ui', letterSpacing: '-0.2px'
+            }}>{tab.label}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+// ── Screen: マイ水槽 ──
+function TankScreen({ theme, onNav }) {
+  const t = THEMES[theme];
+  return (
+    <div style={{ flex: 1, overflowY: 'auto', background: t.primaryBg }}>
+      {/* Header */}
+      <div style={{ padding: '58px 20px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <div>
+          <p style={{ fontSize: 13, color: '#9EB0BB', fontFamily: '-apple-system, system-ui', marginBottom: 4 }}>こんにちは 👋</p>
+          <h1 style={{ fontSize: 26, fontWeight: 800, color: '#1A3040', fontFamily: '-apple-system, system-ui', letterSpacing: '-0.5px' }}>マイ水槽</h1>
+        </div>
+        <div style={{
+          width: 42, height: 42, borderRadius: 21, background: t.primary,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          boxShadow: `0 4px 12px ${t.primary}60`
+        }}>
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <circle cx="11" cy="7" r="4" stroke="white" strokeWidth="2"/>
+            <path d="M3 19c0-4 3.58-7 8-7s8 3 8 7" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
+        </div>
+      </div>
+
+      {/* Tank card */}
+      <div style={{ padding: '0 20px 16px' }}>
+        <div style={{
+          borderRadius: 24, overflow: 'hidden',
+          boxShadow: `0 8px 24px ${t.primary}30`
+        }}>
+          <AquariumTank theme={theme} width={350} height={195} rounded={false}/>
+          <div style={{
+            background: 'white', padding: '14px 20px',
+            display: 'flex', justifyContent: 'space-around'
+          }}>
+            {[['3', '水族館'], ['12', '生き物'], ['5', '訪問']].map(([n, l]) => (
+              <div key={l} style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: 24, fontWeight: 800, color: t.primary, fontFamily: '-apple-system, system-ui' }}>{n}</div>
+                <div style={{ fontSize: 11, color: '#AABBC4', fontFamily: '-apple-system, system-ui', marginTop: 1 }}>{l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Recent visits */}
+      <div style={{ padding: '4px 20px 24px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+          <h2 style={{ fontSize: 17, fontWeight: 700, color: '#1A3040', fontFamily: '-apple-system, system-ui' }}>最近の訪問</h2>
+          <button onClick={() => onNav('records')} style={{
+            fontSize: 13, color: t.primary, background: 'none', border: 'none',
+            cursor: 'pointer', fontFamily: '-apple-system, system-ui', fontWeight: 500
+          }}>すべて見る</button>
+        </div>
+        {[
+          { name: '沖縄美ら海水族館', date: '2025年4月10日', emoji: '🌊', rating: 5 },
+          { name: '海遊館', date: '2025年3月2日', emoji: '🐋', rating: 4 },
+        ].map((v, i) => (
+          <div key={i} onClick={() => onNav('aquarium')} style={{
+            background: 'white', borderRadius: 18, padding: '14px 16px',
+            marginBottom: 10, display: 'flex', alignItems: 'center', gap: 14,
+            boxShadow: '0 2px 10px rgba(0,0,0,0.05)', cursor: 'pointer',
+          }}>
+            <div style={{
+              width: 50, height: 50, borderRadius: 16,
+              background: t.primaryBg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26
+            }}>{v.emoji}</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 15, fontWeight: 600, color: '#1A3040', fontFamily: '-apple-system, system-ui' }}>{v.name}</div>
+              <div style={{ fontSize: 12, color: '#AABBC4', fontFamily: '-apple-system, system-ui', marginTop: 3 }}>{v.date}</div>
+            </div>
+            <div style={{ fontSize: 13, color: '#F5B942', letterSpacing: -1 }}>{'★'.repeat(v.rating)}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Screen: マップ ──
+function MapScreen({ theme, onNav }) {
+  const t = THEMES[theme];
+  const aquariums = [
+    { name: '沖縄美ら海水族館', x: 65, y: 195, visited: true, emoji: '🌊' },
+    { name: '海遊館', x: 155, y: 105, visited: true, emoji: '🐋' },
+    { name: '葛西臨海水族園', x: 260, y: 78, visited: false, emoji: '🐧' },
+    { name: '新江ノ島水族館', x: 235, y: 128, visited: false, emoji: '🦈' },
+  ];
+  return (
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: t.primaryBg, overflow: 'hidden' }}>
+      <div style={{ padding: '58px 20px 14px' }}>
+        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#1A3040', fontFamily: '-apple-system, system-ui', letterSpacing: '-0.5px' }}>マップ</h1>
+      </div>
+      {/* Search */}
+      <div style={{ padding: '0 20px 14px' }}>
+        <div style={{
+          background: 'white', borderRadius: 14, padding: '11px 16px',
+          display: 'flex', alignItems: 'center', gap: 10,
+          boxShadow: '0 2px 10px rgba(0,0,0,0.06)'
+        }}>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="7" cy="7" r="5.5" stroke="#AABBC4" strokeWidth="1.8"/>
+            <path d="M11 11l3 3" stroke="#AABBC4" strokeWidth="1.8" strokeLinecap="round"/>
+          </svg>
+          <span style={{ fontSize: 15, color: '#C8D8E0', fontFamily: '-apple-system, system-ui' }}>水族館を検索...</span>
+        </div>
+      </div>
+      {/* Map */}
+      <div style={{ margin: '0 20px', borderRadius: 20, overflow: 'hidden', position: 'relative', height: 240, flexShrink: 0, boxShadow: '0 4px 16px rgba(0,0,0,0.10)' }}>
+        <svg width="350" height="240" viewBox="0 0 350 240">
+          <rect width="350" height="240" fill="#D8EDF5"/>
+          {/* Land mass */}
+          <rect x="60" y="30" width="260" height="160" rx="16" fill="#E8F4E8"/>
+          <rect x="80" y="50" width="200" height="120" rx="12" fill="#EEF6EE"/>
+          {/* Roads */}
+          <rect x="0" y="105" width="350" height="7" rx="3.5" fill="rgba(255,255,255,0.7)"/>
+          <rect x="162" y="0" width="7" height="240" rx="3.5" fill="rgba(255,255,255,0.7)"/>
+          <rect x="0" y="155" width="350" height="5" rx="2.5" fill="rgba(255,255,255,0.5)"/>
+          {/* Water */}
+          <ellipse cx="40" cy="200" rx="60" ry="50" fill="#B8D8EE"/>
+          <path d="M0,180 Q30,160 60,180 Q90,200 0,220Z" fill="#A8CCE0"/>
+          {/* Pins */}
+          {aquariums.map((a, i) => (
+            <g key={i} onClick={() => onNav('aquarium')} style={{ cursor: 'pointer' }}>
+              <circle cx={a.x} cy={a.y} r="18" fill={a.visited ? t.primary : 'white'} stroke={a.visited ? t.primaryDark : '#D0DCE4'} strokeWidth="2.5"/>
+              <text x={a.x} y={a.y + 7} textAnchor="middle" fontSize="16">{a.emoji}</text>
+              {!a.visited && <circle cx={a.x + 10} cy={a.y - 10} r="5" fill={t.accent}/>}
+            </g>
+          ))}
+        </svg>
+        {/* Legend */}
+        <div style={{
+          position: 'absolute', bottom: 12, right: 12,
+          background: 'rgba(255,255,255,0.9)', borderRadius: 10, padding: '8px 12px',
+          backdropFilter: 'blur(8px)', fontSize: 11, color: '#6A8A98', fontFamily: '-apple-system, system-ui'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+            <div style={{ width: 10, height: 10, borderRadius: 5, background: t.primary }}/>訪問済み
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div style={{ width: 10, height: 10, borderRadius: 5, background: 'white', border: '1.5px solid #D0DCE4' }}/>未訪問
+          </div>
+        </div>
+      </div>
+      {/* Nearby list */}
+      <div style={{ padding: '14px 20px', flex: 1, overflowY: 'auto' }}>
+        <h3 style={{ fontSize: 14, fontWeight: 600, color: '#7A9AAA', fontFamily: '-apple-system, system-ui', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.5px' }}>近くの水族館</h3>
+        {aquariums.map((a, i) => (
+          <div key={i} onClick={() => onNav('aquarium')} style={{
+            background: 'white', borderRadius: 14, padding: '12px 16px',
+            marginBottom: 8, display: 'flex', alignItems: 'center', gap: 12,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.05)', cursor: 'pointer'
+          }}>
+            <div style={{
+              width: 40, height: 40, borderRadius: 12, background: t.primaryBg,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22
+            }}>{a.emoji}</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: '#1A3040', fontFamily: '-apple-system, system-ui' }}>{a.name}</div>
+              <div style={{ fontSize: 12, color: a.visited ? t.primary : '#AABBC4', fontFamily: '-apple-system, system-ui', marginTop: 2 }}>
+                {a.visited ? '✓ 訪問済み' : '未訪問'} · 2.{i + 1}km
+              </div>
+            </div>
+            <svg width="8" height="13" viewBox="0 0 8 13" fill="none">
+              <path d="M1 1l6 5.5L1 12" stroke="#C8D8E0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Screen: 訪問記録リスト ──
+function RecordsScreen({ theme, onNav }) {
+  const t = THEMES[theme];
+  const records = [
+    { name: '沖縄美ら海水族館', date: '2025年4月10日', emoji: '🌊', rating: 5, note: 'ジンベエザメが大迫力！', checkin: 'gold' },
+    { name: '海遊館', date: '2025年3月2日', emoji: '🐋', rating: 4, note: 'ジンベエザメもいて最高', checkin: 'silver' },
+    { name: '葛西臨海水族園', date: '2024年12月20日', emoji: '🐧', rating: 3, note: 'ペンギンが可愛かった', checkin: 'gold' },
+    { name: '新江ノ島水族館', date: '2024年10月5日', emoji: '🦈', rating: 4, note: 'サメの展示が充実', checkin: 'silver' },
+  ];
+  return (
+    <div style={{ flex: 1, overflowY: 'auto', background: t.primaryBg }}>
+      <div style={{ padding: '58px 20px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <h1 style={{ fontSize: 26, fontWeight: 800, color: '#1A3040', fontFamily: '-apple-system, system-ui', letterSpacing: '-0.5px' }}>訪問記録</h1>
+        <button onClick={() => onNav('record-detail')} style={{
+          background: t.primary, color: 'white', border: 'none', borderRadius: 20,
+          padding: '9px 18px', fontSize: 14, fontWeight: 700, cursor: 'pointer',
+          fontFamily: '-apple-system, system-ui',
+          boxShadow: `0 4px 14px ${t.primary}50`
+        }}>+ 追加</button>
+      </div>
+      <div style={{ padding: '0 20px 24px' }}>
+        {records.map((r, i) => (
+          <div key={i} onClick={() => onNav('record-detail')} style={{
+            background: 'white', borderRadius: 20, padding: '16px',
+            marginBottom: 12, boxShadow: '0 2px 10px rgba(0,0,0,0.06)', cursor: 'pointer'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 10 }}>
+              <div style={{
+                width: 52, height: 52, borderRadius: 16,
+                background: t.primaryBg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28
+              }}>{r.emoji}</div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 15, fontWeight: 700, color: '#1A3040', fontFamily: '-apple-system, system-ui' }}>{r.name}</div>
+                <div style={{ fontSize: 12, color: '#AABBC4', fontFamily: '-apple-system, system-ui', marginTop: 3 }}>{r.date}</div>
+              </div>
+              <div style={{ fontSize: 15, color: '#F5B942', letterSpacing: -1 }}>{'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}</div>
+            </div>
+            {/* Check-in badge + note */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+              <div style={{
+                display: 'inline-flex', alignItems: 'center', gap: 4,
+                background: r.checkin === 'gold' ? '#FFF8E6' : '#F4F4F4',
+                border: `1px solid ${r.checkin === 'gold' ? '#F5C842' : '#D0D8DF'}`,
+                borderRadius: 20, padding: '3px 10px',
+              }}>
+                <span style={{ fontSize: 11 }}>{r.checkin === 'gold' ? '🥇' : '🥈'}</span>
+                <span style={{
+                  fontSize: 11, fontWeight: 700, fontFamily: '-apple-system, system-ui',
+                  color: r.checkin === 'gold' ? '#B8860B' : '#7A90A0'
+                }}>{r.checkin === 'gold' ? 'ゴールド' : 'シルバー'}</span>
+              </div>
+            </div>
+            <div style={{
+              background: t.primaryBg, borderRadius: 12, padding: '10px 12px',
+              fontSize: 13, color: '#5A7888', fontFamily: '-apple-system, system-ui', lineHeight: 1.55
+            }}>{r.note}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Screen: 訪問記録詳細（新規追加） ──
+function RecordDetailScreen({ theme, onBack }) {
+  const t = THEMES[theme];
+  const [rating, setRating] = React.useState(4);
+  const [checkin, setCheckin] = React.useState('location');
+  const Field = ({ label, children }) => (
+    <div style={{ marginBottom: 18 }}>
+      <label style={{ fontSize: 12, fontWeight: 700, color: '#8AAAB4', letterSpacing: '0.5px', textTransform: 'uppercase', fontFamily: '-apple-system, system-ui', display: 'block', marginBottom: 8 }}>{label}</label>
+      {children}
+    </div>
+  );
+  return (
+    <div style={{ flex: 1, overflowY: 'auto', background: t.primaryBg }}>
+      {/* Nav */}
+      <div style={{ padding: '58px 20px 14px', display: 'flex', alignItems: 'center', gap: 14 }}>
+        <button onClick={onBack} style={{
+          width: 36, height: 36, borderRadius: 18, background: 'white',
+          border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+        }}>
+          <svg width="10" height="16" viewBox="0 0 10 16" fill="none">
+            <path d="M8 2L2 8l6 6" stroke={t.primary} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+        <h1 style={{ fontSize: 20, fontWeight: 700, color: '#1A3040', fontFamily: '-apple-system, system-ui' }}>訪問を記録する</h1>
+      </div>
+      <div style={{ padding: '0 20px 24px' }}>
+        <Field label="水族館">
+          <div style={{
+            background: 'white', borderRadius: 14, padding: '14px 16px',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.05)', cursor: 'pointer'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span style={{ fontSize: 22 }}>🌊</span>
+              <span style={{ fontSize: 15, color: '#1A3040', fontFamily: '-apple-system, system-ui' }}>沖縄美ら海水族館</span>
+            </div>
+            <svg width="8" height="13" viewBox="0 0 8 13" fill="none">
+              <path d="M1 1l6 5.5L1 12" stroke="#C8D8E0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+        </Field>
+        {/* Check-in type */}
+        <Field label="チェックイン方法">
+          <div style={{ display: 'flex', gap: 10 }}>
+            {[
+              { id: 'location', icon: '📍', label: 'ゴールド', sub: '位置情報で確認', badge: '#F5C842', badgeBg: '#FFF8E6', badgeBorder: '#F5C842', badgeText: '#B8860B' },
+              { id: 'manual', icon: '📷', label: 'シルバー', sub: '写真のExifで確認', badge: '#B0BEC5', badgeBg: '#F4F4F4', badgeBorder: '#CFD8DC', badgeText: '#7A90A0' },
+            ].map(opt => (
+              <button key={opt.id} onClick={() => setCheckin(opt.id)} style={{
+                flex: 1, background: checkin === opt.id ? 'white' : '#F8FAFB',
+                border: `2px solid ${checkin === opt.id ? t.primary : '#E8EEF2'}`,
+                borderRadius: 14, padding: '14px 10px', cursor: 'pointer',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
+                boxShadow: checkin === opt.id ? `0 4px 14px ${t.primary}25` : 'none',
+                transition: 'all 0.15s'
+              }}>
+                <span style={{ fontSize: 26 }}>{opt.icon}</span>
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: 4,
+                  background: opt.badgeBg, border: `1px solid ${opt.badgeBorder}`,
+                  borderRadius: 20, padding: '2px 8px'
+                }}>
+                  <span style={{ fontSize: 10 }}>{opt.id === 'location' ? '🥇' : '🥈'}</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: opt.badgeText, fontFamily: '-apple-system, system-ui' }}>{opt.label}</span>
+                </div>
+                <span style={{ fontSize: 11, color: '#AABBC4', fontFamily: '-apple-system, system-ui', textAlign: 'center', lineHeight: 1.4 }}>{opt.sub}</span>
+              </button>
+            ))}
+          </div>
+          {checkin === 'manual' && (
+            <div style={{
+              marginTop: 10, background: '#FFF8E6', borderRadius: 10, padding: '10px 12px',
+              border: '1px solid #F5E0A0', fontSize: 12, color: '#8A6A00',
+              fontFamily: '-apple-system, system-ui', lineHeight: 1.5,
+              display: 'flex', gap: 8, alignItems: 'flex-start'
+            }}>
+              <span>💡</span>
+              <span>写真のExif位置情報が水族館から1km圏内の場合、ゴールドと同等になります。</span>
+            </div>
+          )}
+        </Field>
+        <Field label="訪問日">
+          <div style={{
+            background: 'white', borderRadius: 14, padding: '14px 16px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+            display: 'flex', alignItems: 'center', gap: 10
+          }}>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <rect x="1" y="3" width="16" height="14" rx="3" stroke={t.primaryLight} strokeWidth="1.8"/>
+              <path d="M1 7h16" stroke={t.primaryLight} strokeWidth="1.5"/>
+              <path d="M5 1v4M13 1v4" stroke={t.primaryLight} strokeWidth="1.8" strokeLinecap="round"/>
+            </svg>
+            <span style={{ fontSize: 15, color: '#1A3040', fontFamily: '-apple-system, system-ui' }}>2025年4月15日</span>
+          </div>
+        </Field>
+        <Field label="評価">
+          <div style={{
+            background: 'white', borderRadius: 14, padding: '14px 20px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+            display: 'flex', gap: 6
+          }}>
+            {[1,2,3,4,5].map(s => (
+              <button key={s} onClick={() => setRating(s)} style={{
+                background: 'none', border: 'none', cursor: 'pointer',
+                fontSize: 30, padding: 0, opacity: s <= rating ? 1 : 0.25,
+                transition: 'opacity 0.15s, transform 0.1s',
+                transform: s === rating ? 'scale(1.15)' : 'scale(1)'
+              }}>⭐</button>
+            ))}
+          </div>
+        </Field>
+        <Field label="メモ">
+          <div style={{
+            background: 'white', borderRadius: 14, padding: '14px 16px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.05)', minHeight: 100,
+          }}>
+            <span style={{ fontSize: 15, color: '#C8D8E0', fontFamily: '-apple-system, system-ui' }}>今日の感想を書いてみよう...</span>
+          </div>
+        </Field>
+        <Field label="写真">
+          <div style={{
+            background: 'white', borderRadius: 14, padding: '22px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
+            border: `2px dashed ${t.primaryLight}`, cursor: 'pointer'
+          }}>
+            <svg width="32" height="28" viewBox="0 0 32 28" fill="none">
+              <rect x="2" y="6" width="28" height="20" rx="4" stroke={t.primaryLight} strokeWidth="2"/>
+              <circle cx="16" cy="16" r="5" stroke={t.primaryLight} strokeWidth="2"/>
+              <rect x="11" y="2" width="10" height="6" rx="2" stroke={t.primaryLight} strokeWidth="2"/>
+            </svg>
+            <span style={{ fontSize: 13, color: '#AABBC4', fontFamily: '-apple-system, system-ui' }}>写真を追加する</span>
+          </div>
+        </Field>
+        <button style={{
+          width: '100%', background: t.primary, color: 'white', border: 'none',
+          borderRadius: 16, padding: '16px', fontSize: 16, fontWeight: 700,
+          cursor: 'pointer', fontFamily: '-apple-system, system-ui',
+          boxShadow: `0 6px 20px ${t.primary}50`, marginTop: 4
+        }}>記録を保存する 🐠</button>
+      </div>
+    </div>
+  );
+}
+
+// ── Screen: 水族館詳細 ──
+function AquariumDetailScreen({ theme, onBack, onNav }) {
+  const t = THEMES[theme];
+  return (
+    <div style={{ flex: 1, overflowY: 'auto', background: t.primaryBg }}>
+      {/* Hero */}
+      <div style={{ position: 'relative' }}>
+        <AquariumTank theme={theme} width={390} height={220} rounded={false}/>
+        <button onClick={onBack} style={{
+          position: 'absolute', top: 56, left: 16,
+          background: 'rgba(255,255,255,0.85)', border: 'none', borderRadius: 18,
+          width: 36, height: 36, cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          backdropFilter: 'blur(8px)', boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+        }}>
+          <svg width="10" height="16" viewBox="0 0 10 16" fill="none">
+            <path d="M8 2L2 8l6 6" stroke="#1A3040" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+      </div>
+      <div style={{ padding: '20px 20px 24px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
+          <div>
+            <h1 style={{ fontSize: 22, fontWeight: 800, color: '#1A3040', fontFamily: '-apple-system, system-ui', letterSpacing: '-0.4px' }}>沖縄美ら海水族館</h1>
+            <div style={{ fontSize: 13, color: '#AABBC4', fontFamily: '-apple-system, system-ui', marginTop: 4 }}>📍 沖縄県国頭郡本部町</div>
+          </div>
+          <div style={{ background: t.primaryBg, borderRadius: 10, padding: '6px 10px', flexShrink: 0 }}>
+            <div style={{ fontSize: 14, color: '#F5B942' }}>★★★★★</div>
+          </div>
+        </div>
+        {/* CTA */}
+        <button onClick={() => onNav('record-detail')} style={{
+          width: '100%', background: t.primary, color: 'white', border: 'none',
+          borderRadius: 14, padding: '14px', fontSize: 15, fontWeight: 700,
+          cursor: 'pointer', fontFamily: '-apple-system, system-ui', marginBottom: 20,
+          boxShadow: `0 5px 18px ${t.primary}45`
+        }}>+ 訪問を記録する</button>
+        {/* Info */}
+        <div style={{ background: 'white', borderRadius: 18, padding: '4px 16px', marginBottom: 18, boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
+          {[
+            ['🕐', '営業時間', '8:30〜18:30'],
+            ['💰', '入場料金', '大人 ¥2,180'],
+            ['📞', '電話番号', '0980-48-3748'],
+          ].map(([icon, label, val], i, arr) => (
+            <div key={label} style={{
+              display: 'flex', alignItems: 'center', gap: 14, padding: '14px 0',
+              borderBottom: i < arr.length - 1 ? '0.5px solid #F0F4F7' : 'none'
+            }}>
+              <span style={{ fontSize: 20 }}>{icon}</span>
+              <div>
+                <div style={{ fontSize: 12, color: '#AABBC4', fontFamily: '-apple-system, system-ui', marginBottom: 2 }}>{label}</div>
+                <div style={{ fontSize: 14, color: '#1A3040', fontFamily: '-apple-system, system-ui', fontWeight: 500 }}>{val}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        {/* Creatures */}
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#1A3040', fontFamily: '-apple-system, system-ui', marginBottom: 12 }}>見られる生き物</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+          {[['🦈','ジンベエザメ','全長12m'], ['🐟','マンタ','翼幅3m'], ['🐠','ハンマーヘッド','全長4m'], ['🪼','クラゲ','展示60種']].map(([em, nm, sz]) => (
+            <div key={nm} style={{
+              background: 'white', borderRadius: 14, padding: '14px 12px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6
+            }}>
+              <span style={{ fontSize: 32 }}>{em}</span>
+              <div style={{ fontSize: 13, fontWeight: 600, color: '#1A3040', fontFamily: '-apple-system, system-ui' }}>{nm}</div>
+              <div style={{ fontSize: 11, color: '#AABBC4', fontFamily: '-apple-system, system-ui' }}>{sz}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Screen: プロフィール ──
+function ProfileScreen({ theme }) {
+  const t = THEMES[theme];
+
+  const badges = [
+    { id: 1, icon: '🐠', label: '初めての訪問', desc: '最初の水族館へ', earned: true },
+    { id: 2, icon: '🦈', label: '5館制覇', desc: '5つの水族館を訪問', earned: true },
+    { id: 3, icon: '🪼', label: 'くらげマスター', desc: 'くらげ展示を3館で鑑賞', earned: true },
+    { id: 4, icon: '🌊', label: '10館制覇', desc: '10つの水族館を訪問', earned: false, progress: 5, total: 10 },
+    { id: 5, icon: '📸', label: 'フォトグラファー', desc: '写真を20枚追加', earned: false, progress: 12, total: 20 },
+    { id: 6, icon: '⭐', label: 'レビュアー', desc: '評価を10件つける', earned: false, progress: 4, total: 10 },
+    { id: 7, icon: '🗾', label: '全国制覇', desc: '全都道府県の水族館へ', earned: false, progress: 8, total: 47 },
+    { id: 8, icon: '🏆', label: '水族館博士', desc: '50館を訪問', earned: false, progress: 5, total: 50 },
+  ];
+
+  const earned = badges.filter(b => b.earned);
+  const inProgress = badges.filter(b => !b.earned);
+
+  return (
+    <div style={{ flex: 1, overflowY: 'auto', background: t.primaryBg }}>
+      {/* Hero */}
+      <div style={{
+        background: `linear-gradient(160deg, ${t.primary} 0%, ${t.tankBottom} 100%)`,
+        padding: '58px 20px 28px',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10,
+      }}>
+        <div style={{
+          width: 80, height: 80, borderRadius: 40,
+          background: 'rgba(255,255,255,0.25)',
+          border: '3px solid rgba(255,255,255,0.6)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 40,
+          backdropFilter: 'blur(8px)'
+        }}>🐟</div>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: 20, fontWeight: 800, color: 'white', fontFamily: '-apple-system, system-ui' }}>さかなさん</div>
+          <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', fontFamily: '-apple-system, system-ui', marginTop: 3 }}>水族館ビギナー</div>
+        </div>
+        {/* Stats row */}
+        <div style={{
+          display: 'flex', gap: 0, marginTop: 8,
+          background: 'rgba(255,255,255,0.18)', borderRadius: 16,
+          backdropFilter: 'blur(10px)', overflow: 'hidden',
+          border: '1px solid rgba(255,255,255,0.25)'
+        }}>
+          {[['5', '訪問館数'], ['🥇×3 🥈×2', 'ゴールド/シルバー'], ['3', 'バッジ']].map(([n, l], i, arr) => (
+            <div key={l} style={{
+              padding: '12px 22px', textAlign: 'center',
+              borderRight: i < arr.length - 1 ? '1px solid rgba(255,255,255,0.2)' : 'none'
+            }}>
+              <div style={{ fontSize: n.includes('🥇') ? 14 : 22, fontWeight: 800, color: 'white', fontFamily: '-apple-system, system-ui' }}>{n}</div>
+              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.75)', fontFamily: '-apple-system, system-ui', marginTop: 1 }}>{l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ padding: '20px 20px 24px' }}>
+        {/* 獲得済みバッジ */}
+        <div style={{ marginBottom: 22 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+            <h2 style={{ fontSize: 17, fontWeight: 700, color: '#1A3040', fontFamily: '-apple-system, system-ui' }}>獲得したバッジ</h2>
+            <span style={{
+              background: t.primary, color: 'white', fontSize: 12, fontWeight: 700,
+              padding: '3px 10px', borderRadius: 10, fontFamily: '-apple-system, system-ui'
+            }}>{earned.length} / {badges.length}</span>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
+            {earned.map(b => (
+              <div key={b.id} style={{
+                background: 'white', borderRadius: 16, padding: '14px 8px',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
+                boxShadow: `0 2px 12px ${t.primary}20`,
+                border: `1.5px solid ${t.primaryLight}`
+              }}>
+                <div style={{
+                  width: 52, height: 52, borderRadius: 26,
+                  background: t.primaryBg, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 28, position: 'relative'
+                }}>
+                  {b.icon}
+                  <div style={{
+                    position: 'absolute', bottom: -2, right: -2,
+                    width: 18, height: 18, borderRadius: 9, background: t.primary,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 10, border: '2px solid white'
+                  }}>✓</div>
+                </div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: '#1A3040', fontFamily: '-apple-system, system-ui', textAlign: 'center', lineHeight: 1.3 }}>{b.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 挑戦中バッジ */}
+        <div>
+          <h2 style={{ fontSize: 17, fontWeight: 700, color: '#1A3040', fontFamily: '-apple-system, system-ui', marginBottom: 14 }}>挑戦中のバッジ</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {inProgress.map(b => (
+              <div key={b.id} style={{
+                background: 'white', borderRadius: 16, padding: '14px 16px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+                display: 'flex', alignItems: 'center', gap: 14
+              }}>
+                <div style={{
+                  width: 50, height: 50, borderRadius: 25, flexShrink: 0,
+                  background: '#F0F4F7', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 26, filter: 'grayscale(0.5) opacity(0.6)'
+                }}>{b.icon}</div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 5 }}>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: '#1A3040', fontFamily: '-apple-system, system-ui' }}>{b.label}</div>
+                    <div style={{ fontSize: 12, color: t.primary, fontFamily: '-apple-system, system-ui', fontWeight: 600, flexShrink: 0, marginLeft: 8 }}>
+                      {b.progress} / {b.total}
+                    </div>
+                  </div>
+                  <div style={{ fontSize: 12, color: '#AABBC4', fontFamily: '-apple-system, system-ui', marginBottom: 7 }}>{b.desc}</div>
+                  {/* Progress bar */}
+                  <div style={{ height: 6, background: '#EEF4F8', borderRadius: 3, overflow: 'hidden' }}>
+                    <div style={{
+                      height: '100%', borderRadius: 3,
+                      background: `linear-gradient(90deg, ${t.primary}, ${t.primaryLight})`,
+                      width: `${(b.progress / b.total) * 100}%`,
+                      transition: 'width 0.4s ease'
+                    }}/>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Share button */}
+        <button style={{
+          width: '100%', background: 'white', color: t.primary, border: `2px solid ${t.primaryLight}`,
+          borderRadius: 16, padding: '14px', fontSize: 15, fontWeight: 700,
+          cursor: 'pointer', fontFamily: '-apple-system, system-ui', marginTop: 20,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8
+        }}>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <circle cx="14" cy="3" r="2.5" stroke={t.primary} strokeWidth="1.8"/>
+            <circle cx="14" cy="15" r="2.5" stroke={t.primary} strokeWidth="1.8"/>
+            <circle cx="4" cy="9" r="2.5" stroke={t.primary} strokeWidth="1.8"/>
+            <line x1="6.2" y1="8" x2="11.8" y2="4.2" stroke={t.primary} strokeWidth="1.8" strokeLinecap="round"/>
+            <line x1="6.2" y1="10" x2="11.8" y2="13.8" stroke={t.primary} strokeWidth="1.8" strokeLinecap="round"/>
+          </svg>
+          バッジをシェアする
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ── Main App ──
+function App() {
+  const [tweaks, setTweaks] = React.useState(TWEAK_DEFAULTS);
+  const [activeTab, setActiveTab] = React.useState('tank');
+  const [screen, setScreen] = React.useState('main');
+  const [tweakOpen, setTweakOpen] = React.useState(false);
+  const theme = tweaks.theme;
+  const t = THEMES[theme];
+
+  React.useEffect(() => {
+    const handler = (e) => {
+      if (e.data?.type === '__activate_edit_mode') setTweakOpen(true);
+      if (e.data?.type === '__deactivate_edit_mode') setTweakOpen(false);
+    };
+    window.addEventListener('message', handler);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', handler);
+  }, []);
+
+  const updateTweak = (key, val) => {
+    const next = { ...tweaks, [key]: val };
+    setTweaks(next);
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [key]: val } }, '*');
+  };
+
+  const handleNav = (dest) => {
+    if (dest === 'records') { setActiveTab('records'); setScreen('main'); }
+    else if (dest === 'map') { setActiveTab('map'); setScreen('main'); }
+    else setScreen(dest);
+  };
+
+  const handleTabChange = (tab) => { setActiveTab(tab); setScreen('main'); };
+
+  const isSubscreen = screen !== 'main';
+
+  const renderScreen = () => {
+    if (screen === 'record-detail') return <RecordDetailScreen theme={theme} onBack={() => setScreen('main')}/>;
+    if (screen === 'aquarium') return <AquariumDetailScreen theme={theme} onBack={() => setScreen('main')} onNav={handleNav}/>;
+    if (activeTab === 'tank') return <TankScreen theme={theme} onNav={handleNav}/>;
+    if (activeTab === 'map') return <MapScreen theme={theme} onNav={handleNav}/>;
+    if (activeTab === 'records') return <RecordsScreen theme={theme} onNav={handleNav}/>;
+    return (
+      <ProfileScreen theme={theme}/>
+    );
+  };
+
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 40 }}>
+      <IOSDevice width={390} height={844} dark={false}>
+        <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: t.primaryBg }}>
+          {renderScreen()}
+          {!isSubscreen && <TabBar activeTab={activeTab} onTabChange={handleTabChange} theme={theme}/>}
+        </div>
+      </IOSDevice>
+
+      {/* Tweaks */}
+      {tweakOpen && (
+        <div style={{
+          position: 'fixed', bottom: 24, right: 24,
+          background: 'white', borderRadius: 22, padding: '20px 18px', width: 230,
+          boxShadow: '0 12px 40px rgba(0,0,0,0.14)', zIndex: 9999,
+        }}>
+          <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 16, fontFamily: '-apple-system, system-ui', color: '#1A3040' }}>Tweaks</div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#AABBC4', letterSpacing: '0.5px', textTransform: 'uppercase', fontFamily: '-apple-system, system-ui', marginBottom: 10 }}>カラーテーマ</div>
+          {Object.entries(THEMES).map(([key, th]) => (
+            <button key={key} onClick={() => updateTweak('theme', key)} style={{
+              display: 'flex', alignItems: 'center', gap: 10, width: '100%', marginBottom: 6,
+              background: theme === key ? th.primaryBg : '#F8F9FA',
+              border: `2px solid ${theme === key ? th.primary : 'transparent'}`,
+              borderRadius: 10, padding: '9px 12px', cursor: 'pointer',
+              fontFamily: '-apple-system, system-ui', fontSize: 13,
+              color: '#1A3040', textAlign: 'left', fontWeight: theme === key ? 700 : 400,
+              transition: 'all 0.15s'
+            }}>
+              <div style={{ width: 16, height: 16, borderRadius: 8, background: th.primary, flexShrink: 0 }}/>
+              {th.name}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

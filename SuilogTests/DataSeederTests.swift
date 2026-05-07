@@ -67,7 +67,8 @@ struct DataSeederTests {
             fishIconSize: 3,
             address: "テスト住所",
             affiliateLink: nil,
-            stableId: stableId
+            stableId: stableId,
+            officialUrl: nil
         )
     }
 

@@ -25,6 +25,24 @@ struct ContentView: View {
     @State private var showingDebugMenu = false
     #endif
 
+    private var tabItems: [CustomTabBarItem] {
+        let theme = themeManager.currentTheme
+        return [
+            CustomTabBarItem(id: 0, title: "マイ水槽", icon: { active in
+                AnyView(TankTabIcon(active: active, theme: theme))
+            }),
+            CustomTabBarItem(id: 1, title: "マップ", icon: { active in
+                AnyView(MapTabIcon(active: active, theme: theme))
+            }),
+            CustomTabBarItem(id: 2, title: "記録", icon: { active in
+                AnyView(RecordsTabIcon(active: active, theme: theme))
+            }),
+            CustomTabBarItem(id: 3, title: "プロフィール", icon: { active in
+                AnyView(ProfileTabIcon(active: active, theme: theme))
+            })
+        ]
+    }
+
     var body: some View {
         TabView(selection: $selectedTab) {
             MyTankView(
@@ -60,35 +78,28 @@ struct ContentView: View {
                     }
                 }
                 #endif
-                .tabItem {
-                    Label("マイ水槽", systemImage: "fish.fill")
-                }
+                .toolbar(.hidden, for: .tabBar)
                 .tag(0)
 
             AquariumMapView()
-                .tabItem {
-                    Label("マップ", systemImage: "map.fill")
-                }
+                .toolbar(.hidden, for: .tabBar)
                 .tag(1)
 
             PassportView()
-                .tabItem {
-                    Label("記録", systemImage: "book.closed.fill")
-                }
+                .toolbar(.hidden, for: .tabBar)
                 .tag(2)
 
             ProfileView()
-                .tabItem {
-                    Label("プロフィール", systemImage: "person.crop.circle.fill")
-                }
+                .toolbar(.hidden, for: .tabBar)
                 .tag(3)
         }
         .tint(themeManager.currentTheme.primaryColor)
-        .onAppear {
-            TabBarAppearance.apply(primary: themeManager.currentTheme.primaryColor)
-        }
-        .onChange(of: themeManager.currentTheme) { _, newTheme in
-            TabBarAppearance.apply(primary: newTheme.primaryColor)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            CustomTabBar(
+                selected: $selectedTab,
+                items: tabItems,
+                primary: themeManager.currentTheme.primaryColor
+            )
         }
         .sheet(isPresented: $showingThemeStore) {
             ThemeStoreView()
@@ -102,7 +113,7 @@ struct ContentView: View {
         #endif
         .sheet(isPresented: $showingCheckInSheet) {
             if let aquarium = nearbyAquarium {
-                LocationCheckInView(aquarium: aquarium)
+                NewVisitRecordView(aquarium: aquarium, initialMode: .location)
             }
         }
         .onReceive(storeManager.$purchasedProductIds) { productIds in

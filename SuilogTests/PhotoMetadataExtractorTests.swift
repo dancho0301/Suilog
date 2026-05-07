@@ -13,7 +13,7 @@ struct PhotoMetadataExtractorTests {
 
     // MARK: - isWithinRange Tests
 
-    @Test func isWithinRange_withinRadius_returnsTrue() {
+    @Test @MainActor func isWithinRange_withinRadius_returnsTrue() {
         // 水族館の座標
         let aquarium = Aquarium(
             name: "テスト水族館",
@@ -29,7 +29,7 @@ struct PhotoMetadataExtractorTests {
         #expect(result == true)
     }
 
-    @Test func isWithinRange_outsideRadius_returnsFalse() {
+    @Test @MainActor func isWithinRange_outsideRadius_returnsFalse() {
         // 水族館の座標
         let aquarium = Aquarium(
             name: "テスト水族館",

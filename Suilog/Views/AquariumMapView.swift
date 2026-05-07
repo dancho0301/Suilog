@@ -111,7 +111,6 @@ struct AquariumMapView: View {
                         searchCard
                         mapCard
                         nearbySection
-                        filterActionRow
                     }
                     .padding(.horizontal, SuiSpacing.screenHorizontal)
                     .padding(.top, 12)
@@ -179,7 +178,7 @@ struct AquariumMapView: View {
 
     private var mapCard: some View {
         ZStack(alignment: .bottomTrailing) {
-            Map(position: $position, selection: $selectedAquarium) {
+            Map(position: $position) {
                 ForEach(filteredAquariums, id: \.id) { aquarium in
                     let hasVisited = visitedAquariumIds.contains(aquarium.id)
                     Annotation(
@@ -192,7 +191,6 @@ struct AquariumMapView: View {
                         MapPin(isVisited: hasVisited, theme: theme)
                             .onTapGesture { selectedAquarium = aquarium }
                     }
-                    .tag(aquarium)
                 }
             }
             .frame(height: 240)
@@ -261,36 +259,6 @@ struct AquariumMapView: View {
                     }
                 }
                 .padding(.horizontal, 2)
-            }
-        }
-    }
-
-    private var filterActionRow: some View {
-        HStack(spacing: 12) {
-            Button {
-                showingList = true
-            } label: {
-                HStack {
-                    Image(systemName: "list.bullet")
-                    Text("リスト・フィルタ")
-                        .font(SuiFont.bodyMedium)
-                    if activeFilterCount > 0 {
-                        Text("\(activeFilterCount)")
-                            .font(.system(size: 11, weight: .bold))
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(Capsule().fill(theme.accent))
-                    }
-                }
-                .foregroundColor(.white)
-                .padding(.vertical, 14)
-                .frame(maxWidth: .infinity)
-                .background(
-                    RoundedRectangle(cornerRadius: SuiRadius.button, style: .continuous)
-                        .fill(theme.primaryColor)
-                )
-                .suiShadow(.primaryButton(primary: theme.primaryColor))
             }
         }
     }
@@ -565,8 +533,8 @@ struct AquariumDetailView: View {
 
     let aquarium: Aquarium
 
-    @State private var showingLocationCheckInForm = false
-    @State private var showingManualCheckIn = false
+    @State private var showingNewRecordForm = false
+    @State private var newRecordInitialMode: CheckInType = .location
 
     var distanceText: String {
         if let distance = locationManager.distance(to: CLLocationCoordinate2D(latitude: aquarium.latitude, longitude: aquarium.longitude)) {
@@ -580,276 +548,286 @@ struct AquariumDetailView: View {
         locationManager.isWithinRange(of: aquarium, radius: 1000)
     }
 
+    private var theme: Theme { themeManager.currentTheme }
+
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    // ヘッダー（魚のアイコン付き）
+            ZStack {
+                theme.primaryBg.ignoresSafeArea()
+
+                ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
-                        // 魚のアイコン
-                        HStack {
-                            Spacer()
-                            Group {
-                                if isCustomAsset(aquarium.representativeFish) {
-                                    Image(themeManager.currentTheme.creatureImageName(aquarium.representativeFish))
-                                        .renderingMode(.original)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 100, height: 100)
-                                } else {
-                                    Image(systemName: aquarium.representativeFish)
-                                        .font(.system(size: 80))
-                                        .foregroundColor(.blue.opacity(0.7))
-                                }
+                        heroCard
+                        infoCard(title: "説明", icon: "text.alignleft") {
+                            Text(aquarium.aquariumDescription)
+                                .font(SuiFont.body)
+                                .foregroundColor(SuiColor.midText)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+
+                        if let address = aquarium.address, !address.isEmpty {
+                            infoCard(title: "住所", icon: "mappin.and.ellipse") {
+                                Text(address)
+                                    .font(SuiFont.body)
+                                    .foregroundColor(SuiColor.midText)
+                                    .fixedSize(horizontal: false, vertical: true)
                             }
-                            Spacer()
-                        }
-                        .padding(.vertical, 8)
-
-                        Text(aquarium.name)
-                            .font(.title)
-                            .fontWeight(.bold)
-
-                        HStack {
-                            Image(systemName: "mappin.circle.fill")
-                                .foregroundColor(.red)
-                            Text(aquarium.region)
-                                .foregroundColor(.secondary)
                         }
 
-                        HStack {
-                            Image(systemName: "location.fill")
-                                .foregroundColor(.blue)
-                            Text("現在地から \(distanceText)")
-                                .foregroundColor(.secondary)
+                        if let officialUrl = aquarium.officialUrl, !officialUrl.isEmpty,
+                           let url = URL(string: officialUrl) {
+                            linkCard(title: "公式HP", icon: "safari", url: url, label: "公式サイトを開く")
                         }
+
+                        if let affiliateLink = aquarium.affiliateLink, !affiliateLink.isEmpty,
+                           let url = URL(string: affiliateLink) {
+                            linkCard(title: "チケット購入", icon: "ticket", url: url, label: "オンラインでチケット購入")
+                        }
+
+                        if !aquarium.safeVisits.isEmpty {
+                            historyCard
+                        }
+
+                        checkInActions
                     }
-                    .padding()
-
-                    Divider()
-
-                    // 説明
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("説明")
-                            .font(.headline)
-                        Text(aquarium.aquariumDescription)
-                            .foregroundColor(.secondary)
-                            .lineSpacing(4)
-                    }
-                    .padding(.horizontal)
-
-                    Divider()
-
-                    // 住所
-                    if let address = aquarium.address, !address.isEmpty {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("住所")
-                                .font(.headline)
-                            Text(address)
-                                .foregroundColor(.secondary)
-                                .lineSpacing(4)
-                        }
-                        .padding(.horizontal)
-                    }
-
-                    // 公式HP
-                    if let officialUrl = aquarium.officialUrl, !officialUrl.isEmpty,
-                       let url = URL(string: officialUrl) {
-                        Divider()
-
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("公式HP")
-                                .font(.headline)
-                            Link(destination: url) {
-                                HStack {
-                                    Text("公式サイトを開く")
-                                        .foregroundColor(.blue)
-                                    Spacer()
-                                    Image(systemName: "safari")
-                                        .foregroundColor(.blue)
-                                }
-                            }
-                        }
-                        .padding(.horizontal)
-                    }
-
-                    // チケット購入
-                    if let affiliateLink = aquarium.affiliateLink, !affiliateLink.isEmpty,
-                       let url = URL(string: affiliateLink) {
-                        Divider()
-
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("チケット購入")
-                                .font(.headline)
-                            Link(destination: url) {
-                                HStack {
-                                    Text("オンラインでチケットを購入")
-                                        .foregroundColor(.blue)
-                                    Spacer()
-                                    Image(systemName: "arrow.up.right.square")
-                                        .foregroundColor(.blue)
-                                }
-                            }
-                        }
-                        .padding(.horizontal)
-                    }
-
-                    // 訪問履歴
-                    if !aquarium.safeVisits.isEmpty {
-                        Divider()
-
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("訪問履歴")
-                                .font(.headline)
-
-                            let locationCheckIns = aquarium.safeVisits.filter { $0.checkInType == .location }.count
-                            let manualCheckIns = aquarium.safeVisits.filter { $0.checkInType == .manual }.count
-
-                            HStack(spacing: 20) {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text("訪問回数")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                    Text("\(aquarium.safeVisits.count)回")
-                                        .font(.title3)
-                                        .fontWeight(.semibold)
-                                }
-
-                                Divider()
-                                    .frame(height: 30)
-
-                                HStack(spacing: 16) {
-                                    HStack(spacing: 4) {
-                                        Image(systemName: "circle.fill")
-                                            .font(.caption)
-                                            .foregroundColor(.yellow)
-                                        Text("\(locationCheckIns)")
-                                            .font(.callout)
-                                    }
-
-                                    HStack(spacing: 4) {
-                                        Image(systemName: "circle.fill")
-                                            .font(.caption)
-                                            .foregroundColor(.gray)
-                                        Text("\(manualCheckIns)")
-                                            .font(.callout)
-                                    }
-                                }
-                            }
-
-                            if let lastVisit = aquarium.safeVisits.sorted(by: { $0.visitDate > $1.visitDate }).first {
-                                Divider()
-
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text("最終訪問")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                    HStack {
-                                        Text(lastVisit.visitDate.formatted(Date.FormatStyle(date: .long).locale(Locale(identifier: "ja_JP"))))
-                                            .font(.callout)
-                                        Spacer()
-                                        Image(systemName: "circle.fill")
-                                            .font(.caption)
-                                            .foregroundColor(lastVisit.checkInType == .location ? .yellow : .gray)
-                                    }
-                                }
-                            }
-                        }
-                        .padding()
-                        .background(Color(.systemGray6).opacity(0.5))
-                        .cornerRadius(10)
-                        .padding(.horizontal)
-                    }
-
-                    Divider()
-
-                    // チェックインボタン
-                    VStack(spacing: 12) {
-                        // 位置情報チェックインボタン
-                        ZStack(alignment: .topTrailing) {
-                            Button {
-                                showingLocationCheckInForm = true
-                            } label: {
-                                HStack {
-                                    Image(systemName: canLocationCheckIn ? "location.circle.fill" : "location.slash")
-                                    Text("位置情報でチェックイン")
-                                    Spacer()
-                                    Image(systemName: "circle.fill")
-                                        .foregroundColor(.yellow)
-                                }
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(canLocationCheckIn ? Color.yellow : Color.gray.opacity(0.3))
-                                .foregroundColor(canLocationCheckIn ? .black : .secondary)
-                                .cornerRadius(10)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(canLocationCheckIn ? Color.yellow : Color.gray.opacity(0.5), lineWidth: canLocationCheckIn ? 0 : 1)
-                                )
-                            }
-                            .disabled(!canLocationCheckIn)
-                            .opacity(canLocationCheckIn ? 1.0 : 0.5)
-                            .accessibilityLabel(canLocationCheckIn ? "位置情報でチェックイン、チェックイン可能" : "位置情報でチェックイン、水族館から1km以内で利用可能")
-
-                            // チェックイン可能バッジ
-                            if canLocationCheckIn {
-                                Text("チェックイン可能！")
-                                    .font(.caption2)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal, 8)
-                                    .padding(.vertical, 4)
-                                    .background(Color.green)
-                                    .cornerRadius(8)
-                                    .offset(x: 8, y: -8)
-                                    .accessibilityHidden(true)
-                            }
-                        }
-
-                        if !canLocationCheckIn {
-                            Text("※ 水族館から1km以内で利用可能")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-
-                        Button {
-                            showingManualCheckIn = true
-                        } label: {
-                            HStack {
-                                Image(systemName: "calendar.badge.plus")
-                                Text("手動でチェックイン")
-                                Spacer()
-                                Image(systemName: "circle.fill")
-                                    .foregroundColor(.gray)
-                            }
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.gray.opacity(0.8))
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
-                        }
-
-                        Text("※ 訪問日を自由に設定できます。写真をアップすると撮影日時と位置情報から自動判定します")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding()
+                    .padding(.horizontal, SuiSpacing.screenHorizontal)
+                    .padding(.top, 12)
+                    .padding(.bottom, 40)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("閉じる") {
-                        dismiss()
+                    Button("閉じる") { dismiss() }
+                        .foregroundColor(theme.primaryColor)
+                }
+            }
+            .sheet(isPresented: $showingNewRecordForm) {
+                NewVisitRecordView(aquarium: aquarium, initialMode: newRecordInitialMode)
+            }
+        }
+    }
+
+    private var heroCard: some View {
+        SuiCard(radius: SuiRadius.cardLarge, padding: 20) {
+            VStack(alignment: .leading, spacing: 14) {
+                HStack {
+                    Spacer()
+                    Group {
+                        if isCustomAsset(aquarium.representativeFish) {
+                            Image(theme.creatureImageName(aquarium.representativeFish))
+                                .renderingMode(.original)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 120, height: 120)
+                        } else {
+                            Image(systemName: aquarium.representativeFish)
+                                .font(.system(size: 80))
+                                .foregroundColor(theme.primaryColor)
+                        }
+                    }
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 8)
+                .background(
+                    RoundedRectangle(cornerRadius: SuiRadius.cardMedium, style: .continuous)
+                        .fill(theme.primaryBg)
+                )
+
+                Text(aquarium.name)
+                    .font(SuiFont.screenTitle)
+                    .foregroundColor(SuiColor.heading)
+
+                HStack(spacing: 12) {
+                    Label(aquarium.region, systemImage: "mappin.circle.fill")
+                        .labelStyle(.titleAndIcon)
+                        .font(SuiFont.caption)
+                        .foregroundColor(theme.primaryColor)
+                    Label("現在地から \(distanceText)", systemImage: "location.fill")
+                        .font(SuiFont.caption)
+                        .foregroundColor(SuiColor.subText)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func infoCard<Content: View>(title: String, icon: String, @ViewBuilder content: () -> Content) -> some View {
+        SuiCard(radius: SuiRadius.cardLarge, padding: 16) {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(spacing: 6) {
+                    Image(systemName: icon)
+                        .foregroundColor(theme.primaryColor)
+                        .font(.system(size: 14, weight: .semibold))
+                    Text(title)
+                        .font(SuiFont.section)
+                        .foregroundColor(SuiColor.heading)
+                }
+                content()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    private func linkCard(title: String, icon: String, url: URL, label: String) -> some View {
+        SuiCard(radius: SuiRadius.cardLarge, padding: 16) {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(spacing: 6) {
+                    Image(systemName: icon)
+                        .foregroundColor(theme.primaryColor)
+                        .font(.system(size: 14, weight: .semibold))
+                    Text(title)
+                        .font(SuiFont.section)
+                        .foregroundColor(SuiColor.heading)
+                }
+                Link(destination: url) {
+                    HStack {
+                        Text(label)
+                            .font(SuiFont.bodyMedium)
+                            .foregroundColor(theme.primaryColor)
+                        Spacer()
+                        Image(systemName: "arrow.up.right.square")
+                            .foregroundColor(theme.primaryColor)
                     }
                 }
             }
-            .sheet(isPresented: $showingLocationCheckInForm) {
-                LocationCheckInView(aquarium: aquarium)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    private var historyCard: some View {
+        let locationCheckIns = aquarium.safeVisits.filter { $0.checkInType == .location }.count
+        let manualCheckIns = aquarium.safeVisits.filter { $0.checkInType == .manual }.count
+        let lastVisit = aquarium.safeVisits.sorted(by: { $0.visitDate > $1.visitDate }).first
+
+        return SuiCard(radius: SuiRadius.cardLarge, padding: 16) {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(spacing: 6) {
+                    Image(systemName: "clock.fill")
+                        .foregroundColor(theme.primaryColor)
+                        .font(.system(size: 14, weight: .semibold))
+                    Text("訪問履歴")
+                        .font(SuiFont.section)
+                        .foregroundColor(SuiColor.heading)
+                }
+
+                HStack(spacing: 0) {
+                    StatItem(value: "\(aquarium.safeVisits.count)", label: "訪問回数", primary: theme.primaryColor)
+                    Divider().frame(height: 32).background(SuiColor.divider)
+                    VStack(spacing: 4) {
+                        HStack(spacing: 8) {
+                            Text("🥇\(locationCheckIns)")
+                                .font(.system(size: 13, weight: .semibold))
+                                .foregroundColor(SuiColor.goldText)
+                            Text("🥈\(manualCheckIns)")
+                                .font(.system(size: 13, weight: .semibold))
+                                .foregroundColor(SuiColor.silverText)
+                        }
+                        Text("チェックイン")
+                            .font(SuiFont.caption)
+                            .foregroundColor(SuiColor.subText)
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+
+                if let lastVisit {
+                    HStack {
+                        Text("最終訪問")
+                            .font(SuiFont.caption)
+                            .foregroundColor(SuiColor.subText)
+                        Spacer()
+                        Text(lastVisit.visitDate.formatted(Date.FormatStyle(date: .long).locale(Locale(identifier: "ja_JP"))))
+                            .font(SuiFont.caption)
+                            .foregroundColor(SuiColor.heading)
+                        CheckInBadge(type: lastVisit.checkInType)
+                    }
+                    .padding(.top, 4)
+                }
             }
-            .sheet(isPresented: $showingManualCheckIn) {
-                ManualCheckInView(aquarium: aquarium)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    @ViewBuilder
+    private var checkInActions: some View {
+        VStack(spacing: 12) {
+            ZStack(alignment: .topTrailing) {
+                Button {
+                    newRecordInitialMode = .location
+                    showingNewRecordForm = true
+                } label: {
+                    HStack(spacing: 10) {
+                        Image(systemName: canLocationCheckIn ? "location.circle.fill" : "location.slash")
+                        Text("位置情報でチェックイン")
+                            .font(SuiFont.bodyMedium)
+                        Spacer()
+                        Text("🥇")
+                    }
+                    .foregroundColor(canLocationCheckIn ? .white : SuiColor.subText)
+                    .padding(.vertical, 14)
+                    .padding(.horizontal, 16)
+                    .frame(maxWidth: .infinity)
+                    .background(
+                        RoundedRectangle(cornerRadius: SuiRadius.button, style: .continuous)
+                            .fill(canLocationCheckIn ? theme.primaryColor : SuiColor.fieldBg)
+                    )
+                }
+                .disabled(!canLocationCheckIn)
+                .shadow(
+                    color: canLocationCheckIn ? theme.primaryColor.opacity(0.31) : .clear,
+                    radius: canLocationCheckIn ? 20 : 0,
+                    x: 0,
+                    y: canLocationCheckIn ? 6 : 0
+                )
+
+                if canLocationCheckIn {
+                    Text("チェックイン可能！")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Capsule().fill(Color.green))
+                        .offset(x: 8, y: -8)
+                }
             }
+
+            if !canLocationCheckIn {
+                Text("※ 水族館から1km以内で利用可能")
+                    .font(SuiFont.caption)
+                    .foregroundColor(SuiColor.subText)
+            }
+
+            Button {
+                newRecordInitialMode = .manual
+                showingNewRecordForm = true
+            } label: {
+                HStack(spacing: 10) {
+                    Image(systemName: "calendar.badge.plus")
+                    Text("手動でチェックイン")
+                        .font(SuiFont.bodyMedium)
+                    Spacer()
+                    Text("🥈")
+                }
+                .foregroundColor(SuiColor.heading)
+                .padding(.vertical, 14)
+                .padding(.horizontal, 16)
+                .frame(maxWidth: .infinity)
+                .background(
+                    RoundedRectangle(cornerRadius: SuiRadius.button, style: .continuous)
+                        .fill(SuiColor.cardSurface)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: SuiRadius.button, style: .continuous)
+                        .stroke(SuiColor.fieldBorder, lineWidth: 1)
+                )
+            }
+
+            Text("※ 訪問日を自由に設定できます。写真をアップすると撮影日時と位置情報から自動判定します")
+                .font(SuiFont.caption)
+                .foregroundColor(SuiColor.subText)
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }

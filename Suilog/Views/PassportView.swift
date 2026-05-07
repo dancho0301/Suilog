@@ -197,22 +197,11 @@ private struct VisitRecordCard: View {
                             .font(.system(size: 15, weight: .semibold))
                             .foregroundColor(SuiColor.heading)
                             .lineLimit(1)
-                        HStack(spacing: 6) {
-                            Text(dateString)
-                                .font(SuiFont.caption)
-                                .foregroundColor(SuiColor.subText)
-                            Text("・")
-                                .font(SuiFont.caption)
-                                .foregroundColor(SuiColor.subText)
-                            Text(aquarium.region)
-                                .font(SuiFont.caption)
-                                .foregroundColor(SuiColor.subText)
-                        }
+                        Text(dateString)
+                            .font(SuiFont.caption)
+                            .foregroundColor(SuiColor.subText)
                     }
                     Spacer()
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(SuiColor.subText)
                 }
 
                 // 中段: チェックインバッジ

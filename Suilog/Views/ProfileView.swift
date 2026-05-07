@@ -114,19 +114,17 @@ struct ProfileView: View {
                 StatItem(value: "\(visitedCount)", label: "訪問館数", primary: theme.primaryColor)
                 Divider().frame(height: 36).background(SuiColor.divider)
                 VStack(spacing: 4) {
-                    HStack(spacing: 6) {
-                        Text("🥇").font(.system(size: 16))
-                        Text("\(goldCount)")
-                            .font(SuiFont.stat)
+                    Text("\(goldCount + silverCount)")
+                        .font(SuiFont.stat)
+                        .foregroundColor(theme.primaryColor)
+                    HStack(spacing: 4) {
+                        Text("🥇\(goldCount)")
+                            .font(.system(size: 11, weight: .semibold))
                             .foregroundColor(SuiColor.goldText)
-                        Text("🥈").font(.system(size: 16))
-                        Text("\(silverCount)")
-                            .font(SuiFont.stat)
+                        Text("🥈\(silverCount)")
+                            .font(.system(size: 11, weight: .semibold))
                             .foregroundColor(SuiColor.silverText)
                     }
-                    Text("チェックイン")
-                        .font(.system(size: 11))
-                        .foregroundColor(SuiColor.subText)
                 }
                 .frame(maxWidth: .infinity)
                 Divider().frame(height: 36).background(SuiColor.divider)

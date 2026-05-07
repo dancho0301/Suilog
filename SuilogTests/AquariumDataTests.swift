@@ -132,6 +132,55 @@ struct AquariumDataTests {
         #expect(aquarium.stableId == "") // 空文字として読み込まれる
     }
 
+    // MARK: - officialUrl Tests
+
+    @Test("officialUrlありのJSONをデコード")
+    func testDecodeWithOfficialUrl() throws {
+        let json = """
+        {
+            "name": "新江ノ島水族館",
+            "latitude": 35.31,
+            "longitude": 139.48,
+            "description": "湘南の海を体感",
+            "region": "関東",
+            "representativeFish": "fish.fill",
+            "fishIconSize": 3,
+            "address": "神奈川県藤沢市",
+            "affiliateLink": null,
+            "stableId": "enoshima",
+            "officialUrl": "https://www.enosui.com/"
+        }
+        """
+
+        let data = json.data(using: .utf8)!
+        let aquarium = try JSONDecoder().decode(AquariumData.self, from: data)
+
+        #expect(aquarium.name == "新江ノ島水族館")
+        #expect(aquarium.officialUrl == "https://www.enosui.com/")
+    }
+
+    @Test("officialUrlなしのJSONをデコード（後方互換性）")
+    func testDecodeWithoutOfficialUrl() throws {
+        let json = """
+        {
+            "name": "海遊館",
+            "latitude": 34.65,
+            "longitude": 135.43,
+            "description": "世界最大級",
+            "region": "近畿",
+            "representativeFish": "fish.fill",
+            "fishIconSize": 3,
+            "address": "大阪府大阪市",
+            "affiliateLink": null
+        }
+        """
+
+        let data = json.data(using: .utf8)!
+        let aquarium = try JSONDecoder().decode(AquariumData.self, from: data)
+
+        #expect(aquarium.officialUrl == nil)
+    }
+
     // MARK: - エラーケース
 
     @Test("必須フィールドが欠けている場合はエラー")

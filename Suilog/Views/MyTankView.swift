@@ -202,6 +202,12 @@ private struct TankCardView: View {
                     endPoint: .bottom
                 )
 
+                Image(theme.backgroundImageName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: geo.size.width, height: geo.size.height)
+                    .clipped()
+
                 TankBubblesView(bubbleColor: theme.bubbleColor)
 
                 if visits.isEmpty {

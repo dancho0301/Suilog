@@ -1,9 +1,9 @@
 //
-//  ManualCheckInView.swift
+//  NewVisitRecordView.swift
 //  Suilog
 //
-//  Created by dancho on 2025/12/31.
-//  Redesigned per design_handoff_suilog spec.
+//  デザイン仕様 §4 新規訪問記録フォームに合わせた統合チェックインフォーム。
+//  ゴールド（位置情報）/ シルバー（手動）を 1 画面のトグルで切り替える。
 //
 
 import SwiftUI
@@ -11,13 +11,17 @@ import SwiftData
 import PhotosUI
 import CoreLocation
 
-struct ManualCheckInView: View {
+struct NewVisitRecordView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var themeManager: ThemeManager
+    @EnvironmentObject private var locationManager: LocationManager
 
     let aquarium: Aquarium
+    /// 画面起動時のデフォルトモード
+    let initialMode: CheckInType
 
+    @State private var mode: CheckInType
     @State private var visitDate = Date()
     @State private var memo = ""
     @State private var selectedPhoto: PhotosPickerItem?
@@ -28,9 +32,19 @@ struct ManualCheckInView: View {
     @State private var showingError = false
     @State private var errorMessage = ""
     @State private var isLoadingPhoto = false
-    @State private var isCheckingIn = false
+    @State private var isSaving = false
+
+    init(aquarium: Aquarium, initialMode: CheckInType = .location) {
+        self.aquarium = aquarium
+        self.initialMode = initialMode
+        _mode = State(initialValue: initialMode)
+    }
 
     private var theme: Theme { themeManager.currentTheme }
+
+    private var canLocationCheckIn: Bool {
+        locationManager.isWithinRange(of: aquarium, radius: 1000)
+    }
 
     private var isPhotoLocationValid: Bool {
         guard let coordinate = photoMetadata?.coordinate else { return false }
@@ -42,8 +56,12 @@ struct ManualCheckInView: View {
         return PhotoMetadataExtractor.distance(from: coordinate, to: aquarium)
     }
 
-    private var determinedCheckInType: CheckInType {
-        isPhotoLocationValid ? .location : .manual
+    /// 最終的に保存されるチェックインタイプ
+    /// - ゴールドモード: .location（1km 圏内で有効化済みのため）
+    /// - シルバーモード: 写真 Exif が 1km 圏内なら .location に自動昇格
+    private var finalCheckInType: CheckInType {
+        if mode == .location { return .location }
+        return isPhotoLocationValid ? .location : .manual
     }
 
     var body: some View {
@@ -53,11 +71,13 @@ struct ManualCheckInView: View {
 
                 ScrollView {
                     VStack(spacing: 16) {
-                        methodCard
+                        methodToggleCard
                         aquariumCard
-                        dateCard
+                        if mode == .manual {
+                            dateCard
+                        }
                         photoCard
-                        if photoData != nil {
+                        if mode == .manual, photoData != nil {
                             typeResultCard
                         }
                         memoCard
@@ -68,7 +88,7 @@ struct ManualCheckInView: View {
                     .padding(.bottom, 40)
                 }
             }
-            .navigationTitle("手動チェックイン")
+            .navigationTitle("新規訪問記録")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -84,7 +104,7 @@ struct ManualCheckInView: View {
                     if let data = try? await newValue?.loadTransferable(type: Data.self) {
                         let metadata = PhotoMetadataExtractor.extractMetadata(from: data)
                         photoMetadata = metadata
-                        if let dateTaken = metadata.dateTaken, dateTaken <= Date() {
+                        if mode == .manual, let dateTaken = metadata.dateTaken, dateTaken <= Date() {
                             visitDate = dateTaken
                         }
                         if let image = UIImage(data: data),
@@ -108,34 +128,85 @@ struct ManualCheckInView: View {
         }
     }
 
-    private var methodCard: some View {
+    // MARK: - Method Toggle
+
+    private var methodToggleCard: some View {
         SuiCard(radius: SuiRadius.cardMedium, padding: 14) {
             VStack(alignment: .leading, spacing: 10) {
-                HStack(spacing: 12) {
-                    Text("📷").font(.system(size: 28))
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("シルバーチェックイン")
-                            .font(SuiFont.bodyMedium)
-                            .foregroundColor(SuiColor.heading)
-                        Text("写真ExifのGPSで判定")
-                            .font(SuiFont.caption)
-                            .foregroundColor(SuiColor.midText)
-                    }
-                    Spacer()
-                    CheckInBadge(type: .manual)
-                }
-                Text("写真Exifが水族館から1km圏内ならゴールド相当に自動判定されます。")
-                    .font(SuiFont.caption)
-                    .foregroundColor(SuiColor.goldText)
-                    .padding(10)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10, style: .continuous)
-                            .fill(SuiColor.goldBg)
+                fieldLabel("チェックイン方法")
+                HStack(spacing: 10) {
+                    methodOption(
+                        type: .location,
+                        emoji: "📍",
+                        title: "ゴールド",
+                        subtitle: canLocationCheckIn ? "現地で記録" : "1km圏内のみ"
                     )
+                    methodOption(
+                        type: .manual,
+                        emoji: "📷",
+                        title: "シルバー",
+                        subtitle: "写真＆日付"
+                    )
+                }
+
+                if mode == .location, !canLocationCheckIn {
+                    Text("※ 水族館から1km以内でのみ利用できます。シルバーチェックインを選んでください。")
+                        .font(SuiFont.caption)
+                        .foregroundColor(SuiColor.goldText)
+                        .padding(10)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(SuiColor.goldBg)
+                        )
+                }
             }
         }
     }
+
+    private func methodOption(
+        type: CheckInType,
+        emoji: String,
+        title: String,
+        subtitle: String
+    ) -> some View {
+        let selected = mode == type
+        let disabled = (type == .location && !canLocationCheckIn)
+
+        return Button {
+            guard !disabled else { return }
+            withAnimation(.easeInOut(duration: 0.15)) { mode = type }
+        } label: {
+            VStack(spacing: 4) {
+                Text(emoji).font(.system(size: 24))
+                Text(title)
+                    .font(SuiFont.bodyMedium)
+                    .foregroundColor(selected ? theme.primaryColor : SuiColor.heading)
+                Text(subtitle)
+                    .font(SuiFont.caption)
+                    .foregroundColor(SuiColor.subText)
+                    .lineLimit(1)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .background(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(selected ? theme.primaryBg : SuiColor.cardSurface)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .stroke(
+                        selected ? theme.primaryColor : SuiColor.fieldBorder,
+                        lineWidth: selected ? 2 : 1
+                    )
+            )
+            .opacity(disabled ? 0.5 : 1.0)
+        }
+        .buttonStyle(.plain)
+        .disabled(disabled)
+    }
+
+    // MARK: - Aquarium Card
 
     private var aquariumCard: some View {
         SuiCard(radius: SuiRadius.cardMedium, padding: 14) {
@@ -146,7 +217,7 @@ struct ManualCheckInView: View {
                         RoundedRectangle(cornerRadius: 14, style: .continuous)
                             .fill(theme.primaryBg)
                             .frame(width: 44, height: 44)
-                        Text("🐠").font(.system(size: 22))
+                        Text(aquariumEmoji).font(.system(size: 22))
                     }
                     VStack(alignment: .leading, spacing: 2) {
                         Text(aquarium.name)
@@ -161,6 +232,18 @@ struct ManualCheckInView: View {
             }
         }
     }
+
+    private var aquariumEmoji: String {
+        let n = aquarium.representativeFish.lowercased()
+        if n.contains("whale") || n.contains("orca") { return "🐋" }
+        if n.contains("penguin") { return "🐧" }
+        if n.contains("shark") { return "🦈" }
+        if n.contains("jellyfish") { return "🪼" }
+        if n.contains("dolphin") { return "🐬" }
+        return "🐠"
+    }
+
+    // MARK: - Date Card (manual only)
 
     private var dateCard: some View {
         SuiCard(radius: SuiRadius.cardMedium, padding: 14) {
@@ -185,6 +268,8 @@ struct ManualCheckInView: View {
         }
     }
 
+    // MARK: - Photo Card
+
     private var photoCard: some View {
         SuiCard(radius: SuiRadius.cardMedium, padding: 14) {
             VStack(alignment: .leading, spacing: 10) {
@@ -198,7 +283,7 @@ struct ManualCheckInView: View {
                         .frame(maxWidth: .infinity, maxHeight: 220)
                         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
 
-                    if let metadata = photoMetadata {
+                    if mode == .manual, let metadata = photoMetadata {
                         photoMetaRow(metadata: metadata)
                     }
 
@@ -212,9 +297,11 @@ struct ManualCheckInView: View {
                     }
                 } else {
                     photoUploadArea
-                    Text("撮影日時と位置情報からチェックインタイプを自動判定します")
-                        .font(SuiFont.caption)
-                        .foregroundColor(SuiColor.subText)
+                    if mode == .manual {
+                        Text("撮影日時と位置情報からチェックインタイプを自動判定します")
+                            .font(SuiFont.caption)
+                            .foregroundColor(SuiColor.subText)
+                    }
                 }
             }
         }
@@ -265,7 +352,7 @@ struct ManualCheckInView: View {
                 HStack {
                     fieldLabel("自動判定結果")
                     Spacer()
-                    CheckInBadge(type: determinedCheckInType)
+                    CheckInBadge(type: finalCheckInType)
                 }
                 Text(resultMessage)
                     .font(SuiFont.caption)
@@ -283,6 +370,8 @@ struct ManualCheckInView: View {
             return "写真に位置情報がないため、シルバーチェックインになります。"
         }
     }
+
+    // MARK: - Memo
 
     private var memoCard: some View {
         SuiCard(radius: SuiRadius.cardMedium, padding: 14) {
@@ -313,6 +402,8 @@ struct ManualCheckInView: View {
             }
         }
     }
+
+    // MARK: - Upload tiles
 
     private var loadingTile: some View {
         HStack {
@@ -364,12 +455,15 @@ struct ManualCheckInView: View {
         )
     }
 
+    // MARK: - Save
+
     private var saveButton: some View {
-        Button { checkIn() } label: {
+        let disabled = isSaving || (mode == .location && !canLocationCheckIn)
+        return Button { save() } label: {
             HStack(spacing: 8) {
-                if isCheckingIn {
+                if isSaving {
                     ProgressView().tint(.white)
-                    Text("チェックイン中...")
+                    Text("保存中...")
                 } else {
                     Text("記録を保存する 🐠")
                 }
@@ -380,11 +474,11 @@ struct ManualCheckInView: View {
             .padding(.vertical, 16)
             .background(
                 RoundedRectangle(cornerRadius: SuiRadius.button, style: .continuous)
-                    .fill(theme.primaryColor)
+                    .fill(disabled ? theme.primaryColor.opacity(0.4) : theme.primaryColor)
             )
             .suiShadow(.primaryButton(primary: theme.primaryColor))
         }
-        .disabled(isCheckingIn)
+        .disabled(disabled)
         .padding(.top, 4)
     }
 
@@ -409,23 +503,23 @@ struct ManualCheckInView: View {
         return f.string(from: date)
     }
 
-    private func checkIn() {
-        isCheckingIn = true
+    private func save() {
+        isSaving = true
         let visit = VisitRecord(
-            visitDate: visitDate,
+            visitDate: mode == .location ? Date() : visitDate,
             memo: memo,
             photoData: photoData,
-            checkInType: determinedCheckInType,
+            checkInType: finalCheckInType,
             aquarium: aquarium
         )
         modelContext.insert(visit)
         do {
             try modelContext.save()
-            isCheckingIn = false
+            isSaving = false
             showingSuccess = true
         } catch {
             modelContext.rollback()
-            isCheckingIn = false
+            isSaving = false
             errorMessage = "チェックインの保存に失敗しました。\nもう一度お試しください。"
             showingError = true
         }
@@ -433,7 +527,7 @@ struct ManualCheckInView: View {
 }
 
 #Preview {
-    ManualCheckInView(
+    NewVisitRecordView(
         aquarium: Aquarium(
             name: "テスト水族館",
             latitude: 35.6812,
@@ -444,4 +538,5 @@ struct ManualCheckInView: View {
     )
     .modelContainer(for: VisitRecord.self, inMemory: true)
     .environmentObject(ThemeManager())
+    .environmentObject(LocationManager())
 }

@@ -1,0 +1,733 @@
+{
+  "version": 4,
+  "creatures": [
+    {
+      "id": "african_penguin",
+      "name": "ケープペンギン",
+      "nameEn": "African Penguin",
+      "emoji": "🐧",
+      "category": "bird"
+    },
+    {
+      "id": "angelfish",
+      "name": "エンゼルフィッシュ",
+      "nameEn": "Angelfish",
+      "emoji": "🐠",
+      "category": "fish"
+    },
+    {
+      "id": "arabesque_greenling",
+      "name": "ホッケ",
+      "nameEn": "Arabesque Greenling",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "arapaima",
+      "name": "ピラルク",
+      "nameEn": "Arapaima",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "arowana",
+      "name": "アロワナ",
+      "nameEn": "Arowana",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "asian_small_clawed_otter",
+      "name": "コツメカワウソ",
+      "nameEn": "Asian Small-clawed Otter",
+      "emoji": "🦦",
+      "category": "mammal"
+    },
+    {
+      "id": "atlantic_horseshoe_crab",
+      "name": "アメリカカブトガニ",
+      "nameEn": "Atlantic Horseshoe Crab",
+      "emoji": "🦀",
+      "category": "crustacean"
+    },
+    {
+      "id": "axolotl",
+      "name": "メキシコサラマンダー",
+      "nameEn": "Axolotl",
+      "emoji": "🦎",
+      "category": "amphibian"
+    },
+    {
+      "id": "banded_archerfish",
+      "name": "テッポウウオ",
+      "nameEn": "Banded Archerfish",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "beluga_whale",
+      "name": "シロイルカ",
+      "nameEn": "Beluga Whale",
+      "emoji": "🐳",
+      "category": "mammal"
+    },
+    {
+      "id": "bering_wolffish",
+      "name": "オオカミウオ",
+      "nameEn": "Bering Wolffish",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "biwa_catfish",
+      "name": "ビワコオオナマズ",
+      "nameEn": "Biwa Catfish",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "black_ghost_knifefish",
+      "name": "ブラックゴースト",
+      "nameEn": "Black Ghost Knifefish",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "black_pacu",
+      "name": "コロソマ",
+      "nameEn": "Black Pacu",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "black_spotted_puffer",
+      "name": "コクテンフグ",
+      "nameEn": "Blackspotted Puffer",
+      "emoji": "🐡",
+      "category": "fish"
+    },
+    {
+      "id": "blue_crayfish",
+      "name": "マロン",
+      "nameEn": "Blue Crayfish",
+      "emoji": "🦞",
+      "category": "crustacean"
+    },
+    {
+      "id": "blue_damselfish",
+      "name": "ルリスズメダイ",
+      "nameEn": "Blue Damselfish",
+      "emoji": "🐠",
+      "category": "fish"
+    },
+    {
+      "id": "butterfly",
+      "name": "チョウ",
+      "nameEn": "Butterfly",
+      "emoji": "🦋",
+      "category": "insect"
+    },
+    {
+      "id": "cardinal_tetra",
+      "name": "カージナルテトラ",
+      "nameEn": "Cardinal Tetra",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "chum_salmon",
+      "name": "シロザケ",
+      "nameEn": "Chum Salmon",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "clione",
+      "name": "クリオネ",
+      "nameEn": "Clione",
+      "emoji": "🐚",
+      "category": "mollusk"
+    },
+    {
+      "id": "clownfish",
+      "name": "クマノミ",
+      "nameEn": "Clownfish",
+      "emoji": "🐠",
+      "category": "fish"
+    },
+    {
+      "id": "coconut_crab",
+      "name": "ヤシガニ",
+      "nameEn": "Coconut Crab",
+      "emoji": "🦀",
+      "category": "crustacean"
+    },
+    {
+      "id": "coelacanth",
+      "name": "シーラカンス",
+      "nameEn": "Coelacanth",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "common_carp",
+      "name": "コイ",
+      "nameEn": "Common Carp",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "coral_fish",
+      "name": "熱帯魚",
+      "nameEn": "Coral Fish",
+      "emoji": "🐠",
+      "category": "fish"
+    },
+    {
+      "id": "crab",
+      "name": "カニ",
+      "nameEn": "Crab",
+      "emoji": "🦀",
+      "category": "crustacean"
+    },
+    {
+      "id": "deep_sea_fish",
+      "name": "深海魚",
+      "nameEn": "Deep-sea Fish",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "dolphin",
+      "name": "イルカ",
+      "nameEn": "Dolphin",
+      "emoji": "🐬",
+      "category": "mammal"
+    },
+    {
+      "id": "dugong",
+      "name": "ジュゴン",
+      "nameEn": "Dugong",
+      "emoji": "🧜",
+      "category": "mammal"
+    },
+    {
+      "id": "eel",
+      "name": "ウナギ",
+      "nameEn": "Eel",
+      "emoji": "🐍",
+      "category": "fish"
+    },
+    {
+      "id": "electric_eel",
+      "name": "デンキウナギ",
+      "nameEn": "Electric Eel",
+      "emoji": "🐍",
+      "category": "fish"
+    },
+    {
+      "id": "finless_porpoise",
+      "name": "スナメリ",
+      "nameEn": "Finless Porpoise",
+      "emoji": "🐬",
+      "category": "mammal"
+    },
+    {
+      "id": "freshwater_fish",
+      "name": "淡水魚",
+      "nameEn": "Freshwater Fish",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "fringed_blenny",
+      "name": "フサギンポ",
+      "nameEn": "Fringed Blenny",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "giant_isopod",
+      "name": "ダイオウグソクムシ",
+      "nameEn": "Giant Isopod",
+      "emoji": "🐛",
+      "category": "crustacean"
+    },
+    {
+      "id": "giant_pacific_octopus",
+      "name": "ミズダコ",
+      "nameEn": "Giant Pacific Octopus",
+      "emoji": "🐙",
+      "category": "mollusk"
+    },
+    {
+      "id": "giant_salamander",
+      "name": "オオサンショウウオ",
+      "nameEn": "Giant Salamander",
+      "emoji": "🦎",
+      "category": "amphibian"
+    },
+    {
+      "id": "giant_snakehead",
+      "name": "レッドスネークヘッド",
+      "nameEn": "Giant Snakehead",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "goldfish",
+      "name": "キンギョ",
+      "nameEn": "Goldfish",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "guppy",
+      "name": "グッピー",
+      "nameEn": "Guppy",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "hermit_crab",
+      "name": "ヤドカリ",
+      "nameEn": "Hermit Crab",
+      "emoji": "🐚",
+      "category": "crustacean"
+    },
+    {
+      "id": "honeycomb_moray",
+      "name": "ニセゴイシウツボ",
+      "nameEn": "Honeycomb Moray",
+      "emoji": "🐍",
+      "category": "fish"
+    },
+    {
+      "id": "horse_hair_crab",
+      "name": "ケガニ",
+      "nameEn": "Horsehair Crab",
+      "emoji": "🦀",
+      "category": "crustacean"
+    },
+    {
+      "id": "hucho",
+      "name": "イトウ",
+      "nameEn": "Hucho",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "huchon_perryi",
+      "name": "イトウ",
+      "nameEn": "Sakhalin Taimen",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "humphead_wrasse",
+      "name": "メガネモチノウオ",
+      "nameEn": "Humphead Wrasse",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "japanese_dace",
+      "name": "ウグイ",
+      "nameEn": "Japanese Dace",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "japanese_eel",
+      "name": "ニホンウナギ",
+      "nameEn": "Japanese Eel",
+      "emoji": "🐍",
+      "category": "fish"
+    },
+    {
+      "id": "japanese_spider_crab",
+      "name": "タカアシガニ",
+      "nameEn": "Japanese Spider Crab",
+      "emoji": "🦀",
+      "category": "crustacean"
+    },
+    {
+      "id": "jellyfish",
+      "name": "クラゲ",
+      "nameEn": "Jellyfish",
+      "emoji": "🪼",
+      "category": "invertebrate"
+    },
+    {
+      "id": "kokanee_salmon",
+      "name": "ヒメマス",
+      "nameEn": "Kokanee Salmon",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "lake_minnow",
+      "name": "ヤチウグイ",
+      "nameEn": "Lake Minnow",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "leaf_fish",
+      "name": "リーフフィッシュ",
+      "nameEn": "Leaf Fish",
+      "emoji": "🍃",
+      "category": "fish"
+    },
+    {
+      "id": "longhorn_cowfish",
+      "name": "コンゴウフグ",
+      "nameEn": "Longhorn Cowfish",
+      "emoji": "🐡",
+      "category": "fish"
+    },
+    {
+      "id": "manatee",
+      "name": "マナティー",
+      "nameEn": "Manatee",
+      "emoji": "🧜",
+      "category": "mammal"
+    },
+    {
+      "id": "masu_salmon",
+      "name": "サクラマス",
+      "nameEn": "Masu Salmon",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "mekong_giant_catfish",
+      "name": "メコンオオナマズ",
+      "nameEn": "Mekong Giant Catfish",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "moon_jellyfish",
+      "name": "ミズクラゲ",
+      "nameEn": "Moon Jellyfish",
+      "emoji": "🪼",
+      "category": "invertebrate"
+    },
+    {
+      "id": "moorish_idol",
+      "name": "ツノダシ",
+      "nameEn": "Moorish Idol",
+      "emoji": "🐠",
+      "category": "fish"
+    },
+    {
+      "id": "mudskipper",
+      "name": "トビハゼ",
+      "nameEn": "Mudskipper",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "neon_tetra",
+      "name": "ネオンテトラ",
+      "nameEn": "Neon Tetra",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "nine_spined_stickleback",
+      "name": "イバラトミヨ",
+      "nameEn": "Nine-spined Stickleback",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "north_pacific_giant_octopus",
+      "name": "ミズダコ",
+      "nameEn": "North Pacific Giant Octopus",
+      "emoji": "🐙",
+      "category": "mollusk"
+    },
+    {
+      "id": "ocellaris_clownfish",
+      "name": "カクレクマノミ",
+      "nameEn": "Ocellaris Clownfish",
+      "emoji": "🐠",
+      "category": "fish"
+    },
+    {
+      "id": "orca",
+      "name": "シャチ",
+      "nameEn": "Orca",
+      "emoji": "🐋",
+      "category": "mammal"
+    },
+    {
+      "id": "oscar_fish",
+      "name": "オスカー",
+      "nameEn": "Oscar",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "penguin",
+      "name": "ペンギン",
+      "nameEn": "Penguin",
+      "emoji": "🐧",
+      "category": "bird"
+    },
+    {
+      "id": "pennant_coralfish",
+      "name": "ハタタテダイ",
+      "nameEn": "Pennant Coralfish",
+      "emoji": "🐠",
+      "category": "fish"
+    },
+    {
+      "id": "piranha",
+      "name": "ピラニア",
+      "nameEn": "Piranha",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "pufferfish",
+      "name": "フグ",
+      "nameEn": "Pufferfish",
+      "emoji": "🐡",
+      "category": "fish"
+    },
+    {
+      "id": "rainbow_trout",
+      "name": "ニジマス",
+      "nameEn": "Rainbow Trout",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "red_lionfish",
+      "name": "ハナミノカサゴ",
+      "nameEn": "Red Lionfish",
+      "emoji": "🐠",
+      "category": "fish"
+    },
+    {
+      "id": "red_tail_catfish",
+      "name": "レッドテールキャット",
+      "nameEn": "Redtail Catfish",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "ripsaw_catfish",
+      "name": "オキシドラス",
+      "nameEn": "Ripsaw Catfish",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "rockhopper_penguin",
+      "name": "イワトビペンギン",
+      "nameEn": "Rockhopper Penguin",
+      "emoji": "🐧",
+      "category": "bird"
+    },
+    {
+      "id": "royal_blue_tang",
+      "name": "ナンヨウハギ",
+      "nameEn": "Palette Surgeonfish",
+      "emoji": "🐠",
+      "category": "fish"
+    },
+    {
+      "id": "salmon",
+      "name": "サケ",
+      "nameEn": "Salmon",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "schlegels_black_rockfish",
+      "name": "クロソイ",
+      "nameEn": "Schlegel's Black Rockfish",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "sea_cucumber",
+      "name": "マナマコ",
+      "nameEn": "Sea Cucumber",
+      "emoji": "🥒",
+      "category": "echinoderm"
+    },
+    {
+      "id": "sea_turtle",
+      "name": "ウミガメ",
+      "nameEn": "Sea Turtle",
+      "emoji": "🐢",
+      "category": "reptile"
+    },
+    {
+      "id": "sea_urchin",
+      "name": "ムラサキウニ",
+      "nameEn": "Sea Urchin",
+      "emoji": "🦔",
+      "category": "echinoderm"
+    },
+    {
+      "id": "seagull",
+      "name": "ウミネコ",
+      "nameEn": "Seagull",
+      "emoji": "🐦",
+      "category": "bird"
+    },
+    {
+      "id": "seahorse",
+      "name": "タツノオトシゴ",
+      "nameEn": "Seahorse",
+      "emoji": "🐎",
+      "category": "fish"
+    },
+    {
+      "id": "seal",
+      "name": "アザラシ",
+      "nameEn": "Seal",
+      "emoji": "🦭",
+      "category": "mammal"
+    },
+    {
+      "id": "sealion",
+      "name": "アシカ",
+      "nameEn": "Sea Lion",
+      "emoji": "🦭",
+      "category": "mammal"
+    },
+    {
+      "id": "shark",
+      "name": "サメ",
+      "nameEn": "Shark",
+      "emoji": "🦈",
+      "category": "fish"
+    },
+    {
+      "id": "silver_arowana",
+      "name": "シルバーアロワナ",
+      "nameEn": "Silver Arowana",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "snow_crab",
+      "name": "ズワイガニ",
+      "nameEn": "Snow Crab",
+      "emoji": "🦀",
+      "category": "crustacean"
+    },
+    {
+      "id": "splendid_garden_eel",
+      "name": "ニシキアナゴ",
+      "nameEn": "Splendid Garden Eel",
+      "emoji": "🐍",
+      "category": "fish"
+    },
+    {
+      "id": "spotted_garden_eel",
+      "name": "チンアナゴ",
+      "nameEn": "Spotted Garden Eel",
+      "emoji": "🐍",
+      "category": "fish"
+    },
+    {
+      "id": "spotted_moray_eel",
+      "name": "ニセゴイシウツボ",
+      "nameEn": "Laced Moray",
+      "emoji": "🐍",
+      "category": "fish"
+    },
+    {
+      "id": "starfish",
+      "name": "ヒトデ",
+      "nameEn": "Starfish",
+      "emoji": "⭐",
+      "category": "invertebrate"
+    },
+    {
+      "id": "starspotted_smooth_hound",
+      "name": "ドチザメ",
+      "nameEn": "Starspotted Smooth-hound",
+      "emoji": "🦈",
+      "category": "fish"
+    },
+    {
+      "id": "stonefish",
+      "name": "オニダルマオコゼ",
+      "nameEn": "Stonefish",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "striped_beakfish",
+      "name": "イシダイ",
+      "nameEn": "Striped Beakfish",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "sturgeon",
+      "name": "チョウザメ",
+      "nameEn": "Sturgeon",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "threespined_stickleback",
+      "name": "イトヨ",
+      "nameEn": "Three-spined Stickleback",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "tuna",
+      "name": "マグロ",
+      "nameEn": "Tuna",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "walrus",
+      "name": "セイウチ",
+      "nameEn": "Walrus",
+      "emoji": "🦭",
+      "category": "mammal"
+    },
+    {
+      "id": "whale",
+      "name": "クジラ",
+      "nameEn": "Whale",
+      "emoji": "🐳",
+      "category": "mammal"
+    },
+    {
+      "id": "whale_shark",
+      "name": "ジンベエザメ",
+      "nameEn": "Whale Shark",
+      "emoji": "🦈",
+      "category": "fish"
+    },
+    {
+      "id": "whitespotted_char",
+      "name": "アメマス",
+      "nameEn": "Whitespotted Char",
+      "emoji": "🐟",
+      "category": "fish"
+    },
+    {
+      "id": "yellow_boxfish",
+      "name": "ミナミハコフグ",
+      "nameEn": "Yellow Boxfish",
+      "emoji": "🐡",
+      "category": "fish"
+    }
+  ]
+}
