@@ -322,15 +322,18 @@ private struct TankFish: View {
         let laneHeight = containerSize.height / CGFloat(laneCount)
         let baseY = laneHeight * (CGFloat(laneIndex) + 0.5)
 
-        xOffset = -size
+        xOffset = -size * 1.5
         yOffset = baseY
 
-        swim(baseY: baseY)
+        let startDelay = Double.random(in: 0...4)
+        DispatchQueue.main.asyncAfter(deadline: .now() + startDelay) {
+            swim(baseY: baseY)
+        }
     }
 
     private func swim(baseY: CGFloat) {
-        let duration = Double.random(in: 8...14)
-        let targetX = containerSize.width + size
+        let duration = Double.random(in: 10...16)
+        let targetX = containerSize.width + size * 1.5
         let targetY = baseY + CGFloat.random(in: -12...12)
 
         withAnimation(.linear(duration: duration)) {
@@ -338,9 +341,16 @@ private struct TankFish: View {
             yOffset = targetY
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
-            xOffset = -size
-            yOffset = baseY
-            swim(baseY: baseY)
+            var transaction = Transaction()
+            transaction.disablesAnimations = true
+            withTransaction(transaction) {
+                xOffset = -size * 1.5
+                yOffset = baseY
+            }
+            let pause = Double.random(in: 0.5...3.0)
+            DispatchQueue.main.asyncAfter(deadline: .now() + pause) {
+                swim(baseY: baseY)
+            }
         }
     }
 }
