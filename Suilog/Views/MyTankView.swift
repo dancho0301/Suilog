@@ -264,9 +264,11 @@ private struct TankFish: View {
     let theme: Theme
     let containerSize: CGSize
 
-    @State private var xOffset: CGFloat = 0
-    @State private var yOffset: CGFloat = 0
-    @State private var didStart = false
+    @State private var startTime: Date = Date()
+    @State private var startDelay: Double = Double.random(in: 0...4)
+    @State private var cycleDuration: Double = Double.random(in: 10...16)
+    @State private var cyclePause: Double = Double.random(in: 0.5...3.0)
+    @State private var wobblePhase: Double = Double.random(in: 0...1)
 
     private var size: CGFloat {
         let base: CGFloat
@@ -294,63 +296,47 @@ private struct TankFish: View {
 
     private var isCustomAsset: Bool { !representativeFish.contains(".") }
 
-    var body: some View {
-        Group {
-            if isCustomAsset {
-                Image(theme.creatureImageName(representativeFish))
-                    .renderingMode(.original)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: size, height: size)
-            } else {
-                Image(systemName: representativeFish)
-                    .font(.system(size: size))
-                    .foregroundColor(fishColor)
-            }
-        }
-        .position(x: xOffset, y: yOffset)
-        .onAppear {
-            guard !didStart else { return }
-            didStart = true
-            startSwim()
-        }
-    }
-
-    private func startSwim() {
+    private var baseY: CGFloat {
         let laneCount = max(total, 3)
         let laneIndex = index % laneCount
         let laneHeight = containerSize.height / CGFloat(laneCount)
-        let baseY = laneHeight * (CGFloat(laneIndex) + 0.5)
-
-        xOffset = -size * 1.5
-        yOffset = baseY
-
-        let startDelay = Double.random(in: 0...4)
-        DispatchQueue.main.asyncAfter(deadline: .now() + startDelay) {
-            swim(baseY: baseY)
-        }
+        return laneHeight * (CGFloat(laneIndex) + 0.5)
     }
 
-    private func swim(baseY: CGFloat) {
-        let duration = Double.random(in: 10...16)
-        let targetX = containerSize.width + size * 1.5
-        let targetY = baseY + CGFloat.random(in: -12...12)
+    private func currentPosition(at date: Date) -> CGPoint {
+        let elapsed = date.timeIntervalSince(startTime) - startDelay
+        let leftHidden = CGPoint(x: -size * 1.5, y: baseY)
+        guard elapsed >= 0, containerSize.width > 0 else { return leftHidden }
 
-        withAnimation(.linear(duration: duration)) {
-            xOffset = targetX
-            yOffset = targetY
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
-            var transaction = Transaction()
-            transaction.disablesAnimations = true
-            withTransaction(transaction) {
-                xOffset = -size * 1.5
-                yOffset = baseY
+        let cycleLength = cycleDuration + cyclePause
+        let cyclePos = elapsed.truncatingRemainder(dividingBy: cycleLength)
+        guard cyclePos < cycleDuration else { return leftHidden }
+
+        let t = cyclePos / cycleDuration
+        let startX: CGFloat = -size * 1.5
+        let endX: CGFloat = containerSize.width + size * 1.5
+        let x = startX + (endX - startX) * CGFloat(t)
+        let wobble = sin((t + wobblePhase) * .pi * 2) * 8
+        return CGPoint(x: x, y: baseY + wobble)
+    }
+
+    var body: some View {
+        TimelineView(.animation) { context in
+            let pos = currentPosition(at: context.date)
+            Group {
+                if isCustomAsset {
+                    Image(theme.creatureImageName(representativeFish))
+                        .renderingMode(.original)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: size, height: size)
+                } else {
+                    Image(systemName: representativeFish)
+                        .font(.system(size: size))
+                        .foregroundColor(fishColor)
+                }
             }
-            let pause = Double.random(in: 0.5...3.0)
-            DispatchQueue.main.asyncAfter(deadline: .now() + pause) {
-                swim(baseY: baseY)
-            }
+            .position(x: pos.x, y: pos.y)
         }
     }
 }
