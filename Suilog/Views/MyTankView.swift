@@ -265,10 +265,37 @@ private struct TankFish: View {
     let containerSize: CGSize
 
     @State private var startTime: Date = Date()
-    @State private var startDelay: Double = Double.random(in: 0...10)
+    @State private var startDelay: Double
     @State private var cycleDuration: Double = Double.random(in: 18...28)
     @State private var cyclePause: Double = Double.random(in: 2...6)
     @State private var wobblePhase: Double = Double.random(in: 0...1)
+
+    init(
+        index: Int,
+        total: Int,
+        checkInType: CheckInType,
+        representativeFish: String,
+        fishIconSize: Int,
+        theme: Theme,
+        containerSize: CGSize
+    ) {
+        self.index = index
+        self.total = total
+        self.checkInType = checkInType
+        self.representativeFish = representativeFish
+        self.fishIconSize = fishIconSize
+        self.theme = theme
+        self.containerSize = containerSize
+
+        // 魚を 1 匹あたり 0.8 秒の間隔で順に登場させる。
+        // 総数が多い場合は最大 30 秒に収めるよう間隔を狭める。
+        let cap: Double = 30
+        let idealStride: Double = 0.8
+        let stride = min(idealStride, cap / Double(max(total, 1)))
+        let systematic = Double(index) * stride
+        let jitter = Double.random(in: 0...stride)
+        self._startDelay = State(initialValue: systematic + jitter)
+    }
 
     private var size: CGFloat {
         let base: CGFloat
