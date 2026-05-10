@@ -325,9 +325,12 @@ private struct TankFish: View {
 
     private var baseY: CGFloat {
         let laneCount = max(total, 3)
-        let laneIndex = index % laneCount
         let laneHeight = containerSize.height / CGFloat(laneCount)
-        return laneHeight * (CGFloat(laneIndex) + 0.5)
+        // 黄金比で index をシャッフルし、出現順と Y 位置の相関を断つ
+        let goldenRatio = 0.6180339887498949
+        let fraction = (Double(index) * goldenRatio).truncatingRemainder(dividingBy: 1)
+        let shuffledLane = min(Int(fraction * Double(laneCount)), laneCount - 1)
+        return laneHeight * (CGFloat(shuffledLane) + 0.5)
     }
 
     private func currentPosition(at date: Date) -> CGPoint {
