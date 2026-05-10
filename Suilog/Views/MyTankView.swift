@@ -265,9 +265,9 @@ private struct TankFish: View {
     let containerSize: CGSize
 
     @State private var startTime: Date = Date()
-    @State private var startDelay: Double = Double.random(in: 0...4)
-    @State private var cycleDuration: Double = Double.random(in: 10...16)
-    @State private var cyclePause: Double = Double.random(in: 0.5...3.0)
+    @State private var startDelay: Double = Double.random(in: 0...10)
+    @State private var cycleDuration: Double = Double.random(in: 18...28)
+    @State private var cyclePause: Double = Double.random(in: 2...6)
     @State private var wobblePhase: Double = Double.random(in: 0...1)
 
     private var size: CGFloat {
