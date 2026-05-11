@@ -45,24 +45,26 @@ struct MyTankView: View {
     private var theme: Theme { themeManager.currentTheme }
 
     var body: some View {
-        NavigationStack {
-            ZStack(alignment: .top) {
-                theme.primaryBg.ignoresSafeArea()
+        ZStack(alignment: .top) {
+            theme.primaryBg.ignoresSafeArea()
+
+            VStack(spacing: 0) {
+                header
+                    .padding(.horizontal, SuiSpacing.screenHorizontal)
+                    .padding(.top, 12)
 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
-                        header
                         TankCardView(visits: visitRecords, theme: theme)
                             .frame(height: 280)
                         statsCard
                         recentSection
                     }
                     .padding(.horizontal, SuiSpacing.screenHorizontal)
-                    .padding(.top, 12)
+                    .padding(.top, 20)
                     .padding(.bottom, 40)
                 }
             }
-            .toolbar(.hidden, for: .navigationBar)
         }
     }
 
