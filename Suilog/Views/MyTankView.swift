@@ -62,7 +62,7 @@ struct MyTankView: View {
                     .padding(.bottom, 40)
                 }
             }
-            .navigationBarHidden(true)
+            .toolbar(.hidden, for: .navigationBar)
         }
     }
 
@@ -89,7 +89,6 @@ struct MyTankView: View {
                 .frame(width: 44, height: 44)
                 .contentShape(Rectangle())
             }
-            .buttonStyle(.plain)
             .accessibilityIdentifier("themeStoreButton")
         }
     }
