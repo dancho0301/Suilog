@@ -62,7 +62,7 @@ struct MyTankView: View {
                     .padding(.bottom, 40)
                 }
             }
-            .navigationBarHidden(true)
+            .toolbar(.hidden, for: .navigationBar)
         }
     }
 
@@ -81,12 +81,13 @@ struct MyTankView: View {
                 ZStack {
                     Circle()
                         .fill(theme.primaryColor)
-                        .frame(width: 44, height: 44)
                         .suiShadow(.primaryButton(primary: theme.primaryColor))
                     Image(systemName: "paintpalette.fill")
                         .font(.system(size: 18, weight: .semibold))
                         .foregroundColor(.white)
                 }
+                .frame(width: 44, height: 44)
+                .contentShape(Rectangle())
             }
             .accessibilityIdentifier("themeStoreButton")
         }
