@@ -15,14 +15,11 @@ struct MyTankView: View {
     @EnvironmentObject var themeManager: ThemeManager
     @Query(sort: \VisitRecord.visitDate, order: .reverse) private var visitRecords: [VisitRecord]
 
-    let onTapAvatar: () -> Void
     let onSeeAllVisits: () -> Void
 
     init(
-        onTapAvatar: @escaping () -> Void = {},
         onSeeAllVisits: @escaping () -> Void = {}
     ) {
-        self.onTapAvatar = onTapAvatar
         self.onSeeAllVisits = onSeeAllVisits
     }
 
@@ -48,51 +45,31 @@ struct MyTankView: View {
         ZStack(alignment: .top) {
             theme.primaryBg.ignoresSafeArea()
 
-            VStack(spacing: 0) {
-                header
-                    .padding(.horizontal, SuiSpacing.screenHorizontal)
-                    .padding(.top, 12)
-
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 20) {
-                        TankCardView(visits: visitRecords, theme: theme)
-                            .frame(height: 280)
-                        statsCard
-                        recentSection
-                    }
-                    .padding(.horizontal, SuiSpacing.screenHorizontal)
-                    .padding(.top, 20)
-                    .padding(.bottom, 40)
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    header
+                    TankCardView(visits: visitRecords, theme: theme)
+                        .frame(height: 280)
+                    statsCard
+                    recentSection
                 }
+                .padding(.horizontal, SuiSpacing.screenHorizontal)
+                .padding(.top, 12)
+                .padding(.bottom, 40)
             }
         }
     }
 
     private var header: some View {
-        HStack(alignment: .center) {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("こんにちは 👋")
-                    .font(SuiFont.label)
-                    .foregroundColor(SuiColor.midText)
-                Text("マイ水槽")
-                    .font(SuiFont.screenTitle)
-                    .foregroundColor(SuiColor.heading)
-            }
-            Spacer()
-            Button(action: onTapAvatar) {
-                ZStack {
-                    Circle()
-                        .fill(theme.primaryColor)
-                        .suiShadow(.primaryButton(primary: theme.primaryColor))
-                    Image(systemName: "paintpalette.fill")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(.white)
-                }
-                .frame(width: 44, height: 44)
-                .contentShape(Rectangle())
-            }
-            .accessibilityIdentifier("themeStoreButton")
+        VStack(alignment: .leading, spacing: 4) {
+            Text("こんにちは 👋")
+                .font(SuiFont.label)
+                .foregroundColor(SuiColor.midText)
+            Text("マイ水槽")
+                .font(SuiFont.screenTitle)
+                .foregroundColor(SuiColor.heading)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private var statsCard: some View {
