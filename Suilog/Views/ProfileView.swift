@@ -11,8 +11,11 @@ import SwiftData
 struct ProfileView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var themeManager: ThemeManager
+    @EnvironmentObject private var storeManager: StoreManager
     @Query private var aquariums: [Aquarium]
     @Query private var visitRecords: [VisitRecord]
+
+    @State private var showingThemeStore = false
 
     private var theme: Theme { themeManager.currentTheme }
 
@@ -61,6 +64,7 @@ struct ProfileView: View {
                         statsCard
                         earnedSection
                         inProgressSection
+                        settingsSection
                         shareButton
                     }
                     .padding(.horizontal, SuiSpacing.screenHorizontal)
@@ -69,6 +73,11 @@ struct ProfileView: View {
                 }
             }
             .navigationBarHidden(true)
+        }
+        .sheet(isPresented: $showingThemeStore) {
+            ThemeStoreView()
+                .environmentObject(storeManager)
+                .environmentObject(themeManager)
         }
     }
 
@@ -175,6 +184,42 @@ struct ProfileView: View {
                     }
                 }
             }
+        }
+    }
+
+    private var settingsSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            SectionHeader("設定")
+            Button {
+                showingThemeStore = true
+            } label: {
+                SuiCard(radius: SuiRadius.cardMedium, padding: 14) {
+                    HStack(spacing: 14) {
+                        ZStack {
+                            Circle()
+                                .fill(theme.primaryColor)
+                                .frame(width: 44, height: 44)
+                            Image(systemName: "paintpalette.fill")
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundColor(.white)
+                        }
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("テーマを変える")
+                                .font(SuiFont.bodyMedium)
+                                .foregroundColor(SuiColor.heading)
+                            Text(themeManager.currentTheme.name)
+                                .font(SuiFont.caption)
+                                .foregroundColor(SuiColor.subText)
+                        }
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(SuiColor.subText)
+                    }
+                }
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("themeStoreButton")
         }
     }
 
@@ -369,4 +414,5 @@ private struct ProgressBar: View {
     ProfileView()
         .modelContainer(for: VisitRecord.self, inMemory: true)
         .environmentObject(ThemeManager())
+        .environmentObject(StoreManager())
 }

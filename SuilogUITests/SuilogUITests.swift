@@ -160,7 +160,7 @@ final class SuilogUITests: XCTestCase {
     func testThemeStoreButton_opensSheet() throws {
         launchAppAndWaitForTabs()
 
-        tapTab("マイ水槽")
+        tapTab("プロフィール")
 
         let themeButton = app.buttons["themeStoreButton"]
         XCTAssertTrue(themeButton.waitForExistence(timeout: 5), "テーマストアボタンが存在するべき")

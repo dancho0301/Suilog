@@ -16,7 +16,6 @@ struct ContentView: View {
     @Query private var aquariums: [Aquarium]
 
     @State private var selectedTab = 0
-    @State private var showingThemeStore = false
     @State private var showingNearbyAlert = false
     @State private var nearbyAquarium: Aquarium?
     @State private var showingCheckInSheet = false
@@ -46,7 +45,6 @@ struct ContentView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             MyTankView(
-                onTapAvatar: { showingThemeStore = true },
                 onSeeAllVisits: { selectedTab = 2 }
             )
                 #if DEBUG
@@ -100,11 +98,6 @@ struct ContentView: View {
                 items: tabItems,
                 primary: themeManager.currentTheme.primaryColor
             )
-        }
-        .sheet(isPresented: $showingThemeStore) {
-            ThemeStoreView()
-                .environmentObject(storeManager)
-                .environmentObject(themeManager)
         }
         #if DEBUG
         .sheet(isPresented: $showingDebugMenu) {
