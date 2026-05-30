@@ -68,7 +68,7 @@ struct PassportView: View {
                     .padding(.bottom, 40)
                 }
             }
-            .navigationBarHidden(true)
+            .toolbar(.hidden, for: .navigationBar)
             .sheet(item: $selectedVisit) { visit in
                 EditVisitRecordView(visit: visit)
             }

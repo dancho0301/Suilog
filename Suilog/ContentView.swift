@@ -109,10 +109,6 @@ struct ContentView: View {
                 NewVisitRecordView(aquarium: aquarium, initialMode: .location)
             }
         }
-        .onReceive(storeManager.$purchasedProductIds) { productIds in
-            // 購入状態が変わったらThemeManagerに通知
-            themeManager.updatePurchasedProducts(productIds)
-        }
         .onReceive(locationManager.$currentLocation) { location in
             // 位置情報が更新されたら、起動時の一回だけ近くの水族館をチェック
             guard !hasCheckedNearbyOnLaunch, location != nil else { return }
