@@ -164,6 +164,14 @@ final class SuilogUITests: XCTestCase {
 
         let themeButton = app.buttons["themeStoreButton"]
         XCTAssertTrue(themeButton.waitForExistence(timeout: 5), "テーマストアボタンが存在するべき")
+
+        // プロフィール画面下部にあるためスクロールして表示させる
+        var scrollAttempts = 0
+        while !themeButton.isHittable && scrollAttempts < 5 {
+            app.swipeUp()
+            scrollAttempts += 1
+        }
+        XCTAssertTrue(themeButton.isHittable, "テーマストアボタンがタップ可能になるべき")
         themeButton.tap()
 
         let themeStoreTitle = app.staticTexts["テーマストア"]

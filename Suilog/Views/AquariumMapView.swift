@@ -117,7 +117,7 @@ struct AquariumMapView: View {
                     .padding(.bottom, 40)
                 }
             }
-            .navigationBarHidden(true)
+            .toolbar(.hidden, for: .navigationBar)
             .sheet(item: $selectedAquarium) { aquarium in
                 AquariumDetailView(aquarium: aquarium)
                     .presentationDetents([.large])
@@ -530,6 +530,7 @@ struct AquariumDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var locationManager: LocationManager
     @EnvironmentObject private var themeManager: ThemeManager
+    @Query private var visitRecords: [VisitRecord]
 
     let aquarium: Aquarium
 
