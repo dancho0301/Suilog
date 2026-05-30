@@ -83,6 +83,7 @@ struct SuilogApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(.light)
                 .environmentObject(locationManager)
                 .environmentObject(storeManager)
                 .environmentObject(themeManager)
