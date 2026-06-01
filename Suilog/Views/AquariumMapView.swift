@@ -26,6 +26,7 @@ struct AquariumMapView: View {
     @Query private var visitRecords: [VisitRecord]
 
     @State private var position: MapCameraPosition = .automatic
+    @State private var hasCenteredOnUser = false
     @State private var selectedAquarium: Aquarium?
     @State private var showingList = false
 
@@ -134,7 +135,27 @@ struct AquariumMapView: View {
             }
             .onAppear {
                 locationManager.requestPermission()
+                centerOnUserIfNeeded()
             }
+            .onChange(of: locationManager.currentLocation) { _, _ in
+                centerOnUserIfNeeded()
+            }
+        }
+    }
+
+    /// 現在地を取得できたら、初回のみ現在地周辺の拡大図に初期表示を合わせる。
+    /// ユーザーが手動で地図を操作した後に勝手に戻らないよう、一度だけ実行する。
+    private func centerOnUserIfNeeded() {
+        guard !hasCenteredOnUser,
+              let coordinate = locationManager.currentLocation?.coordinate else { return }
+        hasCenteredOnUser = true
+        let region = MKCoordinateRegion(
+            center: coordinate,
+            latitudinalMeters: 30_000,
+            longitudinalMeters: 30_000
+        )
+        withAnimation {
+            position = .region(region)
         }
     }
 
@@ -179,6 +200,7 @@ struct AquariumMapView: View {
     private var mapCard: some View {
         ZStack(alignment: .bottomTrailing) {
             Map(position: $position) {
+                UserAnnotation()
                 ForEach(filteredAquariums, id: \.id) { aquarium in
                     let hasVisited = visitedAquariumIds.contains(aquarium.id)
                     Annotation(
