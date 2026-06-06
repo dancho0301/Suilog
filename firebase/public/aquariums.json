@@ -303,13 +303,13 @@
       "longitude": 141.562722,
       "description": "八戸の海や水産業について学べる施設。ウミネコの繁殖地である蕪島に近い。",
       "region": "青森県",
-      "representativeFish": "SeaGull",
+      "representativeFish": "Crab",
       "fishIconSize": 2,
       "address": "青森県八戸市大字鮫町字下松苗場14-33",
       "affiliateLink": null,
       "id": "marient",
       "creatureIds": [
-        "seagull"
+        "crab"
       ]
     },
     {
@@ -648,13 +648,13 @@
       "longitude": 139.807222,
       "description": "昆虫、鳥、魚など様々な生き物が展示されており、ふれあい体験もできる。",
       "region": "東京都",
-      "representativeFish": "Butterfly",
+      "representativeFish": "Freshwater Fish",
       "fishIconSize": 1,
       "address": "東京都足立区保木間二丁目17番1号",
       "affiliateLink": null,
       "id": "adachi-biological-garden",
       "creatureIds": [
-        "butterfly"
+        "freshwater_fish"
       ]
     },
     {
