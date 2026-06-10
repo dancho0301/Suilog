@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 /// 初回起動時に表示するオンボーディング画面
 struct OnboardingView: View {
