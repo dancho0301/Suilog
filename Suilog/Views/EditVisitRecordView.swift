@@ -22,6 +22,7 @@ struct EditVisitRecordView: View {
     @State private var photoData: Data?
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var showingCamera = false
+    @State private var photoToView: ViewedPhoto?
     @State private var showingDiscardAlert = false
     @State private var showingSaveErrorAlert = false
     @State private var saveErrorMessage = ""
@@ -92,6 +93,9 @@ struct EditVisitRecordView: View {
             }
             .sheet(isPresented: $showingCamera) {
                 ImagePicker(imageData: $photoData)
+            }
+            .fullScreenCover(item: $photoToView) { photo in
+                PhotoViewerView(image: photo.image)
             }
         }
     }
@@ -200,6 +204,8 @@ struct EditVisitRecordView: View {
                         .scaledToFill()
                         .frame(maxWidth: .infinity, maxHeight: 220)
                         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        .onTapGesture { photoToView = ViewedPhoto(image: ui) }
 
                     Button(role: .destructive) {
                         photoData = nil

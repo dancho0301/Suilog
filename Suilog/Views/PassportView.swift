@@ -15,6 +15,8 @@ struct PassportView: View {
     @Query(sort: \VisitRecord.visitDate, order: .reverse) private var visitRecords: [VisitRecord]
 
     @State private var selectedVisit: VisitRecord?
+    @State private var visitToShare: VisitRecord?
+    @State private var photoToView: ViewedPhoto?
     @State private var showDeleteConfirmation = false
     @State private var visitToDelete: VisitRecord?
     @State private var showingDeleteError = false
@@ -48,11 +50,13 @@ struct PassportView: View {
                                         VisitRecordCard(
                                             visit: visit,
                                             aquarium: aquarium,
-                                            theme: theme
+                                            theme: theme,
+                                            onPhotoTap: { photoToView = ViewedPhoto(image: $0) }
                                         )
                                         .onTapGesture { selectedVisit = visit }
                                         .contextMenu {
                                             Button("編集") { selectedVisit = visit }
+                                            Button("シェア") { visitToShare = visit }
                                             Button("削除", role: .destructive) {
                                                 visitToDelete = visit
                                                 showDeleteConfirmation = true
@@ -71,6 +75,15 @@ struct PassportView: View {
             .toolbar(.hidden, for: .navigationBar)
             .sheet(item: $selectedVisit) { visit in
                 EditVisitRecordView(visit: visit)
+            }
+            .sheet(item: $visitToShare) { visit in
+                if let aquarium = visit.aquarium {
+                    VisitShareSheet(visit: visit, aquarium: aquarium, theme: theme)
+                        .presentationDetents([.medium, .large])
+                }
+            }
+            .fullScreenCover(item: $photoToView) { photo in
+                PhotoViewerView(image: photo.image)
             }
             .sheet(isPresented: $showingAquariumPicker) {
                 AquariumListView(
@@ -168,6 +181,7 @@ private struct VisitRecordCard: View {
     let visit: VisitRecord
     let aquarium: Aquarium
     let theme: Theme
+    let onPhotoTap: (UIImage) -> Void
 
     private var dateString: String {
         let f = DateFormatter()
@@ -233,6 +247,8 @@ private struct VisitRecordCard: View {
                 .scaledToFill()
                 .frame(width: 50, height: 50)
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .onTapGesture { onPhotoTap(ui) }
         } else {
             ZStack {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
