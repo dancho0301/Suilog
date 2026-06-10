@@ -49,9 +49,9 @@ struct AquariumMapView: View {
     private var filteredAquariums: [Aquarium] {
         aquariums
             .filter { aquarium in
-                // 検索テキストフィルタ
+                // 検索テキストフィルタ（名前・地域・住所）
                 if !searchText.isEmpty {
-                    return aquarium.name.localizedCaseInsensitiveContains(searchText)
+                    return aquarium.matchesSearch(searchText)
                 }
                 return true
             }
@@ -174,7 +174,7 @@ struct AquariumMapView: View {
         HStack(spacing: 8) {
             Image(systemName: "magnifyingglass")
                 .foregroundColor(SuiColor.subText)
-            TextField("水族館を検索", text: $searchText)
+            TextField("名前・地域・住所で検索", text: $searchText)
                 .font(SuiFont.body)
                 .foregroundColor(SuiColor.heading)
                 .autocorrectionDisabled()
@@ -409,9 +409,9 @@ struct AquariumListView: View {
     private var filteredAndSortedAquariums: [Aquarium] {
         aquariums
             .filter { aquarium in
-                // 検索テキストフィルタ
+                // 検索テキストフィルタ（名前・地域・住所）
                 if !searchText.isEmpty {
-                    return aquarium.name.localizedCaseInsensitiveContains(searchText)
+                    return aquarium.matchesSearch(searchText)
                 }
                 return true
             }
@@ -508,7 +508,7 @@ struct AquariumListView: View {
             }
             .navigationTitle("水族館リスト")
             .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $searchText, prompt: "水族館を検索")
+            .searchable(text: $searchText, prompt: "名前・地域・住所で検索")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
@@ -569,6 +569,19 @@ struct AquariumDetailView: View {
 
     var canLocationCheckIn: Bool {
         locationManager.isWithinRange(of: aquarium, radius: 1000)
+    }
+
+    /// 圏外時の案内文（現在地が取得できていれば残り距離を併記）
+    private var locationCheckInHint: String {
+        let coordinate = CLLocationCoordinate2D(latitude: aquarium.latitude, longitude: aquarium.longitude)
+        guard let distance = locationManager.distance(to: coordinate), distance > 1000 else {
+            return "※ 水族館から1km以内で利用可能"
+        }
+        let remaining = distance - 1000
+        let remainingText = remaining < 1000
+            ? "\(Int(remaining))m"
+            : String(format: "%.1fkm", remaining / 1000)
+        return "※ 水族館から1km以内で利用可能（あと約\(remainingText)）"
     }
 
     private var theme: Theme { themeManager.currentTheme }
@@ -825,7 +838,7 @@ struct AquariumDetailView: View {
             }
 
             if !canLocationCheckIn {
-                Text("※ 水族館から1km以内で利用可能")
+                Text(locationCheckInHint)
                     .font(SuiFont.caption)
                     .foregroundColor(SuiColor.subText)
             }
@@ -942,6 +955,15 @@ struct FilterSheet: View {
 /// SF Symbolsかカスタムアセットかを判定するヘルパー関数
 fileprivate func isCustomAsset(_ name: String) -> Bool {
     return !name.contains(".")
+}
+
+fileprivate extension Aquarium {
+    /// 検索テキストが名前・地域・住所のいずれかに一致するか
+    func matchesSearch(_ text: String) -> Bool {
+        name.localizedCaseInsensitiveContains(text)
+            || region.localizedCaseInsensitiveContains(text)
+            || (address?.localizedCaseInsensitiveContains(text) ?? false)
+    }
 }
 
 #Preview {
