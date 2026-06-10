@@ -12,10 +12,12 @@ struct ProfileView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var themeManager: ThemeManager
     @EnvironmentObject private var storeManager: StoreManager
+    @EnvironmentObject private var locationManager: LocationManager
     @Query private var aquariums: [Aquarium]
     @Query private var visitRecords: [VisitRecord]
 
     @State private var showingThemeStore = false
+    @State private var showingOnboarding = false
 
     private var theme: Theme { themeManager.currentTheme }
 
@@ -78,6 +80,13 @@ struct ProfileView: View {
             ThemeStoreView()
                 .environmentObject(storeManager)
                 .environmentObject(themeManager)
+        }
+        .fullScreenCover(isPresented: $showingOnboarding) {
+            OnboardingView(isReplay: true) {
+                showingOnboarding = false
+            }
+            .environmentObject(themeManager)
+            .environmentObject(locationManager)
         }
     }
 
@@ -193,33 +202,53 @@ struct ProfileView: View {
             Button {
                 showingThemeStore = true
             } label: {
-                SuiCard(radius: SuiRadius.cardMedium, padding: 14) {
-                    HStack(spacing: 14) {
-                        ZStack {
-                            Circle()
-                                .fill(theme.primaryColor)
-                                .frame(width: 44, height: 44)
-                            Image(systemName: "paintpalette.fill")
-                                .font(.system(size: 18, weight: .semibold))
-                                .foregroundColor(.white)
-                        }
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("テーマを変える")
-                                .font(SuiFont.bodyMedium)
-                                .foregroundColor(SuiColor.heading)
-                            Text(themeManager.currentTheme.name)
-                                .font(SuiFont.caption)
-                                .foregroundColor(SuiColor.subText)
-                        }
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(SuiColor.subText)
-                    }
-                }
+                settingsRow(
+                    icon: "paintpalette.fill",
+                    title: "テーマを変える",
+                    subtitle: themeManager.currentTheme.name
+                )
             }
             .buttonStyle(.plain)
             .accessibilityIdentifier("themeStoreButton")
+
+            Button {
+                showingOnboarding = true
+            } label: {
+                settingsRow(
+                    icon: "questionmark.circle.fill",
+                    title: "使い方を見る",
+                    subtitle: "アプリの紹介をもう一度表示"
+                )
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("onboardingReplayButton")
+        }
+    }
+
+    private func settingsRow(icon: String, title: String, subtitle: String) -> some View {
+        SuiCard(radius: SuiRadius.cardMedium, padding: 14) {
+            HStack(spacing: 14) {
+                ZStack {
+                    Circle()
+                        .fill(theme.primaryColor)
+                        .frame(width: 44, height: 44)
+                    Image(systemName: icon)
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(.white)
+                }
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(title)
+                        .font(SuiFont.bodyMedium)
+                        .foregroundColor(SuiColor.heading)
+                    Text(subtitle)
+                        .font(SuiFont.caption)
+                        .foregroundColor(SuiColor.subText)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(SuiColor.subText)
+            }
         }
     }
 
@@ -415,4 +444,5 @@ private struct ProgressBar: View {
         .modelContainer(for: VisitRecord.self, inMemory: true)
         .environmentObject(ThemeManager())
         .environmentObject(StoreManager())
+        .environmentObject(LocationManager())
 }

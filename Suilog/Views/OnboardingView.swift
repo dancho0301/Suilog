@@ -15,6 +15,9 @@ struct OnboardingView: View {
     /// オンボーディング完了済みフラグのUserDefaultsキー
     static let hasCompletedKey = "HasCompletedOnboarding"
 
+    /// プロフィールからの再表示かどうか（初回起動時はfalse）
+    var isReplay: Bool = false
+
     /// オンボーディング完了時に呼ばれる
     let onComplete: () -> Void
 
@@ -261,7 +264,8 @@ struct OnboardingView: View {
                     )
             }
             .suiShadow(.primaryButton(primary: theme.primaryColor))
-        } else {
+        } else if locationManager.authorizationStatus == .notDetermined {
+            // 位置情報が未設定なら許可をリクエスト（再表示時も同様）
             VStack(spacing: 12) {
                 Button {
                     locationManager.requestPermission()
@@ -292,6 +296,22 @@ struct OnboardingView: View {
                         .frame(maxWidth: .infinity)
                 }
             }
+        } else {
+            // 位置情報の設定が済んでいる場合は閉じるだけ
+            Button {
+                onComplete()
+            } label: {
+                Text(isReplay ? "閉じる" : "はじめる")
+                    .font(SuiFont.bodyMedium)
+                    .foregroundColor(.white)
+                    .padding(.vertical, 14)
+                    .frame(maxWidth: .infinity)
+                    .background(
+                        RoundedRectangle(cornerRadius: SuiRadius.button, style: .continuous)
+                            .fill(theme.primaryColor)
+                    )
+            }
+            .suiShadow(.primaryButton(primary: theme.primaryColor))
         }
     }
 }
