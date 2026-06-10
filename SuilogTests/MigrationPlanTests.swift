@@ -16,30 +16,30 @@ struct MigrationPlanTests {
 
     // MARK: - Schema Configuration Tests
 
-    @Test("スキーマバージョンが8つ定義されている")
+    @Test("スキーマバージョンが9つ定義されている")
     func testSchemaVersionCount() {
-        #expect(AquariumMigrationPlan.schemas.count == 8)
+        #expect(AquariumMigrationPlan.schemas.count == 9)
     }
 
-    @Test("マイグレーションステージが7つ定義されている")
+    @Test("マイグレーションステージが8つ定義されている")
     func testMigrationStageCount() {
-        #expect(AquariumMigrationPlan.stages.count == 7)
+        #expect(AquariumMigrationPlan.stages.count == 8)
     }
 
-    @Test("最新スキーマがV8")
+    @Test("最新スキーマがV9")
     func testLatestSchemaVersion() {
         let latestSchema = AquariumMigrationPlan.schemas.last
-        #expect(latestSchema == AquariumSchemaV8.self)
+        #expect(latestSchema == AquariumSchemaV9.self)
     }
 
-    @Test("V8のバージョン識別子が8.0.0")
-    func testV8VersionIdentifier() {
-        #expect(AquariumSchemaV8.versionIdentifier == Schema.Version(8, 0, 0))
+    @Test("V9のバージョン識別子が9.0.0")
+    func testV9VersionIdentifier() {
+        #expect(AquariumSchemaV9.versionIdentifier == Schema.Version(9, 0, 0))
     }
 
-    @Test("V8のモデルにAquariumとVisitRecordが含まれる")
-    func testV8Models() {
-        let models = AquariumSchemaV8.models
+    @Test("V9のモデルにAquariumとVisitRecordが含まれる")
+    func testV9Models() {
+        let models = AquariumSchemaV9.models
         #expect(models.count == 2)
     }
 
@@ -80,6 +80,7 @@ struct MigrationPlanTests {
         #expect(AquariumSchemaV6.versionIdentifier == Schema.Version(6, 0, 0))
         #expect(AquariumSchemaV7.versionIdentifier == Schema.Version(7, 0, 0))
         #expect(AquariumSchemaV8.versionIdentifier == Schema.Version(8, 0, 0))
+        #expect(AquariumSchemaV9.versionIdentifier == Schema.Version(9, 0, 0))
     }
 
     // MARK: - InMemory Container Test

@@ -124,6 +124,10 @@ struct AquariumMapView: View {
                     .padding(.top, 12)
                     .padding(.bottom, 40)
                 }
+                .refreshable {
+                    // 引っ張って水族館データを更新（バージョンが上がっていれば反映）
+                    _ = await DataSeeder.seedAquariums(context: modelContext)
+                }
             }
             .toolbar(.hidden, for: .navigationBar)
             .sheet(item: $selectedAquarium) { aquarium in
@@ -665,10 +669,61 @@ struct AquariumDetailView: View {
 
                         if let address = aquarium.address, !address.isEmpty {
                             infoCard(title: "住所", icon: "mappin.and.ellipse") {
-                                Text(address)
+                                VStack(alignment: .leading, spacing: 10) {
+                                    Text(address)
+                                        .font(SuiFont.body)
+                                        .foregroundColor(SuiColor.midText)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                    Button {
+                                        openInMaps()
+                                    } label: {
+                                        HStack(spacing: 6) {
+                                            Image(systemName: "arrow.triangle.turn.up.right.circle.fill")
+                                            Text("マップで経路を見る")
+                                                .font(SuiFont.bodyMedium)
+                                        }
+                                        .foregroundColor(theme.primaryColor)
+                                    }
+                                }
+                            }
+                        }
+
+                        if let businessHours = aquarium.businessHours, !businessHours.isEmpty {
+                            infoCard(title: "営業時間", icon: "clock") {
+                                Text(businessHours)
                                     .font(SuiFont.body)
                                     .foregroundColor(SuiColor.midText)
                                     .fixedSize(horizontal: false, vertical: true)
+                            }
+                        }
+
+                        if let admissionFee = aquarium.admissionFee, !admissionFee.isEmpty {
+                            infoCard(title: "料金", icon: "yensign.circle") {
+                                Text(admissionFee)
+                                    .font(SuiFont.body)
+                                    .foregroundColor(SuiColor.midText)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                        }
+
+                        if let phoneNumber = aquarium.phoneNumber, !phoneNumber.isEmpty {
+                            infoCard(title: "電話番号", icon: "phone") {
+                                if let telURL = telURL(for: phoneNumber) {
+                                    Link(destination: telURL) {
+                                        HStack {
+                                            Text(phoneNumber)
+                                                .font(SuiFont.bodyMedium)
+                                                .foregroundColor(theme.primaryColor)
+                                            Spacer()
+                                            Image(systemName: "phone.arrow.up.right")
+                                                .foregroundColor(theme.primaryColor)
+                                        }
+                                    }
+                                } else {
+                                    Text(phoneNumber)
+                                        .font(SuiFont.body)
+                                        .foregroundColor(SuiColor.midText)
+                                }
                             }
                         }
 
@@ -764,6 +819,23 @@ struct AquariumDetailView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
+    }
+
+    /// マップアプリで経路案内を開く（移動手段はユーザーのデフォルト設定に従う）
+    private func openInMaps() {
+        let coordinate = CLLocationCoordinate2D(latitude: aquarium.latitude, longitude: aquarium.longitude)
+        let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate))
+        mapItem.name = aquarium.name
+        mapItem.openInMaps(launchOptions: [
+            MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDefault
+        ])
+    }
+
+    /// 電話番号から tel: URLを生成する（数字と+のみ抽出）
+    private func telURL(for phoneNumber: String) -> URL? {
+        let digits = phoneNumber.filter { $0.isNumber || $0 == "+" }
+        guard !digits.isEmpty else { return nil }
+        return URL(string: "tel://\(digits)")
     }
 
     /// 外部データ由来のURL文字列を検証し、http/https のみ許可する

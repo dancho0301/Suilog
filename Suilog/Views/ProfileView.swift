@@ -18,8 +18,24 @@ struct ProfileView: View {
 
     @State private var showingThemeStore = false
     @State private var showingOnboarding = false
+    @State private var showingProfileShare = false
+    @State private var nickname: String = CloudSettingsManager.shared.string(forKey: CloudSettingsManager.nicknameKey) ?? ""
+    @State private var nicknameInput = ""
+    @State private var showingNicknameEditor = false
+    @State private var exportedFile: ExportedFile?
+    @State private var showingExportError = false
+
+    /// sheet(item:) 用のエクスポートファイルラッパー
+    private struct ExportedFile: Identifiable {
+        let id = UUID()
+        let url: URL
+    }
 
     private var theme: Theme { themeManager.currentTheme }
+
+    private var displayName: String {
+        nickname.isEmpty ? "アクアリストさん" : nickname
+    }
 
     private var visitedCount: Int {
         Set(visitRecords.compactMap { $0.aquarium?.id }).count
@@ -44,11 +60,36 @@ struct ProfileView: View {
         }
     }
 
+    /// 同じ水族館への最多訪問回数
+    private var maxVisitsToOneAquarium: Int {
+        let counts = Dictionary(grouping: visitRecords.compactMap { $0.aquarium?.id }) { $0 }
+        return counts.values.map(\.count).max() ?? 0
+    }
+
+    /// 写真付きの記録数
+    private var photoRecordCount: Int {
+        visitRecords.filter { $0.photoData != nil }.count
+    }
+
+    /// 今年訪問した水族館数（ユニーク）
+    private var visitedThisYear: Int {
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: Date())
+        let ids = visitRecords
+            .filter { calendar.component(.year, from: $0.visitDate) == year }
+            .compactMap { $0.aquarium?.id }
+        return Set(ids).count
+    }
+
     private var allBadges: [Badge] {
         Badge.allBadges(
             visitedCount: visitedCount,
             goldCount: goldCount,
-            visitedRegions: Set(visitRecords.compactMap { $0.aquarium?.region }).count
+            silverCount: silverCount,
+            visitedRegions: Set(visitRecords.compactMap { $0.aquarium?.region }).count,
+            maxVisitsToOneAquarium: maxVisitsToOneAquarium,
+            photoRecordCount: photoRecordCount,
+            visitedThisYear: visitedThisYear
         )
     }
 
@@ -88,6 +129,76 @@ struct ProfileView: View {
             .environmentObject(themeManager)
             .environmentObject(locationManager)
         }
+        .sheet(isPresented: $showingProfileShare) {
+            ProfileShareSheet(
+                nickname: displayName,
+                rankTitle: rankTitle,
+                visitedCount: visitedCount,
+                totalAquariumCount: aquariums.count,
+                goldCount: goldCount,
+                silverCount: silverCount,
+                earnedBadges: earnedBadges,
+                theme: theme
+            )
+            .presentationDetents([.medium, .large])
+        }
+        .sheet(item: $exportedFile) { file in
+            exportSheet(file: file)
+                .presentationDetents([.medium])
+        }
+        .alert("ニックネームを変更", isPresented: $showingNicknameEditor) {
+            TextField("ニックネーム", text: $nicknameInput)
+            Button("保存") {
+                let trimmed = nicknameInput.trimmingCharacters(in: .whitespacesAndNewlines)
+                nickname = trimmed
+                CloudSettingsManager.shared.set(
+                    trimmed.isEmpty ? nil : trimmed,
+                    forKey: CloudSettingsManager.nicknameKey
+                )
+            }
+            Button("キャンセル", role: .cancel) { }
+        } message: {
+            Text("プロフィールに表示する名前を入力してください")
+        }
+        .alert("エクスポートに失敗しました", isPresented: $showingExportError) {
+            Button("OK", role: .cancel) { }
+        }
+    }
+
+    /// エクスポート結果シート（共有ボタン付き）
+    private func exportSheet(file: ExportedFile) -> some View {
+        VStack(spacing: 20) {
+            Image(systemName: "doc.text.fill")
+                .font(.system(size: 44))
+                .foregroundColor(theme.primaryColor)
+            VStack(spacing: 6) {
+                Text("エクスポート完了")
+                    .font(SuiFont.heading)
+                    .foregroundColor(SuiColor.heading)
+                Text("訪問記録 \(visitRecords.count)件をJSON形式で書き出しました。\n※ 写真データは含まれません")
+                    .font(SuiFont.label)
+                    .foregroundColor(SuiColor.midText)
+                    .multilineTextAlignment(.center)
+            }
+            ShareLink(item: file.url) {
+                HStack(spacing: 8) {
+                    Image(systemName: "square.and.arrow.up")
+                    Text("ファイルを共有")
+                        .font(SuiFont.bodyMedium)
+                }
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(
+                    RoundedRectangle(cornerRadius: SuiRadius.button, style: .continuous)
+                        .fill(theme.primaryColor)
+                )
+            }
+            .padding(.horizontal, SuiSpacing.screenHorizontal)
+        }
+        .padding(.vertical, 24)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(theme.primaryBg)
     }
 
     // MARK: - Sections
@@ -103,9 +214,20 @@ struct ProfileView: View {
                     .frame(width: 80, height: 80)
                 Text("🐠").font(.system(size: 42))
             }
-            Text("アクアリストさん")
-                .font(SuiFont.heading)
-                .foregroundColor(.white)
+            Button {
+                nicknameInput = nickname
+                showingNicknameEditor = true
+            } label: {
+                HStack(spacing: 6) {
+                    Text(displayName)
+                        .font(SuiFont.heading)
+                        .foregroundColor(.white)
+                    Image(systemName: "pencil.circle.fill")
+                        .font(.system(size: 16))
+                        .foregroundColor(.white.opacity(0.7))
+                }
+            }
+            .accessibilityIdentifier("nicknameEditButton")
             Text(rankTitle)
                 .font(SuiFont.label)
                 .foregroundColor(.white.opacity(0.85))
@@ -222,6 +344,29 @@ struct ProfileView: View {
             }
             .buttonStyle(.plain)
             .accessibilityIdentifier("onboardingReplayButton")
+
+            Button {
+                exportVisitRecords()
+            } label: {
+                settingsRow(
+                    icon: "square.and.arrow.up.on.square.fill",
+                    title: "データをエクスポート",
+                    subtitle: "訪問記録をJSONで書き出し"
+                )
+            }
+            .buttonStyle(.plain)
+            .disabled(visitRecords.isEmpty)
+            .opacity(visitRecords.isEmpty ? 0.5 : 1)
+            .accessibilityIdentifier("exportDataButton")
+        }
+    }
+
+    private func exportVisitRecords() {
+        do {
+            let url = try DataExporter.exportVisitRecords(visitRecords)
+            exportedFile = ExportedFile(url: url)
+        } catch {
+            showingExportError = true
         }
     }
 
@@ -254,7 +399,7 @@ struct ProfileView: View {
 
     private var shareButton: some View {
         Button {
-            // 将来実装: バッジシェア
+            showingProfileShare = true
         } label: {
             HStack(spacing: 8) {
                 Image(systemName: "square.and.arrow.up")
@@ -288,7 +433,15 @@ struct Badge: Identifiable {
 
     var isEarned: Bool { progress >= 1.0 }
 
-    static func allBadges(visitedCount: Int, goldCount: Int, visitedRegions: Int) -> [Badge] {
+    static func allBadges(
+        visitedCount: Int,
+        goldCount: Int,
+        silverCount: Int,
+        visitedRegions: Int,
+        maxVisitsToOneAquarium: Int,
+        photoRecordCount: Int,
+        visitedThisYear: Int
+    ) -> [Badge] {
         [
             Badge(
                 id: "first_step",
@@ -315,12 +468,28 @@ struct Badge: Identifiable {
                 progressText: "\(min(visitedCount, 10)) / 10"
             ),
             Badge(
+                id: "twentyfive_tanks",
+                icon: "🐢",
+                title: "25館制覇",
+                description: "25館に訪問",
+                progress: min(Double(visitedCount) / 25.0, 1.0),
+                progressText: "\(min(visitedCount, 25)) / 25"
+            ),
+            Badge(
                 id: "gold_ten",
                 icon: "🥇",
                 title: "ゴールド10",
                 description: "位置情報チェックイン10回",
                 progress: min(Double(goldCount) / 10.0, 1.0),
                 progressText: "\(min(goldCount, 10)) / 10"
+            ),
+            Badge(
+                id: "silver_ten",
+                icon: "🥈",
+                title: "シルバー10",
+                description: "手動チェックイン10回",
+                progress: min(Double(silverCount) / 10.0, 1.0),
+                progressText: "\(min(silverCount, 10)) / 10"
             ),
             Badge(
                 id: "region_master",
@@ -331,12 +500,44 @@ struct Badge: Identifiable {
                 progressText: "\(min(visitedRegions, 7)) / 7"
             ),
             Badge(
+                id: "repeater",
+                icon: "🐡",
+                title: "常連さん",
+                description: "同じ水族館に5回訪問",
+                progress: min(Double(maxVisitsToOneAquarium) / 5.0, 1.0),
+                progressText: "\(min(maxVisitsToOneAquarium, 5)) / 5"
+            ),
+            Badge(
+                id: "photographer",
+                icon: "📸",
+                title: "フォトグラファー",
+                description: "写真付きの記録10件",
+                progress: min(Double(photoRecordCount) / 10.0, 1.0),
+                progressText: "\(min(photoRecordCount, 10)) / 10"
+            ),
+            Badge(
+                id: "annual_pass",
+                icon: "📅",
+                title: "年間パスポート",
+                description: "1年で10館に訪問",
+                progress: min(Double(visitedThisYear) / 10.0, 1.0),
+                progressText: "\(min(visitedThisYear, 10)) / 10"
+            ),
+            Badge(
                 id: "fifty_tanks",
                 icon: "🌊",
                 title: "50館制覇",
                 description: "50館に訪問",
                 progress: min(Double(visitedCount) / 50.0, 1.0),
                 progressText: "\(min(visitedCount, 50)) / 50"
+            ),
+            Badge(
+                id: "hundred_tanks",
+                icon: "🏆",
+                title: "100館制覇",
+                description: "100館に訪問",
+                progress: min(Double(visitedCount) / 100.0, 1.0),
+                progressText: "\(min(visitedCount, 100)) / 100"
             )
         ]
     }
