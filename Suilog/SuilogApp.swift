@@ -84,6 +84,8 @@ struct SuilogApp: App {
         WindowGroup {
             ContentView()
                 .preferredColorScheme(.light)
+                // Dynamic Type対応: 拡大に追従しつつ、レイアウト崩れを防ぐため上限を設定
+                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                 .environmentObject(locationManager)
                 .environmentObject(storeManager)
                 .environmentObject(themeManager)

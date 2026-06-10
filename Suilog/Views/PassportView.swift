@@ -16,7 +16,7 @@ struct PassportView: View {
 
     @State private var selectedVisit: VisitRecord?
     @State private var visitToShare: VisitRecord?
-    @State private var photoToView: ViewedPhoto?
+    @State private var photoToView: ViewedPhotos?
     @State private var showDeleteConfirmation = false
     @State private var visitToDelete: VisitRecord?
     @State private var showingDeleteError = false
@@ -51,7 +51,11 @@ struct PassportView: View {
                                             visit: visit,
                                             aquarium: aquarium,
                                             theme: theme,
-                                            onPhotoTap: { photoToView = ViewedPhoto(image: $0) }
+                                            onPhotoTap: {
+                                                let images = visit.allPhotosData.compactMap { UIImage(data: $0) }
+                                                guard !images.isEmpty else { return }
+                                                photoToView = ViewedPhotos(images: images)
+                                            }
                                         )
                                         .onTapGesture { selectedVisit = visit }
                                         .contextMenu {
@@ -82,8 +86,8 @@ struct PassportView: View {
                         .presentationDetents([.medium, .large])
                 }
             }
-            .fullScreenCover(item: $photoToView) { photo in
-                PhotoViewerView(image: photo.image)
+            .fullScreenCover(item: $photoToView) { photos in
+                PhotoViewerView(images: photos.images, startIndex: photos.startIndex)
             }
             .sheet(isPresented: $showingAquariumPicker) {
                 AquariumListView(
@@ -181,7 +185,7 @@ private struct VisitRecordCard: View {
     let visit: VisitRecord
     let aquarium: Aquarium
     let theme: Theme
-    let onPhotoTap: (UIImage) -> Void
+    let onPhotoTap: () -> Void
 
     private var dateString: String {
         let f = DateFormatter()
@@ -247,8 +251,21 @@ private struct VisitRecordCard: View {
                 .scaledToFill()
                 .frame(width: 50, height: 50)
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .overlay(alignment: .bottomTrailing) {
+                    // 2枚以上ある場合は枚数バッジを表示
+                    let count = visit.allPhotosData.count
+                    if count > 1 {
+                        Text("+\(count - 1)")
+                            .font(.system(size: 10, weight: .bold))
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 5)
+                            .padding(.vertical, 2)
+                            .background(Capsule().fill(Color.black.opacity(0.55)))
+                            .padding(3)
+                    }
+                }
                 .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                .onTapGesture { onPhotoTap(ui) }
+                .onTapGesture { onPhotoTap() }
         } else {
             ZStack {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)

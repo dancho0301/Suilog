@@ -19,10 +19,11 @@ struct EditVisitRecordView: View {
 
     @State private var visitDate: Date
     @State private var memo: String
-    @State private var photoData: Data?
-    @State private var selectedPhoto: PhotosPickerItem?
+    @State private var photosData: [Data]
+    @State private var selectedPhotos: [PhotosPickerItem] = []
+    @State private var cameraPhotoData: Data?
     @State private var showingCamera = false
-    @State private var photoToView: ViewedPhoto?
+    @State private var photoToView: ViewedPhotos?
     @State private var showingDiscardAlert = false
     @State private var showingSaveErrorAlert = false
     @State private var saveErrorMessage = ""
@@ -30,7 +31,7 @@ struct EditVisitRecordView: View {
     private var hasChanges: Bool {
         visitDate != visit.visitDate ||
         memo != visit.memo ||
-        photoData != visit.photoData
+        photosData != visit.allPhotosData
     }
 
     private var theme: Theme { themeManager.currentTheme }
@@ -39,7 +40,7 @@ struct EditVisitRecordView: View {
         self.visit = visit
         _visitDate = State(initialValue: visit.visitDate)
         _memo = State(initialValue: visit.memo)
-        _photoData = State(initialValue: visit.photoData)
+        _photosData = State(initialValue: visit.allPhotosData)
     }
 
     var body: some View {
@@ -82,20 +83,27 @@ struct EditVisitRecordView: View {
             } message: {
                 Text(saveErrorMessage)
             }
-            .onChange(of: selectedPhoto) { _, newValue in
+            .onChange(of: selectedPhotos) { _, newItems in
+                guard !newItems.isEmpty else { return }
                 Task { @MainActor in
-                    if let data = try? await newValue?.loadTransferable(type: Data.self),
-                       let image = UIImage(data: data),
-                       let compressed = image.jpegData(compressionQuality: 0.8) {
-                        photoData = compressed
+                    defer { selectedPhotos = [] }
+                    for item in newItems {
+                        guard photosData.count < VisitRecord.maxPhotoCount else { break }
+                        guard let data = try? await item.loadTransferable(type: Data.self) else { continue }
+                        addPhoto(data)
                     }
                 }
             }
-            .sheet(isPresented: $showingCamera) {
-                ImagePicker(imageData: $photoData)
+            .onChange(of: cameraPhotoData) { _, newValue in
+                guard let data = newValue else { return }
+                cameraPhotoData = nil
+                addPhoto(data)
             }
-            .fullScreenCover(item: $photoToView) { photo in
-                PhotoViewerView(image: photo.image)
+            .sheet(isPresented: $showingCamera) {
+                ImagePicker(imageData: $cameraPhotoData)
+            }
+            .fullScreenCover(item: $photoToView) { photos in
+                PhotoViewerView(images: photos.images, startIndex: photos.startIndex)
             }
         }
     }
@@ -196,25 +204,23 @@ struct EditVisitRecordView: View {
     @ViewBuilder
     private var photoCard: some View {
         SuiCard(radius: SuiRadius.cardMedium, padding: 14) {
-            VStack(alignment: .leading, spacing: 8) {
-                fieldLabel("写真")
-                if let data = photoData, let ui = UIImage(data: data) {
-                    Image(uiImage: ui)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(maxWidth: .infinity, maxHeight: 220)
-                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                        .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                        .onTapGesture { photoToView = ViewedPhoto(image: ui) }
+            VStack(alignment: .leading, spacing: 10) {
+                fieldLabel("写真（最大\(VisitRecord.maxPhotoCount)枚）")
 
-                    Button(role: .destructive) {
-                        photoData = nil
-                        selectedPhoto = nil
-                    } label: {
-                        Label("写真を削除", systemImage: "trash")
-                            .font(SuiFont.label)
-                    }
-                } else {
+                if !photosData.isEmpty {
+                    PhotoThumbnailGrid(
+                        photos: photosData,
+                        onTap: { index in
+                            let images = photosData.compactMap { UIImage(data: $0) }
+                            photoToView = ViewedPhotos(images: images, startIndex: index)
+                        },
+                        onDelete: { index in
+                            photosData.remove(at: index)
+                        }
+                    )
+                }
+
+                if photosData.count < VisitRecord.maxPhotoCount {
                     photoUploadArea
                 }
             }
@@ -223,7 +229,11 @@ struct EditVisitRecordView: View {
 
     private var photoUploadArea: some View {
         HStack(spacing: 10) {
-            PhotosPicker(selection: $selectedPhoto, matching: .images) {
+            PhotosPicker(
+                selection: $selectedPhotos,
+                maxSelectionCount: VisitRecord.maxPhotoCount - photosData.count,
+                matching: .images
+            ) {
                 uploadTile(icon: "photo.on.rectangle", label: "選択")
             }
             if UIImagePickerController.isSourceTypeAvailable(.camera) {
@@ -286,10 +296,19 @@ struct EditVisitRecordView: View {
             .textCase(.uppercase)
     }
 
+    /// 写真を圧縮して追加する
+    @MainActor
+    private func addPhoto(_ data: Data) {
+        guard photosData.count < VisitRecord.maxPhotoCount,
+              let image = UIImage(data: data),
+              let compressed = image.jpegData(compressionQuality: 0.8) else { return }
+        photosData.append(compressed)
+    }
+
     private func saveChanges() {
         visit.visitDate = visitDate
         visit.memo = memo
-        visit.photoData = photoData
+        visit.setPhotos(photosData)
 
         do {
             try modelContext.save()

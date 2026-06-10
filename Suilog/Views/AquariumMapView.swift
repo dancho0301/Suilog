@@ -437,7 +437,8 @@ private struct NearbyAquariumCard: View {
             }
         }
         .padding(14)
-        .frame(width: 180, height: 140, alignment: .topLeading)
+        .frame(width: 180, alignment: .topLeading)
+        .frame(minHeight: 140, alignment: .topLeading)
         .background(
             RoundedRectangle(cornerRadius: SuiRadius.cardMedium, style: .continuous)
                 .fill(SuiColor.cardSurface)
