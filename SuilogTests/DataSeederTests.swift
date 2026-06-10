@@ -68,7 +68,10 @@ struct DataSeederTests {
             address: "テスト住所",
             affiliateLink: nil,
             stableId: stableId,
-            officialUrl: nil
+            officialUrl: nil,
+            businessHours: nil,
+            admissionFee: nil,
+            phoneNumber: nil
         )
     }
 

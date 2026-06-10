@@ -27,11 +27,57 @@ struct PassportView: View {
     @State private var pickerSelectedRegions: Set<String> = []
     @State private var pickerVisitStatus: VisitStatus = .all
 
+    // 記録の検索・絞り込み
+    @State private var searchText = ""
+    @State private var typeFilter: RecordTypeFilter = .all
+    @State private var yearFilter: Int?
+
+    /// チェックイン種別の絞り込み
+    enum RecordTypeFilter: String, CaseIterable, Identifiable {
+        case all = "すべて"
+        case gold = "🥇 ゴールド"
+        case silver = "🥈 シルバー"
+
+        var id: String { rawValue }
+    }
+
     private let regionOrder: [String] = [
         "北海道", "東北", "関東", "中部", "近畿", "中国・四国", "九州・沖縄"
     ]
 
     private var theme: Theme { themeManager.currentTheme }
+
+    /// 検索・絞り込みが有効かどうか
+    private var isFiltering: Bool {
+        !searchText.isEmpty || typeFilter != .all || yearFilter != nil
+    }
+
+    /// 記録に存在する年の一覧（新しい順）
+    private var availableYears: [Int] {
+        Set(visitRecords.map { Calendar.current.component(.year, from: $0.visitDate) })
+            .sorted(by: >)
+    }
+
+    /// 検索・絞り込み適用後の訪問記録
+    private var filteredRecords: [VisitRecord] {
+        visitRecords.filter { visit in
+            if !searchText.isEmpty {
+                let nameMatch = visit.aquarium?.name.localizedCaseInsensitiveContains(searchText) ?? false
+                let memoMatch = visit.memo.localizedCaseInsensitiveContains(searchText)
+                guard nameMatch || memoMatch else { return false }
+            }
+            switch typeFilter {
+            case .all: break
+            case .gold: guard visit.checkInType == .location else { return false }
+            case .silver: guard visit.checkInType == .manual else { return false }
+            }
+            if let yearFilter,
+               Calendar.current.component(.year, from: visit.visitDate) != yearFilter {
+                return false
+            }
+            return true
+        }
+    }
 
     var body: some View {
         NavigationStack {
@@ -44,8 +90,13 @@ struct PassportView: View {
                         if visitRecords.isEmpty {
                             emptyState
                         } else {
+                            searchCard
+                            filterChips
+                            if filteredRecords.isEmpty {
+                                noMatchState
+                            } else {
                             VStack(spacing: SuiSpacing.cardGap) {
-                                ForEach(visitRecords, id: \.id) { visit in
+                                ForEach(filteredRecords, id: \.id) { visit in
                                     if let aquarium = visit.aquarium {
                                         VisitRecordCard(
                                             visit: visit,
@@ -68,6 +119,7 @@ struct PassportView: View {
                                         }
                                     }
                                 }
+                            }
                             }
                         }
                     }
@@ -123,7 +175,9 @@ struct PassportView: View {
     private var header: some View {
         HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("\(visitRecords.count) 件の記録")
+                Text(isFiltering
+                     ? "\(filteredRecords.count) / \(visitRecords.count) 件の記録"
+                     : "\(visitRecords.count) 件の記録")
                     .font(SuiFont.label)
                     .foregroundColor(SuiColor.midText)
                 Text("訪問記録")
@@ -147,6 +201,105 @@ struct PassportView: View {
                 .suiShadow(.primaryButton(primary: theme.primaryColor))
             }
         }
+    }
+
+    private var searchCard: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "magnifyingglass")
+                .foregroundColor(SuiColor.subText)
+            TextField("水族館名・メモで検索", text: $searchText)
+                .font(SuiFont.body)
+                .foregroundColor(SuiColor.heading)
+                .autocorrectionDisabled()
+                .textInputAutocapitalization(.never)
+            if !searchText.isEmpty {
+                Button {
+                    searchText = ""
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(SuiColor.subText)
+                }
+            }
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 12)
+        .background(
+            RoundedRectangle(cornerRadius: SuiRadius.cardSmall, style: .continuous)
+                .fill(SuiColor.cardSurface)
+        )
+        .suiShadow(.card)
+    }
+
+    private var filterChips: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                ForEach(RecordTypeFilter.allCases) { filter in
+                    Button {
+                        typeFilter = filter
+                    } label: {
+                        chipLabel(filter.rawValue, selected: typeFilter == filter)
+                    }
+                }
+
+                Menu {
+                    Button("すべての年") { yearFilter = nil }
+                    ForEach(availableYears, id: \.self) { year in
+                        Button("\(String(year))年") { yearFilter = year }
+                    }
+                } label: {
+                    HStack(spacing: 4) {
+                        Text(yearFilter.map { "\(String($0))年" } ?? "年: すべて")
+                        Image(systemName: "chevron.down")
+                            .font(.system(size: 10, weight: .semibold))
+                    }
+                    .font(SuiFont.label)
+                    .foregroundColor(yearFilter != nil ? .white : SuiColor.midText)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 7)
+                    .background(
+                        Capsule().fill(yearFilter != nil ? theme.primaryColor : SuiColor.cardSurface)
+                    )
+                    .overlay(
+                        Capsule().strokeBorder(
+                            yearFilter != nil ? Color.clear : SuiColor.fieldBorder,
+                            lineWidth: 1
+                        )
+                    )
+                }
+            }
+            .padding(.horizontal, 2)
+            .padding(.vertical, 2)
+        }
+    }
+
+    private func chipLabel(_ text: String, selected: Bool) -> some View {
+        Text(text)
+            .font(SuiFont.label)
+            .foregroundColor(selected ? .white : SuiColor.midText)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 7)
+            .background(
+                Capsule().fill(selected ? theme.primaryColor : SuiColor.cardSurface)
+            )
+            .overlay(
+                Capsule().strokeBorder(
+                    selected ? Color.clear : SuiColor.fieldBorder,
+                    lineWidth: 1
+                )
+            )
+    }
+
+    private var noMatchState: some View {
+        VStack(spacing: 10) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 36))
+                .foregroundColor(theme.primaryColor.opacity(0.5))
+            Text("条件に一致する記録がありません")
+                .font(SuiFont.body)
+                .foregroundColor(SuiColor.midText)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 30)
     }
 
     private var emptyState: some View {

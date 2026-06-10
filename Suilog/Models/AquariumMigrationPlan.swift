@@ -10,11 +10,11 @@ import SwiftData
 
 enum AquariumMigrationPlan: SchemaMigrationPlan {
     static var schemas: [any VersionedSchema.Type] {
-        [AquariumSchemaV1.self, AquariumSchemaV2.self, AquariumSchemaV3.self, AquariumSchemaV4.self, AquariumSchemaV5.self, AquariumSchemaV6.self, AquariumSchemaV7.self, AquariumSchemaV8.self]
+        [AquariumSchemaV1.self, AquariumSchemaV2.self, AquariumSchemaV3.self, AquariumSchemaV4.self, AquariumSchemaV5.self, AquariumSchemaV6.self, AquariumSchemaV7.self, AquariumSchemaV8.self, AquariumSchemaV9.self]
     }
 
     static var stages: [MigrationStage] {
-        [migrateV1toV2, migrateV2toV3, migrateV3toV4, migrateV4toV5, migrateV5toV6, migrateV6toV7, migrateV7toV8]
+        [migrateV1toV2, migrateV2toV3, migrateV3toV4, migrateV4toV5, migrateV5toV6, migrateV6toV7, migrateV7toV8, migrateV8toV9]
     }
 
     static let migrateV1toV2 = MigrationStage.lightweight(
@@ -54,5 +54,11 @@ enum AquariumMigrationPlan: SchemaMigrationPlan {
     static let migrateV7toV8 = MigrationStage.lightweight(
         fromVersion: AquariumSchemaV7.self,
         toVersion: AquariumSchemaV8.self
+    )
+
+    // V8→V9: 写真の外部ストレージ化＋水族館情報拡充（営業時間・料金・電話番号、軽量マイグレーション）
+    static let migrateV8toV9 = MigrationStage.lightweight(
+        fromVersion: AquariumSchemaV8.self,
+        toVersion: AquariumSchemaV9.self
     )
 }

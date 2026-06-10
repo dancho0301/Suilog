@@ -21,6 +21,12 @@ struct AquariumData: Codable {
     let stableId: String?
     /// 公式HPのURL
     let officialUrl: String?
+    /// 営業時間
+    let businessHours: String?
+    /// 入館料金
+    let admissionFee: String?
+    /// 電話番号
+    let phoneNumber: String?
 }
 
 struct AquariumResponse: Codable {
