@@ -141,6 +141,12 @@ struct DebugMenuView: View {
                             Label("訪問記録を全て削除", systemImage: "trash")
                         }
                         .disabled(visitRecords.isEmpty)
+
+                        Button {
+                            UserDefaults.standard.set(false, forKey: OnboardingView.hasCompletedKey)
+                        } label: {
+                            Label("オンボーディングをリセット（次回起動時に表示）", systemImage: "sparkles.tv")
+                        }
                     }
 
                     // 現在の状態

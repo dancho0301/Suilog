@@ -20,6 +20,8 @@ struct ContentView: View {
     @State private var nearbyAquarium: Aquarium?
     @State private var showingCheckInSheet = false
     @State private var hasCheckedNearbyOnLaunch = false
+    @AppStorage(OnboardingView.hasCompletedKey) private var hasCompletedOnboarding = false
+    @State private var showingOnboarding = false
     #if DEBUG
     @State private var showingDebugMenu = false
     #endif
@@ -109,9 +111,21 @@ struct ContentView: View {
                 NewVisitRecordView(aquarium: aquarium, initialMode: .location)
             }
         }
+        .fullScreenCover(isPresented: $showingOnboarding) {
+            OnboardingView {
+                hasCompletedOnboarding = true
+                showingOnboarding = false
+            }
+        }
+        .onAppear {
+            if !hasCompletedOnboarding {
+                showingOnboarding = true
+            }
+        }
         .onReceive(locationManager.$currentLocation) { location in
             // 位置情報が更新されたら、起動時の一回だけ近くの水族館をチェック
-            guard !hasCheckedNearbyOnLaunch, location != nil else { return }
+            // （オンボーディング表示中はアラートが出せないため完了後に判定する）
+            guard !showingOnboarding, !hasCheckedNearbyOnLaunch, location != nil else { return }
             hasCheckedNearbyOnLaunch = true
             checkNearbyAquariums()
         }

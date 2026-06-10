@@ -597,13 +597,11 @@ struct AquariumDetailView: View {
                             }
                         }
 
-                        if let officialUrl = aquarium.officialUrl, !officialUrl.isEmpty,
-                           let url = URL(string: officialUrl) {
+                        if let url = validatedWebURL(aquarium.officialUrl) {
                             linkCard(title: "公式HP", icon: "safari", url: url, label: "公式サイトを開く")
                         }
 
-                        if let affiliateLink = aquarium.affiliateLink, !affiliateLink.isEmpty,
-                           let url = URL(string: affiliateLink) {
+                        if let url = validatedWebURL(aquarium.affiliateLink) {
                             linkCard(title: "チケット購入", icon: "ticket", url: url, label: "オンラインでチケット購入")
                         }
 
@@ -691,6 +689,17 @@ struct AquariumDetailView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
+    }
+
+    /// 外部データ由来のURL文字列を検証し、http/https のみ許可する
+    private func validatedWebURL(_ string: String?) -> URL? {
+        guard let string, !string.isEmpty,
+              let url = URL(string: string),
+              let scheme = url.scheme?.lowercased(),
+              scheme == "https" || scheme == "http" else {
+            return nil
+        }
+        return url
     }
 
     private func linkCard(title: String, icon: String, url: URL, label: String) -> some View {

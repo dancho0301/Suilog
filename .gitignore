@@ -1,0 +1,30 @@
+# macOS
+.DS_Store
+
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+timeline.xctimeline
+playground.xcworkspace
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Secrets / local config
+.env
+.env.*
+*.p8
+*.p12
+*.mobileprovision
+GoogleService-Info.plist
+
+# Firebase
+firebase/.firebase/
+firebase/node_modules/
+firebase/*.log
