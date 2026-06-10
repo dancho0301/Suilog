@@ -75,8 +75,9 @@ class DataSeeder {
     }
 
     /// 既存の水族館データを更新（訪問記録を保持）
+    /// - Note: テストから直接呼べるよう internal にしている
     /// - Returns: 保存エラーがあれば返す
-    private static func updateAquariums(context: ModelContext, existing: [Aquarium], newData: [AquariumData]) -> Error? {
+    static func updateAquariums(context: ModelContext, existing: [Aquarium], newData: [AquariumData]) -> Error? {
         // stableIdをキーにした辞書を作成（既存ユーザー用）
         var existingByStableId: [String: Aquarium] = [:]
         // 名前をキーにした辞書を作成（stableIdがない既存データ用のフォールバック）
@@ -174,8 +175,9 @@ class DataSeeder {
     }
 
     /// 新規に水族館データを挿入
+    /// - Note: テストから直接呼べるよう internal にしている
     /// - Returns: 保存エラーがあれば返す
-    private static func insertAquariums(context: ModelContext, aquariumData: [AquariumData]) -> Error? {
+    static func insertAquariums(context: ModelContext, aquariumData: [AquariumData]) -> Error? {
         for data in aquariumData {
             let aquarium = Aquarium(
                 name: data.name,

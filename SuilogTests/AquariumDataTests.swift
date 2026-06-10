@@ -181,6 +181,61 @@ struct AquariumDataTests {
         #expect(aquarium.officialUrl == nil)
     }
 
+    // MARK: - 営業時間・料金・電話番号 Tests
+
+    @Test("営業時間・料金・電話番号ありのJSONをデコード")
+    func testDecodeWithFacilityInfo() throws {
+        let json = """
+        {
+            "name": "美ら海水族館",
+            "latitude": 26.69,
+            "longitude": 127.88,
+            "description": "ジンベエザメ",
+            "region": "九州・沖縄",
+            "representativeFish": "fish.fill",
+            "fishIconSize": 5,
+            "address": "沖縄県本部町",
+            "affiliateLink": null,
+            "stableId": "churaumi",
+            "officialUrl": "https://churaumi.okinawa/",
+            "businessHours": "8:30〜18:30（繁忙期は20:00まで）",
+            "admissionFee": "大人 2,180円 / 高校生 1,440円",
+            "phoneNumber": "0980-48-3748"
+        }
+        """
+
+        let data = json.data(using: .utf8)!
+        let aquarium = try JSONDecoder().decode(AquariumData.self, from: data)
+
+        #expect(aquarium.businessHours == "8:30〜18:30（繁忙期は20:00まで）")
+        #expect(aquarium.admissionFee == "大人 2,180円 / 高校生 1,440円")
+        #expect(aquarium.phoneNumber == "0980-48-3748")
+    }
+
+    @Test("営業時間・料金・電話番号なしのJSONをデコード（後方互換性）")
+    func testDecodeWithoutFacilityInfo() throws {
+        let json = """
+        {
+            "name": "海遊館",
+            "latitude": 34.65,
+            "longitude": 135.43,
+            "description": "世界最大級",
+            "region": "近畿",
+            "representativeFish": "fish.fill",
+            "fishIconSize": 3,
+            "address": "大阪府大阪市",
+            "affiliateLink": null
+        }
+        """
+
+        let data = json.data(using: .utf8)!
+        let aquarium = try JSONDecoder().decode(AquariumData.self, from: data)
+
+        #expect(aquarium.businessHours == nil)
+        #expect(aquarium.admissionFee == nil)
+        #expect(aquarium.phoneNumber == nil)
+    }
+
     // MARK: - エラーケース
 
     @Test("必須フィールドが欠けている場合はエラー")
