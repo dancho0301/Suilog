@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 enum SuiColor {
     static let heading = Color(hex: "#1A3040")
@@ -43,15 +44,26 @@ enum SuiRadius {
 }
 
 enum SuiFont {
-    static let screenTitle = Font.system(size: 26, weight: .heavy)
-    static let heading = Font.system(size: 20, weight: .bold)
-    static let section = Font.system(size: 17, weight: .bold)
-    static let body = Font.system(size: 15, weight: .regular)
-    static let bodyMedium = Font.system(size: 15, weight: .semibold)
-    static let label = Font.system(size: 13, weight: .regular)
-    static let caption = Font.system(size: 12, weight: .regular)
-    static let tinyLabel = Font.system(size: 11, weight: .bold)
-    static let stat = Font.system(size: 24, weight: .heavy)
+    // Dynamic Type 対応: 端末の文字サイズ設定に追従する
+    static var screenTitle: Font { scaled(26, weight: .heavy, relativeTo: .title1) }
+    static var heading: Font { scaled(20, weight: .bold, relativeTo: .title3) }
+    static var section: Font { scaled(17, weight: .bold, relativeTo: .headline) }
+    static var body: Font { scaled(15, weight: .regular, relativeTo: .body) }
+    static var bodyMedium: Font { scaled(15, weight: .semibold, relativeTo: .body) }
+    static var label: Font { scaled(13, weight: .regular, relativeTo: .footnote) }
+    static var caption: Font { scaled(12, weight: .regular, relativeTo: .caption1) }
+    static var tinyLabel: Font { scaled(11, weight: .bold, relativeTo: .caption2) }
+    static var stat: Font { scaled(24, weight: .heavy, relativeTo: .title2) }
+
+    /// デザイン上の基準サイズを、指定テキストスタイルの拡大率でスケールしたシステムフォントを返す
+    /// レイアウト崩れを防ぐため、拡大率は accessibilityMedium を上限とする
+    private static func scaled(_ size: CGFloat, weight: Font.Weight, relativeTo style: UIFont.TextStyle) -> Font {
+        let current = UIApplication.shared.preferredContentSizeCategory
+        let capped = min(current, .accessibilityMedium)
+        let traits = UITraitCollection(preferredContentSizeCategory: capped)
+        let scaledSize = UIFontMetrics(forTextStyle: style).scaledValue(for: size, compatibleWith: traits)
+        return .system(size: scaledSize, weight: weight)
+    }
 }
 
 struct SuiShadow {

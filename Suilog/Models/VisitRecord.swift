@@ -9,9 +9,9 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-typealias CheckInType = AquariumSchemaV7.CheckInTypeV7
+typealias CheckInType = AquariumSchemaV8.CheckInTypeV8
 
-extension AquariumSchemaV7.CheckInTypeV7 {
+extension AquariumSchemaV8.CheckInTypeV8 {
     var color: Color {
         switch self {
         case .location:
@@ -31,4 +31,25 @@ extension AquariumSchemaV7.CheckInTypeV7 {
     }
 }
 
-typealias VisitRecord = AquariumSchemaV7.VisitRecord
+typealias VisitRecord = AquariumSchemaV8.VisitRecord
+
+extension VisitRecord {
+    /// 1記録に保存できる写真の上限枚数
+    static let maxPhotoCount = 4
+
+    /// すべての写真（1枚目: photoData、2枚目以降: additionalPhotosData）
+    var allPhotosData: [Data] {
+        var photos: [Data] = []
+        if let photoData {
+            photos.append(photoData)
+        }
+        photos.append(contentsOf: additionalPhotosData ?? [])
+        return photos
+    }
+
+    /// 写真一覧をまとめて設定する（1枚目をphotoDataに、残りをadditionalPhotosDataに振り分け）
+    func setPhotos(_ photos: [Data]) {
+        photoData = photos.first
+        additionalPhotosData = photos.count > 1 ? Array(photos.dropFirst()) : nil
+    }
+}

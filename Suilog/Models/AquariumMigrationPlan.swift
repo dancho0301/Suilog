@@ -10,11 +10,11 @@ import SwiftData
 
 enum AquariumMigrationPlan: SchemaMigrationPlan {
     static var schemas: [any VersionedSchema.Type] {
-        [AquariumSchemaV1.self, AquariumSchemaV2.self, AquariumSchemaV3.self, AquariumSchemaV4.self, AquariumSchemaV5.self, AquariumSchemaV6.self, AquariumSchemaV7.self]
+        [AquariumSchemaV1.self, AquariumSchemaV2.self, AquariumSchemaV3.self, AquariumSchemaV4.self, AquariumSchemaV5.self, AquariumSchemaV6.self, AquariumSchemaV7.self, AquariumSchemaV8.self]
     }
 
     static var stages: [MigrationStage] {
-        [migrateV1toV2, migrateV2toV3, migrateV3toV4, migrateV4toV5, migrateV5toV6, migrateV6toV7]
+        [migrateV1toV2, migrateV2toV3, migrateV3toV4, migrateV4toV5, migrateV5toV6, migrateV6toV7, migrateV7toV8]
     }
 
     static let migrateV1toV2 = MigrationStage.lightweight(
@@ -48,5 +48,11 @@ enum AquariumMigrationPlan: SchemaMigrationPlan {
     static let migrateV6toV7 = MigrationStage.lightweight(
         fromVersion: AquariumSchemaV6.self,
         toVersion: AquariumSchemaV7.self
+    )
+
+    // V7→V8: 複数写真対応（additionalPhotosDataフィールド追加、オプショナルで軽量マイグレーション）
+    static let migrateV7toV8 = MigrationStage.lightweight(
+        fromVersion: AquariumSchemaV7.self,
+        toVersion: AquariumSchemaV8.self
     )
 }

@@ -16,31 +16,56 @@ struct MigrationPlanTests {
 
     // MARK: - Schema Configuration Tests
 
-    @Test("スキーマバージョンが7つ定義されている")
+    @Test("スキーマバージョンが8つ定義されている")
     func testSchemaVersionCount() {
-        #expect(AquariumMigrationPlan.schemas.count == 7)
+        #expect(AquariumMigrationPlan.schemas.count == 8)
     }
 
-    @Test("マイグレーションステージが6つ定義されている")
+    @Test("マイグレーションステージが7つ定義されている")
     func testMigrationStageCount() {
-        #expect(AquariumMigrationPlan.stages.count == 6)
+        #expect(AquariumMigrationPlan.stages.count == 7)
     }
 
-    @Test("最新スキーマがV7")
+    @Test("最新スキーマがV8")
     func testLatestSchemaVersion() {
         let latestSchema = AquariumMigrationPlan.schemas.last
-        #expect(latestSchema == AquariumSchemaV7.self)
+        #expect(latestSchema == AquariumSchemaV8.self)
     }
 
-    @Test("V7のバージョン識別子が7.0.0")
-    func testV7VersionIdentifier() {
-        #expect(AquariumSchemaV7.versionIdentifier == Schema.Version(7, 0, 0))
+    @Test("V8のバージョン識別子が8.0.0")
+    func testV8VersionIdentifier() {
+        #expect(AquariumSchemaV8.versionIdentifier == Schema.Version(8, 0, 0))
     }
 
-    @Test("V7のモデルにAquariumとVisitRecordが含まれる")
-    func testV7Models() {
-        let models = AquariumSchemaV7.models
+    @Test("V8のモデルにAquariumとVisitRecordが含まれる")
+    func testV8Models() {
+        let models = AquariumSchemaV8.models
         #expect(models.count == 2)
+    }
+
+    @Test("VisitRecordの写真ヘルパーが1枚目と2枚目以降を正しく振り分ける")
+    func testVisitRecordPhotoHelpers() {
+        let record = VisitRecord()
+        #expect(record.allPhotosData.isEmpty)
+
+        let photo1 = Data([0x01])
+        let photo2 = Data([0x02])
+        let photo3 = Data([0x03])
+
+        record.setPhotos([photo1, photo2, photo3])
+        #expect(record.photoData == photo1)
+        #expect(record.additionalPhotosData == [photo2, photo3])
+        #expect(record.allPhotosData == [photo1, photo2, photo3])
+
+        record.setPhotos([photo1])
+        #expect(record.photoData == photo1)
+        #expect(record.additionalPhotosData == nil)
+        #expect(record.allPhotosData == [photo1])
+
+        record.setPhotos([])
+        #expect(record.photoData == nil)
+        #expect(record.additionalPhotosData == nil)
+        #expect(record.allPhotosData.isEmpty)
     }
 
     // MARK: - Schema Version Identifiers
@@ -54,6 +79,7 @@ struct MigrationPlanTests {
         #expect(AquariumSchemaV5.versionIdentifier == Schema.Version(5, 0, 0))
         #expect(AquariumSchemaV6.versionIdentifier == Schema.Version(6, 0, 0))
         #expect(AquariumSchemaV7.versionIdentifier == Schema.Version(7, 0, 0))
+        #expect(AquariumSchemaV8.versionIdentifier == Schema.Version(8, 0, 0))
     }
 
     // MARK: - InMemory Container Test

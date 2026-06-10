@@ -24,9 +24,11 @@ struct NewVisitRecordView: View {
     @State private var mode: CheckInType
     @State private var visitDate = Date()
     @State private var memo = ""
-    @State private var selectedPhoto: PhotosPickerItem?
-    @State private var photoData: Data?
-    @State private var photoMetadata: PhotoMetadata?
+    @State private var selectedPhotos: [PhotosPickerItem] = []
+    @State private var photosData: [Data] = []
+    @State private var photoMetadatas: [PhotoMetadata] = []
+    @State private var cameraPhotoData: Data?
+    @State private var photoToView: ViewedPhotos?
     @State private var showingCamera = false
     @State private var showingSuccess = false
     @State private var showingError = false
@@ -46,14 +48,21 @@ struct NewVisitRecordView: View {
         locationManager.isWithinRange(of: aquarium, radius: 1000)
     }
 
+    /// いずれかの写真の撮影場所が1km圏内か
     private var isPhotoLocationValid: Bool {
-        guard let coordinate = photoMetadata?.coordinate else { return false }
-        return PhotoMetadataExtractor.isWithinRange(coordinate: coordinate, of: aquarium)
+        photoMetadatas.contains { metadata in
+            guard let coordinate = metadata.coordinate else { return false }
+            return PhotoMetadataExtractor.isWithinRange(coordinate: coordinate, of: aquarium)
+        }
     }
 
+    /// 位置情報を持つ写真のうち、水族館に最も近いものの距離
     private var distanceFromPhoto: CLLocationDistance? {
-        guard let coordinate = photoMetadata?.coordinate else { return nil }
-        return PhotoMetadataExtractor.distance(from: coordinate, to: aquarium)
+        photoMetadatas
+            .compactMap { metadata in
+                metadata.coordinate.map { PhotoMetadataExtractor.distance(from: $0, to: aquarium) }
+            }
+            .min()
     }
 
     /// 最終的に保存されるチェックインタイプ
@@ -77,7 +86,7 @@ struct NewVisitRecordView: View {
                             dateCard
                         }
                         photoCard
-                        if mode == .manual, photoData != nil {
+                        if mode == .manual, !photosData.isEmpty {
                             typeResultCard
                         }
                         memoCard
@@ -96,26 +105,31 @@ struct NewVisitRecordView: View {
                         .foregroundColor(SuiColor.midText)
                 }
             }
-            .onChange(of: selectedPhoto) { _, newValue in
-                guard newValue != nil else { return }
+            .onChange(of: selectedPhotos) { _, newItems in
+                guard !newItems.isEmpty else { return }
                 isLoadingPhoto = true
                 Task { @MainActor in
-                    defer { isLoadingPhoto = false }
-                    if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                        let metadata = PhotoMetadataExtractor.extractMetadata(from: data)
-                        photoMetadata = metadata
-                        if mode == .manual, let dateTaken = metadata.dateTaken, dateTaken <= Date() {
-                            visitDate = dateTaken
-                        }
-                        if let image = UIImage(data: data),
-                           let compressed = image.jpegData(compressionQuality: 0.8) {
-                            photoData = compressed
-                        }
+                    defer {
+                        isLoadingPhoto = false
+                        selectedPhotos = []
+                    }
+                    for item in newItems {
+                        guard photosData.count < VisitRecord.maxPhotoCount else { break }
+                        guard let data = try? await item.loadTransferable(type: Data.self) else { continue }
+                        addPhoto(data)
                     }
                 }
             }
+            .onChange(of: cameraPhotoData) { _, newValue in
+                guard let data = newValue else { return }
+                cameraPhotoData = nil
+                addPhoto(data)
+            }
             .sheet(isPresented: $showingCamera) {
-                ImagePicker(imageData: $photoData)
+                ImagePicker(imageData: $cameraPhotoData)
+            }
+            .fullScreenCover(item: $photoToView) { photos in
+                PhotoViewerView(images: photos.images, startIndex: photos.startIndex)
             }
             .alert("チェックイン完了！", isPresented: $showingSuccess) {
                 Button("OK") { dismiss() }
@@ -273,31 +287,33 @@ struct NewVisitRecordView: View {
     private var photoCard: some View {
         SuiCard(radius: SuiRadius.cardMedium, padding: 14) {
             VStack(alignment: .leading, spacing: 10) {
-                fieldLabel("写真（任意）")
+                fieldLabel("写真（任意・最大\(VisitRecord.maxPhotoCount)枚）")
+
+                if !photosData.isEmpty {
+                    PhotoThumbnailGrid(
+                        photos: photosData,
+                        onTap: { index in
+                            let images = photosData.compactMap { UIImage(data: $0) }
+                            photoToView = ViewedPhotos(images: images, startIndex: index)
+                        },
+                        onDelete: { index in
+                            photosData.remove(at: index)
+                            if index < photoMetadatas.count {
+                                photoMetadatas.remove(at: index)
+                            }
+                        }
+                    )
+
+                    if mode == .manual {
+                        photoMetaRow
+                    }
+                }
+
                 if isLoadingPhoto {
                     loadingTile
-                } else if let data = photoData, let ui = UIImage(data: data) {
-                    Image(uiImage: ui)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(maxWidth: .infinity, maxHeight: 220)
-                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-
-                    if mode == .manual, let metadata = photoMetadata {
-                        photoMetaRow(metadata: metadata)
-                    }
-
-                    Button(role: .destructive) {
-                        photoData = nil
-                        selectedPhoto = nil
-                        photoMetadata = nil
-                    } label: {
-                        Label("写真を削除", systemImage: "trash")
-                            .font(SuiFont.label)
-                    }
-                } else {
+                } else if photosData.count < VisitRecord.maxPhotoCount {
                     photoUploadArea
-                    if mode == .manual {
+                    if mode == .manual, photosData.isEmpty {
                         Text("撮影日時と位置情報からチェックインタイプを自動判定します")
                             .font(SuiFont.caption)
                             .foregroundColor(SuiColor.subText)
@@ -308,9 +324,12 @@ struct NewVisitRecordView: View {
     }
 
     @ViewBuilder
-    private func photoMetaRow(metadata: PhotoMetadata) -> some View {
+    private var photoMetaRow: some View {
+        let hasAnyLocation = photoMetadatas.contains { $0.hasLocation }
+        let firstDateTaken = photoMetadatas.compactMap { $0.dateTaken }.first
+
         VStack(alignment: .leading, spacing: 6) {
-            if metadata.hasLocation, let d = distanceFromPhoto {
+            if hasAnyLocation, let d = distanceFromPhoto {
                 HStack(spacing: 6) {
                     Image(systemName: d <= 1000 ? "checkmark.circle.fill" : "exclamationmark.circle.fill")
                         .foregroundColor(d <= 1000 ? .green : .orange)
@@ -329,7 +348,7 @@ struct NewVisitRecordView: View {
                         .foregroundColor(SuiColor.subText)
                 }
             }
-            if let dateTaken = metadata.dateTaken {
+            if let dateTaken = firstDateTaken {
                 HStack(spacing: 6) {
                     Image(systemName: "calendar").foregroundColor(SuiColor.subText)
                     Text("撮影日時: \(formatDate(dateTaken))")
@@ -364,7 +383,7 @@ struct NewVisitRecordView: View {
     private var resultMessage: String {
         if isPhotoLocationValid {
             return "写真の撮影場所が1km以内のため、ゴールドチェックインになります。"
-        } else if photoMetadata?.hasLocation == true {
+        } else if photoMetadatas.contains(where: { $0.hasLocation }) {
             return "写真の撮影場所が1km以上離れているため、シルバーチェックインになります。"
         } else {
             return "写真に位置情報がないため、シルバーチェックインになります。"
@@ -421,7 +440,11 @@ struct NewVisitRecordView: View {
 
     private var photoUploadArea: some View {
         HStack(spacing: 10) {
-            PhotosPicker(selection: $selectedPhoto, matching: .images) {
+            PhotosPicker(
+                selection: $selectedPhotos,
+                maxSelectionCount: VisitRecord.maxPhotoCount - photosData.count,
+                matching: .images
+            ) {
                 uploadTile(icon: "photo.on.rectangle", label: "選択")
             }
             if UIImagePickerController.isSourceTypeAvailable(.camera) {
@@ -503,12 +526,28 @@ struct NewVisitRecordView: View {
         return f.string(from: date)
     }
 
+    /// 写真を圧縮して追加し、メタデータを抽出する
+    @MainActor
+    private func addPhoto(_ data: Data) {
+        guard photosData.count < VisitRecord.maxPhotoCount else { return }
+        let metadata = PhotoMetadataExtractor.extractMetadata(from: data)
+        // 訪問日の自動設定は最初の1枚のみ反映する
+        if mode == .manual, photosData.isEmpty, let dateTaken = metadata.dateTaken, dateTaken <= Date() {
+            visitDate = dateTaken
+        }
+        guard let image = UIImage(data: data),
+              let compressed = image.jpegData(compressionQuality: 0.8) else { return }
+        photosData.append(compressed)
+        photoMetadatas.append(metadata)
+    }
+
     private func save() {
         isSaving = true
         let visit = VisitRecord(
             visitDate: mode == .location ? Date() : visitDate,
             memo: memo,
-            photoData: photoData,
+            photoData: photosData.first,
+            additionalPhotosData: photosData.count > 1 ? Array(photosData.dropFirst()) : nil,
             checkInType: finalCheckInType,
             aquarium: aquarium
         )
