@@ -34,6 +34,7 @@ struct AquariumMapView: View {
     @State private var searchText = ""
     @State private var selectedRegions: Set<String> = []
     @State private var visitStatusFilter: VisitStatus = .all
+    @State private var searchDebounceTask: Task<Void, Never>?
 
     /// 地域の順序（北から南へ）
     private let regionOrder: [String] = [
@@ -86,19 +87,25 @@ struct AquariumMapView: View {
 
     private var theme: Theme { themeManager.currentTheme }
 
-    /// 現在地から近い順にソート（上位5件）
-    private var nearbyAquariums: [Aquarium] {
-        guard let here = locationManager.currentLocation else {
-            return Array(filteredAquariums.prefix(5))
-        }
-        return filteredAquariums
-            .sorted { a, b in
+    /// 検索・フィルタが有効かどうか
+    private var isFiltering: Bool {
+        !searchText.isEmpty || !selectedRegions.isEmpty || visitStatusFilter != .all
+    }
+
+    /// カルーセルに表示する水族館
+    /// 通常時は現在地から近い順の上位5件、検索・フィルタ中は該当全件を近い順で表示
+    private var carouselAquariums: [Aquarium] {
+        let sorted: [Aquarium]
+        if let here = locationManager.currentLocation {
+            sorted = filteredAquariums.sorted { a, b in
                 let da = here.distance(from: CLLocation(latitude: a.latitude, longitude: a.longitude))
                 let db = here.distance(from: CLLocation(latitude: b.latitude, longitude: b.longitude))
                 return da < db
             }
-            .prefix(5)
-            .map { $0 }
+        } else {
+            sorted = filteredAquariums
+        }
+        return isFiltering ? sorted : Array(sorted.prefix(5))
     }
 
     var body: some View {
@@ -140,7 +147,61 @@ struct AquariumMapView: View {
             .onChange(of: locationManager.currentLocation) { _, _ in
                 centerOnUserIfNeeded()
             }
+            .onChange(of: searchText) { _, _ in
+                // 入力中の連続更新を避けるためデバウンスしてからカメラを調整
+                searchDebounceTask?.cancel()
+                searchDebounceTask = Task { @MainActor in
+                    guard (try? await Task.sleep(for: .milliseconds(400))) != nil else { return }
+                    updateCameraToFitResults()
+                }
+            }
+            .onChange(of: selectedRegions) { _, _ in
+                updateCameraToFitResults()
+            }
+            .onChange(of: visitStatusFilter) { _, _ in
+                updateCameraToFitResults()
+            }
         }
+    }
+
+    /// 検索・フィルタ結果に合わせてマップの表示範囲を調整する
+    private func updateCameraToFitResults() {
+        withAnimation {
+            if !isFiltering {
+                // フィルタ解除時は現在地周辺（取得できなければ全体表示）に戻す
+                if let coordinate = locationManager.currentLocation?.coordinate {
+                    position = .region(MKCoordinateRegion(
+                        center: coordinate,
+                        latitudinalMeters: 30_000,
+                        longitudinalMeters: 30_000
+                    ))
+                } else {
+                    position = .automatic
+                }
+                return
+            }
+            // 該当なしの場合は現在の表示範囲を維持する
+            guard let region = regionFitting(filteredAquariums) else { return }
+            position = .region(region)
+        }
+    }
+
+    /// 指定した水族館がすべて収まる表示範囲を計算する
+    private func regionFitting(_ aquariumList: [Aquarium]) -> MKCoordinateRegion? {
+        guard let minLat = aquariumList.map(\.latitude).min(),
+              let maxLat = aquariumList.map(\.latitude).max(),
+              let minLon = aquariumList.map(\.longitude).min(),
+              let maxLon = aquariumList.map(\.longitude).max() else { return nil }
+        let center = CLLocationCoordinate2D(
+            latitude: (minLat + maxLat) / 2,
+            longitude: (minLon + maxLon) / 2
+        )
+        // 端のピンが切れないよう1.4倍の余白を持たせ、1件のみでも適度なズームを保つ
+        let span = MKCoordinateSpan(
+            latitudeDelta: max((maxLat - minLat) * 1.4, 0.1),
+            longitudeDelta: max((maxLon - minLon) * 1.4, 0.1)
+        )
+        return MKCoordinateRegion(center: center, span: span)
     }
 
     /// 現在地を取得できたら、初回のみ現在地周辺の拡大図に初期表示を合わせる。
@@ -255,7 +316,7 @@ struct AquariumMapView: View {
 
     private var nearbySection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            SectionHeader("近くの水族館") {
+            SectionHeader(isFiltering ? "検索結果（\(filteredAquariums.count)件）" : "近くの水族館") {
                 Button("すべて見る") { showingList = true }
                     .font(SuiFont.label)
                     .foregroundColor(theme.primaryColor)
@@ -263,13 +324,13 @@ struct AquariumMapView: View {
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 12) {
-                    if nearbyAquariums.isEmpty {
+                    if carouselAquariums.isEmpty {
                         Text("該当する水族館がありません")
                             .font(SuiFont.body)
                             .foregroundColor(SuiColor.midText)
                             .padding(.horizontal, 4)
                     } else {
-                        ForEach(nearbyAquariums, id: \.id) { aquarium in
+                        ForEach(carouselAquariums, id: \.id) { aquarium in
                             NearbyAquariumCard(
                                 aquarium: aquarium,
                                 visited: visitedAquariumIds.contains(aquarium.id),
