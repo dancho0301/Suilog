@@ -101,6 +101,36 @@ struct DataSeederFieldMappingTests {
         #expect(aquarium.phoneNumber == nil)
     }
 
+    @Test("都道府県名のregionが7地域に正規化されて保存される（v21形式対応）")
+    @MainActor
+    func testInsertNormalizesPrefectureRegion() throws {
+        let container = try createTestContainer()
+        let context = container.mainContext
+
+        let data = AquariumData(
+            name: "沖縄の水族館",
+            latitude: 26.69,
+            longitude: 127.88,
+            description: "テスト用",
+            region: "沖縄県", // 都道府県名（v21形式）
+            representativeFish: "fish.fill",
+            fishIconSize: 3,
+            address: "沖縄県本部町",
+            affiliateLink: nil,
+            stableId: "okinawa-test",
+            officialUrl: nil,
+            businessHours: nil,
+            admissionFee: nil,
+            phoneNumber: nil
+        )
+
+        let error = DataSeeder.insertAquariums(context: context, aquariumData: [data])
+        #expect(error == nil)
+
+        let aquarium = try #require(try context.fetch(FetchDescriptor<Aquarium>()).first)
+        #expect(aquarium.region == "九州・沖縄") // 7地域に正規化される
+    }
+
     // MARK: - updateAquariums
 
     @Test("更新時に新フィールドが既存の水族館へ反映され、訪問記録は保持される")

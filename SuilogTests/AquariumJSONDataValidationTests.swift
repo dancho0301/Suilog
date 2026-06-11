@@ -16,11 +16,6 @@ import Foundation
 @Suite
 struct AquariumJSONDataValidationTests {
 
-    /// アプリの地域フィルタ・統計が前提とする7地域
-    private static let validRegions: Set<String> = [
-        "北海道", "東北", "関東", "中部", "近畿", "中国・四国", "九州・沖縄"
-    ]
-
     /// リポジトリ内の配信用JSONを読み込む
     /// （テストはソースと同じマシンで実行される前提。見つからない場合はスキップ）
     private func loadResponse() throws -> AquariumResponse {
@@ -93,32 +88,28 @@ struct AquariumJSONDataValidationTests {
         }
     }
 
-    // MARK: - 既知の問題（aquariums.json v21 の形式変更）
+    // MARK: - v21形式対応の検証
     //
-    // v21 では region が都道府県名になり、stableId が "id" にリネームされている。
-    // このままデプロイすると地域フィルタ・地域別統計・地域マスターバッジが
-    // 機能しなくなるため、データ修正（またはアプリ側の対応）が完了するまで
-    // withKnownIssue として記録する。
+    // v21 では region が都道府県名、stableId は "id" キーになっている。
+    // アプリ側で RegionMapper による正規化と id フォールバックに対応済みのため、
+    // 「正規化後に7地域に収まること」「フォールバック込みでIDが取れること」を検証する。
 
-    @Test("regionがアプリの7地域のいずれかである（既知の問題: v21は都道府県名）")
-    func testRegionsAreValid() throws {
+    @Test("regionが正規化後に7地域のいずれかになる")
+    func testRegionsNormalizeToValidRegions() throws {
         let response = try loadResponse()
-        withKnownIssue("aquariums.json v21 は region が都道府県名のため7地域フィルタと不整合", isIntermittent: true) {
-            for aquarium in response.aquariums {
-                #expect(Self.validRegions.contains(aquarium.region),
-                        "\(aquarium.name) の region が7地域にない: \(aquarium.region)")
-            }
+        for aquarium in response.aquariums {
+            let normalized = RegionMapper.normalize(aquarium.region)
+            #expect(RegionMapper.validRegions.contains(normalized),
+                    "\(aquarium.name) の region が7地域に正規化できない: \(aquarium.region)")
         }
     }
 
-    @Test("全エントリにstableIdが設定されている（既知の問題: v21はidにリネーム）")
+    @Test("全エントリに安定ID（stableIdまたはid）が設定されている")
     func testStableIdsPresent() throws {
         let response = try loadResponse()
-        withKnownIssue("aquariums.json v21 は stableId キーが id にリネームされている", isIntermittent: true) {
-            for aquarium in response.aquariums {
-                let stableId = aquarium.stableId ?? ""
-                #expect(!stableId.isEmpty, "\(aquarium.name) に stableId がない")
-            }
+        for aquarium in response.aquariums {
+            let stableId = aquarium.stableId ?? ""
+            #expect(!stableId.isEmpty, "\(aquarium.name) に stableId / id がない")
         }
     }
 

@@ -181,6 +181,58 @@ struct AquariumDataTests {
         #expect(aquarium.officialUrl == nil)
     }
 
+    // MARK: - v21形式（idキー）の互換性 Tests
+
+    @Test("stableIdの代わりにidキーを持つJSON（v21形式）をデコード")
+    func testDecodeWithIdKeyFallback() throws {
+        let json = """
+        {
+            "name": "新さっぽろサンピアザ水族館",
+            "latitude": 43.037,
+            "longitude": 141.47,
+            "description": "都市型水族館",
+            "region": "北海道",
+            "representativeFish": "Seal",
+            "fishIconSize": 3,
+            "address": "北海道札幌市厚別区",
+            "affiliateLink": null,
+            "id": "sunpiazza-aquarium",
+            "creatureIds": ["clione", "goldfish"]
+        }
+        """
+
+        let data = json.data(using: .utf8)!
+        let aquarium = try JSONDecoder().decode(AquariumData.self, from: data)
+
+        // idキーがstableIdとして読み込まれる
+        #expect(aquarium.stableId == "sunpiazza-aquarium")
+        // 未知のフィールド（creatureIds）は無視される
+        #expect(aquarium.name == "新さっぽろサンピアザ水族館")
+    }
+
+    @Test("stableIdとidの両方がある場合はstableIdを優先")
+    func testStableIdTakesPrecedenceOverId() throws {
+        let json = """
+        {
+            "name": "テスト水族館",
+            "latitude": 35.0,
+            "longitude": 139.0,
+            "description": "テスト",
+            "region": "関東",
+            "representativeFish": "fish.fill",
+            "fishIconSize": 3,
+            "address": "テスト住所",
+            "affiliateLink": null,
+            "stableId": "stable-id",
+            "id": "alternate-id"
+        }
+        """
+
+        let data = json.data(using: .utf8)!
+        let aquarium = try JSONDecoder().decode(AquariumData.self, from: data)
+        #expect(aquarium.stableId == "stable-id")
+    }
+
     // MARK: - 営業時間・料金・電話番号 Tests
 
     @Test("営業時間・料金・電話番号ありのJSONをデコード")

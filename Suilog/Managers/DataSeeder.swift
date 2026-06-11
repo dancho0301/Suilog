@@ -114,7 +114,7 @@ class DataSeeder {
                 existingAquarium.latitude = newAquarium.latitude
                 existingAquarium.longitude = newAquarium.longitude
                 existingAquarium.aquariumDescription = newAquarium.description
-                existingAquarium.region = newAquarium.region
+                existingAquarium.region = RegionMapper.normalize(newAquarium.region)
                 existingAquarium.representativeFish = newAquarium.representativeFish
                 existingAquarium.fishIconSize = newAquarium.fishIconSize
                 existingAquarium.address = newAquarium.address
@@ -136,7 +136,7 @@ class DataSeeder {
                     latitude: newAquarium.latitude,
                     longitude: newAquarium.longitude,
                     description: newAquarium.description,
-                    region: newAquarium.region,
+                    region: RegionMapper.normalize(newAquarium.region),
                     representativeFish: newAquarium.representativeFish,
                     fishIconSize: newAquarium.fishIconSize,
                     address: newAquarium.address,
@@ -184,7 +184,7 @@ class DataSeeder {
                 latitude: data.latitude,
                 longitude: data.longitude,
                 description: data.description,
-                region: data.region,
+                region: RegionMapper.normalize(data.region),
                 representativeFish: data.representativeFish,
                 fishIconSize: data.fishIconSize,
                 address: data.address,
