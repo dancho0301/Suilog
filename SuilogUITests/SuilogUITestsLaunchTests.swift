@@ -17,18 +17,8 @@ final class SuilogUITestsLaunchTests: XCTestCase {
         continueAfterFailure = false
     }
 
-    /// タブボタンをタップする（iPhone/iPad両対応、coordinate経由）
-    private func tapTab(_ label: String, in app: XCUIApplication) {
-        let tabBarButton = app.tabBars.buttons[label].firstMatch
-        if tabBarButton.exists {
-            tabBarButton.tap()
-            return
-        }
-        let button = app.buttons[label].firstMatch
-        button.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
-    }
-
     /// アプリを起動してタブが操作可能になるまで待つ
+    /// （オンボーディングはUserDefaults引数でスキップ）
     private func launchAndWaitForTabs() -> XCUIApplication {
         let app = XCUIApplication()
 
@@ -46,6 +36,7 @@ final class SuilogUITestsLaunchTests: XCTestCase {
             return false
         }
 
+        app.launchArguments += ["-HasCompletedOnboarding", "YES"]
         app.launch()
 
         // SpringBoardのアラートを処理
@@ -69,11 +60,8 @@ final class SuilogUITestsLaunchTests: XCTestCase {
             }
         }
 
-        // タブが出るまで待つ（iPhone/iPad両対応）
-        let tabBar = app.tabBars.buttons["マイ水槽"].firstMatch
-        if !tabBar.waitForExistence(timeout: 10) {
-            _ = app.buttons["マイ水槽"].firstMatch.waitForExistence(timeout: 5)
-        }
+        // タブが出るまで待つ
+        _ = app.buttons["tabButton_0"].waitForExistence(timeout: 15)
 
         return app
     }
@@ -92,7 +80,7 @@ final class SuilogUITestsLaunchTests: XCTestCase {
     func testLaunch_mapTab() throws {
         let app = launchAndWaitForTabs()
 
-        tapTab("マップ", in: app)
+        app.buttons["tabButton_1"].tap()
         sleep(2)
 
         let attachment = XCTAttachment(screenshot: app.screenshot())
@@ -105,7 +93,7 @@ final class SuilogUITestsLaunchTests: XCTestCase {
     func testLaunch_passportTab() throws {
         let app = launchAndWaitForTabs()
 
-        tapTab("訪問記録", in: app)
+        app.buttons["tabButton_2"].tap()
         sleep(1)
 
         let attachment = XCTAttachment(screenshot: app.screenshot())

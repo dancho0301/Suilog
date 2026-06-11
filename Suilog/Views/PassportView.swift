@@ -200,6 +200,7 @@ struct PassportView: View {
                 .background(Capsule().fill(theme.primaryColor))
                 .suiShadow(.primaryButton(primary: theme.primaryColor))
             }
+            .accessibilityIdentifier("passport.addButton")
         }
     }
 
@@ -212,6 +213,7 @@ struct PassportView: View {
                 .foregroundColor(SuiColor.heading)
                 .autocorrectionDisabled()
                 .textInputAutocapitalization(.never)
+                .accessibilityIdentifier("passport.searchField")
             if !searchText.isEmpty {
                 Button {
                     searchText = ""

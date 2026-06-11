@@ -244,6 +244,7 @@ struct AquariumMapView: View {
                 .foregroundColor(SuiColor.heading)
                 .autocorrectionDisabled()
                 .textInputAutocapitalization(.never)
+                .accessibilityIdentifier("map.searchField")
             if !searchText.isEmpty {
                 Button {
                     searchText = ""
@@ -324,6 +325,7 @@ struct AquariumMapView: View {
                 Button("すべて見る") { showingList = true }
                     .font(SuiFont.label)
                     .foregroundColor(theme.primaryColor)
+                    .accessibilityIdentifier("map.seeAllButton")
             }
 
             ScrollView(.horizontal, showsIndicators: false) {
@@ -935,6 +937,7 @@ struct AquariumDetailView: View {
                     )
                 }
                 .disabled(!canLocationCheckIn)
+                .accessibilityIdentifier("detail.locationCheckInButton")
                 .shadow(
                     color: canLocationCheckIn ? theme.primaryColor.opacity(0.31) : .clear,
                     radius: canLocationCheckIn ? 20 : 0,
@@ -983,6 +986,7 @@ struct AquariumDetailView: View {
                         .stroke(SuiColor.fieldBorder, lineWidth: 1)
                 )
             }
+            .accessibilityIdentifier("detail.manualCheckInButton")
 
             Text("※ 訪問日を自由に設定できます。写真をアップすると撮影日時と位置情報から自動判定します")
                 .font(SuiFont.caption)

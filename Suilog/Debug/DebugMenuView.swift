@@ -28,6 +28,7 @@ struct DebugMenuView: View {
                 // マスタースイッチ
                 Section {
                     Toggle("デバッグモードを有効にする", isOn: $settings.isDebugModeEnabled)
+                        .accessibilityIdentifier("debug.masterToggle")
                 } header: {
                     Text("デバッグモード")
                 } footer: {
@@ -41,6 +42,7 @@ struct DebugMenuView: View {
                     // チェックイン設定
                     Section("チェックイン") {
                         Toggle("常時チェックイン可能", isOn: $settings.alwaysAllowCheckIn)
+                            .accessibilityIdentifier("debug.alwaysCheckInToggle")
 
                         if !settings.alwaysAllowCheckIn {
                             Toggle("カスタム距離閾値を使用", isOn: $settings.useCustomRadius)

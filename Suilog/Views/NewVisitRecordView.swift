@@ -502,6 +502,7 @@ struct NewVisitRecordView: View {
             .suiShadow(.primaryButton(primary: theme.primaryColor))
         }
         .disabled(disabled)
+        .accessibilityIdentifier("newRecord.saveButton")
         .padding(.top, 4)
     }
 

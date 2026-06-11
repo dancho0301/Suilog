@@ -42,6 +42,7 @@ struct CustomTabBar: View {
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
+                .accessibilityIdentifier("tabButton_\(item.id)")
             }
         }
         .padding(.top, 8)
