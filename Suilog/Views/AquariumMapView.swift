@@ -244,6 +244,7 @@ struct AquariumMapView: View {
                 .foregroundColor(SuiColor.heading)
                 .autocorrectionDisabled()
                 .textInputAutocapitalization(.never)
+                .accessibilityIdentifier("map.searchField")
             if !searchText.isEmpty {
                 Button {
                     searchText = ""
@@ -324,6 +325,7 @@ struct AquariumMapView: View {
                 Button("すべて見る") { showingList = true }
                     .font(SuiFont.label)
                     .foregroundColor(theme.primaryColor)
+                    .accessibilityIdentifier("map.seeAllButton")
             }
 
             ScrollView(.horizontal, showsIndicators: false) {
@@ -708,7 +710,7 @@ struct AquariumDetailView: View {
 
                         if let phoneNumber = aquarium.phoneNumber, !phoneNumber.isEmpty {
                             infoCard(title: "電話番号", icon: "phone") {
-                                if let telURL = telURL(for: phoneNumber) {
+                                if let telURL = SafeURL.telURL(from: phoneNumber) {
                                     Link(destination: telURL) {
                                         HStack {
                                             Text(phoneNumber)
@@ -727,11 +729,11 @@ struct AquariumDetailView: View {
                             }
                         }
 
-                        if let url = validatedWebURL(aquarium.officialUrl) {
+                        if let url = SafeURL.webURL(from: aquarium.officialUrl) {
                             linkCard(title: "公式HP", icon: "safari", url: url, label: "公式サイトを開く")
                         }
 
-                        if let url = validatedWebURL(aquarium.affiliateLink) {
+                        if let url = SafeURL.webURL(from: aquarium.affiliateLink) {
                             linkCard(title: "チケット購入", icon: "ticket", url: url, label: "オンラインでチケット購入")
                         }
 
@@ -829,24 +831,6 @@ struct AquariumDetailView: View {
         mapItem.openInMaps(launchOptions: [
             MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDefault
         ])
-    }
-
-    /// 電話番号から tel: URLを生成する（数字と+のみ抽出）
-    private func telURL(for phoneNumber: String) -> URL? {
-        let digits = phoneNumber.filter { $0.isNumber || $0 == "+" }
-        guard !digits.isEmpty else { return nil }
-        return URL(string: "tel://\(digits)")
-    }
-
-    /// 外部データ由来のURL文字列を検証し、http/https のみ許可する
-    private func validatedWebURL(_ string: String?) -> URL? {
-        guard let string, !string.isEmpty,
-              let url = URL(string: string),
-              let scheme = url.scheme?.lowercased(),
-              scheme == "https" || scheme == "http" else {
-            return nil
-        }
-        return url
     }
 
     private func linkCard(title: String, icon: String, url: URL, label: String) -> some View {
@@ -953,6 +937,7 @@ struct AquariumDetailView: View {
                     )
                 }
                 .disabled(!canLocationCheckIn)
+                .accessibilityIdentifier("detail.locationCheckInButton")
                 .shadow(
                     color: canLocationCheckIn ? theme.primaryColor.opacity(0.31) : .clear,
                     radius: canLocationCheckIn ? 20 : 0,
@@ -1001,6 +986,7 @@ struct AquariumDetailView: View {
                         .stroke(SuiColor.fieldBorder, lineWidth: 1)
                 )
             }
+            .accessibilityIdentifier("detail.manualCheckInButton")
 
             Text("※ 訪問日を自由に設定できます。写真をアップすると撮影日時と位置情報から自動判定します")
                 .font(SuiFont.caption)

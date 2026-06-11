@@ -66,6 +66,7 @@ struct ContentView: View {
                     }
                     .padding(.top, 60)
                     .padding(.leading, 16)
+                    .accessibilityIdentifier("debugMenuButton")
                 }
                 .overlay(alignment: .top) {
                     if DebugSettings.shared.isDebugModeEnabled {

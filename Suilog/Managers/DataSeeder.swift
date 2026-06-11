@@ -75,8 +75,9 @@ class DataSeeder {
     }
 
     /// 既存の水族館データを更新（訪問記録を保持）
+    /// - Note: テストから直接呼べるよう internal にしている
     /// - Returns: 保存エラーがあれば返す
-    private static func updateAquariums(context: ModelContext, existing: [Aquarium], newData: [AquariumData]) -> Error? {
+    static func updateAquariums(context: ModelContext, existing: [Aquarium], newData: [AquariumData]) -> Error? {
         // stableIdをキーにした辞書を作成（既存ユーザー用）
         var existingByStableId: [String: Aquarium] = [:]
         // 名前をキーにした辞書を作成（stableIdがない既存データ用のフォールバック）
@@ -113,7 +114,7 @@ class DataSeeder {
                 existingAquarium.latitude = newAquarium.latitude
                 existingAquarium.longitude = newAquarium.longitude
                 existingAquarium.aquariumDescription = newAquarium.description
-                existingAquarium.region = newAquarium.region
+                existingAquarium.region = RegionMapper.normalize(newAquarium.region)
                 existingAquarium.representativeFish = newAquarium.representativeFish
                 existingAquarium.fishIconSize = newAquarium.fishIconSize
                 existingAquarium.address = newAquarium.address
@@ -135,7 +136,7 @@ class DataSeeder {
                     latitude: newAquarium.latitude,
                     longitude: newAquarium.longitude,
                     description: newAquarium.description,
-                    region: newAquarium.region,
+                    region: RegionMapper.normalize(newAquarium.region),
                     representativeFish: newAquarium.representativeFish,
                     fishIconSize: newAquarium.fishIconSize,
                     address: newAquarium.address,
@@ -174,15 +175,16 @@ class DataSeeder {
     }
 
     /// 新規に水族館データを挿入
+    /// - Note: テストから直接呼べるよう internal にしている
     /// - Returns: 保存エラーがあれば返す
-    private static func insertAquariums(context: ModelContext, aquariumData: [AquariumData]) -> Error? {
+    static func insertAquariums(context: ModelContext, aquariumData: [AquariumData]) -> Error? {
         for data in aquariumData {
             let aquarium = Aquarium(
                 name: data.name,
                 latitude: data.latitude,
                 longitude: data.longitude,
                 description: data.description,
-                region: data.region,
+                region: RegionMapper.normalize(data.region),
                 representativeFish: data.representativeFish,
                 fishIconSize: data.fishIconSize,
                 address: data.address,

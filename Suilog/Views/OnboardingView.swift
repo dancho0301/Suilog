@@ -67,6 +67,7 @@ struct OnboardingView: View {
                 }
                 .font(SuiFont.bodyMedium)
                 .foregroundColor(SuiColor.midText)
+                .accessibilityIdentifier("onboarding.skipButton")
             }
         }
         .frame(height: 44)
@@ -265,6 +266,7 @@ struct OnboardingView: View {
                     )
             }
             .suiShadow(.primaryButton(primary: theme.primaryColor))
+            .accessibilityIdentifier("onboarding.nextButton")
         } else if locationManager.authorizationStatus == .notDetermined {
             // 位置情報が未設定なら許可をリクエスト（再表示時も同様）
             VStack(spacing: 12) {
@@ -286,6 +288,7 @@ struct OnboardingView: View {
                     )
                 }
                 .suiShadow(.primaryButton(primary: theme.primaryColor))
+                .accessibilityIdentifier("onboarding.permissionButton")
 
                 Button {
                     onComplete()
@@ -296,6 +299,7 @@ struct OnboardingView: View {
                         .padding(.vertical, 10)
                         .frame(maxWidth: .infinity)
                 }
+                .accessibilityIdentifier("onboarding.laterButton")
             }
         } else {
             // 位置情報の設定が済んでいる場合は閉じるだけ
@@ -313,6 +317,7 @@ struct OnboardingView: View {
                     )
             }
             .suiShadow(.primaryButton(primary: theme.primaryColor))
+            .accessibilityIdentifier("onboarding.closeButton")
         }
     }
 }

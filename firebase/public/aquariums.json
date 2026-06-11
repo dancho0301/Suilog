@@ -1,5 +1,5 @@
 {
-  "version": 21,
+  "version": 22,
   "aquariums": [
     {
       "name": "新さっぽろサンピアザ水族館",
@@ -11,6 +11,7 @@
       "fishIconSize": 3,
       "address": "北海道札幌市厚別区厚別中央2条5丁目7-5",
       "affiliateLink": null,
+      "officialUrl": "https://www.sunpiazza-aquarium.com/",
       "id": "sunpiazza-aquarium",
       "creatureIds": [
         "african_penguin",
@@ -97,6 +98,7 @@
       "fishIconSize": 2,
       "address": "北海道札幌市南区真駒内公園2-1",
       "affiliateLink": null,
+      "officialUrl": "https://salmon-museum.jp/",
       "id": "sapporo-salmon-museum",
       "creatureIds": [
         "salmon"
@@ -112,6 +114,7 @@
       "fishIconSize": 2,
       "address": "北海道札幌市中央区南2条西3-20 moyuk SAPPORO 4階-6階",
       "affiliateLink": null,
+      "officialUrl": "https://aoao-sapporo.blue",
       "id": "aoao-sapporo",
       "creatureIds": [
         "penguin"
@@ -127,6 +130,7 @@
       "fishIconSize": 4,
       "address": "北海道小樽市祝津3-303",
       "affiliateLink": null,
+      "officialUrl": "https://otaru-aq.jp/",
       "id": "otaru-aquarium",
       "creatureIds": [
         "sealion"
@@ -142,6 +146,7 @@
       "fishIconSize": 3,
       "address": "北海道稚内市ノシャップ2丁目2-17",
       "affiliateLink": null,
+      "officialUrl": "https://www.city.wakkanai.hokkaido.jp/suizokukan/",
       "id": "noshappu-aquarium",
       "creatureIds": [
         "hucho"
@@ -157,6 +162,7 @@
       "fishIconSize": 3,
       "address": "北海道中川郡美深町紋穂内（森林公園びふかアイランド内）",
       "affiliateLink": null,
+      "officialUrl": "https://bifukaonsen.com/",
       "id": "bifuka-sturgeon-museum",
       "creatureIds": [
         "sturgeon"
@@ -172,6 +178,7 @@
       "fishIconSize": 3,
       "address": "北海道紋別市海洋公園2番地",
       "affiliateLink": null,
+      "officialUrl": "https://o-tower.co.jp",
       "id": "oohotsuku-tokkari-center",
       "creatureIds": [
         "seal"
@@ -187,6 +194,7 @@
       "fishIconSize": 1,
       "address": "北海道紋別市海洋公園1番地",
       "affiliateLink": null,
+      "officialUrl": "https://www.o-tower.co.jp/",
       "id": "oohotsuku-tower",
       "creatureIds": [
         "clione"
@@ -202,6 +210,7 @@
       "fishIconSize": 2,
       "address": "北海道標津郡標津町北1条西6丁目1-1-1",
       "affiliateLink": null,
+      "officialUrl": "http://shibetsu-salmon.org/",
       "id": "shibetsu-salmon-museum",
       "creatureIds": [
         "salmon"
@@ -217,6 +226,7 @@
       "fishIconSize": 3,
       "address": "北海道北見市留辺蘂町松山1番地4",
       "affiliateLink": null,
+      "officialUrl": "https://www.aquarium.onneyu.com/",
       "id": "onneyu-aquarium",
       "creatureIds": [
         "hucho"
@@ -232,6 +242,7 @@
       "fishIconSize": 2,
       "address": "北海道千歳市花園2丁目312",
       "affiliateLink": null,
+      "officialUrl": "https://chitose-aq.jp/",
       "id": "chitose-aquarium",
       "creatureIds": [
         "hucho"
@@ -247,6 +258,7 @@
       "fishIconSize": 3,
       "address": "北海道室蘭市祝津町3丁目3-12",
       "affiliateLink": null,
+      "officialUrl": "https://muroran-aquarium.jp/",
       "id": "muroran-aquarium",
       "creatureIds": [
         "seal"
@@ -262,6 +274,7 @@
       "fishIconSize": 2,
       "address": "北海道登別市登別東町1丁目22",
       "affiliateLink": null,
+      "officialUrl": "https://www.nixe.co.jp",
       "id": "noboribetsu-marine-park-nixe",
       "creatureIds": [
         "penguin"
@@ -277,6 +290,7 @@
       "fishIconSize": 1,
       "address": "北海道釧路郡釧路町光和4-11 釧之助本店内",
       "affiliateLink": null,
+      "officialUrl": "http://www.sennosuke.net/pukupuku/",
       "id": "kushiro-aquarium-pukupuku",
       "creatureIds": [
         "pufferfish"
@@ -292,6 +306,7 @@
       "fishIconSize": 3,
       "address": "青森県青森市浅虫字馬場山1-25",
       "affiliateLink": null,
+      "officialUrl": "https://asamushi-aqua.com/",
       "id": "asamushi-aquarium",
       "creatureIds": [
         "dolphin"
@@ -307,6 +322,7 @@
       "fishIconSize": 2,
       "address": "青森県八戸市大字鮫町字下松苗場14-33",
       "affiliateLink": null,
+      "officialUrl": "https://marient.org/",
       "id": "marient",
       "creatureIds": [
         "seagull"
@@ -322,6 +338,7 @@
       "fishIconSize": 1,
       "address": "岩手県久慈市侍浜町麦生1-43-7",
       "affiliateLink": null,
+      "officialUrl": "https://www.moguranpia.com/",
       "id": "moguranpia",
       "creatureIds": [
         "clione"
@@ -337,6 +354,7 @@
       "fishIconSize": 2,
       "address": "岩手県宮古市日立浜町32-28",
       "affiliateLink": null,
+      "officialUrl": "https://www.city.miyako.iwate.jp/index/sosiki/suisankagakukan.html",
       "id": "iwate-fisheries-science-museum",
       "creatureIds": [
         "salmon"
@@ -352,6 +370,7 @@
       "fishIconSize": 3,
       "address": "宮城県仙台市宮城野区中野4丁目6番地",
       "affiliateLink": null,
+      "officialUrl": "https://www.uminomori.jp",
       "id": "sendai-uminomori-aquarium",
       "creatureIds": [
         "dolphin"
@@ -367,6 +386,7 @@
       "fishIconSize": 3,
       "address": "宮城県仙台市青葉区錦ケ丘1-3-1",
       "affiliateLink": null,
+      "officialUrl": "https://aquaterrace.co.jp/",
       "id": "aquaterrace-nishikigaoka",
       "creatureIds": [
         "arowana"
@@ -382,6 +402,7 @@
       "fishIconSize": 3,
       "address": "秋田県男鹿市戸賀塩浜",
       "affiliateLink": null,
+      "officialUrl": "https://www.gao-aqua.jp",
       "id": "oga-aquarium-gao",
       "creatureIds": [
         "seal"
@@ -397,6 +418,7 @@
       "fishIconSize": 1,
       "address": "山形県鶴岡市今泉字大久保657-1",
       "affiliateLink": null,
+      "officialUrl": "https://kamo-kurage.jp/",
       "id": "kamo-aquarium",
       "creatureIds": [
         "jellyfish"
@@ -412,6 +434,7 @@
       "fishIconSize": 3,
       "address": "福島県いわき市小名浜辰巳町50",
       "affiliateLink": null,
+      "officialUrl": "https://www.aquamarine.or.jp/",
       "id": "aquamarine-fukushima",
       "creatureIds": [
         "coelacanth"
@@ -427,6 +450,7 @@
       "fishIconSize": 2,
       "address": "福島県耶麻郡猪苗代町大字長田字東中丸3447番地4",
       "affiliateLink": null,
+      "officialUrl": "https://www.aquamarine-inawashiro.jp/",
       "id": "inawashiro-kawasemi-aquarium",
       "creatureIds": [
         "freshwater_fish"
@@ -442,6 +466,7 @@
       "fishIconSize": 4,
       "address": "茨城県東茨城郡大洗町磯浜町8252-3",
       "affiliateLink": "https://ck.jp.ap.valuecommerce.com/servlet/referral?sid=3761048&pid=892483316&vc_url=https%3A%2F%2Fwww.asoview.com%2Fbase%2F154299%2F",
+      "officialUrl": "https://www.aquaworld-oarai.com/",
       "id": "aqua-world-oarai",
       "creatureIds": [
         "shark"
@@ -457,6 +482,7 @@
       "fishIconSize": 2,
       "address": "茨城県かすみがうら市坂910-1",
       "affiliateLink": null,
+      "officialUrl": "http://www.dane-kerry.com/aquarium/",
       "id": "kasumigaura-aquarium",
       "creatureIds": [
         "freshwater_fish"
@@ -472,6 +498,7 @@
       "fishIconSize": 4,
       "address": "栃木県大田原市佐良土2686",
       "affiliateLink": null,
+      "officialUrl": "https://tnap.jp",
       "id": "nakagawa-aquatic-park",
       "creatureIds": [
         "arapaima"
@@ -487,6 +514,7 @@
       "fishIconSize": 2,
       "address": "栃木県日光市中宮祠2482-3",
       "affiliateLink": null,
+      "officialUrl": "https://www.fra.go.jp/nikko/",
       "id": "fish-and-forest-observation-garden",
       "creatureIds": [
         "freshwater_fish"
@@ -502,6 +530,7 @@
       "fishIconSize": 2,
       "address": "群馬県利根郡みなかみ町湯原１６８１−１",
       "affiliateLink": null,
+      "officialUrl": "https://mizunofurusato.com",
       "id": "fisheries-learning-center",
       "creatureIds": [
         "freshwater_fish"
@@ -517,6 +546,7 @@
       "fishIconSize": 2,
       "address": "埼玉県羽生市三田ヶ谷751-1",
       "affiliateLink": null,
+      "officialUrl": "http://www.parks.or.jp/suizokukan/",
       "id": "saitama-aquarium",
       "creatureIds": [
         "freshwater_fish"
@@ -532,6 +562,7 @@
       "fishIconSize": 1,
       "address": "埼玉県桶川市川田谷１５３１−２",
       "affiliateLink": null,
+      "officialUrl": "https://okegawanishi-h.spec.ed.jp/%E6%B0%B4%E6%97%8F%E9%A4%A8",
       "id": "okesai-aquarium",
       "creatureIds": [
         "freshwater_fish"
@@ -547,6 +578,7 @@
       "fishIconSize": 5,
       "address": "千葉県鴨川市東町1464-18",
       "affiliateLink": null,
+      "officialUrl": "https://www.kamogawa-seaworld.jp/",
       "id": "kamogawa-sea-world",
       "creatureIds": [
         "orca"
@@ -562,6 +594,7 @@
       "fishIconSize": 1,
       "address": "千葉県鴨川市内浦1",
       "affiliateLink": null,
+      "officialUrl": "http://www-es.s.chiba-u.ac.jp/kominato/",
       "id": "chiba-univ-marine-biosystem-aquarium",
       "creatureIds": [
         "coral_fish"
@@ -577,6 +610,7 @@
       "fishIconSize": 1,
       "address": "千葉県銚子市潮見町15-9",
       "affiliateLink": null,
+      "officialUrl": "https://choshi-aquarium.jimdofree.com/",
       "id": "smallest-aquarium-in-the-world",
       "creatureIds": [
         "clownfish"
@@ -592,6 +626,7 @@
       "fishIconSize": 2,
       "address": "東京都豊島区東池袋3-1 サンシャインシティ ワールドインポートマートビル 屋上",
       "affiliateLink": null,
+      "officialUrl": "https://sunshinecity.jp/aquarium/",
       "id": "sunshine-aquarium",
       "creatureIds": [
         "penguin"
@@ -607,6 +642,7 @@
       "fishIconSize": 2,
       "address": "東京都板橋区高島平8丁目29-2",
       "affiliateLink": null,
+      "officialUrl": "https://www.seibu-la.co.jp/nettaikan/",
       "id": "itabashi-tropical-botanical-garden",
       "creatureIds": [
         "piranha"
@@ -622,6 +658,7 @@
       "fishIconSize": 3,
       "address": "東京都港区高輪4-10-30",
       "affiliateLink": null,
+      "officialUrl": "https://www.aqua-park.jp/aqua/",
       "id": "maxell-aqua-park-shinagawa",
       "creatureIds": [
         "dolphin"
@@ -637,6 +674,7 @@
       "fishIconSize": 3,
       "address": "東京都品川区勝島3-2-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.aquarium.gr.jp/",
       "id": "shinagawa-aquarium",
       "creatureIds": [
         "seal"
@@ -652,6 +690,7 @@
       "fishIconSize": 1,
       "address": "東京都足立区保木間二丁目17番1号",
       "affiliateLink": null,
+      "officialUrl": "https://seibutuen.jp/",
       "id": "adachi-biological-garden",
       "creatureIds": [
         "butterfly"
@@ -667,6 +706,7 @@
       "fishIconSize": 2,
       "address": "東京都墨田区押上一丁目1番2号 東京スカイツリータウン・ソラマチ5F・6F",
       "affiliateLink": null,
+      "officialUrl": "https://www.sumida-aquarium.com/",
       "id": "sumida-aquarium",
       "creatureIds": [
         "penguin"
@@ -682,6 +722,7 @@
       "fishIconSize": 4,
       "address": "東京都江戸川区臨海町6-2-3",
       "affiliateLink": null,
+      "officialUrl": "https://www.tokyo-zoo.net/zoo/kasai/",
       "id": "kasai-rinkai-aquarium",
       "creatureIds": [
         "tuna"
@@ -697,6 +738,7 @@
       "fishIconSize": 2,
       "address": "東京都武蔵野市御殿山1-17-6",
       "affiliateLink": null,
+      "officialUrl": "https://www.tokyo-zoo.net/zoo/ino/",
       "id": "inokashira-park-zoo-aquarium",
       "creatureIds": [
         "freshwater_fish"
@@ -712,6 +754,7 @@
       "fishIconSize": 3,
       "address": "東京都小笠原村父島字屏風谷",
       "affiliateLink": null,
+      "officialUrl": "https://bonin-ocean.net/",
       "id": "ogasawara-ocean-center",
       "creatureIds": [
         "sea_turtle"
@@ -727,6 +770,7 @@
       "fishIconSize": 4,
       "address": "東京都小笠原村父島清瀬",
       "affiliateLink": null,
+      "officialUrl": "https://www.ifarc.metro.tokyo.lg.jp/",
       "id": "ogasawara-fisheries-center",
       "creatureIds": [
         "tuna"
@@ -742,6 +786,7 @@
       "fishIconSize": 4,
       "address": "神奈川県横浜市金沢区八景島",
       "affiliateLink": null,
+      "officialUrl": "https://www.seaparadise.co.jp/",
       "id": "hakkeijima-sea-paradise",
       "creatureIds": [
         "beluga_whale"
@@ -757,6 +802,7 @@
       "fishIconSize": 1,
       "address": "神奈川県横浜市中区山下町144 チャイナスクエア3F",
       "affiliateLink": null,
+      "officialUrl": "https://fortune-aquarium.com/",
       "id": "yokohama-fortune-aquarium",
       "creatureIds": [
         "clownfish"
@@ -772,6 +818,7 @@
       "fishIconSize": 1,
       "address": "神奈川県横浜市中区本牧間門29-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.edu.city.yokohama.lg.jp/school/es/makado/",
       "id": "makado-sea-marine-park",
       "creatureIds": [
         "coral_fish"
@@ -787,6 +834,7 @@
       "fishIconSize": 1,
       "address": "神奈川県横須賀市鴨居4丁目1120",
       "affiliateLink": null,
+      "officialUrl": "https://kannonzaki-nature-museum.jimdo.com/",
       "id": "kannon-saki-natural-museum",
       "creatureIds": [
         "crab"
@@ -802,6 +850,7 @@
       "fishIconSize": 1,
       "address": "神奈川県藤沢市片瀬海岸2-19-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.enosui.com/",
       "id": "enoshima-aquarium",
       "creatureIds": [
         "jellyfish"
@@ -817,6 +866,7 @@
       "fishIconSize": 2,
       "address": "神奈川県川崎市川崎区日進町1-11 ルフロン川崎",
       "affiliateLink": null,
+      "officialUrl": "https://kawa-sui.com/",
       "id": "kawasui-kawasaki-aquarium",
       "creatureIds": [
         "freshwater_fish"
@@ -832,6 +882,7 @@
       "fishIconSize": 2,
       "address": "神奈川県相模原市中央区水郷田名1-5-1",
       "affiliateLink": null,
+      "officialUrl": "https://sagamigawa-fureai.com/",
       "id": "sagamihara-aquarium",
       "creatureIds": [
         "freshwater_fish"
@@ -847,6 +898,7 @@
       "fishIconSize": 1,
       "address": "神奈川県相模原市南区北里1丁目15-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.kitasato-u.ac.jp/mb/faculty/aquarium/",
       "id": "kurasato-aquarium-lab",
       "creatureIds": [
         "jellyfish"
@@ -862,6 +914,7 @@
       "fishIconSize": 3,
       "address": "神奈川県足柄下郡箱根町元箱根139",
       "affiliateLink": null,
+      "officialUrl": "https://www.princehotels.co.jp/amuse/hakone-en/suizokukan/",
       "id": "hakone-en-aquarium",
       "creatureIds": [
         "seal"
@@ -877,6 +930,7 @@
       "fishIconSize": 3,
       "address": "新潟県新潟市中央区西船見町5932-445",
       "affiliateLink": null,
+      "officialUrl": "http://www.marinepia.or.jp/",
       "id": "marinepia-nihonkai",
       "creatureIds": [
         "dolphin"
@@ -892,6 +946,7 @@
       "fishIconSize": 2,
       "address": "新潟県上越市五智2丁目15-15",
       "affiliateLink": null,
+      "officialUrl": "http://www.umigatari.jp/joetsu/",
       "id": "umigatari-aquarium",
       "creatureIds": [
         "penguin"
@@ -907,6 +962,7 @@
       "fishIconSize": 2,
       "address": "富山県魚津市三ケ1390",
       "affiliateLink": null,
+      "officialUrl": "https://www.uozu-aquarium.jp/",
       "id": "uozu-aquarium",
       "creatureIds": [
         "deep_sea_fish"
@@ -922,6 +978,7 @@
       "fishIconSize": 5,
       "address": "石川県七尾市能登島曲町15部40",
       "affiliateLink": null,
+      "officialUrl": "https://www.notoaqua.jp/",
       "id": "notojima-aquarium",
       "creatureIds": [
         "whale_shark"
@@ -937,6 +994,7 @@
       "fishIconSize": 3,
       "address": "福井県坂井市三国町崎74-2-3",
       "affiliateLink": null,
+      "officialUrl": "https://www.echizen-aquarium.com/",
       "id": "echizen-matsushima-aquarium",
       "creatureIds": [
         "sea_turtle"
@@ -952,6 +1010,7 @@
       "fishIconSize": 2,
       "address": "山梨県南都留郡忍野村忍草3098-1",
       "affiliateLink": null,
+      "officialUrl": "http://www.morinonakano-suizokukan.com/",
       "id": "fuji-yusuin-aquarium",
       "creatureIds": [
         "freshwater_fish"
@@ -967,6 +1026,7 @@
       "fishIconSize": 4,
       "address": "岐阜県各務原市川島笠田町1453",
       "affiliateLink": null,
+      "officialUrl": "https://aquatotto.com/",
       "id": "aqua-toto-gifu",
       "creatureIds": [
         "mekong_giant_catfish"
@@ -982,6 +1042,7 @@
       "fishIconSize": 3,
       "address": "静岡県沼津市内浦長浜3-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.mitosea.com",
       "id": "izu-mito-sea-paradise",
       "creatureIds": [
         "dolphin"
@@ -997,6 +1058,7 @@
       "fishIconSize": 3,
       "address": "静岡県沼津市千本港町83",
       "affiliateLink": null,
+      "officialUrl": "http://www.numazu-deepsea.com/",
       "id": "numazu-deep-sea-aquarium",
       "creatureIds": [
         "coelacanth"
@@ -1012,6 +1074,7 @@
       "fishIconSize": 3,
       "address": "静岡県下田市3-22-31",
       "affiliateLink": null,
+      "officialUrl": "http://shimoda-aquarium.com",
       "id": "shimoda-aquarium",
       "creatureIds": [
         "dolphin"
@@ -1042,6 +1105,7 @@
       "fishIconSize": 5,
       "address": "愛知県名古屋市港区港町1-3",
       "affiliateLink": null,
+      "officialUrl": "https://nagoyaaqua.jp/",
       "id": "nagoya-port-aquarium",
       "creatureIds": [
         "orca"
@@ -1057,6 +1121,7 @@
       "fishIconSize": 2,
       "address": "愛知県蒲郡市竹島町1-6",
       "affiliateLink": null,
+      "officialUrl": "https://www.takeshima-aquarium.jp/",
       "id": "takeshima-aquarium",
       "creatureIds": [
         "deep_sea_fish"
@@ -1072,6 +1137,7 @@
       "fishIconSize": 1,
       "address": "愛知県碧南市浜町2-3",
       "affiliateLink": null,
+      "officialUrl": "http://www.city.hekinan.lg.jp/aquarium/",
       "id": "hekinan-seaside-aquarium",
       "creatureIds": [
         "pufferfish"
@@ -1087,6 +1153,7 @@
       "fishIconSize": 3,
       "address": "愛知県知多郡美浜町奥田428-1",
       "affiliateLink": null,
+      "officialUrl": "https://beachland.jp/",
       "id": "minamichita-beach-land",
       "creatureIds": [
         "dolphin"
@@ -1102,6 +1169,7 @@
       "fishIconSize": 1,
       "address": "愛知県名古屋市港区金城ふ頭2-2-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.legoland.jp/resort-guide/sealife-nagoya/",
       "id": "sealife-nagoya",
       "creatureIds": [
         "clownfish"
@@ -1117,6 +1185,7 @@
       "fishIconSize": 3,
       "address": "三重県鳥羽市鳥羽3丁目3-6",
       "affiliateLink": null,
+      "officialUrl": "http://www.aquarium.co.jp/",
       "id": "toba-aquarium",
       "creatureIds": [
         "dugong"
@@ -1132,6 +1201,7 @@
       "fishIconSize": 4,
       "address": "三重県伊勢市二見町江580",
       "affiliateLink": null,
+      "officialUrl": "https://ise-seaparadise.com",
       "id": "ise-sea-paradise",
       "creatureIds": [
         "walrus"
@@ -1147,6 +1217,7 @@
       "fishIconSize": 2,
       "address": "滋賀県草津市下物町1091",
       "affiliateLink": null,
+      "officialUrl": "https://www.biwahaku.jp/",
       "id": "biwa-lake-museum",
       "creatureIds": [
         "biwa_catfish"
@@ -1162,6 +1233,7 @@
       "fishIconSize": 2,
       "address": "京都府京都市下京区観喜寺町35-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.kyoto-aquarium.com/",
       "id": "kyoto-aquarium",
       "creatureIds": [
         "giant_salamander"
@@ -1177,6 +1249,7 @@
       "fishIconSize": 5,
       "address": "大阪府大阪市港区海岸通1丁目1番10号",
       "affiliateLink": null,
+      "officialUrl": "https://www.kaiyukan.com/",
       "id": "kaiyukan",
       "creatureIds": [
         "whale_shark"
@@ -1192,6 +1265,7 @@
       "fishIconSize": 1,
       "address": "大阪府吹田市千里万博公園2-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.nifrel.jp/",
       "id": "nifrel",
       "creatureIds": [
         "coral_fish"
@@ -1207,6 +1281,7 @@
       "fishIconSize": 1,
       "address": "和歌山県海南市船尾370-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.shizenhaku.wakayama-c.ed.jp/",
       "id": "wakayama-nature-museum",
       "creatureIds": [
         "sea_turtle"
@@ -1222,6 +1297,7 @@
       "fishIconSize": 5,
       "address": "和歌山県東牟婁郡太地町太地2934-2",
       "affiliateLink": null,
+      "officialUrl": "http://www.kujirakan.jp/",
       "id": "taiji-whale-museum",
       "creatureIds": [
         "whale"
@@ -1237,6 +1313,7 @@
       "fishIconSize": 1,
       "address": "和歌山県東牟婁郡串本町有田1157",
       "affiliateLink": null,
+      "officialUrl": "http://www.kushimoto.co.jp/",
       "id": "kushimoto-marine-park",
       "creatureIds": [
         "coral_fish"
@@ -1252,6 +1329,7 @@
       "fishIconSize": 3,
       "address": "和歌山県西牟婁郡白浜町堅田2399",
       "affiliateLink": null,
+      "officialUrl": "https://www.adventureworld.co.jp/",
       "id": "adventure-world",
       "creatureIds": [
         "dolphin"
@@ -1267,6 +1345,7 @@
       "fishIconSize": 1,
       "address": "和歌山県西牟婁郡白浜町459",
       "affiliateLink": null,
+      "officialUrl": "https://www.seto.kyoto-u.ac.jp/aquarium/",
       "id": "shirahama-aquarium",
       "creatureIds": [
         "jellyfish"
@@ -1282,6 +1361,7 @@
       "fishIconSize": 1,
       "address": "和歌山県西牟婁郡すさみ町江住567-1",
       "affiliateLink": null,
+      "officialUrl": "https://ebikani-aquarium.com/",
       "id": "ebi-kani-aquarium",
       "creatureIds": [
         "crab"
@@ -1297,6 +1377,7 @@
       "fishIconSize": 3,
       "address": "兵庫県豊岡市瀬戸1090",
       "affiliateLink": null,
+      "officialUrl": "https://marineworld.hiyoriyama.co.jp/",
       "id": "kinosaki-marine-world",
       "creatureIds": [
         "dolphin"
@@ -1312,6 +1393,7 @@
       "fishIconSize": 2,
       "address": "兵庫県神戸市中央区新港町7-2",
       "affiliateLink": null,
+      "officialUrl": "https://atoa-kobe.jp/",
       "id": "atoa",
       "creatureIds": [
         "piranha"
@@ -1327,6 +1409,7 @@
       "fishIconSize": 5,
       "address": "兵庫県神戸市須磨区若宮町1丁目3-5",
       "affiliateLink": null,
+      "officialUrl": "https://kobesuma-seaworld.jp/",
       "id": "kobe-suma-sea-world",
       "creatureIds": [
         "orca"
@@ -1342,6 +1425,7 @@
       "fishIconSize": 3,
       "address": "兵庫県姫路市西延末440",
       "affiliateLink": null,
+      "officialUrl": "https://www.city.himeji.lg.jp/aqua/",
       "id": "himeji-city-aquarium",
       "creatureIds": [
         "sea_turtle"
@@ -1357,6 +1441,7 @@
       "fishIconSize": 1,
       "address": "岡山県玉野市渋川2-6-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.city.tamano.lg.jp/site/kaihaku/",
       "id": "tamano-marine-museum",
       "creatureIds": [
         "pufferfish"
@@ -1372,6 +1457,7 @@
       "fishIconSize": 3,
       "address": "広島県廿日市市宮島町10-3",
       "affiliateLink": null,
+      "officialUrl": "http://www.miyajima-aqua.jp/",
       "id": "miyajima-aquarium",
       "creatureIds": [
         "finless_porpoise"
@@ -1387,6 +1473,7 @@
       "fishIconSize": 1,
       "address": "鳥取県鳥取市賀露町西3丁目27-2",
       "affiliateLink": null,
+      "officialUrl": "https://kanikko.jp/",
       "id": "tottori-karo-crab-aquarium",
       "creatureIds": [
         "crab"
@@ -1402,6 +1489,7 @@
       "fishIconSize": 4,
       "address": "島根県浜田市久代町1117-2",
       "affiliateLink": null,
+      "officialUrl": "https://aquas.or.jp/",
       "id": "aquas-shimane",
       "creatureIds": [
         "beluga_whale"
@@ -1417,6 +1505,7 @@
       "fishIconSize": 2,
       "address": "島根県出雲市園町1659-5",
       "affiliateLink": null,
+      "officialUrl": "http://www.gobius.jp/",
       "id": "gobius",
       "creatureIds": [
         "eel"
@@ -1432,6 +1521,7 @@
       "fishIconSize": 1,
       "address": "山口県下関市あるかぽーと6-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.kaikyokan.com/",
       "id": "kaikyokan",
       "creatureIds": [
         "pufferfish"
@@ -1447,6 +1537,7 @@
       "fishIconSize": 1,
       "address": "山口県大島郡周防大島町伊保田2211-3",
       "affiliateLink": null,
+      "officialUrl": "https://nagisa-aquarium.com/",
       "id": "nagisa-aquarium",
       "creatureIds": [
         "crab"
@@ -1477,6 +1568,7 @@
       "fishIconSize": 3,
       "address": "香川県綾歌郡宇多津町浜一番丁4",
       "affiliateLink": null,
+      "officialUrl": "https://shikoku-aquarium.jp/",
       "id": "shikoku-aquarium",
       "creatureIds": [
         "dolphin"
@@ -1492,6 +1584,7 @@
       "fishIconSize": 3,
       "address": "徳島県海部郡美波町日和佐浦369",
       "affiliateLink": null,
+      "officialUrl": "http://caretta-hiwasa.com",
       "id": "caretta-turtle-museum",
       "creatureIds": [
         "sea_turtle"
@@ -1507,6 +1600,7 @@
       "fishIconSize": 4,
       "address": "高知県高知市浦戸778",
       "affiliateLink": null,
+      "officialUrl": "https://katurahama-aq.jp/",
       "id": "katsurahama-aquarium",
       "creatureIds": [
         "sealion"
@@ -1522,6 +1616,7 @@
       "fishIconSize": 1,
       "address": "高知県土佐清水市三崎4032",
       "affiliateLink": null,
+      "officialUrl": "https://www.kaiyoukan.jp/",
       "id": "ashizuri-oceanarium-satoumi",
       "creatureIds": [
         "coral_fish"
@@ -1537,6 +1632,7 @@
       "fishIconSize": 4,
       "address": "高知県室戸市室戸岬町533-2",
       "affiliateLink": null,
+      "officialUrl": "https://www.city.muroto.kochi.jp/pages/page0343.php",
       "id": "muroto-schoolhouse-aquarium",
       "creatureIds": [
         "shark"
@@ -1552,6 +1648,7 @@
       "fishIconSize": 3,
       "address": "福岡県福岡市東区西戸崎18-28",
       "affiliateLink": null,
+      "officialUrl": "https://marine-world.jp/",
       "id": "marine-world-uminonakamichi",
       "creatureIds": [
         "dolphin"
@@ -1567,6 +1664,7 @@
       "fishIconSize": 2,
       "address": "長崎県長崎市宿町3-16",
       "affiliateLink": null,
+      "officialUrl": "https://penguin-aqua.jp/",
       "id": "nagasaki-penguin-aquarium",
       "creatureIds": [
         "penguin"
@@ -1582,6 +1680,7 @@
       "fishIconSize": 3,
       "address": "長崎県佐世保市鹿子前町1008",
       "affiliateLink": null,
+      "officialUrl": "https://pearlsea.jp/",
       "id": "kujukushima-pearl-sea-resort",
       "creatureIds": [
         "dolphin"
@@ -1597,6 +1696,7 @@
       "fishIconSize": 4,
       "address": "大分県大分市大字神崎3078-22",
       "affiliateLink": null,
+      "officialUrl": "https://www.umitamago.jp/",
       "id": "umitamago",
       "creatureIds": [
         "walrus"
@@ -1612,6 +1712,7 @@
       "fishIconSize": 1,
       "address": "熊本県上天草市松島町合津6225-7",
       "affiliateLink": null,
+      "officialUrl": "https://www.seadonut.jp/",
       "id": "sea-donut",
       "creatureIds": [
         "dolphin"
@@ -1627,6 +1728,7 @@
       "fishIconSize": 5,
       "address": "鹿児島県鹿児島市本港新町3-1",
       "affiliateLink": null,
+      "officialUrl": "https://iorworld.jp/",
       "id": "kagoshima-aquarium",
       "creatureIds": [
         "whale_shark"
@@ -1642,6 +1744,7 @@
       "fishIconSize": 5,
       "address": "沖縄県国頭郡本部町石川424番地",
       "affiliateLink": null,
+      "officialUrl": "https://churaumi.okinawa/",
       "id": "churaumi-aquarium",
       "creatureIds": [
         "whale_shark"
@@ -1657,6 +1760,7 @@
       "fishIconSize": 1,
       "address": "沖縄県豊見城市豊崎3-35",
       "affiliateLink": null,
+      "officialUrl": "https://kariyushi-aquarium.com/",
       "id": "dmm-kariyushi-aquarium",
       "creatureIds": [
         "clownfish"
@@ -1672,6 +1776,7 @@
       "fishIconSize": 1,
       "address": "新潟県新潟市西蒲区漆山8554-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.adana.co.jp/jp/contents/gallery",
       "id": "nature-aquarium-gallery",
       "creatureIds": [
         "freshwater_fish"
@@ -1687,6 +1792,7 @@
       "fishIconSize": 1,
       "address": "新潟県村上市塩町13-34",
       "affiliateLink": null,
+      "officialUrl": "https://www.iyoboya.jp/",
       "id": "iyoboya-kaikan",
       "creatureIds": [
         "salmon"
@@ -1702,6 +1808,7 @@
       "fishIconSize": 1,
       "address": "新潟県長岡市寺泊花立9353-158",
       "affiliateLink": null,
+      "officialUrl": "https://www.teradomari-aquarium.jp/",
       "id": "teradomari-aquarium",
       "creatureIds": [
         "penguin"
@@ -1717,6 +1824,7 @@
       "fishIconSize": 1,
       "address": "新潟県魚沼市大白川",
       "affiliateLink": null,
+      "officialUrl": "https://museum.or.jp/",
       "id": "shinanogawa-fish-house",
       "creatureIds": [
         "freshwater_fish"
@@ -1732,6 +1840,7 @@
       "fishIconSize": 1,
       "address": "長野県安曇野市堀金烏川33-4",
       "affiliateLink": null,
+      "officialUrl": "https://www.azumino-koen.jp/",
       "id": "alps-azumino-park-classroom",
       "creatureIds": [
         "freshwater_fish"
@@ -1747,6 +1856,7 @@
       "fishIconSize": 1,
       "address": "長野県茅野市北山4035-2409",
       "affiliateLink": null,
+      "officialUrl": "https://www.tateshina-aquarium.jp/",
       "id": "tateshina-amusement-aquarium",
       "creatureIds": [
         "arapaima"
@@ -1762,6 +1872,7 @@
       "fishIconSize": 1,
       "address": "岐阜県高山市丹生川町根方532",
       "affiliateLink": null,
+      "officialUrl": "http://www.morinonakano-suizokukan.com/",
       "id": "mori-no-aquarium",
       "creatureIds": [
         "freshwater_fish"
@@ -1777,6 +1888,7 @@
       "fishIconSize": 1,
       "address": "静岡県沼津市内浦重寺186",
       "affiliateLink": null,
+      "officialUrl": "https://www.marinepark.jp/",
       "id": "awashima-marine-park",
       "creatureIds": [
         "dolphin"
@@ -1792,6 +1904,7 @@
       "fishIconSize": 1,
       "address": "静岡県駿東郡清水町伏見52-1 サントムーン柿田川 オアシス3階",
       "affiliateLink": null,
+      "officialUrl": "https://yo-sui.com/",
       "id": "yougyo-aquarium",
       "creatureIds": [
         "coral_fish"
@@ -1807,6 +1920,7 @@
       "fishIconSize": 1,
       "address": "静岡県浜松市中央区舞阪町弁天島5005-3",
       "affiliateLink": null,
+      "officialUrl": "https://ulotto.entetsuassist-dms.com/",
       "id": "hamanako-wotto",
       "creatureIds": [
         "freshwater_fish"
@@ -1822,6 +1936,7 @@
       "fishIconSize": 1,
       "address": "静岡県静岡市葵区御幸町10-2 松坂屋静岡店 本館7階",
       "affiliateLink": null,
+      "officialUrl": "https://smartaqua-sz.jp/",
       "id": "smart-aquarium-shizuoka",
       "creatureIds": [
         "coral_fish"
@@ -1837,6 +1952,7 @@
       "fishIconSize": 1,
       "address": "愛知県豊川市市田町東堤上1-30（赤塚山公園内）",
       "affiliateLink": null,
+      "officialUrl": "https://www.akatsukayama.jp/",
       "id": "gyogyo-land",
       "creatureIds": [
         "freshwater_fish"
@@ -1852,6 +1968,7 @@
       "fishIconSize": 1,
       "address": "愛知県弥富市前ケ須町南本田347 弥富まちなか交流館1階",
       "affiliateLink": null,
+      "officialUrl": "https://www.city.yatomi.lg.jp/event_info/1001259/1005653.html",
       "id": "yatomi-kingyo-aquarium",
       "creatureIds": [
         "freshwater_fish"
@@ -1867,6 +1984,7 @@
       "fishIconSize": 1,
       "address": "三重県鳥羽市小浜町",
       "affiliateLink": null,
+      "officialUrl": "https://shima-marineleisure.com/",
       "id": "iruka-jima-marine-leisure-land",
       "creatureIds": [
         "dolphin"
@@ -1882,6 +2000,7 @@
       "fishIconSize": 1,
       "address": "三重県南牟婁郡紀宝町井田568-7",
       "affiliateLink": null,
+      "officialUrl": "https://umigame.info",
       "id": "kihou-cho-umigame-park",
       "creatureIds": [
         "sea_turtle"
@@ -1897,6 +2016,7 @@
       "fishIconSize": 1,
       "address": "三重県名張市赤目町長坂861-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.akame48taki.com/",
       "id": "akame-falls-aquarium",
       "creatureIds": [
         "giant_salamander"
@@ -1912,6 +2032,7 @@
       "fishIconSize": 1,
       "address": "京都府京都市右京区太秦安井辻ノ内町10-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.kyotohanasui.com/",
       "id": "hanazono-church-aquarium",
       "creatureIds": [
         "freshwater_fish"
@@ -1927,6 +2048,7 @@
       "fishIconSize": 1,
       "address": "大阪府高槻市南平台5丁目59-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.city.takatsuki.osaka.jp/soshiki/33/1908.html",
       "id": "aquapia-akutagawa",
       "creatureIds": [
         "freshwater_fish"
@@ -1942,6 +2064,7 @@
       "fishIconSize": 1,
       "address": "奈良県奈良市二条大路南1-3-1 ミ・ナーラ4F",
       "affiliateLink": null,
+      "officialUrl": "https://mina-ra.com/narakin/",
       "id": "nara-kingyo-museum",
       "creatureIds": [
         "freshwater_fish"
@@ -1957,6 +2080,7 @@
       "fishIconSize": 1,
       "address": "奈良県大和郡山市新木町107",
       "affiliateLink": null,
+      "officialUrl": "https://www.kingyoen.com/",
       "id": "koriyama-kingyo-museum",
       "creatureIds": [
         "freshwater_fish"
@@ -1972,6 +2096,7 @@
       "fishIconSize": 1,
       "address": "和歌山県東牟婁郡太地町森浦703-17",
       "affiliateLink": null,
+      "officialUrl": "https://www.dolphinresort2.net/",
       "id": "dolphin-resort",
       "creatureIds": [
         "dolphin"
@@ -1987,6 +2112,7 @@
       "fishIconSize": 1,
       "address": "兵庫県神戸市兵庫区雪御所町2-24",
       "affiliateLink": null,
+      "officialUrl": "https://minatoyama.jp/",
       "id": "minatoyama-aquarium",
       "creatureIds": [
         "freshwater_fish"
@@ -2002,6 +2128,7 @@
       "fishIconSize": 1,
       "address": "兵庫県加東市黒谷1197-23",
       "affiliateLink": null,
+      "officialUrl": "http://www.hyoturi.or.jp/aqua/",
       "id": "aqua-tojo",
       "creatureIds": [
         "freshwater_fish"
@@ -2017,6 +2144,7 @@
       "fishIconSize": 1,
       "address": "兵庫県南あわじ市阿万塩屋町2660",
       "affiliateLink": null,
+      "officialUrl": "https://www.janohire.co.jp/farm/",
       "id": "awaji-janohire-dolphin-farm",
       "creatureIds": [
         "dolphin"
@@ -2032,6 +2160,7 @@
       "fishIconSize": 1,
       "address": "広島県尾道市因島大浜町452-10",
       "affiliateLink": null,
+      "officialUrl": "https://www.fukuyama-u.ac.jp/marine-bio-center/",
       "id": "fukuyama-univ-marine-bio-center-aquarium",
       "creatureIds": [
         "coral_fish"
@@ -2047,6 +2176,7 @@
       "fishIconSize": 1,
       "address": "愛媛県北宇和郡松野町延野々1510-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.morinokuni.or.jp/",
       "id": "shimantogawa-learning-center-osakanakan",
       "creatureIds": [
         "freshwater_fish"
@@ -2062,6 +2192,7 @@
       "fishIconSize": 1,
       "address": "愛媛県大洲市長浜甲576",
       "affiliateLink": null,
+      "officialUrl": "https://nagakoaquarium.wixsite.com/nagakoaquarium",
       "id": "nagahama-high-school-aquarium",
       "creatureIds": [
         "coral_fish"
@@ -2077,6 +2208,7 @@
       "fishIconSize": 1,
       "address": "愛媛県今治市伯方町叶浦1673",
       "affiliateLink": null,
+      "officialUrl": "https://www.dolphin-farm.jp/",
       "id": "dolphin-farm-shimanami",
       "creatureIds": [
         "dolphin"
@@ -2092,6 +2224,7 @@
       "fishIconSize": 1,
       "address": "香川県さぬき市津田町鶴羽1520-130",
       "affiliateLink": null,
+      "officialUrl": "https://j-dc2.net/",
       "id": "japan-dolphin-center",
       "creatureIds": [
         "dolphin"
@@ -2107,6 +2240,7 @@
       "fishIconSize": 1,
       "address": "徳島県海部郡牟岐町灘下浜辺198-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.mollusco-mugi.jp",
       "id": "molasco-mugi",
       "creatureIds": [
         "crab"
@@ -2122,6 +2256,7 @@
       "fishIconSize": 1,
       "address": "徳島県海部郡海陽町宍喰浦字竹ケ島28-45",
       "affiliateLink": null,
+      "officialUrl": "https://marine.kaiyo-kankou.jp/",
       "id": "marine-jam",
       "creatureIds": [
         "clownfish"
@@ -2137,6 +2272,7 @@
       "fishIconSize": 1,
       "address": "高知県四万十市具同8055-5",
       "affiliateLink": null,
+      "officialUrl": "http://www.gakuyukan.com",
       "id": "shimantogawa-gakuyukan-sakanakan",
       "creatureIds": [
         "freshwater_fish"
@@ -2152,6 +2288,7 @@
       "fishIconSize": 1,
       "address": "福岡県久留米市新合川1丁目1-3",
       "affiliateLink": null,
+      "officialUrl": "https://lit.link/kurumeusu",
       "id": "kurume-us",
       "creatureIds": [
         "freshwater_fish"
@@ -2167,6 +2304,7 @@
       "fishIconSize": 1,
       "address": "福岡県柳川市稲荷町29",
       "affiliateLink": null,
+      "officialUrl": "https://fukuokapref-tour.jp/spot/detail/912/",
       "id": "yanagawa-ariake-aquarium",
       "creatureIds": [
         "freshwater_fish"
@@ -2182,6 +2320,7 @@
       "fishIconSize": 1,
       "address": "佐賀県鹿島市大字音成甲4427-5",
       "affiliateLink": null,
+      "officialUrl": "https://www.city.kashima.saga.jp/soshiki/seikatsukankyo/kankyohozen/2018-0205-0952-47.html",
       "id": "higata-nanami",
       "creatureIds": [
         "crab"
@@ -2197,6 +2336,7 @@
       "fishIconSize": 1,
       "address": "長崎県諫早市小野島町2232",
       "affiliateLink": null,
+      "officialUrl": "http://www.kantakunosato.co.jp/map/suizokukan/index.htm",
       "id": "mutsugoro-aquarium",
       "creatureIds": [
         "freshwater_fish"
@@ -2212,6 +2352,7 @@
       "fishIconSize": 1,
       "address": "長崎県壱岐市勝本町東触2668-3",
       "affiliateLink": null,
+      "officialUrl": "https://irukapark.com/",
       "id": "iki-iruka-park-resort",
       "creatureIds": [
         "dolphin"
@@ -2227,6 +2368,7 @@
       "fishIconSize": 1,
       "address": "大分県津久見市大字四浦2218-10",
       "affiliateLink": null,
+      "officialUrl": "http://www.tsukumi-irukajima.jp/",
       "id": "tsukumi-iruka-jima",
       "creatureIds": [
         "dolphin"
@@ -2242,6 +2384,7 @@
       "fishIconSize": 1,
       "address": "大分県佐伯市弥生大字上小倉898-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.michinoeki-yayoi.com/",
       "id": "banjou-osakanakan",
       "creatureIds": [
         "freshwater_fish"
@@ -2257,6 +2400,7 @@
       "fishIconSize": 1,
       "address": "熊本県阿蘇郡南阿蘇村河陽5579-3",
       "affiliateLink": null,
+      "officialUrl": "https://asofarmland.co.jp/",
       "id": "omoshiro-aquarium-aqua",
       "creatureIds": [
         "shark"
@@ -2272,6 +2416,7 @@
       "fishIconSize": 1,
       "address": "宮崎県西臼杵郡高千穂町向山60-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.takachiho-kanko.info/sightseeing/detail.php?log=1376377801",
       "id": "takachiho-freshwater-aquarium",
       "creatureIds": [
         "freshwater_fish"
@@ -2287,6 +2432,7 @@
       "fishIconSize": 1,
       "address": "宮崎県延岡市須美江町69-1",
       "affiliateLink": null,
+      "officialUrl": "http://sunbeach-sumie.com/",
       "id": "sumie-family-aquarium",
       "creatureIds": [
         "coral_fish"
@@ -2302,6 +2448,7 @@
       "fishIconSize": 1,
       "address": "宮崎県小林市南西方1091",
       "affiliateLink": null,
+      "officialUrl": "https://idenoyama-aquarium.weebly.com/",
       "id": "idenoyama-freshwater-fish-aquarium",
       "creatureIds": [
         "sturgeon"
@@ -2317,6 +2464,7 @@
       "fishIconSize": 1,
       "address": "宮崎県宮崎市下北方町二反五瀬5348-1",
       "affiliateLink": null,
+      "officialUrl": "https://oyodo.miyabunkyo.com/facility/",
       "id": "oyodogawa-learning-center",
       "creatureIds": [
         "freshwater_fish"
@@ -2332,6 +2480,7 @@
       "fishIconSize": 1,
       "address": "宮崎県串間市大字高松1481-3",
       "affiliateLink": null,
+      "officialUrl": "http://www.irukaland.com/",
       "id": "shibushiwan-daikoku-iruka-land",
       "creatureIds": [
         "dolphin"
@@ -2347,6 +2496,7 @@
       "fishIconSize": 1,
       "address": "鹿児島県奄美市名瀬小宿大浜701-1",
       "affiliateLink": null,
+      "officialUrl": "https://www.ohama.marutani-amami.com/ocean-exhibition-hall",
       "id": "amami-marine-exhibition-hall",
       "creatureIds": [
         "sea_turtle"
@@ -2362,6 +2512,7 @@
       "fishIconSize": 1,
       "address": "沖縄県国頭郡恩納村字仲泊1379-11",
       "affiliateLink": null,
+      "officialUrl": "https://omrc.jp/",
       "id": "okinawa-marine-research-center",
       "creatureIds": [
         "dolphin"

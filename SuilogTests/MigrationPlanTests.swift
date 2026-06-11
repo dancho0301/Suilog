@@ -43,6 +43,25 @@ struct MigrationPlanTests {
         #expect(models.count == 2)
     }
 
+    @Test("VisitRecordの写真上限が4枚")
+    func testMaxPhotoCount() {
+        #expect(VisitRecord.maxPhotoCount == 4)
+    }
+
+    @Test("V9で追加されたAquarium情報フィールドはデフォルトnil")
+    func testAquariumNewFieldDefaults() {
+        let aquarium = Aquarium(
+            name: "テスト水族館",
+            latitude: 35.0,
+            longitude: 139.0,
+            description: "テスト",
+            region: "関東"
+        )
+        #expect(aquarium.businessHours == nil)
+        #expect(aquarium.admissionFee == nil)
+        #expect(aquarium.phoneNumber == nil)
+    }
+
     @Test("VisitRecordの写真ヘルパーが1枚目と2枚目以降を正しく振り分ける")
     func testVisitRecordPhotoHelpers() {
         let record = VisitRecord()
