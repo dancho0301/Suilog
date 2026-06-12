@@ -34,8 +34,8 @@ extension AquariumSchemaV9.CheckInTypeV9 {
 typealias VisitRecord = AquariumSchemaV9.VisitRecord
 
 extension VisitRecord {
-    /// 1記録に保存できる写真の上限枚数
-    static let maxPhotoCount = 4
+    /// 無料版で1記録に保存できる写真の上限枚数（スイログ Proは無制限）
+    static let freePhotoLimit = 1
 
     /// すべての写真（1枚目: photoData、2枚目以降: additionalPhotosData）
     var allPhotosData: [Data] {

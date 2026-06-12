@@ -18,6 +18,7 @@ struct NewVisitRecordView: View {
     @Environment(\.requestReview) private var requestReview
     @EnvironmentObject private var themeManager: ThemeManager
     @EnvironmentObject private var locationManager: LocationManager
+    @EnvironmentObject private var storeManager: StoreManager
 
     let aquarium: Aquarium
     /// 画面起動時のデフォルトモード
@@ -31,6 +32,7 @@ struct NewVisitRecordView: View {
     @State private var photoMetadatas: [PhotoMetadata] = []
     @State private var cameraPhotoData: Data?
     @State private var photoToView: ViewedPhotos?
+    @State private var showingProStore = false
     @State private var showingCamera = false
     @State private var showingSuccess = false
     @State private var showingError = false
@@ -45,6 +47,15 @@ struct NewVisitRecordView: View {
     }
 
     private var theme: Theme { themeManager.currentTheme }
+
+    /// 保存できる写真の上限（Proは無制限、無料版は1枚）
+    private var photoLimit: Int {
+        storeManager.isProUnlocked ? Int.max : VisitRecord.freePhotoLimit
+    }
+
+    private var photoFieldLabel: String {
+        storeManager.isProUnlocked ? "写真（任意）" : "写真（任意・1枚まで）"
+    }
 
     private var canLocationCheckIn: Bool {
         locationManager.isWithinRange(of: aquarium, radius: 1000)
@@ -116,7 +127,7 @@ struct NewVisitRecordView: View {
                         selectedPhotos = []
                     }
                     for item in newItems {
-                        guard photosData.count < VisitRecord.maxPhotoCount else { break }
+                        guard photosData.count < photoLimit else { break }
                         guard let data = try? await item.loadTransferable(type: Data.self) else { continue }
                         addPhoto(data)
                     }
@@ -132,6 +143,11 @@ struct NewVisitRecordView: View {
             }
             .fullScreenCover(item: $photoToView) { photos in
                 PhotoViewerView(images: photos.images, startIndex: photos.startIndex)
+            }
+            .sheet(isPresented: $showingProStore) {
+                ProStoreView()
+                    .environmentObject(storeManager)
+                    .environmentObject(themeManager)
             }
             .alert("チェックイン完了！", isPresented: $showingSuccess) {
                 Button("OK") {
@@ -292,7 +308,7 @@ struct NewVisitRecordView: View {
     private var photoCard: some View {
         SuiCard(radius: SuiRadius.cardMedium, padding: 14) {
             VStack(alignment: .leading, spacing: 10) {
-                fieldLabel("写真（任意・最大\(VisitRecord.maxPhotoCount)枚）")
+                fieldLabel(photoFieldLabel)
 
                 if !photosData.isEmpty {
                     PhotoThumbnailGrid(
@@ -316,16 +332,34 @@ struct NewVisitRecordView: View {
 
                 if isLoadingPhoto {
                     loadingTile
-                } else if photosData.count < VisitRecord.maxPhotoCount {
+                } else if photosData.count < photoLimit {
                     photoUploadArea
                     if mode == .manual, photosData.isEmpty {
                         Text("撮影日時と位置情報からチェックインタイプを自動判定します")
                             .font(SuiFont.caption)
                             .foregroundColor(SuiColor.subText)
                     }
+                } else if !storeManager.isProUnlocked {
+                    proUpsellHint
                 }
             }
         }
+    }
+
+    /// 無料版の写真上限到達時に表示するPro案内
+    private var proUpsellHint: some View {
+        Button {
+            showingProStore = true
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "crown.fill")
+                    .foregroundColor(SuiColor.star)
+                Text("スイログ Proなら写真を無制限に追加できます")
+                    .font(SuiFont.caption)
+                    .foregroundColor(theme.primaryColor)
+            }
+        }
+        .accessibilityIdentifier("newRecord.proUpsellButton")
     }
 
     @ViewBuilder
@@ -447,7 +481,7 @@ struct NewVisitRecordView: View {
         HStack(spacing: 10) {
             PhotosPicker(
                 selection: $selectedPhotos,
-                maxSelectionCount: VisitRecord.maxPhotoCount - photosData.count,
+                maxSelectionCount: storeManager.isProUnlocked ? nil : VisitRecord.freePhotoLimit - photosData.count,
                 matching: .images
             ) {
                 uploadTile(icon: "photo.on.rectangle", label: "選択")
@@ -535,7 +569,7 @@ struct NewVisitRecordView: View {
     /// 写真を圧縮して追加し、メタデータを抽出する
     @MainActor
     private func addPhoto(_ data: Data) {
-        guard photosData.count < VisitRecord.maxPhotoCount else { return }
+        guard photosData.count < photoLimit else { return }
         let metadata = PhotoMetadataExtractor.extractMetadata(from: data)
         // 訪問日の自動設定は最初の1枚のみ反映する
         if mode == .manual, photosData.isEmpty, let dateTaken = metadata.dateTaken, dateTaken <= Date() {
@@ -596,4 +630,5 @@ struct NewVisitRecordView: View {
     .modelContainer(for: VisitRecord.self, inMemory: true)
     .environmentObject(ThemeManager())
     .environmentObject(LocationManager())
+    .environmentObject(StoreManager())
 }

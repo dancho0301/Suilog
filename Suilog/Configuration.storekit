@@ -43,6 +43,86 @@
       "productID" : "com.suilog.theme.all_pack",
       "referenceName" : "All Themes Pack",
       "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "600",
+      "familyShareable" : true,
+      "internalID" : "suilog_pro",
+      "localizations" : [
+        {
+          "description" : "写真無制限など、すべてのPro機能が使える買い切りプラン",
+          "displayName" : "スイログ Pro",
+          "locale" : "ja"
+        },
+        {
+          "description" : "One-time purchase unlocking unlimited photos and all Pro features",
+          "displayName" : "Suilog Pro",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.suilog.pro",
+      "referenceName" : "Suilog Pro",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "160",
+      "familyShareable" : false,
+      "internalID" : "tip_small",
+      "localizations" : [
+        {
+          "description" : "ささやかな応援をありがとうございます",
+          "displayName" : "小さなおさかな",
+          "locale" : "ja"
+        },
+        {
+          "description" : "A small thank-you tip",
+          "displayName" : "Small Fish",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.suilog.tip.small",
+      "referenceName" : "Tip Small",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "370",
+      "familyShareable" : false,
+      "internalID" : "tip_medium",
+      "localizations" : [
+        {
+          "description" : "たくさんの応援をありがとうございます",
+          "displayName" : "ごちそうのおさかな",
+          "locale" : "ja"
+        },
+        {
+          "description" : "A generous thank-you tip",
+          "displayName" : "Tasty Fish",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.suilog.tip.medium",
+      "referenceName" : "Tip Medium",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "700",
+      "familyShareable" : false,
+      "internalID" : "tip_large",
+      "localizations" : [
+        {
+          "description" : "特大の応援をありがとうございます！",
+          "displayName" : "クジラ級の応援",
+          "locale" : "ja"
+        },
+        {
+          "description" : "A whale-sized thank-you tip!",
+          "displayName" : "Whale Tip",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.suilog.tip.large",
+      "referenceName" : "Tip Large",
+      "type" : "Consumable"
     }
   ],
   "settings" : {

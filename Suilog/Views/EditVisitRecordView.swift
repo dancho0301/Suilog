@@ -14,6 +14,7 @@ struct EditVisitRecordView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var themeManager: ThemeManager
+    @EnvironmentObject private var storeManager: StoreManager
 
     @Bindable var visit: VisitRecord
 
@@ -23,6 +24,7 @@ struct EditVisitRecordView: View {
     @State private var selectedPhotos: [PhotosPickerItem] = []
     @State private var cameraPhotoData: Data?
     @State private var showingCamera = false
+    @State private var showingProStore = false
     @State private var photoToView: ViewedPhotos?
     @State private var showingDiscardAlert = false
     @State private var showingSaveErrorAlert = false
@@ -35,6 +37,15 @@ struct EditVisitRecordView: View {
     }
 
     private var theme: Theme { themeManager.currentTheme }
+
+    /// 保存できる写真の上限（Proは無制限、無料版は1枚）
+    private var photoLimit: Int {
+        storeManager.isProUnlocked ? Int.max : VisitRecord.freePhotoLimit
+    }
+
+    private var photoFieldLabel: String {
+        storeManager.isProUnlocked ? "写真" : "写真（1枚まで）"
+    }
 
     init(visit: VisitRecord) {
         self.visit = visit
@@ -88,7 +99,7 @@ struct EditVisitRecordView: View {
                 Task { @MainActor in
                     defer { selectedPhotos = [] }
                     for item in newItems {
-                        guard photosData.count < VisitRecord.maxPhotoCount else { break }
+                        guard photosData.count < photoLimit else { break }
                         guard let data = try? await item.loadTransferable(type: Data.self) else { continue }
                         addPhoto(data)
                     }
@@ -104,6 +115,11 @@ struct EditVisitRecordView: View {
             }
             .fullScreenCover(item: $photoToView) { photos in
                 PhotoViewerView(images: photos.images, startIndex: photos.startIndex)
+            }
+            .sheet(isPresented: $showingProStore) {
+                ProStoreView()
+                    .environmentObject(storeManager)
+                    .environmentObject(themeManager)
             }
         }
     }
@@ -205,7 +221,7 @@ struct EditVisitRecordView: View {
     private var photoCard: some View {
         SuiCard(radius: SuiRadius.cardMedium, padding: 14) {
             VStack(alignment: .leading, spacing: 10) {
-                fieldLabel("写真（最大\(VisitRecord.maxPhotoCount)枚）")
+                fieldLabel(photoFieldLabel)
 
                 if !photosData.isEmpty {
                     PhotoThumbnailGrid(
@@ -220,18 +236,36 @@ struct EditVisitRecordView: View {
                     )
                 }
 
-                if photosData.count < VisitRecord.maxPhotoCount {
+                if photosData.count < photoLimit {
                     photoUploadArea
+                } else if !storeManager.isProUnlocked {
+                    proUpsellHint
                 }
             }
         }
+    }
+
+    /// 無料版の写真上限到達時に表示するPro案内
+    private var proUpsellHint: some View {
+        Button {
+            showingProStore = true
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "crown.fill")
+                    .foregroundColor(SuiColor.star)
+                Text("スイログ Proなら写真を無制限に追加できます")
+                    .font(SuiFont.caption)
+                    .foregroundColor(theme.primaryColor)
+            }
+        }
+        .accessibilityIdentifier("editRecord.proUpsellButton")
     }
 
     private var photoUploadArea: some View {
         HStack(spacing: 10) {
             PhotosPicker(
                 selection: $selectedPhotos,
-                maxSelectionCount: VisitRecord.maxPhotoCount - photosData.count,
+                maxSelectionCount: storeManager.isProUnlocked ? nil : VisitRecord.freePhotoLimit - photosData.count,
                 matching: .images
             ) {
                 uploadTile(icon: "photo.on.rectangle", label: "選択")
@@ -299,7 +333,7 @@ struct EditVisitRecordView: View {
     /// 写真を圧縮して追加する
     @MainActor
     private func addPhoto(_ data: Data) {
-        guard photosData.count < VisitRecord.maxPhotoCount,
+        guard photosData.count < photoLimit,
               let image = UIImage(data: data),
               let compressed = image.jpegData(compressionQuality: 0.8) else { return }
         photosData.append(compressed)
@@ -330,4 +364,5 @@ struct EditVisitRecordView: View {
     )
     .modelContainer(for: VisitRecord.self, inMemory: true)
     .environmentObject(ThemeManager())
+    .environmentObject(StoreManager())
 }

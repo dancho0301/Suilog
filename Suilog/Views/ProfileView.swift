@@ -19,6 +19,8 @@ struct ProfileView: View {
     @State private var showingThemeStore = false
     @State private var showingOnboarding = false
     @State private var showingProfileShare = false
+    @State private var showingProStore = false
+    @State private var showingTipJar = false
     @State private var nickname: String = CloudSettingsManager.shared.string(forKey: CloudSettingsManager.nicknameKey) ?? ""
     @State private var nicknameInput = ""
     @State private var showingNicknameEditor = false
@@ -119,6 +121,16 @@ struct ProfileView: View {
         }
         .sheet(isPresented: $showingThemeStore) {
             ThemeStoreView()
+                .environmentObject(storeManager)
+                .environmentObject(themeManager)
+        }
+        .sheet(isPresented: $showingProStore) {
+            ProStoreView()
+                .environmentObject(storeManager)
+                .environmentObject(themeManager)
+        }
+        .sheet(isPresented: $showingTipJar) {
+            TipJarView()
                 .environmentObject(storeManager)
                 .environmentObject(themeManager)
         }
@@ -332,6 +344,32 @@ struct ProfileView: View {
             }
             .buttonStyle(.plain)
             .accessibilityIdentifier("themeStoreButton")
+
+            Button {
+                showingProStore = true
+            } label: {
+                settingsRow(
+                    icon: "crown.fill",
+                    title: "スイログ Pro",
+                    subtitle: storeManager.isProUnlocked
+                        ? "利用中 - ありがとうございます！"
+                        : "写真無制限などの追加機能"
+                )
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("proStoreButton")
+
+            Button {
+                showingTipJar = true
+            } label: {
+                settingsRow(
+                    icon: "heart.fill",
+                    title: "開発者を応援する",
+                    subtitle: "エサやりチップで開発を応援"
+                )
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("tipJarButton")
 
             Button {
                 showingOnboarding = true
