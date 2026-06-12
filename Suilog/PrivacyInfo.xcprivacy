@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- トラッキング: 行わない -->
+	<key>NSPrivacyTracking</key>
+	<false/>
+	<key>NSPrivacyTrackingDomains</key>
+	<array/>
+	<!-- 収集データ: なし
+	     位置情報・写真は端末内（およびユーザー本人のiCloudプライベートDB）でのみ
+	     処理され、開発者がアクセス可能な形で外部送信されることはない -->
+	<key>NSPrivacyCollectedDataTypes</key>
+	<array/>
+	<!-- Required Reason API の利用理由 -->
+	<key>NSPrivacyAccessedAPITypes</key>
+	<array>
+		<dict>
+			<!-- UserDefaults: アプリ自身の設定（テーマ・データバージョン・
+			     オンボーディング完了フラグ・ニックネーム等）の保存に使用 -->
+			<key>NSPrivacyAccessedAPIType</key>
+			<string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+			<key>NSPrivacyAccessedAPITypeReasons</key>
+			<array>
+				<string>CA92.1</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

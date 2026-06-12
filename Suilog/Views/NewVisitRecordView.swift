@@ -10,10 +10,12 @@ import SwiftUI
 import SwiftData
 import PhotosUI
 import CoreLocation
+import StoreKit
 
 struct NewVisitRecordView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.requestReview) private var requestReview
     @EnvironmentObject private var themeManager: ThemeManager
     @EnvironmentObject private var locationManager: LocationManager
 
@@ -132,7 +134,10 @@ struct NewVisitRecordView: View {
                 PhotoViewerView(images: photos.images, startIndex: photos.startIndex)
             }
             .alert("チェックイン完了！", isPresented: $showingSuccess) {
-                Button("OK") { dismiss() }
+                Button("OK") {
+                    requestReviewIfNeeded()
+                    dismiss()
+                }
             } message: {
                 Text("\(aquarium.name)にチェックインしました！")
             }
@@ -540,6 +545,18 @@ struct NewVisitRecordView: View {
               let compressed = image.jpegData(compressionQuality: 0.8) else { return }
         photosData.append(compressed)
         photoMetadatas.append(metadata)
+    }
+
+    /// 訪問数の節目（3・10・25・50回）に達した初回のみApp Storeレビューを依頼する
+    private func requestReviewIfNeeded() {
+        let visitCount = (try? modelContext.fetchCount(FetchDescriptor<VisitRecord>())) ?? 0
+        let lastMilestone = UserDefaults.standard.integer(forKey: ReviewRequestHelper.lastRequestedMilestoneKey)
+        guard ReviewRequestHelper.shouldRequestReview(
+            visitCount: visitCount,
+            lastRequestedMilestone: lastMilestone
+        ) else { return }
+        UserDefaults.standard.set(visitCount, forKey: ReviewRequestHelper.lastRequestedMilestoneKey)
+        requestReview()
     }
 
     private func save() {
