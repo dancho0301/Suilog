@@ -18,6 +18,7 @@ struct NewVisitRecordView: View {
     @Environment(\.requestReview) private var requestReview
     @EnvironmentObject private var themeManager: ThemeManager
     @EnvironmentObject private var locationManager: LocationManager
+    @EnvironmentObject private var storeManager: StoreManager
 
     let aquarium: Aquarium
     /// 画面起動時のデフォルトモード
@@ -45,6 +46,15 @@ struct NewVisitRecordView: View {
     }
 
     private var theme: Theme { themeManager.currentTheme }
+
+    /// 保存できる写真の上限（Proは無制限）
+    private var photoLimit: Int {
+        storeManager.isProUnlocked ? Int.max : VisitRecord.maxPhotoCount
+    }
+
+    private var photoFieldLabel: String {
+        storeManager.isProUnlocked ? "写真（任意）" : "写真（任意・最大\(VisitRecord.maxPhotoCount)枚）"
+    }
 
     private var canLocationCheckIn: Bool {
         locationManager.isWithinRange(of: aquarium, radius: 1000)
@@ -116,7 +126,7 @@ struct NewVisitRecordView: View {
                         selectedPhotos = []
                     }
                     for item in newItems {
-                        guard photosData.count < VisitRecord.maxPhotoCount else { break }
+                        guard photosData.count < photoLimit else { break }
                         guard let data = try? await item.loadTransferable(type: Data.self) else { continue }
                         addPhoto(data)
                     }
@@ -292,7 +302,7 @@ struct NewVisitRecordView: View {
     private var photoCard: some View {
         SuiCard(radius: SuiRadius.cardMedium, padding: 14) {
             VStack(alignment: .leading, spacing: 10) {
-                fieldLabel("写真（任意・最大\(VisitRecord.maxPhotoCount)枚）")
+                fieldLabel(photoFieldLabel)
 
                 if !photosData.isEmpty {
                     PhotoThumbnailGrid(
@@ -316,7 +326,7 @@ struct NewVisitRecordView: View {
 
                 if isLoadingPhoto {
                     loadingTile
-                } else if photosData.count < VisitRecord.maxPhotoCount {
+                } else if photosData.count < photoLimit {
                     photoUploadArea
                     if mode == .manual, photosData.isEmpty {
                         Text("撮影日時と位置情報からチェックインタイプを自動判定します")
@@ -447,7 +457,7 @@ struct NewVisitRecordView: View {
         HStack(spacing: 10) {
             PhotosPicker(
                 selection: $selectedPhotos,
-                maxSelectionCount: VisitRecord.maxPhotoCount - photosData.count,
+                maxSelectionCount: storeManager.isProUnlocked ? nil : VisitRecord.maxPhotoCount - photosData.count,
                 matching: .images
             ) {
                 uploadTile(icon: "photo.on.rectangle", label: "選択")
@@ -535,7 +545,7 @@ struct NewVisitRecordView: View {
     /// 写真を圧縮して追加し、メタデータを抽出する
     @MainActor
     private func addPhoto(_ data: Data) {
-        guard photosData.count < VisitRecord.maxPhotoCount else { return }
+        guard photosData.count < photoLimit else { return }
         let metadata = PhotoMetadataExtractor.extractMetadata(from: data)
         // 訪問日の自動設定は最初の1枚のみ反映する
         if mode == .manual, photosData.isEmpty, let dateTaken = metadata.dateTaken, dateTaken <= Date() {
@@ -596,4 +606,5 @@ struct NewVisitRecordView: View {
     .modelContainer(for: VisitRecord.self, inMemory: true)
     .environmentObject(ThemeManager())
     .environmentObject(LocationManager())
+    .environmentObject(StoreManager())
 }

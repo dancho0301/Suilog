@@ -35,6 +35,34 @@ class StoreManager: ObservableObject {
         "com.suilog.theme.all_pack"
     ]
 
+    /// スイログ Pro（買い切り）のProduct ID
+    static let proProductId = "com.suilog.pro"
+
+    /// 応援課金（Tip Jar・消耗型）のProduct ID一覧
+    static let tipProductIds: Set<String> = [
+        "com.suilog.tip.small",
+        "com.suilog.tip.medium",
+        "com.suilog.tip.large"
+    ]
+
+    /// App Storeから読み込む全Product ID
+    static var allProductIds: Set<String> {
+        themeProductIds.union(tipProductIds).union([proProductId])
+    }
+
+    /// 応援（チップ）の累計回数を保存するUserDefaultsキー
+    static let tipCountKey = "TipTotalCount"
+
+    /// スイログ Pro を購入済みかどうか
+    var isProUnlocked: Bool {
+        purchasedProductIds.contains(Self.proProductId)
+    }
+
+    /// 応援（チップ）の累計回数
+    var tipCount: Int {
+        UserDefaults.standard.integer(forKey: Self.tipCountKey)
+    }
+
     init() {
         // トランザクション更新をリッスン
         updateListenerTask = listenForTransactions()
@@ -58,7 +86,7 @@ class StoreManager: ObservableObject {
         errorMessage = nil
 
         do {
-            products = try await Product.products(for: StoreManager.themeProductIds)
+            products = try await Product.products(for: StoreManager.allProductIds)
             // 価格順にソート
             products.sort { $0.price < $1.price }
         } catch {
@@ -109,6 +137,18 @@ class StoreManager: ObservableObject {
             isPurchasing = false
             return false
         }
+    }
+
+    /// チップ（消耗型）を購入する。成功時は累計応援回数を加算する
+    /// - Parameter product: 購入するチップ商品
+    /// - Returns: 購入が成功したかどうか
+    func purchaseTip(_ product: Product) async -> Bool {
+        let success = await purchase(product)
+        if success {
+            objectWillChange.send()
+            UserDefaults.standard.set(tipCount + 1, forKey: Self.tipCountKey)
+        }
+        return success
     }
 
     /// 購入を復元する

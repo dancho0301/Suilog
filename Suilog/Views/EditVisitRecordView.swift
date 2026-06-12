@@ -14,6 +14,7 @@ struct EditVisitRecordView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var themeManager: ThemeManager
+    @EnvironmentObject private var storeManager: StoreManager
 
     @Bindable var visit: VisitRecord
 
@@ -35,6 +36,15 @@ struct EditVisitRecordView: View {
     }
 
     private var theme: Theme { themeManager.currentTheme }
+
+    /// 保存できる写真の上限（Proは無制限）
+    private var photoLimit: Int {
+        storeManager.isProUnlocked ? Int.max : VisitRecord.maxPhotoCount
+    }
+
+    private var photoFieldLabel: String {
+        storeManager.isProUnlocked ? "写真" : "写真（最大\(VisitRecord.maxPhotoCount)枚）"
+    }
 
     init(visit: VisitRecord) {
         self.visit = visit
@@ -88,7 +98,7 @@ struct EditVisitRecordView: View {
                 Task { @MainActor in
                     defer { selectedPhotos = [] }
                     for item in newItems {
-                        guard photosData.count < VisitRecord.maxPhotoCount else { break }
+                        guard photosData.count < photoLimit else { break }
                         guard let data = try? await item.loadTransferable(type: Data.self) else { continue }
                         addPhoto(data)
                     }
@@ -205,7 +215,7 @@ struct EditVisitRecordView: View {
     private var photoCard: some View {
         SuiCard(radius: SuiRadius.cardMedium, padding: 14) {
             VStack(alignment: .leading, spacing: 10) {
-                fieldLabel("写真（最大\(VisitRecord.maxPhotoCount)枚）")
+                fieldLabel(photoFieldLabel)
 
                 if !photosData.isEmpty {
                     PhotoThumbnailGrid(
@@ -220,7 +230,7 @@ struct EditVisitRecordView: View {
                     )
                 }
 
-                if photosData.count < VisitRecord.maxPhotoCount {
+                if photosData.count < photoLimit {
                     photoUploadArea
                 }
             }
@@ -231,7 +241,7 @@ struct EditVisitRecordView: View {
         HStack(spacing: 10) {
             PhotosPicker(
                 selection: $selectedPhotos,
-                maxSelectionCount: VisitRecord.maxPhotoCount - photosData.count,
+                maxSelectionCount: storeManager.isProUnlocked ? nil : VisitRecord.maxPhotoCount - photosData.count,
                 matching: .images
             ) {
                 uploadTile(icon: "photo.on.rectangle", label: "選択")
@@ -299,7 +309,7 @@ struct EditVisitRecordView: View {
     /// 写真を圧縮して追加する
     @MainActor
     private func addPhoto(_ data: Data) {
-        guard photosData.count < VisitRecord.maxPhotoCount,
+        guard photosData.count < photoLimit,
               let image = UIImage(data: data),
               let compressed = image.jpegData(compressionQuality: 0.8) else { return }
         photosData.append(compressed)
@@ -330,4 +340,5 @@ struct EditVisitRecordView: View {
     )
     .modelContainer(for: VisitRecord.self, inMemory: true)
     .environmentObject(ThemeManager())
+    .environmentObject(StoreManager())
 }
