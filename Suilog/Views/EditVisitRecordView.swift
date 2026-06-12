@@ -24,6 +24,7 @@ struct EditVisitRecordView: View {
     @State private var selectedPhotos: [PhotosPickerItem] = []
     @State private var cameraPhotoData: Data?
     @State private var showingCamera = false
+    @State private var showingProStore = false
     @State private var photoToView: ViewedPhotos?
     @State private var showingDiscardAlert = false
     @State private var showingSaveErrorAlert = false
@@ -37,13 +38,13 @@ struct EditVisitRecordView: View {
 
     private var theme: Theme { themeManager.currentTheme }
 
-    /// 保存できる写真の上限（Proは無制限）
+    /// 保存できる写真の上限（Proは無制限、無料版は1枚）
     private var photoLimit: Int {
-        storeManager.isProUnlocked ? Int.max : VisitRecord.maxPhotoCount
+        storeManager.isProUnlocked ? Int.max : VisitRecord.freePhotoLimit
     }
 
     private var photoFieldLabel: String {
-        storeManager.isProUnlocked ? "写真" : "写真（最大\(VisitRecord.maxPhotoCount)枚）"
+        storeManager.isProUnlocked ? "写真" : "写真（1枚まで）"
     }
 
     init(visit: VisitRecord) {
@@ -114,6 +115,11 @@ struct EditVisitRecordView: View {
             }
             .fullScreenCover(item: $photoToView) { photos in
                 PhotoViewerView(images: photos.images, startIndex: photos.startIndex)
+            }
+            .sheet(isPresented: $showingProStore) {
+                ProStoreView()
+                    .environmentObject(storeManager)
+                    .environmentObject(themeManager)
             }
         }
     }
@@ -232,16 +238,34 @@ struct EditVisitRecordView: View {
 
                 if photosData.count < photoLimit {
                     photoUploadArea
+                } else if !storeManager.isProUnlocked {
+                    proUpsellHint
                 }
             }
         }
+    }
+
+    /// 無料版の写真上限到達時に表示するPro案内
+    private var proUpsellHint: some View {
+        Button {
+            showingProStore = true
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "crown.fill")
+                    .foregroundColor(SuiColor.star)
+                Text("スイログ Proなら写真を無制限に追加できます")
+                    .font(SuiFont.caption)
+                    .foregroundColor(theme.primaryColor)
+            }
+        }
+        .accessibilityIdentifier("editRecord.proUpsellButton")
     }
 
     private var photoUploadArea: some View {
         HStack(spacing: 10) {
             PhotosPicker(
                 selection: $selectedPhotos,
-                maxSelectionCount: storeManager.isProUnlocked ? nil : VisitRecord.maxPhotoCount - photosData.count,
+                maxSelectionCount: storeManager.isProUnlocked ? nil : VisitRecord.freePhotoLimit - photosData.count,
                 matching: .images
             ) {
                 uploadTile(icon: "photo.on.rectangle", label: "選択")

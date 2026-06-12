@@ -89,7 +89,7 @@ struct ProStoreView: View {
                 benefitRow(
                     icon: "photo.stack.fill",
                     title: "写真を無制限に保存",
-                    caption: "1つの記録に保存できる写真が\(VisitRecord.maxPhotoCount)枚 → 無制限に"
+                    caption: "1つの記録に保存できる写真が1枚 → 無制限に。思い出をまとめて残せます"
                 )
                 benefitRow(
                     icon: "sparkles",

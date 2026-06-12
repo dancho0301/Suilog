@@ -32,6 +32,7 @@ struct NewVisitRecordView: View {
     @State private var photoMetadatas: [PhotoMetadata] = []
     @State private var cameraPhotoData: Data?
     @State private var photoToView: ViewedPhotos?
+    @State private var showingProStore = false
     @State private var showingCamera = false
     @State private var showingSuccess = false
     @State private var showingError = false
@@ -47,13 +48,13 @@ struct NewVisitRecordView: View {
 
     private var theme: Theme { themeManager.currentTheme }
 
-    /// 保存できる写真の上限（Proは無制限）
+    /// 保存できる写真の上限（Proは無制限、無料版は1枚）
     private var photoLimit: Int {
-        storeManager.isProUnlocked ? Int.max : VisitRecord.maxPhotoCount
+        storeManager.isProUnlocked ? Int.max : VisitRecord.freePhotoLimit
     }
 
     private var photoFieldLabel: String {
-        storeManager.isProUnlocked ? "写真（任意）" : "写真（任意・最大\(VisitRecord.maxPhotoCount)枚）"
+        storeManager.isProUnlocked ? "写真（任意）" : "写真（任意・1枚まで）"
     }
 
     private var canLocationCheckIn: Bool {
@@ -142,6 +143,11 @@ struct NewVisitRecordView: View {
             }
             .fullScreenCover(item: $photoToView) { photos in
                 PhotoViewerView(images: photos.images, startIndex: photos.startIndex)
+            }
+            .sheet(isPresented: $showingProStore) {
+                ProStoreView()
+                    .environmentObject(storeManager)
+                    .environmentObject(themeManager)
             }
             .alert("チェックイン完了！", isPresented: $showingSuccess) {
                 Button("OK") {
@@ -333,9 +339,27 @@ struct NewVisitRecordView: View {
                             .font(SuiFont.caption)
                             .foregroundColor(SuiColor.subText)
                     }
+                } else if !storeManager.isProUnlocked {
+                    proUpsellHint
                 }
             }
         }
+    }
+
+    /// 無料版の写真上限到達時に表示するPro案内
+    private var proUpsellHint: some View {
+        Button {
+            showingProStore = true
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "crown.fill")
+                    .foregroundColor(SuiColor.star)
+                Text("スイログ Proなら写真を無制限に追加できます")
+                    .font(SuiFont.caption)
+                    .foregroundColor(theme.primaryColor)
+            }
+        }
+        .accessibilityIdentifier("newRecord.proUpsellButton")
     }
 
     @ViewBuilder
@@ -457,7 +481,7 @@ struct NewVisitRecordView: View {
         HStack(spacing: 10) {
             PhotosPicker(
                 selection: $selectedPhotos,
-                maxSelectionCount: storeManager.isProUnlocked ? nil : VisitRecord.maxPhotoCount - photosData.count,
+                maxSelectionCount: storeManager.isProUnlocked ? nil : VisitRecord.freePhotoLimit - photosData.count,
                 matching: .images
             ) {
                 uploadTile(icon: "photo.on.rectangle", label: "選択")

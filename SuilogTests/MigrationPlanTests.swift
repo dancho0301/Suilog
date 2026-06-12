@@ -43,9 +43,9 @@ struct MigrationPlanTests {
         #expect(models.count == 2)
     }
 
-    @Test("VisitRecordの写真上限が4枚")
-    func testMaxPhotoCount() {
-        #expect(VisitRecord.maxPhotoCount == 4)
+    @Test("VisitRecordの無料版写真上限が1枚")
+    func testFreePhotoLimit() {
+        #expect(VisitRecord.freePhotoLimit == 1)
     }
 
     @Test("V9で追加されたAquarium情報フィールドはデフォルトnil")
