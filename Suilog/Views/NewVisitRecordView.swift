@@ -340,24 +340,19 @@ struct NewVisitRecordView: View {
                             .foregroundColor(SuiColor.subText)
                     }
                 } else if !storeManager.isProUnlocked {
-                    proUpsellHint
+                    proLockedUploadTile
                 }
             }
         }
     }
 
-    /// 無料版の写真上限到達時に表示するPro案内
-    private var proUpsellHint: some View {
+    /// 無料版の上限到達時に表示する追加タイル（タップでPro購入画面へ）
+    /// 宣伝文ではなく通常のアップロードタイルと同じ見た目にし、押し付け感をなくす
+    private var proLockedUploadTile: some View {
         Button {
             showingProStore = true
         } label: {
-            HStack(spacing: 6) {
-                Image(systemName: "crown.fill")
-                    .foregroundColor(SuiColor.star)
-                Text("スイログ Proなら写真を無制限に追加できます")
-                    .font(SuiFont.caption)
-                    .foregroundColor(theme.primaryColor)
-            }
+            uploadTile(icon: "crown.fill", label: "写真を追加（Pro）")
         }
         .accessibilityIdentifier("newRecord.proUpsellButton")
     }
