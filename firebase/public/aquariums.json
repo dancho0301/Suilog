@@ -86,7 +86,8 @@
         "threespined_stickleback",
         "whitespotted_char",
         "yellow_boxfish"
-      ]
+      ],
+      "businessHours": "10:00～17:00（入館は閉館30分前まで）"
     },
     {
       "name": "札幌市豊平川さけ科学館",
@@ -102,7 +103,8 @@
       "id": "sapporo-salmon-museum",
       "creatureIds": [
         "salmon"
-      ]
+      ],
+      "businessHours": "9:15～16:45（休館日: 月曜（祝日の場合は翌平日）、年末年始）"
     },
     {
       "name": "AOAO SAPPORO",
@@ -118,7 +120,8 @@
       "id": "aoao-sapporo",
       "creatureIds": [
         "penguin"
-      ]
+      ],
+      "businessHours": "10:00～22:00（最終入館 21:00）"
     },
     {
       "name": "おたる水族館",
@@ -134,7 +137,8 @@
       "id": "otaru-aquarium",
       "creatureIds": [
         "sealion"
-      ]
+      ],
+      "businessHours": "通常期 9:00～17:00（最終入館 16:30）"
     },
     {
       "name": "稚内市立ノシャップ寒流水族館",
@@ -150,7 +154,8 @@
       "id": "noshappu-aquarium",
       "creatureIds": [
         "hucho"
-      ]
+      ],
+      "businessHours": "4/29～10/31 9:00～17:00（入館は16:40まで）、11/1～3/31 10:00～16:00（入館は15:40まで）"
     },
     {
       "name": "美深チョウザメ館",
@@ -214,7 +219,8 @@
       "id": "shibetsu-salmon-museum",
       "creatureIds": [
         "salmon"
-      ]
+      ],
+      "businessHours": "9:30～17:00（入館受付 16:30まで。12月～1月は冬季休館）"
     },
     {
       "name": "おんねゆ温泉 北の大地の水族館 -山の水族館-",
@@ -246,7 +252,8 @@
       "id": "chitose-aquarium",
       "creatureIds": [
         "hucho"
-      ]
+      ],
+      "businessHours": "9:00～17:00"
     },
     {
       "name": "市立室蘭水族館",
@@ -278,7 +285,8 @@
       "id": "noboribetsu-marine-park-nixe",
       "creatureIds": [
         "penguin"
-      ]
+      ],
+      "businessHours": "9:00～17:00（最終入園 16:30）"
     },
     {
       "name": "くしろ水族館 ぷくぷく",
@@ -294,7 +302,8 @@
       "id": "kushiro-aquarium-pukupuku",
       "creatureIds": [
         "pufferfish"
-      ]
+      ],
+      "businessHours": "9:00～21:00"
     },
     {
       "name": "青森県営浅虫水族館",
@@ -310,7 +319,8 @@
       "id": "asamushi-aquarium",
       "creatureIds": [
         "dolphin"
-      ]
+      ],
+      "businessHours": "9:00～17:00（最終入館 16:30）"
     },
     {
       "name": "八戸市水産科学館 マリエント",
@@ -326,7 +336,8 @@
       "id": "marient",
       "creatureIds": [
         "seagull"
-      ]
+      ],
+      "businessHours": "通常 9:00～17:00、7/1～8/31 9:00～18:00"
     },
     {
       "name": "もぐらんぴあ 久慈地下水族科学館",
@@ -342,7 +353,8 @@
       "id": "moguranpia",
       "creatureIds": [
         "clione"
-      ]
+      ],
+      "businessHours": "4月～10月 9:00～18:00、11月～3月 10:00～16:00（最終入館は30分前まで）"
     },
     {
       "name": "岩手県立水産科学館",
@@ -374,7 +386,8 @@
       "id": "sendai-uminomori-aquarium",
       "creatureIds": [
         "dolphin"
-      ]
+      ],
+      "businessHours": "9:00～17:30（最終入館 17:00）"
     },
     {
       "name": "アクアテラス錦ヶ丘",
@@ -406,7 +419,8 @@
       "id": "oga-aquarium-gao",
       "creatureIds": [
         "seal"
-      ]
+      ],
+      "businessHours": "9:00～17:00（最終入館 16:00）"
     },
     {
       "name": "鶴岡市立加茂水族館",
@@ -438,7 +452,8 @@
       "id": "aquamarine-fukushima",
       "creatureIds": [
         "coelacanth"
-      ]
+      ],
+      "businessHours": "3/21～11/30 9:00～17:30（最終入館 16:30）、12/1～3/20 9:00～17:00（最終入館 16:00）"
     },
     {
       "name": "アクアマリンいなわしろカワセミ水族館",
@@ -470,7 +485,8 @@
       "id": "aqua-world-oarai",
       "creatureIds": [
         "shark"
-      ]
+      ],
+      "businessHours": "9:00～17:00（最終入館 16:00）"
     },
     {
       "name": "かすみがうら市水族館",
@@ -486,7 +502,8 @@
       "id": "kasumigaura-aquarium",
       "creatureIds": [
         "freshwater_fish"
-      ]
+      ],
+      "businessHours": "9:00～17:00（入館・入館券販売は16:30まで）"
     },
     {
       "name": "栃木県なかがわ水遊園",
@@ -502,7 +519,8 @@
       "id": "nakagawa-aquatic-park",
       "creatureIds": [
         "arapaima"
-      ]
+      ],
+      "businessHours": "9:30～16:30（最終入館 16:00）"
     },
     {
       "name": "さかなと森の観察園",
@@ -534,7 +552,8 @@
       "id": "fisheries-learning-center",
       "creatureIds": [
         "freshwater_fish"
-      ]
+      ],
+      "businessHours": "9:00～17:00（入館は16:30まで）"
     },
     {
       "name": "さいたま水族館",
@@ -582,7 +601,8 @@
       "id": "kamogawa-sea-world",
       "creatureIds": [
         "orca"
-      ]
+      ],
+      "businessHours": "9:00～16:30"
     },
     {
       "name": "千葉大学海洋バイオシステム研究センター水族館",
@@ -662,7 +682,8 @@
       "id": "maxell-aqua-park-shinagawa",
       "creatureIds": [
         "dolphin"
-      ]
+      ],
+      "businessHours": "10:00～20:00（最終入場 19:00）"
     },
     {
       "name": "しながわ水族館",
@@ -678,7 +699,8 @@
       "id": "shinagawa-aquarium",
       "creatureIds": [
         "seal"
-      ]
+      ],
+      "businessHours": "10:00～17:00（入館は16:30まで）"
     },
     {
       "name": "足立区生物園",
@@ -790,7 +812,8 @@
       "id": "hakkeijima-sea-paradise",
       "creatureIds": [
         "beluga_whale"
-      ]
+      ],
+      "businessHours": "10:00～19:30（閉館 20:00）"
     },
     {
       "name": "横浜開運水族館 フォーチュンアクアリウム",
@@ -806,7 +829,8 @@
       "id": "yokohama-fortune-aquarium",
       "creatureIds": [
         "clownfish"
-      ]
+      ],
+      "businessHours": "平日 10:00～17:00、土日祝 10:00～18:00（最終入館は閉館30分前）"
     },
     {
       "name": "横浜市立間門小学校附属海水水族館 まかどシーマリンパーク",
@@ -886,7 +910,8 @@
       "id": "sagamihara-aquarium",
       "creatureIds": [
         "freshwater_fish"
-      ]
+      ],
+      "businessHours": "9:30～16:30"
     },
     {
       "name": "北里アクアリウムラボ",
@@ -902,7 +927,8 @@
       "id": "kurasato-aquarium-lab",
       "creatureIds": [
         "jellyfish"
-      ]
+      ],
+      "businessHours": "10:00～16:00"
     },
     {
       "name": "箱根園水族館",
@@ -934,7 +960,8 @@
       "id": "marinepia-nihonkai",
       "creatureIds": [
         "dolphin"
-      ]
+      ],
+      "businessHours": "9:00～17:00（券売は16:30まで）"
     },
     {
       "name": "上越市立水族博物館うみがたり",
@@ -950,7 +977,8 @@
       "id": "umigatari-aquarium",
       "creatureIds": [
         "penguin"
-      ]
+      ],
+      "businessHours": "10:00～17:00（最終入館 16:30）"
     },
     {
       "name": "魚津水族館",
@@ -966,7 +994,8 @@
       "id": "uozu-aquarium",
       "creatureIds": [
         "deep_sea_fish"
-      ]
+      ],
+      "businessHours": "9:00～17:00（入館は16:30まで）"
     },
     {
       "name": "のとじま臨海公園水族館",
@@ -982,7 +1011,8 @@
       "id": "notojima-aquarium",
       "creatureIds": [
         "whale_shark"
-      ]
+      ],
+      "businessHours": "3/20～11/30 9:00～17:00（入館は16:30まで）、12/1～3/19 9:00～16:30（入館は16:00まで）"
     },
     {
       "name": "越前松島水族館",
@@ -998,7 +1028,8 @@
       "id": "echizen-matsushima-aquarium",
       "creatureIds": [
         "sea_turtle"
-      ]
+      ],
+      "businessHours": "通常 9:00～17:30（季節により延長営業あり）"
     },
     {
       "name": "山梨県立富士湧水の里水族館",
@@ -1030,7 +1061,8 @@
       "id": "aqua-toto-gifu",
       "creatureIds": [
         "mekong_giant_catfish"
-      ]
+      ],
+      "businessHours": "9:30～18:00（最終入館 17:00）"
     },
     {
       "name": "伊豆・三津シーパラダイス",
@@ -1046,7 +1078,8 @@
       "id": "izu-mito-sea-paradise",
       "creatureIds": [
         "dolphin"
-      ]
+      ],
+      "businessHours": "9:00～17:00（最終入場 16:00）"
     },
     {
       "name": "沼津港深海水族館",
@@ -1062,7 +1095,8 @@
       "id": "numazu-deep-sea-aquarium",
       "creatureIds": [
         "coelacanth"
-      ]
+      ],
+      "businessHours": "10:00～18:00（最終入館 17:30）"
     },
     {
       "name": "下田海中水族館",
@@ -1142,7 +1176,8 @@
       "id": "hekinan-seaside-aquarium",
       "creatureIds": [
         "pufferfish"
-      ]
+      ],
+      "businessHours": "9:00～17:00（最終入館 16:30）"
     },
     {
       "name": "南知多ビーチランド",
@@ -1190,7 +1225,8 @@
       "id": "toba-aquarium",
       "creatureIds": [
         "dugong"
-      ]
+      ],
+      "businessHours": "9:30～17:00（最終入館 16:00）"
     },
     {
       "name": "伊勢夫婦岩ふれあい水族館シーパラダイス",
@@ -1206,7 +1242,8 @@
       "id": "ise-sea-paradise",
       "creatureIds": [
         "walrus"
-      ]
+      ],
+      "businessHours": "9:30～17:00"
     },
     {
       "name": "滋賀県立琵琶湖博物館",
@@ -1222,7 +1259,8 @@
       "id": "biwa-lake-museum",
       "creatureIds": [
         "biwa_catfish"
-      ]
+      ],
+      "businessHours": "9:30～17:00（最終入館 16:00）"
     },
     {
       "name": "京都水族館",
@@ -1254,7 +1292,8 @@
       "id": "kaiyukan",
       "creatureIds": [
         "whale_shark"
-      ]
+      ],
+      "businessHours": "10:00～20:00（最終入館は閉館1時間前まで）"
     },
     {
       "name": "NIFREL",
@@ -1302,7 +1341,8 @@
       "id": "taiji-whale-museum",
       "creatureIds": [
         "whale"
-      ]
+      ],
+      "businessHours": "8:30～17:00"
     },
     {
       "name": "串本海中公園",
@@ -1318,7 +1358,8 @@
       "id": "kushimoto-marine-park",
       "creatureIds": [
         "coral_fish"
-      ]
+      ],
+      "businessHours": "9:00～16:30"
     },
     {
       "name": "アドベンチャーワールド",
@@ -1366,7 +1407,8 @@
       "id": "ebi-kani-aquarium",
       "creatureIds": [
         "crab"
-      ]
+      ],
+      "businessHours": "9:00～17:00（最終入館 16:20）"
     },
     {
       "name": "城崎マリンワールド",
@@ -1382,7 +1424,8 @@
       "id": "kinosaki-marine-world",
       "creatureIds": [
         "dolphin"
-      ]
+      ],
+      "businessHours": "9:30～16:30"
     },
     {
       "name": "アトア",
@@ -1398,7 +1441,8 @@
       "id": "atoa",
       "creatureIds": [
         "piranha"
-      ]
+      ],
+      "businessHours": "10:00～19:00（最終入場は閉館30分前）"
     },
     {
       "name": "神戸須磨シーワールド",
@@ -1414,7 +1458,8 @@
       "id": "kobe-suma-sea-world",
       "creatureIds": [
         "orca"
-      ]
+      ],
+      "businessHours": "10:00～18:00（最終入館は閉館1時間前）"
     },
     {
       "name": "姫路市立水族館",
@@ -1446,7 +1491,8 @@
       "id": "tamano-marine-museum",
       "creatureIds": [
         "pufferfish"
-      ]
+      ],
+      "businessHours": "9:00～17:00（入館は16:30まで）"
     },
     {
       "name": "宮島水族館 みやじマリン",
@@ -1462,7 +1508,8 @@
       "id": "miyajima-aquarium",
       "creatureIds": [
         "finless_porpoise"
-      ]
+      ],
+      "businessHours": "9:00～17:00（最終入館 16:00）"
     },
     {
       "name": "鳥取県立とっとり賀露かにっこ館",
@@ -1494,7 +1541,8 @@
       "id": "aquas-shimane",
       "creatureIds": [
         "beluga_whale"
-      ]
+      ],
+      "businessHours": "9:00～17:00"
     },
     {
       "name": "宍道湖自然館ゴビウス",
@@ -1510,7 +1558,8 @@
       "id": "gobius",
       "creatureIds": [
         "eel"
-      ]
+      ],
+      "businessHours": "9:30～17:00（最終入館受付 16:30）"
     },
     {
       "name": "下関市立しものせき水族館 海響館",
@@ -1526,7 +1575,8 @@
       "id": "kaikyokan",
       "creatureIds": [
         "pufferfish"
-      ]
+      ],
+      "businessHours": "9:30～17:30（最終入場 17:00）"
     },
     {
       "name": "なぎさ水族館",
@@ -1558,7 +1608,8 @@
       "id": "new-yashima-aquarium",
       "creatureIds": [
         "manatee"
-      ]
+      ],
+      "businessHours": "10:00～16:00"
     },
     {
       "name": "四国水族館",
@@ -1574,7 +1625,8 @@
       "id": "shikoku-aquarium",
       "creatureIds": [
         "dolphin"
-      ]
+      ],
+      "businessHours": "9:00～18:00（最終入館は閉館30分前）"
     },
     {
       "name": "日和佐うみがめ博物館カレッタ",
@@ -1622,7 +1674,8 @@
       "id": "ashizuri-oceanarium-satoumi",
       "creatureIds": [
         "coral_fish"
-      ]
+      ],
+      "businessHours": "9:00～17:00（最終入館 16:30）"
     },
     {
       "name": "むろと廃校水族館",
@@ -1654,7 +1707,8 @@
       "id": "marine-world-uminonakamichi",
       "creatureIds": [
         "dolphin"
-      ]
+      ],
+      "businessHours": "9:30～17:30（入館は16:30まで）"
     },
     {
       "name": "長崎ペンギン水族館",
@@ -1670,7 +1724,8 @@
       "id": "nagasaki-penguin-aquarium",
       "creatureIds": [
         "penguin"
-      ]
+      ],
+      "businessHours": "9:00～17:00"
     },
     {
       "name": "九十九島パールシーリゾート",
@@ -1702,7 +1757,8 @@
       "id": "umitamago",
       "creatureIds": [
         "walrus"
-      ]
+      ],
+      "businessHours": "通常 9:00～17:00（入場は閉館30分前まで）"
     },
     {
       "name": "わくわく海中水族館シードーナツ",
@@ -1750,7 +1806,8 @@
       "id": "churaumi-aquarium",
       "creatureIds": [
         "whale_shark"
-      ]
+      ],
+      "businessHours": "8:30～18:30（入館締切 17:30）"
     },
     {
       "name": "DMMかりゆし水族館",
@@ -1766,7 +1823,8 @@
       "id": "dmm-kariyushi-aquarium",
       "creatureIds": [
         "clownfish"
-      ]
+      ],
+      "businessHours": "9:00～19:00（最終入館は閉館60分前）"
     },
     {
       "name": "ネイチャーアクアリウムギャラリー",
@@ -1862,7 +1920,8 @@
       "id": "tateshina-amusement-aquarium",
       "creatureIds": [
         "arapaima"
-      ]
+      ],
+      "businessHours": "9:00～18:00（入館受付 17:00まで）"
     },
     {
       "name": "森の水族館",
@@ -1894,7 +1953,8 @@
       "id": "awashima-marine-park",
       "creatureIds": [
         "dolphin"
-      ]
+      ],
+      "businessHours": "9:30～17:00"
     },
     {
       "name": "幼魚水族館",
@@ -1910,7 +1970,8 @@
       "id": "yougyo-aquarium",
       "creatureIds": [
         "coral_fish"
-      ]
+      ],
+      "businessHours": "10:00～18:00"
     },
     {
       "name": "浜名湖体験学習施設 ウォット",
@@ -1926,7 +1987,8 @@
       "id": "hamanako-wotto",
       "creatureIds": [
         "freshwater_fish"
-      ]
+      ],
+      "businessHours": "9:00～16:30（入館は16:00まで）"
     },
     {
       "name": "スマートアクアリウム静岡",
@@ -2022,7 +2084,8 @@
       "id": "akame-falls-aquarium",
       "creatureIds": [
         "giant_salamander"
-      ]
+      ],
+      "businessHours": "4月～11月 8:30～17:00、12月～3月 9:00～16:30"
     },
     {
       "name": "花園教会水族館",
@@ -2102,7 +2165,8 @@
       "id": "dolphin-resort",
       "creatureIds": [
         "dolphin"
-      ]
+      ],
+      "businessHours": "10:00～15:00（営業日: 金・土・日、不定休）"
     },
     {
       "name": "みなとやま水族館",
@@ -2118,7 +2182,8 @@
       "id": "minatoyama-aquarium",
       "creatureIds": [
         "freshwater_fish"
-      ]
+      ],
+      "businessHours": "10:00～18:00"
     },
     {
       "name": "アクア東条",
@@ -2134,7 +2199,8 @@
       "id": "aqua-tojo",
       "creatureIds": [
         "freshwater_fish"
-      ]
+      ],
+      "businessHours": "9:30～17:30（10月～2月は10:00～16:00）"
     },
     {
       "name": "淡路じゃのひれドルフィンファーム",
@@ -2150,7 +2216,8 @@
       "id": "awaji-janohire-dolphin-farm",
       "creatureIds": [
         "dolphin"
-      ]
+      ],
+      "businessHours": "9:00～17:00（最終受付 16:45）"
     },
     {
       "name": "福山大学マリンバイオセンター水族館",
@@ -2166,7 +2233,8 @@
       "id": "fukuyama-univ-marine-bio-center-aquarium",
       "creatureIds": [
         "coral_fish"
-      ]
+      ],
+      "businessHours": "10:00～16:00（開館日は平日）"
     },
     {
       "name": "四万十川学習センターおさかな館",
@@ -2182,7 +2250,8 @@
       "id": "shimantogawa-learning-center-osakanakan",
       "creatureIds": [
         "freshwater_fish"
-      ]
+      ],
+      "businessHours": "10:00～17:00"
     },
     {
       "name": "長高水族館",
@@ -2246,7 +2315,8 @@
       "id": "molasco-mugi",
       "creatureIds": [
         "crab"
-      ]
+      ],
+      "businessHours": "9:30～17:00（休館日: 月曜（祝日の場合は翌日））"
     },
     {
       "name": "海洋自然博物館 マリンジャム",
@@ -2278,7 +2348,8 @@
       "id": "shimantogawa-gakuyukan-sakanakan",
       "creatureIds": [
         "freshwater_fish"
-      ]
+      ],
+      "businessHours": "9:00～17:00"
     },
     {
       "name": "くるめウス",
@@ -2358,7 +2429,8 @@
       "id": "iki-iruka-park-resort",
       "creatureIds": [
         "dolphin"
-      ]
+      ],
+      "businessHours": "9:30～17:30"
     },
     {
       "name": "うみたま体験パーク「つくみイルカ島」",
@@ -2374,7 +2446,8 @@
       "id": "tsukumi-iruka-jima",
       "creatureIds": [
         "dolphin"
-      ]
+      ],
+      "businessHours": "10:00～16:00"
     },
     {
       "name": "番匠おさかな館",
@@ -2390,7 +2463,8 @@
       "id": "banjou-osakanakan",
       "creatureIds": [
         "freshwater_fish"
-      ]
+      ],
+      "businessHours": "10:00～17:00（最終受付 16:45）"
     },
     {
       "name": "おもしろ水族感アクア",
@@ -2454,7 +2528,8 @@
       "id": "idenoyama-freshwater-fish-aquarium",
       "creatureIds": [
         "sturgeon"
-      ]
+      ],
+      "businessHours": "9:00～17:00"
     },
     {
       "name": "大淀川学習館",
@@ -2486,7 +2561,8 @@
       "id": "shibushiwan-daikoku-iruka-land",
       "creatureIds": [
         "dolphin"
-      ]
+      ],
+      "businessHours": "10:00～17:00（最終入場 16:00）"
     },
     {
       "name": "奄美海洋展示館",
@@ -2502,7 +2578,8 @@
       "id": "amami-marine-exhibition-hall",
       "creatureIds": [
         "sea_turtle"
-      ]
+      ],
+      "businessHours": "9:30～18:00（最終入館 17:30）"
     },
     {
       "name": "オキナワマリンリサーチセンター",
