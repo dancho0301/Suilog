@@ -10,11 +10,11 @@ import SwiftData
 
 enum AquariumMigrationPlan: SchemaMigrationPlan {
     static var schemas: [any VersionedSchema.Type] {
-        [AquariumSchemaV1.self, AquariumSchemaV2.self, AquariumSchemaV3.self, AquariumSchemaV4.self, AquariumSchemaV5.self, AquariumSchemaV6.self, AquariumSchemaV7.self, AquariumSchemaV8.self, AquariumSchemaV9.self]
+        [AquariumSchemaV1.self, AquariumSchemaV2.self, AquariumSchemaV3.self, AquariumSchemaV4.self, AquariumSchemaV5.self, AquariumSchemaV6.self, AquariumSchemaV7.self, AquariumSchemaV8.self, AquariumSchemaV9.self, AquariumSchemaV10.self]
     }
 
     static var stages: [MigrationStage] {
-        [migrateV1toV2, migrateV2toV3, migrateV3toV4, migrateV4toV5, migrateV5toV6, migrateV6toV7, migrateV7toV8, migrateV8toV9]
+        [migrateV1toV2, migrateV2toV3, migrateV3toV4, migrateV4toV5, migrateV5toV6, migrateV6toV7, migrateV7toV8, migrateV8toV9, migrateV9toV10]
     }
 
     static let migrateV1toV2 = MigrationStage.lightweight(
@@ -60,5 +60,11 @@ enum AquariumMigrationPlan: SchemaMigrationPlan {
     static let migrateV8toV9 = MigrationStage.lightweight(
         fromVersion: AquariumSchemaV8.self,
         toVersion: AquariumSchemaV9.self
+    )
+
+    // V9→V10: 生き物図鑑対応（CreatureSightingモデル追加、軽量マイグレーション）
+    static let migrateV9toV10 = MigrationStage.lightweight(
+        fromVersion: AquariumSchemaV9.self,
+        toVersion: AquariumSchemaV10.self
     )
 }

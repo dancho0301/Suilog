@@ -13,6 +13,7 @@ struct SuilogApp: App {
     @StateObject private var locationManager = LocationManager()
     @StateObject private var storeManager = StoreManager()
     @StateObject private var themeManager: ThemeManager
+    @StateObject private var creatureStore = CreatureStore()
 
     init() {
         // iCloud Key-Value Storeの同期を開始（ThemeManager初期化前に実行）
@@ -28,7 +29,7 @@ struct SuilogApp: App {
     @State private var containerErrorMessage = ""
 
     var sharedModelContainer: ModelContainer = {
-        let schema = Schema([Aquarium.self, VisitRecord.self])
+        let schema = Schema([Aquarium.self, VisitRecord.self, CreatureSighting.self])
 
         // シミュレータではCloudKit同期を無効化（iCloudサインインが不安定なため）
         #if targetEnvironment(simulator)
@@ -89,6 +90,7 @@ struct SuilogApp: App {
                 .environmentObject(locationManager)
                 .environmentObject(storeManager)
                 .environmentObject(themeManager)
+                .environmentObject(creatureStore)
                 .task {
                     // 初回起動時にサンプルデータを挿入
                     await seedDataIfNeeded()

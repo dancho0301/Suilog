@@ -9,9 +9,9 @@ import Foundation
 import SwiftData
 import SwiftUI
 
-typealias CheckInType = AquariumSchemaV9.CheckInTypeV9
+typealias CheckInType = AquariumSchemaV10.CheckInTypeV10
 
-extension AquariumSchemaV9.CheckInTypeV9 {
+extension AquariumSchemaV10.CheckInTypeV10 {
     var color: Color {
         switch self {
         case .location:
@@ -31,7 +31,8 @@ extension AquariumSchemaV9.CheckInTypeV9 {
     }
 }
 
-typealias VisitRecord = AquariumSchemaV9.VisitRecord
+typealias VisitRecord = AquariumSchemaV10.VisitRecord
+typealias CreatureSighting = AquariumSchemaV10.CreatureSighting
 
 extension VisitRecord {
     /// 無料版で1記録に保存できる写真の上限枚数（スイログ Proは無制限）

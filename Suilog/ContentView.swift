@@ -185,4 +185,5 @@ struct ContentView: View {
         .environmentObject(ThemeManager())
         .environmentObject(StoreManager())
         .environmentObject(LocationManager())
+        .environmentObject(CreatureStore())
 }
