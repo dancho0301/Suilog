@@ -1090,6 +1090,7 @@
       "fishIconSize": 2,
       "address": "静岡県静岡市清水区三保2389",
       "affiliateLink": null,
+      "officialUrl": "https://www.umi.muse-tokai.jp/",
       "id": "tokai-university-marine-science-museum",
       "creatureIds": [
         "deep_sea_fish"
@@ -1553,6 +1554,7 @@
       "fishIconSize": 4,
       "address": "香川県高松市屋島東町1785-1",
       "affiliateLink": null,
+      "officialUrl": "https://r.goope.jp/new-yashima-aq/",
       "id": "new-yashima-aquarium",
       "creatureIds": [
         "manatee"
