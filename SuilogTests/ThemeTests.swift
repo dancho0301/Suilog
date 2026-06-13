@@ -17,14 +17,14 @@ struct ThemeTests {
 
     @Test("全テーマリストが正しい件数")
     func testAllThemesCount() {
-        #expect(Theme.allThemes.count == 2)
+        #expect(Theme.allThemes.count == 5)
     }
 
     @Test("デフォルトテーマのプロパティ")
     func testDefaultThemeProperties() {
         let theme = Theme.defaultTheme
         #expect(theme.id == "default")
-        #expect(theme.name == "スタンダード")
+        #expect(theme.name == "オーシャンブルー")
         #expect(theme.isDefault == true)
         #expect(theme.productId == nil)
     }
@@ -142,7 +142,13 @@ struct ThemeTests {
             manualCheckInColorsHex: ["#808080"],
             statisticsBackgroundColorHex: "#4D007AFF",
             textColorHex: "#FFFFFF",
-            secondaryTextColorHex: "#CCFFFFFF"
+            secondaryTextColorHex: "#CCFFFFFF",
+            primaryDarkHex: nil,
+            primaryLightHex: nil,
+            primaryBgHex: nil,
+            accentHex: nil,
+            tankTopHex: nil,
+            tankBottomHex: nil
         )
         #expect(manager.isUnlocked(paidTheme) == false)
     }
@@ -165,7 +171,13 @@ struct ThemeTests {
             manualCheckInColorsHex: ["#808080"],
             statisticsBackgroundColorHex: "#4D007AFF",
             textColorHex: "#FFFFFF",
-            secondaryTextColorHex: "#CCFFFFFF"
+            secondaryTextColorHex: "#CCFFFFFF",
+            primaryDarkHex: nil,
+            primaryLightHex: nil,
+            primaryBgHex: nil,
+            accentHex: nil,
+            tankTopHex: nil,
+            tankBottomHex: nil
         )
         manager.purchasedProductIds = ["com.suilog.theme.paid"]
         #expect(manager.isUnlocked(paidTheme) == true)
@@ -189,7 +201,13 @@ struct ThemeTests {
             manualCheckInColorsHex: ["#808080"],
             statisticsBackgroundColorHex: "#4D007AFF",
             textColorHex: "#FFFFFF",
-            secondaryTextColorHex: "#CCFFFFFF"
+            secondaryTextColorHex: "#CCFFFFFF",
+            primaryDarkHex: nil,
+            primaryLightHex: nil,
+            primaryBgHex: nil,
+            accentHex: nil,
+            tankTopHex: nil,
+            tankBottomHex: nil
         )
         manager.purchasedProductIds = ["com.suilog.theme.all_pack"]
         #expect(manager.isUnlocked(paidTheme) == true)
@@ -222,7 +240,13 @@ struct ThemeTests {
             manualCheckInColorsHex: ["#808080"],
             statisticsBackgroundColorHex: "#4D007AFF",
             textColorHex: "#FFFFFF",
-            secondaryTextColorHex: "#CCFFFFFF"
+            secondaryTextColorHex: "#CCFFFFFF",
+            primaryDarkHex: nil,
+            primaryLightHex: nil,
+            primaryBgHex: nil,
+            accentHex: nil,
+            tankTopHex: nil,
+            tankBottomHex: nil
         )
         let result = manager.selectTheme(paidTheme)
         #expect(result == false)
@@ -247,7 +271,13 @@ struct ThemeTests {
             manualCheckInColorsHex: ["#808080"],
             statisticsBackgroundColorHex: "#4D007AFF",
             textColorHex: "#FFFFFF",
-            secondaryTextColorHex: "#CCFFFFFF"
+            secondaryTextColorHex: "#CCFFFFFF",
+            primaryDarkHex: nil,
+            primaryLightHex: nil,
+            primaryBgHex: nil,
+            accentHex: nil,
+            tankTopHex: nil,
+            tankBottomHex: nil
         )
 
         // まず購入して選択
@@ -266,7 +296,7 @@ struct ThemeTests {
         let manager = ThemeManager()
         // デフォルトでは isDefault=true のテーマだけがアンロック
         let unlocked = manager.unlockedThemes
-        #expect(unlocked.count == 2)
+        #expect(unlocked.count == 5)
         #expect(unlocked.contains(Theme.defaultTheme))
         #expect(unlocked.contains(Theme.yumekawa))
     }
