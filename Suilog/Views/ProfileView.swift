@@ -13,14 +13,17 @@ struct ProfileView: View {
     @EnvironmentObject private var themeManager: ThemeManager
     @EnvironmentObject private var storeManager: StoreManager
     @EnvironmentObject private var locationManager: LocationManager
+    @EnvironmentObject private var creatureStore: CreatureStore
     @Query private var aquariums: [Aquarium]
     @Query private var visitRecords: [VisitRecord]
+    @Query private var creatureSightings: [CreatureSighting]
 
     @State private var showingThemeStore = false
     @State private var showingOnboarding = false
     @State private var showingProfileShare = false
     @State private var showingProStore = false
     @State private var showingTipJar = false
+    @State private var showingCreatureDex = false
     @State private var nickname: String = CloudSettingsManager.shared.string(forKey: CloudSettingsManager.nicknameKey) ?? ""
     @State private var nicknameInput = ""
     @State private var showingNicknameEditor = false
@@ -133,6 +136,11 @@ struct ProfileView: View {
             TipJarView()
                 .environmentObject(storeManager)
                 .environmentObject(themeManager)
+        }
+        .sheet(isPresented: $showingCreatureDex) {
+            CreatureDexView()
+                .environmentObject(themeManager)
+                .environmentObject(creatureStore)
         }
         .fullScreenCover(isPresented: $showingOnboarding) {
             OnboardingView(isReplay: true) {
@@ -344,6 +352,18 @@ struct ProfileView: View {
             }
             .buttonStyle(.plain)
             .accessibilityIdentifier("themeStoreButton")
+
+            Button {
+                showingCreatureDex = true
+            } label: {
+                settingsRow(
+                    icon: "fish.fill",
+                    title: "生き物図鑑",
+                    subtitle: "\(creatureSightings.count) / \(creatureStore.totalCount) 種を発見"
+                )
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("creatureDexButton")
 
             Button {
                 showingProStore = true
@@ -684,4 +704,5 @@ private struct ProgressBar: View {
         .environmentObject(ThemeManager())
         .environmentObject(StoreManager())
         .environmentObject(LocationManager())
+        .environmentObject(CreatureStore())
 }

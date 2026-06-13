@@ -19,6 +19,8 @@ struct NewVisitRecordView: View {
     @EnvironmentObject private var themeManager: ThemeManager
     @EnvironmentObject private var locationManager: LocationManager
     @EnvironmentObject private var storeManager: StoreManager
+    @EnvironmentObject private var creatureStore: CreatureStore
+    @Query private var creatureSightings: [CreatureSighting]
 
     let aquarium: Aquarium
     /// 画面起動時のデフォルトモード
@@ -33,6 +35,8 @@ struct NewVisitRecordView: View {
     @State private var cameraPhotoData: Data?
     @State private var photoToView: ViewedPhotos?
     @State private var showingProStore = false
+    @State private var showingCreaturePicker = false
+    @State private var seenCreatureIds: Set<String> = []
     @State private var showingCamera = false
     @State private var showingSuccess = false
     @State private var showingError = false
@@ -102,6 +106,7 @@ struct NewVisitRecordView: View {
                         if mode == .manual, !photosData.isEmpty {
                             typeResultCard
                         }
+                        creatureCard
                         memoCard
                         saveButton
                     }
@@ -140,6 +145,11 @@ struct NewVisitRecordView: View {
             }
             .sheet(isPresented: $showingCamera) {
                 ImagePicker(imageData: $cameraPhotoData)
+            }
+            .sheet(isPresented: $showingCreaturePicker) {
+                CreaturePickerView(selectedIds: $seenCreatureIds)
+                    .environmentObject(themeManager)
+                    .environmentObject(creatureStore)
             }
             .fullScreenCover(item: $photoToView) { photos in
                 PhotoViewerView(images: photos.images, startIndex: photos.startIndex)
@@ -414,6 +424,49 @@ struct NewVisitRecordView: View {
         }
     }
 
+    // MARK: - 会った生き物カード
+
+    private var creatureCard: some View {
+        SuiCard(radius: SuiRadius.cardMedium, padding: 14) {
+            VStack(alignment: .leading, spacing: 10) {
+                fieldLabel("会った生き物（任意）")
+
+                if seenCreatureIds.isEmpty {
+                    Text("出会った生き物を記録すると、図鑑が埋まっていきます")
+                        .font(SuiFont.caption)
+                        .foregroundColor(SuiColor.subText)
+                } else {
+                    // 選択中の生き物を絵文字でプレビュー
+                    Text(selectedCreatureEmojis)
+                        .font(.system(size: 22))
+                        .lineLimit(2)
+                    Text("\(seenCreatureIds.count) 種を記録")
+                        .font(SuiFont.caption)
+                        .foregroundColor(SuiColor.midText)
+                }
+
+                Button {
+                    showingCreaturePicker = true
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: "plus.circle")
+                        Text(seenCreatureIds.isEmpty ? "会った生き物を選ぶ" : "選び直す")
+                            .font(SuiFont.label)
+                    }
+                    .foregroundColor(theme.primaryColor)
+                }
+                .accessibilityIdentifier("newRecord.creaturePickerButton")
+            }
+        }
+    }
+
+    private var selectedCreatureEmojis: String {
+        creatureStore.creatures
+            .filter { seenCreatureIds.contains($0.id) }
+            .map(\.emoji)
+            .joined(separator: " ")
+    }
+
     private var resultMessage: String {
         if isPhotoLocationValid {
             return "写真の撮影場所が1km以内のため、ゴールドチェックインになります。"
@@ -599,6 +652,18 @@ struct NewVisitRecordView: View {
             aquarium: aquarium
         )
         modelContext.insert(visit)
+
+        // 「会った生き物」を図鑑に記録（既に発見済みのものは重複追加しない）
+        for creatureId in seenCreatureIds {
+            CreatureCollection.markSeen(
+                creatureId: creatureId,
+                aquariumName: aquarium.name,
+                date: visit.visitDate,
+                context: modelContext,
+                existing: creatureSightings
+            )
+        }
+
         do {
             try modelContext.save()
             isSaving = false
@@ -626,4 +691,5 @@ struct NewVisitRecordView: View {
     .environmentObject(ThemeManager())
     .environmentObject(LocationManager())
     .environmentObject(StoreManager())
+    .environmentObject(CreatureStore())
 }
