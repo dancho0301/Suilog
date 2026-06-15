@@ -21,7 +21,13 @@ struct BadgeTests {
         visitedRegions: Int = 0,
         maxVisitsToOneAquarium: Int = 0,
         photoRecordCount: Int = 0,
-        visitedThisYear: Int = 0
+        visitedThisYear: Int = 0,
+        memoRecordCount: Int = 0,
+        multiPhotoRecordCount: Int = 0,
+        creatureCount: Int = 0,
+        visitedSeasons: Int = 0,
+        visitedYearCount: Int = 0,
+        longestMonthlyStreak: Int = 0
     ) -> [Badge] {
         Badge.allBadges(
             visitedCount: visitedCount,
@@ -30,7 +36,13 @@ struct BadgeTests {
             visitedRegions: visitedRegions,
             maxVisitsToOneAquarium: maxVisitsToOneAquarium,
             photoRecordCount: photoRecordCount,
-            visitedThisYear: visitedThisYear
+            visitedThisYear: visitedThisYear,
+            memoRecordCount: memoRecordCount,
+            multiPhotoRecordCount: multiPhotoRecordCount,
+            creatureCount: creatureCount,
+            visitedSeasons: visitedSeasons,
+            visitedYearCount: visitedYearCount,
+            longestMonthlyStreak: longestMonthlyStreak
         )
     }
 
@@ -40,9 +52,9 @@ struct BadgeTests {
 
     // MARK: - 全体構成
 
-    @Test("バッジは12種類定義されている")
+    @Test("バッジは20種類定義されている")
     func testBadgeCount() {
-        #expect(makeBadges().count == 12)
+        #expect(makeBadges().count == 20)
     }
 
     @Test("バッジIDに重複がない")
@@ -130,6 +142,56 @@ struct BadgeTests {
     func testAnnualPass() {
         #expect(badge("annual_pass", in: makeBadges(visitedThisYear: 10))?.isEarned == true)
         #expect(badge("annual_pass", in: makeBadges(visitedThisYear: 9))?.isEarned == false)
+    }
+
+    // MARK: - 記録の質系バッジ
+
+    @Test("きろくマニア: メモ付き記録10件で獲得")
+    func testMemoWriter() {
+        #expect(badge("memo_writer", in: makeBadges(memoRecordCount: 10))?.isEarned == true)
+        #expect(badge("memo_writer", in: makeBadges(memoRecordCount: 9))?.isEarned == false)
+    }
+
+    @Test("アルバム職人: 複数写真付き記録5件で獲得")
+    func testAlbumMaker() {
+        #expect(badge("album_maker", in: makeBadges(multiPhotoRecordCount: 5))?.isEarned == true)
+        #expect(badge("album_maker", in: makeBadges(multiPhotoRecordCount: 4))?.isEarned == false)
+    }
+
+    // MARK: - 生き物図鑑系バッジ
+
+    @Test("生き物図鑑バッジの獲得しきい値", arguments: [
+        ("creature_ten", 10),
+        ("creature_fifty", 50)
+    ])
+    func testCreatureThresholds(id: String, threshold: Int) {
+        #expect(badge(id, in: makeBadges(creatureCount: threshold))?.isEarned == true)
+        #expect(badge(id, in: makeBadges(creatureCount: threshold - 1))?.isEarned == false)
+    }
+
+    // MARK: - 時間・季節系バッジ
+
+    @Test("四季めぐり: 春夏秋冬すべてで獲得")
+    func testFourSeasons() {
+        #expect(badge("four_seasons", in: makeBadges(visitedSeasons: 4))?.isEarned == true)
+        #expect(badge("four_seasons", in: makeBadges(visitedSeasons: 3))?.isEarned == false)
+    }
+
+    @Test("長いお付き合い: 3年にわたる訪問で獲得")
+    func testMultiYear() {
+        #expect(badge("multi_year", in: makeBadges(visitedYearCount: 3))?.isEarned == true)
+        #expect(badge("multi_year", in: makeBadges(visitedYearCount: 2))?.isEarned == false)
+    }
+
+    // MARK: - 継続チェックイン系バッジ
+
+    @Test("継続チェックインバッジの獲得しきい値", arguments: [
+        ("streak_three", 3),
+        ("streak_six", 6)
+    ])
+    func testMonthlyStreakThresholds(id: String, threshold: Int) {
+        #expect(badge(id, in: makeBadges(longestMonthlyStreak: threshold))?.isEarned == true)
+        #expect(badge(id, in: makeBadges(longestMonthlyStreak: threshold - 1))?.isEarned == false)
     }
 
     // MARK: - isEarned 境界
