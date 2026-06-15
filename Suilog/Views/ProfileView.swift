@@ -86,6 +86,63 @@ struct ProfileView: View {
         return Set(ids).count
     }
 
+    /// メモを書いた記録数
+    private var memoRecordCount: Int {
+        visitRecords.filter { !$0.memo.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }.count
+    }
+
+    /// 写真を2枚以上付けた記録数
+    private var multiPhotoRecordCount: Int {
+        visitRecords.filter { $0.allPhotosData.count >= 2 }.count
+    }
+
+    /// 記録した生き物の種類数（ユニーク）
+    private var creatureCount: Int {
+        Set(creatureSightings.map { $0.creatureId }).count
+    }
+
+    /// 訪問した季節の数（春・夏・秋・冬）
+    private var visitedSeasons: Int {
+        let calendar = Calendar.current
+        let seasons = visitRecords.map { record -> Int in
+            let month = calendar.component(.month, from: record.visitDate)
+            switch month {
+            case 3...5: return 0   // 春
+            case 6...8: return 1   // 夏
+            case 9...11: return 2  // 秋
+            default: return 3      // 冬
+            }
+        }
+        return Set(seasons).count
+    }
+
+    /// 訪問した年数（ユニーク）
+    private var visitedYearCount: Int {
+        let calendar = Calendar.current
+        return Set(visitRecords.map { calendar.component(.year, from: $0.visitDate) }).count
+    }
+
+    /// 月単位で連続して訪問した最長の月数
+    private var longestMonthlyStreak: Int {
+        let calendar = Calendar.current
+        let months = Set(visitRecords.map { record -> Int in
+            let comps = calendar.dateComponents([.year, .month], from: record.visitDate)
+            return (comps.year ?? 0) * 12 + (comps.month ?? 1)
+        }).sorted()
+        guard !months.isEmpty else { return 0 }
+        var longest = 1
+        var current = 1
+        for i in 1..<months.count {
+            if months[i] == months[i - 1] + 1 {
+                current += 1
+                longest = max(longest, current)
+            } else {
+                current = 1
+            }
+        }
+        return longest
+    }
+
     private var allBadges: [Badge] {
         Badge.allBadges(
             visitedCount: visitedCount,
@@ -94,7 +151,13 @@ struct ProfileView: View {
             visitedRegions: Set(visitRecords.compactMap { $0.aquarium?.region }).count,
             maxVisitsToOneAquarium: maxVisitsToOneAquarium,
             photoRecordCount: photoRecordCount,
-            visitedThisYear: visitedThisYear
+            visitedThisYear: visitedThisYear,
+            memoRecordCount: memoRecordCount,
+            multiPhotoRecordCount: multiPhotoRecordCount,
+            creatureCount: creatureCount,
+            visitedSeasons: visitedSeasons,
+            visitedYearCount: visitedYearCount,
+            longestMonthlyStreak: longestMonthlyStreak
         )
     }
 
@@ -498,7 +561,13 @@ struct Badge: Identifiable {
         visitedRegions: Int,
         maxVisitsToOneAquarium: Int,
         photoRecordCount: Int,
-        visitedThisYear: Int
+        visitedThisYear: Int,
+        memoRecordCount: Int,
+        multiPhotoRecordCount: Int,
+        creatureCount: Int,
+        visitedSeasons: Int,
+        visitedYearCount: Int,
+        longestMonthlyStreak: Int
     ) -> [Badge] {
         [
             Badge(
@@ -596,6 +665,110 @@ struct Badge: Identifiable {
                 description: "100館に訪問",
                 progress: min(Double(visitedCount) / 100.0, 1.0),
                 progressText: "\(min(visitedCount, 100)) / 100"
+            ),
+            Badge(
+                id: "memo_writer",
+                icon: "📝",
+                title: "きろくマニア",
+                description: "メモ付きの記録10件",
+                progress: min(Double(memoRecordCount) / 10.0, 1.0),
+                progressText: "\(min(memoRecordCount, 10)) / 10"
+            ),
+            Badge(
+                id: "album_maker",
+                icon: "🖼️",
+                title: "アルバム職人",
+                description: "複数写真付きの記録5件",
+                progress: min(Double(multiPhotoRecordCount) / 5.0, 1.0),
+                progressText: "\(min(multiPhotoRecordCount, 5)) / 5"
+            ),
+            Badge(
+                id: "creature_ten",
+                icon: "🐟",
+                title: "図鑑見習い",
+                description: "生き物を10種類記録",
+                progress: min(Double(creatureCount) / 10.0, 1.0),
+                progressText: "\(min(creatureCount, 10)) / 10"
+            ),
+            Badge(
+                id: "creature_fifty",
+                icon: "📖",
+                title: "図鑑マスター",
+                description: "生き物を50種類記録",
+                progress: min(Double(creatureCount) / 50.0, 1.0),
+                progressText: "\(min(creatureCount, 50)) / 50"
+            ),
+            Badge(
+                id: "four_seasons",
+                icon: "🍀",
+                title: "四季めぐり",
+                description: "春・夏・秋・冬すべてに訪問",
+                progress: min(Double(visitedSeasons) / 4.0, 1.0),
+                progressText: "\(min(visitedSeasons, 4)) / 4"
+            ),
+            Badge(
+                id: "multi_year",
+                icon: "🗓️",
+                title: "長いお付き合い",
+                description: "3年にわたって訪問",
+                progress: min(Double(visitedYearCount) / 3.0, 1.0),
+                progressText: "\(min(visitedYearCount, 3)) / 3"
+            ),
+            Badge(
+                id: "streak_three",
+                icon: "🔥",
+                title: "3か月連続チェックイン",
+                description: "3か月連続で訪問",
+                progress: min(Double(longestMonthlyStreak) / 3.0, 1.0),
+                progressText: "\(min(longestMonthlyStreak, 3)) / 3"
+            ),
+            Badge(
+                id: "streak_six",
+                icon: "⚡️",
+                title: "半年皆勤",
+                description: "6か月連続で訪問",
+                progress: min(Double(longestMonthlyStreak) / 6.0, 1.0),
+                progressText: "\(min(longestMonthlyStreak, 6)) / 6"
+            ),
+            Badge(
+                id: "streak_year_1",
+                icon: "🏅",
+                title: "1年連続チェックイン",
+                description: "12か月連続で訪問",
+                progress: min(Double(longestMonthlyStreak) / 12.0, 1.0),
+                progressText: "\(min(longestMonthlyStreak, 12)) / 12"
+            ),
+            Badge(
+                id: "streak_year_2",
+                icon: "🎖️",
+                title: "2年連続チェックイン",
+                description: "24か月連続で訪問",
+                progress: min(Double(longestMonthlyStreak) / 24.0, 1.0),
+                progressText: "\(min(longestMonthlyStreak, 24)) / 24"
+            ),
+            Badge(
+                id: "streak_year_3",
+                icon: "👑",
+                title: "3年連続チェックイン",
+                description: "36か月連続で訪問",
+                progress: min(Double(longestMonthlyStreak) / 36.0, 1.0),
+                progressText: "\(min(longestMonthlyStreak, 36)) / 36"
+            ),
+            Badge(
+                id: "streak_year_4",
+                icon: "💎",
+                title: "4年連続チェックイン",
+                description: "48か月連続で訪問",
+                progress: min(Double(longestMonthlyStreak) / 48.0, 1.0),
+                progressText: "\(min(longestMonthlyStreak, 48)) / 48"
+            ),
+            Badge(
+                id: "streak_year_5",
+                icon: "🌟",
+                title: "5年連続チェックイン",
+                description: "60か月連続で訪問",
+                progress: min(Double(longestMonthlyStreak) / 60.0, 1.0),
+                progressText: "\(min(longestMonthlyStreak, 60)) / 60"
             )
         ]
     }
