@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    name: Build & Unit Test
+    runs-on: macos-latest
+    env:
+      SCHEME: Suilog
+      PROJECT: Suilog.xcodeproj
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select newest installed Xcode
+        run: |
+          latest=$(ls -d /Applications/Xcode_*.app 2>/dev/null | sort -V | tail -1)
+          if [ -n "$latest" ]; then
+            echo "Selecting $latest"
+            sudo xcode-select -s "$latest"
+          fi
+          xcodebuild -version
+
+      - name: Show available SDKs and simulators (diagnostics)
+        run: |
+          echo "=== Installed Xcodes ==="
+          ls -d /Applications/Xcode_*.app 2>/dev/null || true
+          echo "=== SDKs ==="
+          xcodebuild -showsdks || true
+          echo "=== Simulator runtimes ==="
+          xcrun simctl list runtimes || true
+          echo "=== Available iPhone simulators ==="
+          xcrun simctl list devices available | grep -i iphone || true
+
+      - name: Build and run unit tests
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -scheme "$SCHEME" \
+            -project "$PROJECT" \
+            -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+            -only-testing:SuilogTests \
+            CODE_SIGNING_ALLOWED=NO \
+            | tee xcodebuild.log
