@@ -16,15 +16,29 @@ jobs:
     env:
       SCHEME: Suilog
       PROJECT: Suilog.xcodeproj
-      DESTINATION: "platform=iOS Simulator,name=iPhone 17 Pro"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Show Xcode and SDK versions
+      - name: Select newest installed Xcode
         run: |
+          latest=$(ls -d /Applications/Xcode_*.app 2>/dev/null | sort -V | tail -1)
+          if [ -n "$latest" ]; then
+            echo "Selecting $latest"
+            sudo xcode-select -s "$latest"
+          fi
           xcodebuild -version
-          xcrun simctl list devices available | head -50
+
+      - name: Show available SDKs and simulators (diagnostics)
+        run: |
+          echo "=== Installed Xcodes ==="
+          ls -d /Applications/Xcode_*.app 2>/dev/null || true
+          echo "=== SDKs ==="
+          xcodebuild -showsdks || true
+          echo "=== Simulator runtimes ==="
+          xcrun simctl list runtimes || true
+          echo "=== Available iPhone simulators ==="
+          xcrun simctl list devices available | grep -i iphone || true
 
       - name: Build and run unit tests
         run: |
@@ -32,7 +46,7 @@ jobs:
           xcodebuild test \
             -scheme "$SCHEME" \
             -project "$PROJECT" \
-            -destination "$DESTINATION" \
+            -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
             -only-testing:SuilogTests \
             CODE_SIGNING_ALLOWED=NO \
             | tee xcodebuild.log
