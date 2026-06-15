@@ -52,9 +52,9 @@ struct BadgeTests {
 
     // MARK: - 全体構成
 
-    @Test("バッジは20種類定義されている")
+    @Test("バッジは25種類定義されている")
     func testBadgeCount() {
-        #expect(makeBadges().count == 20)
+        #expect(makeBadges().count == 25)
     }
 
     @Test("バッジIDに重複がない")
@@ -187,7 +187,12 @@ struct BadgeTests {
 
     @Test("継続チェックインバッジの獲得しきい値", arguments: [
         ("streak_three", 3),
-        ("streak_six", 6)
+        ("streak_six", 6),
+        ("streak_year_1", 12),
+        ("streak_year_2", 24),
+        ("streak_year_3", 36),
+        ("streak_year_4", 48),
+        ("streak_year_5", 60)
     ])
     func testMonthlyStreakThresholds(id: String, threshold: Int) {
         #expect(badge(id, in: makeBadges(longestMonthlyStreak: threshold))?.isEarned == true)

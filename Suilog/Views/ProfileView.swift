@@ -729,6 +729,46 @@ struct Badge: Identifiable {
                 description: "6か月連続で訪問",
                 progress: min(Double(longestMonthlyStreak) / 6.0, 1.0),
                 progressText: "\(min(longestMonthlyStreak, 6)) / 6"
+            ),
+            Badge(
+                id: "streak_year_1",
+                icon: "🏅",
+                title: "1年連続チェックイン",
+                description: "12か月連続で訪問",
+                progress: min(Double(longestMonthlyStreak) / 12.0, 1.0),
+                progressText: "\(min(longestMonthlyStreak, 12)) / 12"
+            ),
+            Badge(
+                id: "streak_year_2",
+                icon: "🎖️",
+                title: "2年連続チェックイン",
+                description: "24か月連続で訪問",
+                progress: min(Double(longestMonthlyStreak) / 24.0, 1.0),
+                progressText: "\(min(longestMonthlyStreak, 24)) / 24"
+            ),
+            Badge(
+                id: "streak_year_3",
+                icon: "👑",
+                title: "3年連続チェックイン",
+                description: "36か月連続で訪問",
+                progress: min(Double(longestMonthlyStreak) / 36.0, 1.0),
+                progressText: "\(min(longestMonthlyStreak, 36)) / 36"
+            ),
+            Badge(
+                id: "streak_year_4",
+                icon: "💎",
+                title: "4年連続チェックイン",
+                description: "48か月連続で訪問",
+                progress: min(Double(longestMonthlyStreak) / 48.0, 1.0),
+                progressText: "\(min(longestMonthlyStreak, 48)) / 48"
+            ),
+            Badge(
+                id: "streak_year_5",
+                icon: "🌟",
+                title: "5年連続チェックイン",
+                description: "60か月連続で訪問",
+                progress: min(Double(longestMonthlyStreak) / 60.0, 1.0),
+                progressText: "\(min(longestMonthlyStreak, 60)) / 60"
             )
         ]
     }
