@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    name: Build & Unit Test
+    runs-on: macos-latest
+    env:
+      SCHEME: Suilog
+      PROJECT: Suilog.xcodeproj
+      DESTINATION: "platform=iOS Simulator,name=iPhone 17 Pro"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show Xcode and SDK versions
+        run: |
+          xcodebuild -version
+          xcrun simctl list devices available | head -50
+
+      - name: Build and run unit tests
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -scheme "$SCHEME" \
+            -project "$PROJECT" \
+            -destination "$DESTINATION" \
+            -only-testing:SuilogTests \
+            CODE_SIGNING_ALLOWED=NO \
+            | tee xcodebuild.log
