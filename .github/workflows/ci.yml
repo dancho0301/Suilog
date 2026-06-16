@@ -50,3 +50,33 @@ jobs:
             -only-testing:SuilogTests \
             CODE_SIGNING_ALLOWED=NO \
             | tee xcodebuild.log
+
+  ui-test:
+    name: UI Test
+    runs-on: macos-latest
+    env:
+      SCHEME: Suilog
+      PROJECT: Suilog.xcodeproj
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select newest installed Xcode
+        run: |
+          latest=$(ls -d /Applications/Xcode_*.app 2>/dev/null | sort -V | tail -1)
+          if [ -n "$latest" ]; then
+            echo "Selecting $latest"
+            sudo xcode-select -s "$latest"
+          fi
+          xcodebuild -version
+
+      - name: Build and run UI tests
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -scheme "$SCHEME" \
+            -project "$PROJECT" \
+            -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+            -only-testing:SuilogUITests \
+            CODE_SIGNING_ALLOWED=NO \
+            | tee xcodebuild-ui.log
