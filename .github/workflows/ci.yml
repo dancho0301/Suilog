@@ -54,6 +54,8 @@ jobs:
   ui-test:
     name: UI Test
     runs-on: macos-latest
+    # 高速・確定的なUIスモークに限定する。フルUI網羅はXcode Cloud側で実施。
+    timeout-minutes: 20
     env:
       SCHEME: Suilog
       PROJECT: Suilog.xcodeproj
@@ -70,13 +72,14 @@ jobs:
           fi
           xcodebuild -version
 
-      - name: Build and run UI tests
+      - name: Build and run UI smoke tests
         run: |
           set -o pipefail
           xcodebuild test \
             -scheme "$SCHEME" \
             -project "$PROJECT" \
             -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
-            -only-testing:SuilogUITests \
+            -only-testing:SuilogUITests/SuilogUITests/testAppLaunches \
+            -only-testing:SuilogUITests/SuilogUITests/testGoldCheckInViaDebugMenu \
             CODE_SIGNING_ALLOWED=NO \
             | tee xcodebuild-ui.log
