@@ -1,0 +1,32 @@
+{
+  "configurations" : [
+    {
+      "id" : "CDCB9BDD-3396-46A8-86D7-19E1F83C1DCB",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "maximumTestRepetitions" : 3,
+    "testRepetitionMode" : "retryOnFailure"
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Suilog.xcodeproj",
+        "identifier" : "5A63BA4C2F05077B003C6494",
+        "name" : "SuilogTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Suilog.xcodeproj",
+        "identifier" : "5A63BA562F05077B003C6494",
+        "name" : "SuilogUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
