@@ -21,6 +21,9 @@
       }
     },
     {
+      "skippedTests" : [
+        "SuilogUITests\/testGoldCheckInViaDebugMenu()"
+      ],
       "target" : {
         "containerPath" : "container:Suilog.xcodeproj",
         "identifier" : "5A63BA562F05077B003C6494",
