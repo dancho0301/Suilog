@@ -46,6 +46,26 @@ final class SuilogUITests: XCTestCase {
         }
     }
 
+    /// SwiftUI Toggle を確実に指定状態にする。
+    /// SwiftUIのトグルはタップが登録されないことがあるため、
+    /// 値（"0"/"1"）が目標になるまで待ち、必要なら再タップする。
+    @discardableResult
+    private func setSwitch(_ identifier: String, on: Bool, timeout: TimeInterval = 5) -> Bool {
+        let toggle = app.switches[identifier]
+        guard toggle.waitForExistence(timeout: timeout) else { return false }
+        let target = on ? "1" : "0"
+        for _ in 0..<3 {
+            if (toggle.value as? String) == target { return true }
+            toggle.tap()
+            let predicate = NSPredicate(format: "value == %@", target)
+            let expectation = XCTNSPredicateExpectation(predicate: predicate, object: toggle)
+            if XCTWaiter().wait(for: [expectation], timeout: 3) == .completed {
+                return true
+            }
+        }
+        return (toggle.value as? String) == target
+    }
+
     /// アプリを起動してタブが操作可能になるまで待つ
     /// （オンボーディングはUserDefaults引数でスキップ）
     private func launchAppAndWaitForTabs(extraArguments: [String] = []) {
@@ -258,17 +278,14 @@ final class SuilogUITests: XCTestCase {
         }
         debugButton.tap()
 
-        let masterToggle = app.switches["debug.masterToggle"]
-        XCTAssertTrue(masterToggle.waitForExistence(timeout: 5), "デバッグメニューが表示されるべき")
-        if (masterToggle.value as? String) == "0" {
-            masterToggle.switches.firstMatch.tap()
-        }
+        XCTAssertTrue(
+            app.switches["debug.masterToggle"].waitForExistence(timeout: 5),
+            "デバッグメニューが表示されるべき"
+        )
+        XCTAssertTrue(setSwitch("debug.masterToggle", on: true), "デバッグモードをONにできるべき")
 
-        let alwaysToggle = app.switches["debug.alwaysCheckInToggle"]
-        XCTAssertTrue(alwaysToggle.waitForExistence(timeout: 5), "チェックイン設定が表示されるべき")
-        if (alwaysToggle.value as? String) == "0" {
-            alwaysToggle.switches.firstMatch.tap()
-        }
+        // マスタートグルON後にチェックイン設定セクションが現れる
+        XCTAssertTrue(setSwitch("debug.alwaysCheckInToggle", on: true), "チェックイン設定が表示されるべき")
         app.buttons["閉じる"].tap()
 
         // 詳細を開いてゴールドチェックイン
@@ -291,9 +308,7 @@ final class SuilogUITests: XCTestCase {
         tapTab(.myTank)
         if debugButton.waitForExistence(timeout: 3) {
             debugButton.tap()
-            if masterToggle.waitForExistence(timeout: 3), (masterToggle.value as? String) == "1" {
-                masterToggle.switches.firstMatch.tap()
-            }
+            setSwitch("debug.masterToggle", on: false, timeout: 3)
             if app.buttons["閉じる"].exists {
                 app.buttons["閉じる"].tap()
             }

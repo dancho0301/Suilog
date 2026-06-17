@@ -51,4 +51,13 @@ final class CreatureStore: ObservableObject {
             .map { (category: $0.key, creatures: $0.value.sorted { $0.name < $1.name }) }
             .sorted { $0.category.sortOrder < $1.category.sortOrder }
     }
+
+    /// 重複を除いた絵文字一覧（プロフィールアイコン選択などに使用）
+    var uniqueEmojis: [String] {
+        var seen = Set<String>()
+        return creatures.compactMap { creature in
+            guard seen.insert(creature.emoji).inserted else { return nil }
+            return creature.emoji
+        }
+    }
 }

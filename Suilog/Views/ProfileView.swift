@@ -29,6 +29,8 @@ struct ProfileView: View {
     @State private var showingNicknameEditor = false
     @State private var exportedFile: ExportedFile?
     @State private var showingExportError = false
+    @State private var profileIcon: String = CloudSettingsManager.shared.string(forKey: CloudSettingsManager.profileIconKey) ?? "🐠"
+    @State private var showingIconPicker = false
 
     /// sheet(item:) 用のエクスポートファイルラッパー
     private struct ExportedFile: Identifiable {
@@ -205,6 +207,18 @@ struct ProfileView: View {
                 .environmentObject(themeManager)
                 .environmentObject(creatureStore)
         }
+        .sheet(isPresented: $showingIconPicker) {
+            IconPickerView(
+                selectedIcon: profileIcon,
+                icons: creatureStore.uniqueEmojis,
+                theme: theme
+            ) { selected in
+                profileIcon = selected
+                CloudSettingsManager.shared.set(selected, forKey: CloudSettingsManager.profileIconKey)
+                showingIconPicker = false
+            }
+            .presentationDetents([.medium, .large])
+        }
         .fullScreenCover(isPresented: $showingOnboarding) {
             OnboardingView(isReplay: true) {
                 showingOnboarding = false
@@ -288,14 +302,27 @@ struct ProfileView: View {
 
     private var heroCard: some View {
         VStack(spacing: 12) {
-            ZStack {
-                Circle()
-                    .fill(Color.white.opacity(0.25))
-                    .frame(width: 88, height: 88)
-                Circle()
-                    .fill(Color.white)
-                    .frame(width: 80, height: 80)
-                Text("🐠").font(.system(size: 42))
+            ZStack(alignment: .bottomTrailing) {
+                Button {
+                    showingIconPicker = true
+                } label: {
+                    ZStack {
+                        Circle()
+                            .fill(Color.white.opacity(0.25))
+                            .frame(width: 88, height: 88)
+                        Circle()
+                            .fill(Color.white)
+                            .frame(width: 80, height: 80)
+                        Text(profileIcon).font(.system(size: 42))
+                    }
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("プロフィールアイコンを変更")
+
+                Image(systemName: "pencil.circle.fill")
+                    .font(.system(size: 22))
+                    .foregroundStyle(theme.primaryColor, Color.white)
+                    .allowsHitTesting(false)
             }
             Button {
                 nicknameInput = nickname
@@ -866,6 +893,57 @@ private struct ProgressBar: View {
                         )
                     )
                     .frame(width: geo.size.width * CGFloat(progress))
+            }
+        }
+    }
+}
+
+// MARK: - アイコンピッカー
+
+private struct IconPickerView: View {
+    let selectedIcon: String
+    let icons: [String]
+    let theme: Theme
+    let onSelect: (String) -> Void
+
+    @Environment(\.dismiss) private var dismiss
+
+    private let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 6)
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 12) {
+                    ForEach(icons, id: \.self) { emoji in
+                        Button {
+                            onSelect(emoji)
+                        } label: {
+                            ZStack {
+                                Circle()
+                                    .fill(emoji == selectedIcon
+                                        ? theme.primaryColor.opacity(0.18)
+                                        : Color(.systemGray6))
+                                    .frame(width: 52, height: 52)
+                                if emoji == selectedIcon {
+                                    Circle()
+                                        .strokeBorder(theme.primaryColor, lineWidth: 2)
+                                        .frame(width: 52, height: 52)
+                                }
+                                Text(emoji).font(.system(size: 28))
+                            }
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 16)
+            }
+            .navigationTitle("アイコンを選択")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("キャンセル") { dismiss() }
+                }
             }
         }
     }

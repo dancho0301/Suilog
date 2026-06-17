@@ -104,8 +104,9 @@ struct ThemeTests {
     @Test("ThemeManager初期化: デフォルトテーマが選択される")
     @MainActor
     func testThemeManagerInit() {
-        // テスト用にUserDefaultsをクリア
-        UserDefaults.standard.removeObject(forKey: "SelectedThemeId")
+        // ThemeManagerはCloudSettingsManager（iCloud KVS優先）から保存テーマを読むため、
+        // UserDefaultsだけでなく実際の保存先（KVS含む）をクリアする
+        CloudSettingsManager.shared.set(nil, forKey: CloudSettingsManager.selectedThemeIdKey)
         let manager = ThemeManager()
         #expect(manager.currentTheme == Theme.defaultTheme)
     }

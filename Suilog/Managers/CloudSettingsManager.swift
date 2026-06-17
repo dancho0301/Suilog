@@ -19,6 +19,7 @@ final class CloudSettingsManager {
     static let selectedThemeIdKey = "SelectedThemeId"
     static let aquariumDataVersionKey = "AquariumDataVersion"
     static let nicknameKey = "UserNickname"
+    static let profileIconKey = "ProfileIcon"
 
     /// UserDefaultsからの移行済みフラグ
     private let migrationCompletedKey = "CloudSettingsMigrationCompleted"
@@ -111,6 +112,11 @@ final class CloudSettingsManager {
                 if let value = kvStore.string(forKey: key) {
                     localDefaults.set(value, forKey: key)
                     print("☁️ iCloudからニックネームを同期")
+                }
+            case Self.profileIconKey:
+                if let value = kvStore.string(forKey: key) {
+                    localDefaults.set(value, forKey: key)
+                    print("☁️ iCloudからプロフィールアイコンを同期")
                 }
             default:
                 break

@@ -50,3 +50,4 @@ jobs:
             -only-testing:SuilogTests \
             CODE_SIGNING_ALLOWED=NO \
             | tee xcodebuild.log
+

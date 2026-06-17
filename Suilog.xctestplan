@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "E58FAF0B-9EBE-4A25-91C5-9A97162A3D04",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Suilog.xcodeproj",
+        "identifier" : "5A63BA4C2F05077B003C6494",
+        "name" : "SuilogTests"
+      }
+    }
+  ],
+  "version" : 1
+}
