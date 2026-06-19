@@ -171,10 +171,18 @@ class StoreManager: ObservableObject {
         products.first { $0.id == productId }
     }
 
+    /// 全テーマパックのProduct ID（これを持っていれば全テーマがアンロックされる）
+    static let allThemesPackId = "com.suilog.theme.all_pack"
+
     /// 特定の商品が購入済みかどうか
     func isPurchased(_ productId: String) -> Bool {
-        purchasedProductIds.contains(productId) ||
-        purchasedProductIds.contains("com.suilog.theme.all_pack")
+        Self.resolveIsPurchased(productId, in: purchasedProductIds)
+    }
+
+    /// 購入済み判定ロジック（テスト容易性のため純粋関数として分離）
+    /// 全テーマパックを所有している場合は個別テーマも購入済みとみなす
+    static func resolveIsPurchased(_ productId: String, in purchasedIds: Set<String>) -> Bool {
+        purchasedIds.contains(productId) || purchasedIds.contains(allThemesPackId)
     }
 
     // MARK: - Private Methods

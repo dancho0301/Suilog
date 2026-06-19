@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 import MapKit
+import UIKit
 
 /// 訪問ステータスフィルタの列挙型
 enum VisitStatus: String, CaseIterable, Identifiable {
@@ -35,6 +36,10 @@ struct AquariumMapView: View {
     @State private var selectedRegions: Set<String> = []
     @State private var visitStatusFilter: VisitStatus = .all
     @State private var searchDebounceTask: Task<Void, Never>?
+
+    // プルリフレッシュのエラー表示
+    @State private var refreshErrorMessage: String?
+    @State private var showingRefreshError = false
 
     /// 地域の順序（北から南へ）
     private let regionOrder: [String] = [
@@ -126,7 +131,14 @@ struct AquariumMapView: View {
                 }
                 .refreshable {
                     // 引っ張って水族館データを更新（バージョンが上がっていれば反映）
-                    _ = await DataSeeder.seedAquariums(context: modelContext)
+                    let result = await DataSeeder.seedAquariums(context: modelContext)
+                    switch result {
+                    case .errorNoData(let message), .errorSaveFailed(let message):
+                        refreshErrorMessage = message
+                        showingRefreshError = true
+                    case .success, .skippedOffline:
+                        break
+                    }
                 }
             }
             .toolbar(.hidden, for: .navigationBar)
@@ -164,6 +176,11 @@ struct AquariumMapView: View {
             }
             .onChange(of: visitStatusFilter) { _, _ in
                 updateCameraToFitResults()
+            }
+            .alert("更新に失敗しました", isPresented: $showingRefreshError) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(refreshErrorMessage ?? "データの更新に失敗しました。通信環境を確認してもう一度お試しください。")
             }
         }
     }
@@ -330,7 +347,15 @@ struct AquariumMapView: View {
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 12) {
-                    if carouselAquariums.isEmpty {
+                    if aquariums.isEmpty {
+                        HStack(spacing: 8) {
+                            ProgressView()
+                            Text("水族館データを読み込み中…")
+                                .font(SuiFont.body)
+                                .foregroundColor(SuiColor.midText)
+                        }
+                        .padding(.horizontal, 4)
+                    } else if carouselAquariums.isEmpty {
                         Text("該当する水族館がありません")
                             .font(SuiFont.body)
                             .foregroundColor(SuiColor.midText)
@@ -574,6 +599,23 @@ struct AquariumListView: View {
                     .padding(.vertical, 4)
                 }
             }
+            .overlay {
+                if filteredAndSortedAquariums.isEmpty {
+                    ContentUnavailableView {
+                        Label("該当する水族館がありません", systemImage: "magnifyingglass")
+                    } description: {
+                        Text("検索条件やフィルタを変更してみてください。")
+                    } actions: {
+                        if !searchText.isEmpty || activeFilterCount > 0 {
+                            Button("条件をリセット") {
+                                searchText = ""
+                                selectedRegions.removeAll()
+                                visitStatusFilter = .all
+                            }
+                        }
+                    }
+                }
+            }
             .navigationTitle("水族館リスト")
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $searchText, prompt: "名前・地域・住所で検索")
@@ -618,6 +660,7 @@ struct AquariumListView: View {
 struct AquariumDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
     @EnvironmentObject private var locationManager: LocationManager
     @EnvironmentObject private var themeManager: ThemeManager
     @Query private var visitRecords: [VisitRecord]
@@ -626,6 +669,12 @@ struct AquariumDetailView: View {
 
     @State private var showingNewRecordForm = false
     @State private var newRecordInitialMode: CheckInType = .location
+
+    /// 位置情報の利用が拒否・制限されているか
+    private var isLocationDenied: Bool {
+        locationManager.authorizationStatus == .denied ||
+        locationManager.authorizationStatus == .restricted
+    }
 
     var distanceText: String {
         if let distance = locationManager.distance(to: CLLocationCoordinate2D(latitude: aquarium.latitude, longitude: aquarium.longitude)) {
@@ -957,9 +1006,33 @@ struct AquariumDetailView: View {
             }
 
             if !canLocationCheckIn {
-                Text(locationCheckInHint)
-                    .font(SuiFont.caption)
-                    .foregroundColor(SuiColor.subText)
+                if isLocationDenied {
+                    VStack(spacing: 8) {
+                        Text("位置情報の利用が許可されていないため、位置情報チェックインを使えません。")
+                            .font(SuiFont.caption)
+                            .foregroundColor(SuiColor.subText)
+                            .multilineTextAlignment(.leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        Button {
+                            if let url = URL(string: UIApplication.openSettingsURLString) {
+                                openURL(url)
+                            }
+                        } label: {
+                            HStack(spacing: 6) {
+                                Image(systemName: "gear")
+                                Text("設定を開いて位置情報を許可")
+                                    .font(SuiFont.bodyMedium)
+                            }
+                            .foregroundColor(theme.primaryColor)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        .accessibilityIdentifier("detail.openSettingsButton")
+                    }
+                } else {
+                    Text(locationCheckInHint)
+                        .font(SuiFont.caption)
+                        .foregroundColor(SuiColor.subText)
+                }
             }
 
             Button {
