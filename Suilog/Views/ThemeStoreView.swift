@@ -26,12 +26,11 @@ struct ThemeStoreView: View {
                     // テーマ一覧
                     themesGrid
 
-                    // TODO: テーマ購入機能を実装したら以下を有効化する
-                    // // 全テーマパック
-                    // allThemesPackSection
+                    // 全テーマパック
+                    allThemesPackSection
 
-                    // // 購入復元ボタン
-                    // restorePurchasesButton
+                    // 購入復元ボタン
+                    restorePurchasesButton
                 }
                 .padding()
             }
