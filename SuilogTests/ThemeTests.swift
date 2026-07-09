@@ -17,7 +17,8 @@ struct ThemeTests {
 
     @Test("全テーマリストが正しい件数")
     func testAllThemesCount() {
-        #expect(Theme.allThemes.count == 5)
+        // mint / coral は一時無効化中のため3テーマ
+        #expect(Theme.allThemes.count == 3)
     }
 
     @Test("デフォルトテーマのプロパティ")
@@ -297,7 +298,7 @@ struct ThemeTests {
         let manager = ThemeManager()
         // デフォルトでは isDefault=true のテーマだけがアンロック
         let unlocked = manager.unlockedThemes
-        #expect(unlocked.count == 5)
+        #expect(unlocked.count == 3)
         #expect(unlocked.contains(Theme.defaultTheme))
         #expect(unlocked.contains(Theme.yumekawa))
     }
