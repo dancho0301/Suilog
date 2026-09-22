@@ -31,6 +31,7 @@ struct ProfileView: View {
     @State private var showingExportError = false
     @State private var profileIcon: String = CloudSettingsManager.shared.string(forKey: CloudSettingsManager.profileIconKey) ?? "🐠"
     @State private var showingIconPicker = false
+    @State private var showingStatistics = false
 
     /// sheet(item:) 用のエクスポートファイルラッパー
     private struct ExportedFile: Identifiable {
@@ -219,6 +220,17 @@ struct ProfileView: View {
             }
             .presentationDetents([.medium, .large])
         }
+        .sheet(isPresented: $showingStatistics) {
+            NavigationStack {
+                StatisticsView()
+                    .environmentObject(themeManager)
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button("閉じる") { showingStatistics = false }
+                        }
+                    }
+            }
+        }
         .fullScreenCover(isPresented: $showingOnboarding) {
             OnboardingView(isReplay: true) {
                 showingOnboarding = false
@@ -359,28 +371,49 @@ struct ProfileView: View {
     }
 
     private var statsCard: some View {
-        SuiCard(radius: SuiRadius.cardLarge, padding: 18) {
-            HStack(spacing: 0) {
-                StatItem(value: "\(visitedCount)", label: "訪問館数", primary: theme.primaryColor)
-                Divider().frame(height: 36).background(SuiColor.divider)
-                VStack(spacing: 4) {
-                    Text("\(goldCount + silverCount)")
-                        .font(SuiFont.stat)
-                        .foregroundColor(theme.primaryColor)
-                    HStack(spacing: 4) {
-                        Text("🥇\(goldCount)")
-                            .font(.system(size: 11, weight: .semibold))
-                            .foregroundColor(SuiColor.goldText)
-                        Text("🥈\(silverCount)")
-                            .font(.system(size: 11, weight: .semibold))
-                            .foregroundColor(SuiColor.silverText)
+        Button {
+            showingStatistics = true
+        } label: {
+            SuiCard(radius: SuiRadius.cardLarge, padding: 18) {
+                VStack(spacing: 12) {
+                    HStack(spacing: 0) {
+                        StatItem(value: "\(visitedCount)", label: "訪問館数", primary: theme.primaryColor)
+                        Divider().frame(height: 36).background(SuiColor.divider)
+                        VStack(spacing: 4) {
+                            Text("\(goldCount + silverCount)")
+                                .font(SuiFont.stat)
+                                .foregroundColor(theme.primaryColor)
+                            HStack(spacing: 4) {
+                                Text("🥇\(goldCount)")
+                                    .font(.system(size: 11, weight: .semibold))
+                                    .foregroundColor(SuiColor.goldText)
+                                Text("🥈\(silverCount)")
+                                    .font(.system(size: 11, weight: .semibold))
+                                    .foregroundColor(SuiColor.silverText)
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        Divider().frame(height: 36).background(SuiColor.divider)
+                        StatItem(value: "\(earnedBadges.count)", label: "バッジ", primary: theme.primaryColor)
                     }
+
+                    Divider().background(SuiColor.divider)
+
+                    HStack(spacing: 6) {
+                        Image(systemName: "chart.bar.xaxis")
+                            .font(.system(size: 13, weight: .semibold))
+                        Text("くわしい統計を見る")
+                            .font(SuiFont.label)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 12, weight: .semibold))
+                    }
+                    .foregroundColor(theme.primaryColor)
                 }
-                .frame(maxWidth: .infinity)
-                Divider().frame(height: 36).background(SuiColor.divider)
-                StatItem(value: "\(earnedBadges.count)", label: "バッジ", primary: theme.primaryColor)
             }
         }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("profile.statisticsButton")
     }
 
     private var earnedSection: some View {

@@ -252,10 +252,9 @@ extension Theme {
     )
 
     /// 全テーマのリスト
+    /// mint / coral は一時無効化中（配列に戻せば再有効化される。定義は下に残している）
     static let allThemes: [Theme] = [
         .defaultTheme,
-        .mint,
-        .coral,
         .yumekawa,
         .sixteenBit
     ]
