@@ -10,11 +10,11 @@ import SwiftData
 
 enum AquariumMigrationPlan: SchemaMigrationPlan {
     static var schemas: [any VersionedSchema.Type] {
-        [AquariumSchemaV1.self, AquariumSchemaV2.self, AquariumSchemaV3.self, AquariumSchemaV4.self, AquariumSchemaV5.self, AquariumSchemaV6.self, AquariumSchemaV7.self, AquariumSchemaV8.self, AquariumSchemaV9.self, AquariumSchemaV10.self]
+        [AquariumSchemaV1.self, AquariumSchemaV2.self, AquariumSchemaV3.self, AquariumSchemaV4.self, AquariumSchemaV5.self, AquariumSchemaV6.self, AquariumSchemaV7.self, AquariumSchemaV8.self, AquariumSchemaV9.self, AquariumSchemaV10.self, AquariumSchemaV11.self]
     }
 
     static var stages: [MigrationStage] {
-        [migrateV1toV2, migrateV2toV3, migrateV3toV4, migrateV4toV5, migrateV5toV6, migrateV6toV7, migrateV7toV8, migrateV8toV9, migrateV9toV10]
+        [migrateV1toV2, migrateV2toV3, migrateV3toV4, migrateV4toV5, migrateV5toV6, migrateV6toV7, migrateV7toV8, migrateV8toV9, migrateV9toV10, migrateV10toV11]
     }
 
     static let migrateV1toV2 = MigrationStage.lightweight(
@@ -66,5 +66,11 @@ enum AquariumMigrationPlan: SchemaMigrationPlan {
     static let migrateV9toV10 = MigrationStage.lightweight(
         fromVersion: AquariumSchemaV9.self,
         toVersion: AquariumSchemaV10.self
+    )
+
+    // V10→V11: 水族館ごとの生き物候補（creatureIdsフィールド追加、デフォルト空配列で軽量マイグレーション）
+    static let migrateV10toV11 = MigrationStage.lightweight(
+        fromVersion: AquariumSchemaV10.self,
+        toVersion: AquariumSchemaV11.self
     )
 }

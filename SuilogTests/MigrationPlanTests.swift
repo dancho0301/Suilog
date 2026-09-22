@@ -16,20 +16,30 @@ struct MigrationPlanTests {
 
     // MARK: - Schema Configuration Tests
 
-    @Test("スキーマバージョンが10個定義されている")
+    @Test("スキーマバージョンが11個定義されている")
     func testSchemaVersionCount() {
-        #expect(AquariumMigrationPlan.schemas.count == 10)
+        #expect(AquariumMigrationPlan.schemas.count == 11)
     }
 
-    @Test("マイグレーションステージが9つ定義されている")
+    @Test("マイグレーションステージが10個定義されている")
     func testMigrationStageCount() {
-        #expect(AquariumMigrationPlan.stages.count == 9)
+        #expect(AquariumMigrationPlan.stages.count == 10)
     }
 
-    @Test("最新スキーマがV10")
+    @Test("最新スキーマがV11")
     func testLatestSchemaVersion() {
         let latestSchema = AquariumMigrationPlan.schemas.last
-        #expect(latestSchema == AquariumSchemaV10.self)
+        #expect(latestSchema == AquariumSchemaV11.self)
+    }
+
+    @Test("V11のバージョン識別子が11.0.0")
+    func testV11VersionIdentifier() {
+        #expect(AquariumSchemaV11.versionIdentifier == Schema.Version(11, 0, 0))
+    }
+
+    @Test("V11のモデルにAquarium・VisitRecord・CreatureSightingが含まれる")
+    func testV11Models() {
+        #expect(AquariumSchemaV11.models.count == 3)
     }
 
     @Test("V10のバージョン識別子が10.0.0")
@@ -60,6 +70,12 @@ struct MigrationPlanTests {
         #expect(aquarium.businessHours == nil)
         #expect(aquarium.admissionFee == nil)
         #expect(aquarium.phoneNumber == nil)
+    }
+
+    @Test("V11で追加されたAquariumの生き物ID一覧はデフォルト空")
+    func testAquariumCreatureIdsDefault() {
+        let aquarium = Aquarium(name: "テスト水族館")
+        #expect(aquarium.creatureIds.isEmpty)
     }
 
     @Test("VisitRecordの写真ヘルパーが1枚目と2枚目以降を正しく振り分ける")
@@ -101,6 +117,7 @@ struct MigrationPlanTests {
         #expect(AquariumSchemaV8.versionIdentifier == Schema.Version(8, 0, 0))
         #expect(AquariumSchemaV9.versionIdentifier == Schema.Version(9, 0, 0))
         #expect(AquariumSchemaV10.versionIdentifier == Schema.Version(10, 0, 0))
+        #expect(AquariumSchemaV11.versionIdentifier == Schema.Version(11, 0, 0))
     }
 
     // MARK: - InMemory Container Test

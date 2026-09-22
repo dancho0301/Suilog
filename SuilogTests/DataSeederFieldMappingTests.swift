@@ -31,7 +31,8 @@ struct DataSeederFieldMappingTests {
         stableId: String? = nil,
         businessHours: String? = nil,
         admissionFee: String? = nil,
-        phoneNumber: String? = nil
+        phoneNumber: String? = nil,
+        creatureIds: [String]? = nil
     ) -> AquariumData {
         AquariumData(
             name: name,
@@ -47,7 +48,8 @@ struct DataSeederFieldMappingTests {
             officialUrl: "https://example.com",
             businessHours: businessHours,
             admissionFee: admissionFee,
-            phoneNumber: phoneNumber
+            phoneNumber: phoneNumber,
+            creatureIds: creatureIds
         )
     }
 
@@ -64,7 +66,8 @@ struct DataSeederFieldMappingTests {
             stableId: "test-aquarium",
             businessHours: "9:00〜17:00",
             admissionFee: "大人 2,400円",
-            phoneNumber: "03-1234-5678"
+            phoneNumber: "03-1234-5678",
+            creatureIds: ["sea_otter", "penguin"]
         )
 
         let error = DataSeeder.insertAquariums(context: context, aquariumData: [data])
@@ -81,6 +84,7 @@ struct DataSeederFieldMappingTests {
         #expect(aquarium.businessHours == "9:00〜17:00")
         #expect(aquarium.admissionFee == "大人 2,400円")
         #expect(aquarium.phoneNumber == "03-1234-5678")
+        #expect(aquarium.creatureIds == ["sea_otter", "penguin"])
     }
 
     @Test("新フィールドがないデータでは nil のまま")
@@ -99,6 +103,7 @@ struct DataSeederFieldMappingTests {
         #expect(aquarium.businessHours == nil)
         #expect(aquarium.admissionFee == nil)
         #expect(aquarium.phoneNumber == nil)
+        #expect(aquarium.creatureIds.isEmpty)
     }
 
     @Test("都道府県名のregionが7地域に正規化されて保存される（v21形式対応）")
@@ -121,7 +126,8 @@ struct DataSeederFieldMappingTests {
             officialUrl: nil,
             businessHours: nil,
             admissionFee: nil,
-            phoneNumber: nil
+            phoneNumber: nil,
+            creatureIds: nil
         )
 
         let error = DataSeeder.insertAquariums(context: context, aquariumData: [data])
@@ -159,7 +165,8 @@ struct DataSeederFieldMappingTests {
             stableId: "test-aquarium",
             businessHours: "10:00〜18:00",
             admissionFee: "大人 3,000円",
-            phoneNumber: "098-765-4321"
+            phoneNumber: "098-765-4321",
+            creatureIds: ["dolphin"]
         )
         let error = DataSeeder.updateAquariums(context: context, existing: [existing], newData: [newData])
         #expect(error == nil)
@@ -167,6 +174,7 @@ struct DataSeederFieldMappingTests {
         #expect(existing.businessHours == "10:00〜18:00")
         #expect(existing.admissionFee == "大人 3,000円")
         #expect(existing.phoneNumber == "098-765-4321")
+        #expect(existing.creatureIds == ["dolphin"])
         #expect(existing.safeVisits.count == 1) // 訪問記録は保持される
     }
 

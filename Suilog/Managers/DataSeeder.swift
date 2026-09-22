@@ -22,6 +22,12 @@ class DataSeeder {
     private static let dataVersionKey = CloudSettingsManager.aquariumDataVersionKey
     private static let cloudSettings = CloudSettingsManager.shared
 
+    /// アプリが読み取るJSONのフィールドを増やしたときに上げるリビジョン。
+    /// データバージョンが最新でも、この値が端末の保存値より大きければ再取り込みして新フィールドを反映する。
+    /// - 1: creatureIds（水族館ごとの生き物候補）の読み取りを追加
+    static let dataFormatRevision = 1
+    private static let dataFormatRevisionKey = "AquariumDataFormatRevision"
+
     static func seedAquariums(context: ModelContext) async -> SeedResult {
         // 既存の水族館データを取得
         let descriptor = FetchDescriptor<Aquarium>()
@@ -47,9 +53,11 @@ class DataSeeder {
             // 保存されているデータバージョンを取得（iCloud KVS優先）
             let savedVersion = cloudSettings.integer(forKey: dataVersionKey)
             let latestVersion = response.version
+            // 取り込み形式のリビジョンは端末ごとのアプリの読み取り能力に依存するため、ローカルに保存する
+            let savedFormatRevision = UserDefaults.standard.integer(forKey: dataFormatRevisionKey)
 
-            // データバージョンが最新の場合は何もしない
-            if savedVersion >= latestVersion {
+            // データバージョン・取り込み形式ともに最新の場合は何もしない
+            if !needsUpdate(savedVersion: savedVersion, latestVersion: latestVersion, savedFormatRevision: savedFormatRevision) {
                 print("✅ 水族館データは最新です (v\(savedVersion))")
                 return .success
             }
@@ -70,8 +78,15 @@ class DataSeeder {
 
             // データバージョンを更新（iCloud KVSとUserDefaultsの両方に保存）
             cloudSettings.set(latestVersion, forKey: dataVersionKey)
+            UserDefaults.standard.set(dataFormatRevision, forKey: dataFormatRevisionKey)
             return .success
         }
+    }
+
+    /// 水族館データの取り込みが必要か
+    /// - Note: テストから直接呼べるよう internal にしている
+    static func needsUpdate(savedVersion: Int, latestVersion: Int, savedFormatRevision: Int) -> Bool {
+        savedVersion < latestVersion || savedFormatRevision < dataFormatRevision
     }
 
     /// 既存の水族館データを更新（訪問記録を保持）
@@ -123,6 +138,7 @@ class DataSeeder {
                 existingAquarium.businessHours = newAquarium.businessHours
                 existingAquarium.admissionFee = newAquarium.admissionFee
                 existingAquarium.phoneNumber = newAquarium.phoneNumber
+                existingAquarium.creatureIds = newAquarium.creatureIds ?? []
                 // stableIdを設定（既存データにstableIdがなければ設定）
                 if let stableId = newAquarium.stableId, !stableId.isEmpty {
                     existingAquarium.stableId = stableId
@@ -145,7 +161,8 @@ class DataSeeder {
                     officialUrl: newAquarium.officialUrl,
                     businessHours: newAquarium.businessHours,
                     admissionFee: newAquarium.admissionFee,
-                    phoneNumber: newAquarium.phoneNumber
+                    phoneNumber: newAquarium.phoneNumber,
+                    creatureIds: newAquarium.creatureIds ?? []
                 )
                 context.insert(aquarium)
                 print("  ➕ 追加: \(newAquarium.name)")
@@ -193,7 +210,8 @@ class DataSeeder {
                 officialUrl: data.officialUrl,
                 businessHours: data.businessHours,
                 admissionFee: data.admissionFee,
-                phoneNumber: data.phoneNumber
+                phoneNumber: data.phoneNumber,
+                creatureIds: data.creatureIds ?? []
             )
             context.insert(aquarium)
         }

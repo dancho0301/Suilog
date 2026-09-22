@@ -147,7 +147,7 @@ struct NewVisitRecordView: View {
                 ImagePicker(imageData: $cameraPhotoData)
             }
             .sheet(isPresented: $showingCreaturePicker) {
-                CreaturePickerView(selectedIds: $seenCreatureIds)
+                CreaturePickerView(selectedIds: $seenCreatureIds, suggestedIds: aquarium.creatureIds)
                     .environmentObject(themeManager)
                     .environmentObject(creatureStore)
             }
@@ -431,6 +431,10 @@ struct NewVisitRecordView: View {
             VStack(alignment: .leading, spacing: 10) {
                 fieldLabel("会った生き物（任意）")
 
+                if !suggestedCreatures.isEmpty {
+                    suggestedCreatureChips
+                }
+
                 if seenCreatureIds.isEmpty {
                     Text("出会った生き物を記録すると、図鑑が埋まっていきます")
                         .font(SuiFont.caption)
@@ -450,7 +454,7 @@ struct NewVisitRecordView: View {
                 } label: {
                     HStack(spacing: 6) {
                         Image(systemName: "plus.circle")
-                        Text(seenCreatureIds.isEmpty ? "会った生き物を選ぶ" : "選び直す")
+                        Text(creaturePickerButtonTitle)
                             .font(SuiFont.label)
                     }
                     .foregroundColor(theme.primaryColor)
@@ -458,6 +462,59 @@ struct NewVisitRecordView: View {
                 .accessibilityIdentifier("newRecord.creaturePickerButton")
             }
         }
+    }
+
+    /// この水族館で会える生き物（ピッカーを開かずにタップで選べるよう候補として出す）
+    private var suggestedCreatures: [Creature] {
+        aquarium.creatureIds.compactMap { creatureStore.creature(for: $0) }
+    }
+
+    private var suggestedCreatureChips: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("この水族館の生き物")
+                .font(SuiFont.caption)
+                .foregroundColor(SuiColor.midText)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(suggestedCreatures) { creature in
+                        suggestedCreatureChip(creature)
+                    }
+                }
+            }
+        }
+    }
+
+    private func suggestedCreatureChip(_ creature: Creature) -> some View {
+        let selected = seenCreatureIds.contains(creature.id)
+        return Button {
+            if selected {
+                seenCreatureIds.remove(creature.id)
+            } else {
+                seenCreatureIds.insert(creature.id)
+            }
+        } label: {
+            HStack(spacing: 4) {
+                Text(creature.emoji)
+                Text(creature.name)
+                    .font(SuiFont.label)
+                Image(systemName: selected ? "checkmark" : "plus")
+                    .font(.system(size: 11, weight: .bold))
+            }
+            .foregroundColor(selected ? .white : theme.primaryColor)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 7)
+            .background(
+                Capsule()
+                    .fill(selected ? theme.primaryColor : theme.primaryBg)
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("newRecord.suggestedCreature.\(creature.id)")
+    }
+
+    private var creaturePickerButtonTitle: String {
+        if !seenCreatureIds.isEmpty { return "選び直す" }
+        return suggestedCreatures.isEmpty ? "会った生き物を選ぶ" : "ほかの生き物を探す"
     }
 
     private var selectedCreatureEmojis: String {

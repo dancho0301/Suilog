@@ -14,6 +14,8 @@ struct CreaturePickerView: View {
 
     /// 選択中の生き物ID（呼び出し元とバインド）
     @Binding var selectedIds: Set<String>
+    /// チェックイン先の水族館で会える生き物のID（先頭に候補として表示）
+    var suggestedIds: [String] = []
 
     @State private var searchText = ""
 
@@ -29,6 +31,11 @@ struct CreaturePickerView: View {
             || creature.nameEn.localizedCaseInsensitiveContains(searchText)
     }
 
+    /// 候補の生き物（マスターに存在するものだけ）
+    private var suggestedCreatures: [Creature] {
+        suggestedIds.compactMap { creatureStore.creature(for: $0) }
+    }
+
     private var filteredGroups: [(category: CreatureCategory, creatures: [Creature])] {
         creatureStore.groupedByCategory
             .map { (category: $0.category, creatures: $0.creatures.filter(matches)) }
@@ -38,6 +45,14 @@ struct CreaturePickerView: View {
     var body: some View {
         NavigationStack {
             List {
+                // 検索していないときは、この水族館の生き物を先頭に出して選びやすくする
+                if !isSearching && !suggestedCreatures.isEmpty {
+                    Section("この水族館の生き物") {
+                        ForEach(suggestedCreatures) { creature in
+                            row(creature)
+                        }
+                    }
+                }
                 ForEach(filteredGroups, id: \.category) { group in
                     Section(group.category.displayName) {
                         ForEach(group.creatures) { creature in
@@ -90,7 +105,7 @@ struct CreaturePickerView: View {
 }
 
 #Preview {
-    CreaturePickerView(selectedIds: .constant([]))
+    CreaturePickerView(selectedIds: .constant([]), suggestedIds: ["sea_otter", "penguin"])
         .environmentObject(ThemeManager())
         .environmentObject(CreatureStore())
 }
