@@ -8,7 +8,6 @@
 
 import SwiftUI
 import SwiftData
-import Combine
 
 struct MyTankView: View {
     @Environment(\.modelContext) private var modelContext
@@ -173,7 +172,23 @@ private struct TankCardView: View {
     let visits: [VisitRecord]
     let theme: Theme
 
+    @State private var simulation = TankSimulation()
+    @Environment(\.scenePhase) private var scenePhase
+
+    private var specs: [TankCreatureSpec] {
+        visits.enumerated().map { index, visit in
+            TankCreatureSpec(
+                id: visit.id,
+                creatureName: visit.aquarium?.representativeFish ?? "fish.fill",
+                sizeLevel: visit.aquarium?.fishIconSize ?? 3,
+                isLocationCheckIn: visit.checkInType == .location,
+                colorIndex: index
+            )
+        }
+    }
+
     var body: some View {
+        let specs = self.specs
         GeometryReader { geo in
             ZStack {
                 LinearGradient(
@@ -188,8 +203,6 @@ private struct TankCardView: View {
                     .frame(width: geo.size.width, height: geo.size.height)
                     .clipped()
 
-                TankBubblesView(bubbleColor: theme.bubbleColor)
-
                 if visits.isEmpty {
                     VStack(spacing: 12) {
                         Image(systemName: "fish")
@@ -199,19 +212,41 @@ private struct TankCardView: View {
                             .font(SuiFont.body)
                             .foregroundColor(.white.opacity(0.9))
                     }
-                } else {
-                    ForEach(Array(visits.enumerated()), id: \.element.id) { index, visit in
-                        TankFish(
-                            index: index,
-                            total: visits.count,
-                            checkInType: visit.checkInType,
-                            representativeFish: visit.aquarium?.representativeFish ?? "fish.fill",
-                            fishIconSize: visit.aquarium?.fishIconSize ?? 3,
-                            theme: theme,
-                            containerSize: geo.size
-                        )
-                    }
                 }
+
+                TimelineView(.animation(minimumInterval: nil, paused: scenePhase != .active)) { context in
+                    let _ = simulation.update(specs: specs, date: context.date, size: geo.size)
+                    let time = simulation.time
+                    let creatures = simulation.creatures
+                    let bubbles = simulation.bubbles
+
+                    ZStack {
+                        // 水面から差し込む光
+                        Rectangle()
+                            .colorEffect(ShaderLibrary.tankLight(
+                                .boundingRect,
+                                .float(time.truncatingRemainder(dividingBy: 3600)),
+                                .float(0.55)
+                            ))
+                            .blendMode(.plusLighter)
+
+                        // 奥の浮遊物（マリンスノー）
+                        marineSnow(time: time, count: 28, near: false)
+
+                        ForEach(creatures) { creature in
+                            if creature.isActive {
+                                TankCreatureView(creature: creature, theme: theme)
+                            }
+                        }
+
+                        bubbleLayer(bubbles)
+
+                        // 手前の浮遊物
+                        marineSnow(time: time, count: 10, near: true)
+                    }
+                    .frame(width: geo.size.width, height: geo.size.height)
+                }
+                .allowsHitTesting(false)
 
                 // カード内「海底」装飾
                 VStack {
@@ -231,196 +266,127 @@ private struct TankCardView: View {
             .suiShadow(.cardEmphasized(primary: theme.primaryColor))
         }
     }
+
+    // MARK: 泡
+
+    private func bubbleLayer(_ bubbles: [TankBubbleParticle]) -> some View {
+        let color = theme.bubbleColor
+        return Canvas { ctx, _ in
+            for bubble in bubbles {
+                let rect = CGRect(
+                    x: bubble.x - bubble.size / 2,
+                    y: bubble.y - bubble.size / 2,
+                    width: bubble.size,
+                    height: bubble.size
+                )
+                // 水面付近で消えていく
+                let alpha = min(1, max(0, bubble.y / 30))
+                ctx.opacity = alpha
+                let circle = Path(ellipseIn: rect)
+                ctx.fill(circle, with: .color(color.opacity(0.22)))
+                ctx.stroke(circle, with: .color(color.opacity(0.7)), lineWidth: 0.8)
+                // ハイライト
+                let highlight = CGRect(
+                    x: rect.minX + bubble.size * 0.22,
+                    y: rect.minY + bubble.size * 0.18,
+                    width: bubble.size * 0.3,
+                    height: bubble.size * 0.3
+                )
+                ctx.fill(Path(ellipseIn: highlight), with: .color(.white.opacity(0.75)))
+            }
+        }
+    }
+
+    // MARK: マリンスノー
+
+    /// 時刻から位置が決まる浮遊物（状態を持たない）
+    private func marineSnow(time: Double, count: Int, near: Bool) -> some View {
+        Canvas { ctx, size in
+            let seedOffset = near ? 1000.0 : 0.0
+            for i in 0..<count {
+                let n = Double(i) + seedOffset
+                let r1 = Self.hash(n * 3 + 1)
+                let r2 = Self.hash(n * 3 + 2)
+                let r3 = Self.hash(n * 3 + 3)
+                let speed = (near ? 7.0 : 3.0) + r2 * (near ? 8.0 : 5.0)
+                let span = Double(size.height) + 20
+                let y = (r1 * span + time * speed).truncatingRemainder(dividingBy: span) - 10
+                let x = r3 * Double(size.width) + sin(time * 0.3 + r1 * 6.283) * (near ? 12 : 6)
+                let radius = near ? 1.2 + r2 * 1.4 : 0.5 + r2 * 0.9
+                // ゆっくり明滅させる
+                let twinkle = 0.6 + 0.4 * sin(time * (0.5 + r3) + r2 * 6.283)
+                ctx.opacity = (near ? 0.35 : 0.45) * twinkle
+                let rect = CGRect(x: x - radius, y: y - radius, width: radius * 2, height: radius * 2)
+                ctx.fill(Path(ellipseIn: rect), with: .color(.white))
+            }
+        }
+        .blur(radius: near ? 0.8 : 0)
+    }
+
+    nonisolated private static func hash(_ n: Double) -> Double {
+        let v = sin(n * 12.9898) * 43758.5453
+        return v - v.rounded(.down)
+    }
 }
 
-// MARK: - カード内で泳ぐ魚
+// MARK: - カード内で泳ぐ生き物
 
-private struct TankFish: View {
-    let index: Int
-    let total: Int
-    let checkInType: CheckInType
-    let representativeFish: String
-    let fishIconSize: Int
+private struct TankCreatureView: View {
+    let creature: TankCreature
     let theme: Theme
-    let containerSize: CGSize
-
-    @State private var startTime: Date = Date()
-    @State private var startDelay: Double
-    @State private var cycleDuration: Double = Double.random(in: 18...28)
-    @State private var cyclePause: Double = Double.random(in: 2...6)
-    @State private var wobblePhase: Double = Double.random(in: 0...1)
-
-    init(
-        index: Int,
-        total: Int,
-        checkInType: CheckInType,
-        representativeFish: String,
-        fishIconSize: Int,
-        theme: Theme,
-        containerSize: CGSize
-    ) {
-        self.index = index
-        self.total = total
-        self.checkInType = checkInType
-        self.representativeFish = representativeFish
-        self.fishIconSize = fishIconSize
-        self.theme = theme
-        self.containerSize = containerSize
-
-        // 魚を 1 匹あたり 0.8 秒の間隔で順に登場させる。
-        // 総数が多い場合は最大 30 秒に収めるよう間隔を狭める。
-        let cap: Double = 30
-        let idealStride: Double = 0.8
-        let stride = min(idealStride, cap / Double(max(total, 1)))
-        let systematic = Double(index) * stride
-        let jitter = Double.random(in: 0...stride)
-        self._startDelay = State(initialValue: systematic + jitter)
-    }
-
-    private var size: CGFloat {
-        let base: CGFloat
-        switch fishIconSize {
-        case 1: base = 24
-        case 2: base = 30
-        case 3: base = 36
-        case 4: base = 44
-        case 5: base = 56
-        default: base = 36
-        }
-        return base
-    }
 
     private var fishColor: Color {
-        switch checkInType {
-        case .location:
-            let colors = theme.locationCheckInColors
-            return colors.isEmpty ? .yellow : colors[index % colors.count]
-        case .manual:
-            let colors = theme.manualCheckInColors
-            return colors.isEmpty ? .gray : colors[index % colors.count]
-        }
-    }
-
-    private var isCustomAsset: Bool { !representativeFish.contains(".") }
-
-    private var baseY: CGFloat {
-        let laneCount = max(total, 3)
-        let laneHeight = containerSize.height / CGFloat(laneCount)
-        // 黄金比で index をシャッフルし、出現順と Y 位置の相関を断つ
-        let goldenRatio = 0.6180339887498949
-        let fraction = (Double(index) * goldenRatio).truncatingRemainder(dividingBy: 1)
-        let shuffledLane = min(Int(fraction * Double(laneCount)), laneCount - 1)
-        return laneHeight * (CGFloat(shuffledLane) + 0.5)
-    }
-
-    private func currentPosition(at date: Date) -> CGPoint {
-        let elapsed = date.timeIntervalSince(startTime) - startDelay
-        let leftHidden = CGPoint(x: -size * 1.5, y: baseY)
-        guard elapsed >= 0, containerSize.width > 0 else { return leftHidden }
-
-        let cycleLength = cycleDuration + cyclePause
-        let cyclePos = elapsed.truncatingRemainder(dividingBy: cycleLength)
-        guard cyclePos < cycleDuration else { return leftHidden }
-
-        let t = cyclePos / cycleDuration
-        let startX: CGFloat = -size * 1.5
-        let endX: CGFloat = containerSize.width + size * 1.5
-        let x = startX + (endX - startX) * CGFloat(t)
-        let wobble = sin((t + wobblePhase) * .pi * 2) * 8
-        return CGPoint(x: x, y: baseY + wobble)
+        let colors = creature.spec.isLocationCheckIn ? theme.locationCheckInColors : theme.manualCheckInColors
+        guard !colors.isEmpty else { return creature.spec.isLocationCheckIn ? .yellow : .gray }
+        return colors[creature.spec.colorIndex % colors.count]
     }
 
     var body: some View {
-        TimelineView(.animation) { context in
-            let pos = currentPosition(at: context.date)
-            Group {
-                if isCustomAsset {
-                    Image(theme.creatureImageName(representativeFish))
-                        .renderingMode(.original)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: size, height: size)
-                } else {
-                    Image(systemName: representativeFish)
-                        .font(.system(size: size))
-                        .foregroundColor(fishColor)
-                }
-            }
-            .position(x: pos.x, y: pos.y)
-        }
-    }
-}
+        let size = creature.renderSize
+        let undulation = creature.undulationAmount
+        let sweep = creature.tailSweepAmount
+        let scale = creature.renderScale
+        let tint = creature.tint
 
-// MARK: - 水槽カード内の泡
-
-private struct TankBubblesView: View {
-    let bubbleColor: Color
-
-    @State private var bubbles: [BubbleData] = []
-    private let timer = Timer.publish(every: 1.2, on: .main, in: .common).autoconnect()
-
-    var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                ForEach(bubbles) { bubble in
-                    TankBubble(
-                        data: bubble,
-                        containerHeight: geo.size.height,
-                        bubbleColor: bubbleColor
-                    )
-                }
-            }
-            .onAppear { addBubble(width: geo.size.width) }
-            .onReceive(timer) { _ in addBubble(width: geo.size.width) }
-        }
+        creatureImage(size: size)
+            .frame(width: size, height: size)
+            // 体のうねり（尾から頭へ伝わる波）
+            .distortionEffect(
+                ShaderLibrary.creatureSwim(
+                    .boundingRect,
+                    .float(creature.tailPhase),
+                    .float(undulation),
+                    .float(sweep),
+                    .float(creature.profile.wavelength)
+                ),
+                maxSampleOffset: CGSize(width: size * sweep + 1, height: size * undulation + 1),
+                isEnabled: undulation > 0 || sweep > 0
+            )
+            .scaleEffect(x: scale.x, y: scale.y)
+            // 進行方向への傾き
+            .rotationEffect(.radians(creature.renderRotation))
+            // 反転は体をひねるように Y 軸回転させる
+            .rotation3DEffect(.radians(creature.yaw), axis: (x: 0, y: 1, z: 0), perspective: 0.4)
+            // 奥行き：奥ほど青く、淡く、ぼやける
+            .saturation(creature.saturation)
+            .colorMultiply(Color(red: tint.red, green: tint.green, blue: tint.blue))
+            .blur(radius: creature.blurRadius)
+            .opacity(creature.opacity)
+            .position(x: creature.x, y: creature.y + creature.renderOffsetY)
     }
 
-    private func addBubble(width: CGFloat) {
-        guard width > 0 else { return }
-        let bubble = BubbleData(
-            id: UUID(),
-            startX: CGFloat.random(in: 10...(width - 10)),
-            size: CGFloat.random(in: 6...12),
-            duration: Double.random(in: 3...5)
-        )
-        bubbles.append(bubble)
-        DispatchQueue.main.asyncAfter(deadline: .now() + bubble.duration) {
-            bubbles.removeAll { $0.id == bubble.id }
+    @ViewBuilder
+    private func creatureImage(size: Double) -> some View {
+        if creature.spec.isCustomAsset {
+            Image(theme.creatureImageName(creature.spec.creatureName))
+                .renderingMode(.original)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+        } else {
+            Image(systemName: creature.spec.creatureName)
+                .font(.system(size: size))
+                .foregroundColor(fishColor)
         }
-    }
-}
-
-private struct BubbleData: Identifiable {
-    let id: UUID
-    let startX: CGFloat
-    let size: CGFloat
-    let duration: Double
-}
-
-private struct TankBubble: View {
-    let data: BubbleData
-    let containerHeight: CGFloat
-    let bubbleColor: Color
-
-    @State private var y: CGFloat = 0
-    @State private var opacity: Double = 0.7
-
-    var body: some View {
-        Circle()
-            .fill(bubbleColor.opacity(0.6))
-            .overlay(Circle().stroke(bubbleColor.opacity(0.4), lineWidth: 0.5))
-            .frame(width: data.size, height: data.size)
-            .position(x: data.startX, y: y)
-            .opacity(opacity)
-            .onAppear {
-                y = containerHeight + data.size
-                withAnimation(.easeOut(duration: data.duration)) {
-                    y = -data.size
-                }
-                withAnimation(.easeIn(duration: data.duration)) {
-                    opacity = 0
-                }
-            }
     }
 }
 
