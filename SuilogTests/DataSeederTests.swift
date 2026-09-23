@@ -71,7 +71,8 @@ struct DataSeederTests {
             officialUrl: nil,
             businessHours: nil,
             admissionFee: nil,
-            phoneNumber: nil
+            phoneNumber: nil,
+            creatureIds: nil
         )
     }
 
@@ -331,5 +332,25 @@ struct DataSeederTests {
 
         #expect(resultById1?.name == "水族館B") // stableId "id-a" のレコードが "水族館B" に更新
         #expect(resultById2?.name == "水族館A") // stableId "id-b" のレコードが "水族館A" に更新
+    }
+
+    // MARK: - 取り込み要否の判定
+
+    @Test("データバージョンが新しければ取り込む")
+    @MainActor
+    func testNeedsUpdateWhenVersionIsNewer() {
+        #expect(DataSeeder.needsUpdate(savedVersion: 22, latestVersion: 23, savedFormatRevision: DataSeeder.dataFormatRevision))
+    }
+
+    @Test("データバージョンが同じでも取り込み形式のリビジョンが古ければ取り込む")
+    @MainActor
+    func testNeedsUpdateWhenFormatRevisionIsOlder() {
+        #expect(DataSeeder.needsUpdate(savedVersion: 23, latestVersion: 23, savedFormatRevision: DataSeeder.dataFormatRevision - 1))
+    }
+
+    @Test("データバージョン・取り込み形式ともに最新なら取り込まない")
+    @MainActor
+    func testNoUpdateWhenAllUpToDate() {
+        #expect(!DataSeeder.needsUpdate(savedVersion: 23, latestVersion: 23, savedFormatRevision: DataSeeder.dataFormatRevision))
     }
 }

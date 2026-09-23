@@ -27,6 +27,8 @@ struct AquariumData: Codable {
     let admissionFee: String?
     /// 電話番号
     let phoneNumber: String?
+    /// この水族館で会える生き物のID一覧
+    let creatureIds: [String]?
 }
 
 // カスタムデコード: stableId が無いJSON（v21形式）では "id" キーをフォールバックとして使う。
@@ -35,7 +37,7 @@ extension AquariumData {
     private enum JSONKeys: String, CodingKey {
         case name, latitude, longitude, description, region
         case representativeFish, fishIconSize, address, affiliateLink
-        case stableId, id, officialUrl, businessHours, admissionFee, phoneNumber
+        case stableId, id, officialUrl, businessHours, admissionFee, phoneNumber, creatureIds
     }
 
     init(from decoder: Decoder) throws {
@@ -56,6 +58,7 @@ extension AquariumData {
         businessHours = try container.decodeIfPresent(String.self, forKey: .businessHours)
         admissionFee = try container.decodeIfPresent(String.self, forKey: .admissionFee)
         phoneNumber = try container.decodeIfPresent(String.self, forKey: .phoneNumber)
+        creatureIds = try container.decodeIfPresent([String].self, forKey: .creatureIds)
     }
 }
 

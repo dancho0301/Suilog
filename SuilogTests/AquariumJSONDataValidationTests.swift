@@ -122,4 +122,25 @@ struct AquariumJSONDataValidationTests {
         let ids = response.aquariums.compactMap(\.stableId).filter { !$0.isEmpty }
         #expect(Set(ids).count == ids.count, "stableId が重複していないこと")
     }
+
+    // MARK: - 生き物候補
+
+    @Test("creatureIds は生き物マスターに存在するIDで、水族館内で重複していない")
+    func testCreatureIdsExistInMaster() throws {
+        guard let response = try loadResponse() else { return }
+        let creaturesURL = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent() // SuilogTests/
+            .deletingLastPathComponent() // リポジトリルート
+            .appendingPathComponent("Suilog/Resources/creatures.json")
+        guard let data = try? Data(contentsOf: creaturesURL) else { return }
+        let masterIds = Set(try JSONDecoder().decode(CreatureResponse.self, from: data).creatures.map(\.id))
+
+        for aquarium in response.aquariums {
+            let ids = aquarium.creatureIds ?? []
+            for id in ids {
+                #expect(masterIds.contains(id), "\(aquarium.name) の creatureIds に不明なID: \(id)")
+            }
+            #expect(Set(ids).count == ids.count, "\(aquarium.name) の creatureIds が重複している")
+        }
+    }
 }

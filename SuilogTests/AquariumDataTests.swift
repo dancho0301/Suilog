@@ -206,8 +206,9 @@ struct AquariumDataTests {
 
         // idキーがstableIdとして読み込まれる
         #expect(aquarium.stableId == "sunpiazza-aquarium")
-        // 未知のフィールド（creatureIds）は無視される
         #expect(aquarium.name == "新さっぽろサンピアザ水族館")
+        // creatureIds が読み込まれる
+        #expect(aquarium.creatureIds == ["clione", "goldfish"])
     }
 
     @Test("stableIdとidの両方がある場合はstableIdを優先")

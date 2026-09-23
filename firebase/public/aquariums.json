@@ -1,5 +1,5 @@
 {
-  "version": 23,
+  "version": 24,
   "aquariums": [
     {
       "name": "新さっぽろサンピアザ水族館",
@@ -14,78 +14,26 @@
       "officialUrl": "https://www.sunpiazza-aquarium.com/",
       "id": "sunpiazza-aquarium",
       "creatureIds": [
-        "african_penguin",
-        "angelfish",
-        "arabesque_greenling",
         "asian_small_clawed_otter",
-        "atlantic_horseshoe_crab",
-        "axolotl",
-        "banded_archerfish",
-        "bering_wolffish",
-        "black_ghost_knifefish",
-        "black_pacu",
-        "black_spotted_puffer",
-        "blue_crayfish",
-        "blue_damselfish",
-        "cardinal_tetra",
-        "chum_salmon",
-        "clione",
-        "coconut_crab",
-        "common_carp",
+        "spotted_seal",
+        "african_penguin",
         "electric_eel",
+        "bering_wolffish",
+        "clione",
+        "giant_pacific_octopus",
+        "japanese_bullhead_shark",
+        "ocellaris_clownfish",
+        "starfish",
+        "axolotl",
+        "humphead_wrasse",
+        "piranha",
+        "angelfish",
+        "banded_archerfish",
         "fringed_blenny",
         "giant_isopod",
-        "giant_pacific_octopus",
-        "giant_snakehead",
-        "goldfish",
-        "guppy",
-        "hermit_crab",
-        "honeycomb_moray",
-        "horse_hair_crab",
-        "huchon_perryi",
-        "humphead_wrasse",
-        "japanese_dace",
-        "japanese_eel",
-        "japanese_spider_crab",
-        "kokanee_salmon",
-        "lake_minnow",
+        "hucho",
         "leaf_fish",
-        "longhorn_cowfish",
-        "masu_salmon",
-        "moon_jellyfish",
-        "moorish_idol",
-        "mudskipper",
-        "neon_tetra",
-        "nine_spined_stickleback",
-        "north_pacific_giant_octopus",
-        "ocellaris_clownfish",
-        "oscar_fish",
-        "pennant_coralfish",
-        "piranha",
-        "rainbow_trout",
-        "red_lionfish",
-        "red_tail_catfish",
-        "ripsaw_catfish",
-        "rockhopper_penguin",
-        "royal_blue_tang",
-        "salmon",
-        "schlegels_black_rockfish",
-        "sea_cucumber",
-        "sea_urchin",
-        "seahorse",
-        "seal",
-        "silver_arowana",
-        "snow_crab",
-        "splendid_garden_eel",
-        "spotted_garden_eel",
-        "spotted_moray_eel",
-        "starfish",
-        "starspotted_smooth_hound",
-        "stonefish",
-        "striped_beakfish",
-        "threespined_stickleback",
-        "whitespotted_char",
-        "yellow_boxfish"
+        "moon_jellyfish"
       ],
       "businessHours": "10:00～17:00（入館は閉館30分前まで）"
     },
@@ -102,7 +50,13 @@
       "officialUrl": "https://salmon-museum.jp/",
       "id": "sapporo-salmon-museum",
       "creatureIds": [
-        "salmon"
+        "salmon",
+        "masu_salmon",
+        "common_carp",
+        "japanese_dace",
+        "rainbow_trout",
+        "freshwater_fish",
+        "chum_salmon"
       ],
       "businessHours": "9:15～16:45（休館日: 月曜（祝日の場合は翌平日）、年末年始）"
     },
@@ -119,7 +73,11 @@
       "officialUrl": "https://aoao-sapporo.blue",
       "id": "aoao-sapporo",
       "creatureIds": [
-        "penguin"
+        "penguin",
+        "rockhopper_penguin",
+        "spotted_garden_eel",
+        "little_penguin",
+        "moon_jellyfish"
       ],
       "businessHours": "10:00～22:00（最終入館 21:00）"
     },
@@ -136,7 +94,22 @@
       "officialUrl": "https://otaru-aq.jp/",
       "id": "otaru-aquarium",
       "creatureIds": [
-        "sealion"
+        "sealion",
+        "humboldt_penguin",
+        "gentoo_penguin",
+        "spotted_seal",
+        "walrus",
+        "bottlenose_dolphin",
+        "asian_small_clawed_otter",
+        "starfish",
+        "giant_pacific_octopus",
+        "porcupinefish",
+        "sea_turtle",
+        "crab",
+        "jellyfish",
+        "clione",
+        "green_sea_turtle",
+        "shark"
       ],
       "businessHours": "通常期 9:00～17:00（最終入館 16:30）"
     },
@@ -153,7 +126,17 @@
       "officialUrl": "https://www.city.wakkanai.hokkaido.jp/suizokukan/",
       "id": "noshappu-aquarium",
       "creatureIds": [
-        "hucho"
+        "hucho",
+        "spotted_seal",
+        "giant_pacific_octopus",
+        "arabesque_greenling",
+        "bering_wolffish",
+        "penguin",
+        "coral_fish",
+        "crab",
+        "clione",
+        "electric_eel",
+        "humboldt_penguin"
       ],
       "businessHours": "4/29～10/31 9:00～17:00（入館は16:40まで）、11/1～3/31 10:00～16:00（入館は15:40まで）"
     },
@@ -170,7 +153,9 @@
       "officialUrl": "https://bifukaonsen.com/",
       "id": "bifuka-sturgeon-museum",
       "creatureIds": [
-        "sturgeon"
+        "sturgeon",
+        "hucho",
+        "masu_salmon"
       ]
     },
     {
@@ -186,7 +171,8 @@
       "officialUrl": "https://o-tower.co.jp",
       "id": "oohotsuku-tokkari-center",
       "creatureIds": [
-        "seal"
+        "seal",
+        "spotted_seal"
       ]
     },
     {
@@ -218,7 +204,12 @@
       "officialUrl": "http://shibetsu-salmon.org/",
       "id": "shibetsu-salmon-museum",
       "creatureIds": [
-        "salmon"
+        "salmon",
+        "hucho",
+        "chum_salmon",
+        "sturgeon",
+        "schlegels_black_rockfish",
+        "clione"
       ],
       "businessHours": "9:30～17:00（入館受付 16:30まで。12月～1月は冬季休館）"
     },
@@ -235,7 +226,14 @@
       "officialUrl": "https://www.aquarium.onneyu.com/",
       "id": "onneyu-aquarium",
       "creatureIds": [
-        "hucho"
+        "hucho",
+        "arapaima",
+        "japanese_dace",
+        "kokanee_salmon",
+        "arowana",
+        "goldfish",
+        "freshwater_fish",
+        "coral_fish"
       ]
     },
     {
@@ -251,7 +249,9 @@
       "officialUrl": "https://chitose-aq.jp/",
       "id": "chitose-aquarium",
       "creatureIds": [
-        "hucho"
+        "hucho",
+        "salmon",
+        "freshwater_fish"
       ],
       "businessHours": "9:00～17:00"
     },
@@ -268,7 +268,12 @@
       "officialUrl": "https://muroran-aquarium.jp/",
       "id": "muroran-aquarium",
       "creatureIds": [
-        "seal"
+        "seal",
+        "spotted_seal",
+        "humboldt_penguin",
+        "starfish",
+        "coral_fish",
+        "jellyfish"
       ]
     },
     {
@@ -284,7 +289,26 @@
       "officialUrl": "https://www.nixe.co.jp",
       "id": "noboribetsu-marine-park-nixe",
       "creatureIds": [
-        "penguin"
+        "penguin",
+        "japanese_sardine",
+        "northern_fur_seal",
+        "goldfish",
+        "axolotl",
+        "bering_wolffish",
+        "sand_tiger_shark",
+        "sturgeon",
+        "african_penguin",
+        "arabesque_greenling",
+        "bottlenose_dolphin",
+        "coral",
+        "gentoo_penguin",
+        "humphead_wrasse",
+        "japanese_horse_mackerel",
+        "king_penguin",
+        "ocellaris_clownfish",
+        "pacific_white_sided_dolphin",
+        "spotted_garden_eel",
+        "jellyfish"
       ],
       "businessHours": "9:00～17:00（最終入園 16:30）"
     },
@@ -301,7 +325,14 @@
       "officialUrl": "http://www.sennosuke.net/pukupuku/",
       "id": "kushiro-aquarium-pukupuku",
       "creatureIds": [
-        "pufferfish"
+        "pufferfish",
+        "spotted_garden_eel",
+        "moon_jellyfish",
+        "piranha",
+        "starfish",
+        "splendid_garden_eel",
+        "shark",
+        "coral_fish"
       ],
       "businessHours": "9:00～21:00"
     },
@@ -318,7 +349,26 @@
       "officialUrl": "https://asamushi-aqua.com/",
       "id": "asamushi-aquarium",
       "creatureIds": [
-        "dolphin"
+        "dolphin",
+        "humboldt_penguin",
+        "scallop",
+        "japanese_dace",
+        "masu_salmon",
+        "pacific_white_sided_dolphin",
+        "spotted_seal",
+        "bering_wolffish",
+        "fringed_blenny",
+        "giant_pacific_octopus",
+        "arowana",
+        "green_sea_turtle",
+        "angelfish",
+        "hermit_crab",
+        "hucho",
+        "japanese_fire_belly_newt",
+        "loggerhead_turtle",
+        "northern_fur_seal",
+        "red_tail_catfish",
+        "spotted_jelly"
       ],
       "businessHours": "9:00～17:00（最終入館 16:30）"
     },
@@ -335,7 +385,18 @@
       "officialUrl": "https://marient.org/",
       "id": "marient",
       "creatureIds": [
-        "crab"
+        "crab",
+        "green_sea_turtle",
+        "japanese_eel",
+        "blue_damselfish",
+        "goldfish",
+        "hermit_crab",
+        "starfish",
+        "salmon",
+        "squid",
+        "coral_fish",
+        "freshwater_fish",
+        "shark"
       ],
       "businessHours": "通常 9:00～17:00、7/1～8/31 9:00～18:00"
     },
@@ -352,7 +413,21 @@
       "officialUrl": "https://www.moguranpia.com/",
       "id": "moguranpia",
       "creatureIds": [
-        "clione"
+        "clione",
+        "starfish",
+        "fringed_blenny",
+        "schlegels_black_rockfish",
+        "common_octopus",
+        "japanese_flounder",
+        "medaka",
+        "bering_wolffish",
+        "giant_isopod",
+        "japanese_horse_mackerel",
+        "sea_cucumber",
+        "striped_beakfish",
+        "jellyfish",
+        "crab",
+        "shark"
       ],
       "businessHours": "4月～10月 9:00～18:00、11月～3月 10:00～16:00（最終入館は30分前まで）"
     },
@@ -385,7 +460,22 @@
       "officialUrl": "https://www.uminomori.jp",
       "id": "sendai-uminomori-aquarium",
       "creatureIds": [
-        "dolphin"
+        "dolphin",
+        "bottlenose_dolphin",
+        "african_penguin",
+        "humboldt_penguin",
+        "japanese_spider_crab",
+        "moon_jellyfish",
+        "japanese_sardine",
+        "rockhopper_penguin",
+        "gentoo_penguin",
+        "king_penguin",
+        "baikal_seal",
+        "banded_archerfish",
+        "green_sea_turtle",
+        "spotted_garden_eel",
+        "sturgeon",
+        "sealion"
       ],
       "businessHours": "9:00～17:30（最終入館 17:00）"
     },
@@ -402,7 +492,10 @@
       "officialUrl": "https://aquaterrace.co.jp/",
       "id": "aquaterrace-nishikigaoka",
       "creatureIds": [
-        "arowana"
+        "arowana",
+        "arapaima",
+        "coral_fish",
+        "freshwater_fish"
       ]
     },
     {
@@ -418,7 +511,26 @@
       "officialUrl": "https://www.gao-aqua.jp",
       "id": "oga-aquarium-gao",
       "creatureIds": [
-        "seal"
+        "seal",
+        "coral",
+        "ocellaris_clownfish",
+        "polar_bear",
+        "california_sea_lion",
+        "rockhopper_penguin",
+        "spotted_jelly",
+        "moon_jellyfish",
+        "spotted_seal",
+        "gentoo_penguin",
+        "arapaima",
+        "green_sea_turtle",
+        "red_tail_catfish",
+        "ripsaw_catfish",
+        "masu_salmon",
+        "sea_anemone",
+        "bering_wolffish",
+        "blue_damselfish",
+        "common_carp",
+        "electric_eel"
       ],
       "businessHours": "9:00～17:00（最終入館 16:00）"
     },
@@ -435,7 +547,11 @@
       "officialUrl": "https://kamo-kurage.jp/",
       "id": "kamo-aquarium",
       "creatureIds": [
-        "jellyfish"
+        "jellyfish",
+        "spotted_seal",
+        "moon_jellyfish",
+        "california_sea_lion",
+        "freshwater_fish"
       ]
     },
     {
@@ -451,7 +567,26 @@
       "officialUrl": "https://www.aquamarine.or.jp/",
       "id": "aquamarine-fukushima",
       "creatureIds": [
-        "coelacanth"
+        "coelacanth",
+        "japanese_eel",
+        "medaka",
+        "starfish",
+        "goldfish",
+        "coral",
+        "spotted_garden_eel",
+        "spotted_seal",
+        "chambered_nautilus",
+        "japanese_loach",
+        "sea_anemone",
+        "clione",
+        "giant_salamander",
+        "banded_archerfish",
+        "butterflyfish",
+        "hermit_crab",
+        "humphead_wrasse",
+        "japanese_sardine",
+        "lions_mane_jellyfish",
+        "porcupinefish"
       ],
       "businessHours": "3/21～11/30 9:00～17:30（最終入館 16:30）、12/1～3/20 9:00～17:00（最終入館 16:00）"
     },
@@ -468,7 +603,13 @@
       "officialUrl": "https://www.aquamarine-inawashiro.jp/",
       "id": "inawashiro-kawasemi-aquarium",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "diving_beetle",
+        "medaka",
+        "masu_salmon",
+        "threespined_stickleback",
+        "japanese_dace",
+        "japanese_tree_frog"
       ]
     },
     {
@@ -484,7 +625,24 @@
       "officialUrl": "https://www.aquaworld-oarai.com/",
       "id": "aqua-world-oarai",
       "creatureIds": [
-        "shark"
+        "shark",
+        "japanese_bullhead_shark",
+        "sand_tiger_shark",
+        "humboldt_penguin",
+        "japanese_sardine",
+        "northern_fur_seal",
+        "california_sea_lion",
+        "clione",
+        "ocean_sunfish",
+        "spotted_seal",
+        "bottlenose_dolphin",
+        "common_octopus",
+        "green_sea_turtle",
+        "medaka",
+        "jellyfish",
+        "squid",
+        "anglerfish",
+        "threespined_stickleback"
       ],
       "businessHours": "9:00～17:00（最終入館 16:00）"
     },
@@ -501,7 +659,9 @@
       "officialUrl": "http://www.dane-kerry.com/aquarium/",
       "id": "kasumigaura-aquarium",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "giant_salamander",
+        "axolotl"
       ],
       "businessHours": "9:00～17:00（入館・入館券販売は16:30まで）"
     },
@@ -518,7 +678,10 @@
       "officialUrl": "https://tnap.jp",
       "id": "nakagawa-aquatic-park",
       "creatureIds": [
-        "arapaima"
+        "arapaima",
+        "threespined_stickleback",
+        "coral_fish",
+        "freshwater_fish"
       ],
       "businessHours": "9:30～16:30（最終入館 16:00）"
     },
@@ -535,7 +698,11 @@
       "officialUrl": "https://www.fra.go.jp/nikko/",
       "id": "fish-and-forest-observation-garden",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "kokanee_salmon",
+        "sturgeon",
+        "rainbow_trout",
+        "masu_salmon"
       ]
     },
     {
@@ -551,7 +718,11 @@
       "officialUrl": "https://mizunofurusato.com",
       "id": "fisheries-learning-center",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "japanese_dace",
+        "rainbow_trout",
+        "common_carp",
+        "sturgeon"
       ],
       "businessHours": "9:00～17:00（入館は16:30まで）"
     },
@@ -568,7 +739,11 @@
       "officialUrl": "http://www.parks.or.jp/suizokukan/",
       "id": "saitama-aquarium",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "asian_small_clawed_otter",
+        "sturgeon",
+        "common_carp",
+        "coral_fish"
       ]
     },
     {
@@ -600,7 +775,26 @@
       "officialUrl": "https://www.kamogawa-seaworld.jp/",
       "id": "kamogawa-sea-world",
       "creatureIds": [
-        "orca"
+        "orca",
+        "beluga_whale",
+        "walrus",
+        "bottlenose_dolphin",
+        "king_penguin",
+        "pacific_white_sided_dolphin",
+        "humboldt_penguin",
+        "spotted_jelly",
+        "spotted_seal",
+        "california_sea_lion",
+        "red_stingray",
+        "giant_grouper",
+        "hawksbill_turtle",
+        "humphead_wrasse",
+        "japanese_spider_crab",
+        "moon_jellyfish",
+        "ocean_sunfish",
+        "ocellaris_clownfish",
+        "diving_beetle",
+        "japanese_bullhead_shark"
       ],
       "businessHours": "9:00～16:30"
     },
@@ -633,7 +827,12 @@
       "officialUrl": "https://choshi-aquarium.jimdofree.com/",
       "id": "smallest-aquarium-in-the-world",
       "creatureIds": [
-        "clownfish"
+        "clownfish",
+        "starfish",
+        "common_octopus",
+        "sea_anemone",
+        "sea_slug",
+        "jellyfish"
       ]
     },
     {
@@ -649,7 +848,26 @@
       "officialUrl": "https://sunshinecity.jp/aquarium/",
       "id": "sunshine-aquarium",
       "creatureIds": [
-        "penguin"
+        "penguin",
+        "african_penguin",
+        "coral",
+        "asian_small_clawed_otter",
+        "baikal_seal",
+        "japanese_sardine",
+        "moon_jellyfish",
+        "california_sea_lion",
+        "giant_isopod",
+        "spotted_garden_eel",
+        "arowana",
+        "butterflyfish",
+        "squid",
+        "shark",
+        "deep_sea_fish",
+        "freshwater_fish",
+        "clownfish",
+        "clione",
+        "ocean_sunfish",
+        "bering_wolffish"
       ]
     },
     {
@@ -665,7 +883,14 @@
       "officialUrl": "https://www.seibu-la.co.jp/nettaikan/",
       "id": "itabashi-tropical-botanical-garden",
       "creatureIds": [
-        "piranha"
+        "piranha",
+        "humphead_wrasse",
+        "ocellaris_clownfish",
+        "porcupinefish",
+        "splendid_garden_eel",
+        "spotted_garden_eel",
+        "coral_fish",
+        "deep_sea_fish"
       ]
     },
     {
@@ -681,7 +906,18 @@
       "officialUrl": "https://www.aqua-park.jp/aqua/",
       "id": "maxell-aqua-park-shinagawa",
       "creatureIds": [
-        "dolphin"
+        "dolphin",
+        "african_penguin",
+        "asian_small_clawed_otter",
+        "bottlenose_dolphin",
+        "gentoo_penguin",
+        "king_penguin",
+        "moon_jellyfish",
+        "northern_fur_seal",
+        "rockhopper_penguin",
+        "spotted_garden_eel",
+        "pacific_white_sided_dolphin",
+        "spotted_seal"
       ],
       "businessHours": "10:00～20:00（最終入場 19:00）"
     },
@@ -698,7 +934,26 @@
       "officialUrl": "https://www.aquarium.gr.jp/",
       "id": "shinagawa-aquarium",
       "creatureIds": [
-        "seal"
+        "seal",
+        "banded_archerfish",
+        "electric_eel",
+        "asian_small_clawed_otter",
+        "magellanic_penguin",
+        "sand_tiger_shark",
+        "butterflyfish",
+        "common_octopus",
+        "fringed_blenny",
+        "japanese_sardine",
+        "japanese_spider_crab",
+        "leaf_fish",
+        "sea_anemone",
+        "spotted_seal",
+        "emperor_angelfish",
+        "dolphin",
+        "jellyfish",
+        "sealion",
+        "squid",
+        "clownfish"
       ],
       "businessHours": "10:00～17:00（入館は16:30まで）"
     },
@@ -715,7 +970,13 @@
       "officialUrl": "https://seibutuen.jp/",
       "id": "adachi-biological-garden",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "butterfly",
+        "moon_jellyfish",
+        "goldfish",
+        "arapaima",
+        "diving_beetle",
+        "coral_fish"
       ]
     },
     {
@@ -731,7 +992,22 @@
       "officialUrl": "https://www.sumida-aquarium.com/",
       "id": "sumida-aquarium",
       "creatureIds": [
-        "penguin"
+        "penguin",
+        "northern_fur_seal",
+        "magellanic_penguin",
+        "green_sea_turtle",
+        "spotted_garden_eel",
+        "moon_jellyfish",
+        "sand_tiger_shark",
+        "goldfish",
+        "japanese_sea_nettle",
+        "sea_anemone",
+        "coral",
+        "splendid_garden_eel",
+        "cardinal_tetra",
+        "spotted_jelly",
+        "spotted_moray_eel",
+        "freshwater_fish"
       ]
     },
     {
@@ -747,7 +1023,26 @@
       "officialUrl": "https://www.tokyo-zoo.net/zoo/kasai/",
       "id": "kasai-rinkai-aquarium",
       "creatureIds": [
-        "tuna"
+        "tuna",
+        "coral",
+        "mudskipper",
+        "rockhopper_penguin",
+        "sea_anemone",
+        "green_sea_turtle",
+        "hammerhead_shark",
+        "humphead_wrasse",
+        "japanese_fire_belly_newt",
+        "king_penguin",
+        "little_penguin",
+        "humboldt_penguin",
+        "common_octopus",
+        "japanese_bullhead_shark",
+        "japanese_sardine",
+        "masu_salmon",
+        "medaka",
+        "red_seabream",
+        "seahorse",
+        "starfish"
       ]
     },
     {
@@ -763,7 +1058,8 @@
       "officialUrl": "https://www.tokyo-zoo.net/zoo/ino/",
       "id": "inokashira-park-zoo-aquarium",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "giant_salamander"
       ]
     },
     {
@@ -779,7 +1075,10 @@
       "officialUrl": "https://bonin-ocean.net/",
       "id": "ogasawara-ocean-center",
       "creatureIds": [
-        "sea_turtle"
+        "sea_turtle",
+        "green_sea_turtle",
+        "hawksbill_turtle",
+        "loggerhead_turtle"
       ]
     },
     {
@@ -811,7 +1110,16 @@
       "officialUrl": "https://www.seaparadise.co.jp/",
       "id": "hakkeijima-sea-paradise",
       "creatureIds": [
-        "beluga_whale"
+        "beluga_whale",
+        "african_penguin",
+        "bottlenose_dolphin",
+        "green_sea_turtle",
+        "hammerhead_shark",
+        "moon_jellyfish",
+        "polar_bear",
+        "spotted_moray_eel",
+        "walrus",
+        "spotted_seal"
       ],
       "businessHours": "10:00～19:30（閉館 20:00）"
     },
@@ -828,7 +1136,11 @@
       "officialUrl": "https://fortune-aquarium.com/",
       "id": "yokohama-fortune-aquarium",
       "creatureIds": [
-        "clownfish"
+        "clownfish",
+        "green_sea_turtle",
+        "mandarinfish",
+        "porcupinefish",
+        "red_lionfish"
       ],
       "businessHours": "平日 10:00～17:00、土日祝 10:00～18:00（最終入館は閉館30分前）"
     },
@@ -861,7 +1173,8 @@
       "officialUrl": "https://kannonzaki-nature-museum.jimdo.com/",
       "id": "kannon-saki-natural-museum",
       "creatureIds": [
-        "crab"
+        "crab",
+        "starfish"
       ]
     },
     {
@@ -877,7 +1190,26 @@
       "officialUrl": "https://www.enosui.com/",
       "id": "enoshima-aquarium",
       "creatureIds": [
-        "jellyfish"
+        "jellyfish",
+        "sea_slug",
+        "bottlenose_dolphin",
+        "asian_small_clawed_otter",
+        "humboldt_penguin",
+        "coral",
+        "spotted_seal",
+        "giant_isopod",
+        "sea_anemone",
+        "loggerhead_turtle",
+        "green_sea_turtle",
+        "giant_pacific_octopus",
+        "hermit_crab",
+        "japanese_sardine",
+        "bering_wolffish",
+        "common_carp",
+        "goldfish",
+        "japanese_bullhead_shark",
+        "japanese_dace",
+        "japanese_sea_nettle"
       ]
     },
     {
@@ -893,7 +1225,11 @@
       "officialUrl": "https://kawa-sui.com/",
       "id": "kawasui-kawasaki-aquarium",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "arapaima",
+        "arowana",
+        "medaka",
+        "mekong_giant_catfish"
       ]
     },
     {
@@ -909,7 +1245,26 @@
       "officialUrl": "https://sagamigawa-fureai.com/",
       "id": "sagamihara-aquarium",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "common_carp",
+        "ayu",
+        "japanese_dace",
+        "masu_salmon",
+        "porcupinefish",
+        "japanese_fire_belly_newt",
+        "diving_beetle",
+        "poison_dart_frog",
+        "giant_salamander",
+        "crucian_carp",
+        "japanese_loach",
+        "japanese_bullhead_shark",
+        "japanese_tree_frog",
+        "piranha",
+        "red_stingray",
+        "sea_anemone",
+        "starspotted_smooth_hound",
+        "hermit_crab",
+        "japanese_eel"
       ],
       "businessHours": "9:30～16:30"
     },
@@ -926,7 +1281,14 @@
       "officialUrl": "https://www.kitasato-u.ac.jp/mb/faculty/aquarium/",
       "id": "kurasato-aquarium-lab",
       "creatureIds": [
-        "jellyfish"
+        "jellyfish",
+        "coral",
+        "kokanee_salmon",
+        "masu_salmon",
+        "moon_jellyfish",
+        "ocellaris_clownfish",
+        "red_lionfish",
+        "freshwater_fish"
       ],
       "businessHours": "10:00～16:00"
     },
@@ -943,7 +1305,13 @@
       "officialUrl": "https://www.princehotels.co.jp/amuse/hakone-en/suizokukan/",
       "id": "hakone-en-aquarium",
       "creatureIds": [
-        "seal"
+        "seal",
+        "african_penguin",
+        "asian_small_clawed_otter",
+        "baikal_seal",
+        "gentoo_penguin",
+        "king_penguin",
+        "spotted_seal"
       ]
     },
     {
@@ -959,7 +1327,26 @@
       "officialUrl": "http://www.marinepia.or.jp/",
       "id": "marinepia-nihonkai",
       "creatureIds": [
-        "dolphin"
+        "dolphin",
+        "humboldt_penguin",
+        "rockhopper_penguin",
+        "coral",
+        "hawksbill_turtle",
+        "baikal_seal",
+        "sea_slug",
+        "pacific_white_sided_dolphin",
+        "bottlenose_dolphin",
+        "hermit_crab",
+        "spotted_seal",
+        "bigfin_reef_squid",
+        "sea_cucumber",
+        "spotted_garden_eel",
+        "japanese_sardine",
+        "seahorse",
+        "japanese_flounder",
+        "mudskipper",
+        "starfish",
+        "japanese_fire_belly_newt"
       ],
       "businessHours": "9:00～17:00（券売は16:30まで）"
     },
@@ -976,7 +1363,12 @@
       "officialUrl": "http://www.umigatari.jp/joetsu/",
       "id": "umigatari-aquarium",
       "creatureIds": [
-        "penguin"
+        "penguin",
+        "magellanic_penguin",
+        "spotted_seal",
+        "bottlenose_dolphin",
+        "giant_pacific_octopus",
+        "moon_jellyfish"
       ],
       "businessHours": "10:00～17:00（最終入館 16:30）"
     },
@@ -993,7 +1385,15 @@
       "officialUrl": "https://www.uozu-aquarium.jp/",
       "id": "uozu-aquarium",
       "creatureIds": [
-        "deep_sea_fish"
+        "deep_sea_fish",
+        "starspotted_smooth_hound",
+        "humboldt_penguin",
+        "coral",
+        "japanese_amberjack",
+        "japanese_fire_belly_newt",
+        "spotted_seal",
+        "jellyfish",
+        "sea_turtle"
       ],
       "businessHours": "9:00～17:00（入館は16:30まで）"
     },
@@ -1010,7 +1410,26 @@
       "officialUrl": "https://www.notoaqua.jp/",
       "id": "notojima-aquarium",
       "creatureIds": [
-        "whale_shark"
+        "whale_shark",
+        "japanese_sardine",
+        "humboldt_penguin",
+        "red_seabream",
+        "pacific_white_sided_dolphin",
+        "california_sea_lion",
+        "green_sea_turtle",
+        "magellanic_penguin",
+        "spotted_seal",
+        "asian_small_clawed_otter",
+        "bering_wolffish",
+        "giant_pacific_octopus",
+        "hermit_crab",
+        "loggerhead_turtle",
+        "starfish",
+        "turban_shell",
+        "jellyfish",
+        "crab",
+        "coral_fish",
+        "freshwater_fish"
       ],
       "businessHours": "3/20～11/30 9:00～17:00（入館は16:30まで）、12/1～3/19 9:00～16:30（入館は16:00まで）"
     },
@@ -1027,7 +1446,26 @@
       "officialUrl": "https://www.echizen-aquarium.com/",
       "id": "echizen-matsushima-aquarium",
       "creatureIds": [
-        "sea_turtle"
+        "sea_turtle",
+        "ocean_sunfish",
+        "king_penguin",
+        "bottlenose_dolphin",
+        "humboldt_penguin",
+        "giant_pacific_octopus",
+        "rockhopper_penguin",
+        "clione",
+        "poison_dart_frog",
+        "asian_small_clawed_otter",
+        "diving_beetle",
+        "gentoo_penguin",
+        "humphead_wrasse",
+        "japanese_sardine",
+        "porcupinefish",
+        "giant_isopod",
+        "sea_slug",
+        "axolotl",
+        "japanese_loach",
+        "japanese_sea_nettle"
       ],
       "businessHours": "通常 9:00～17:30（季節により延長営業あり）"
     },
@@ -1044,7 +1482,16 @@
       "officialUrl": "http://www.morinonakano-suizokukan.com/",
       "id": "fuji-yusuin-aquarium",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "hucho",
+        "rainbow_trout",
+        "ayu",
+        "crucian_carp",
+        "japanese_dace",
+        "japanese_loach",
+        "masu_salmon",
+        "medaka",
+        "sturgeon"
       ]
     },
     {
@@ -1060,7 +1507,26 @@
       "officialUrl": "https://aquatotto.com/",
       "id": "aqua-toto-gifu",
       "creatureIds": [
-        "mekong_giant_catfish"
+        "mekong_giant_catfish",
+        "asian_small_clawed_otter",
+        "common_carp",
+        "arapaima",
+        "giant_salamander",
+        "japanese_dace",
+        "ayu",
+        "california_sea_lion",
+        "banded_archerfish",
+        "red_tail_catfish",
+        "ripsaw_catfish",
+        "hucho",
+        "japanese_fire_belly_newt",
+        "freshwater_fish",
+        "eel",
+        "crab",
+        "electric_eel",
+        "arowana",
+        "giant_water_bug",
+        "masu_salmon"
       ],
       "businessHours": "9:30～18:00（最終入館 17:00）"
     },
@@ -1077,7 +1543,26 @@
       "officialUrl": "https://www.mitosea.com",
       "id": "izu-mito-sea-paradise",
       "creatureIds": [
-        "dolphin"
+        "dolphin",
+        "spotted_seal",
+        "walrus",
+        "japanese_spider_crab",
+        "asian_small_clawed_otter",
+        "bottlenose_dolphin",
+        "california_sea_lion",
+        "hermit_crab",
+        "spotted_garden_eel",
+        "pacific_white_sided_dolphin",
+        "starfish",
+        "japanese_sardine",
+        "japanese_amberjack",
+        "medaka",
+        "moon_jellyfish",
+        "red_seabream",
+        "penguin",
+        "eel",
+        "shark",
+        "green_sea_turtle"
       ],
       "businessHours": "9:00～17:00（最終入場 16:00）"
     },
@@ -1094,7 +1579,20 @@
       "officialUrl": "http://www.numazu-deepsea.com/",
       "id": "numazu-deep-sea-aquarium",
       "creatureIds": [
-        "coelacanth"
+        "coelacanth",
+        "giant_isopod",
+        "japanese_spider_crab",
+        "hermit_crab",
+        "chambered_nautilus",
+        "starfish",
+        "brittle_star",
+        "japanese_angelshark",
+        "japanese_flounder",
+        "leaf_fish",
+        "sea_anemone",
+        "stonefish",
+        "coral",
+        "deep_sea_fish"
       ],
       "businessHours": "10:00～18:00（最終入館 17:30）"
     },
@@ -1111,7 +1609,26 @@
       "officialUrl": "http://shimoda-aquarium.com",
       "id": "shimoda-aquarium",
       "creatureIds": [
-        "dolphin"
+        "dolphin",
+        "pacific_white_sided_dolphin",
+        "king_penguin",
+        "humboldt_penguin",
+        "asian_small_clawed_otter",
+        "spotted_seal",
+        "bottlenose_dolphin",
+        "california_sea_lion",
+        "green_sea_turtle",
+        "loggerhead_turtle",
+        "coral",
+        "moon_jellyfish",
+        "porcupinefish",
+        "red_lionfish",
+        "red_stingray",
+        "starfish",
+        "japanese_sardine",
+        "ocellaris_clownfish",
+        "sea_anemone",
+        "japanese_bullhead_shark"
       ]
     },
     {
@@ -1143,7 +1660,26 @@
       "officialUrl": "https://nagoyaaqua.jp/",
       "id": "nagoya-port-aquarium",
       "creatureIds": [
-        "orca"
+        "orca",
+        "beluga_whale",
+        "bottlenose_dolphin",
+        "finless_porpoise",
+        "loggerhead_turtle",
+        "japanese_sardine",
+        "bigfin_reef_squid",
+        "pacific_white_sided_dolphin",
+        "green_sea_turtle",
+        "hawksbill_turtle",
+        "gentoo_penguin",
+        "hermit_crab",
+        "japanese_spider_crab",
+        "japanese_sea_nettle",
+        "moon_jellyfish",
+        "mudskipper",
+        "spotted_garden_eel",
+        "coral",
+        "starfish",
+        "emperor_angelfish"
       ]
     },
     {
@@ -1159,7 +1695,14 @@
       "officialUrl": "https://www.takeshima-aquarium.jp/",
       "id": "takeshima-aquarium",
       "creatureIds": [
-        "deep_sea_fish"
+        "deep_sea_fish",
+        "japanese_spider_crab",
+        "angelfish",
+        "asian_small_clawed_otter",
+        "coral",
+        "sealion",
+        "freshwater_fish",
+        "california_sea_lion"
       ]
     },
     {
@@ -1175,7 +1718,11 @@
       "officialUrl": "http://www.city.hekinan.lg.jp/aquarium/",
       "id": "hekinan-seaside-aquarium",
       "creatureIds": [
-        "pufferfish"
+        "pufferfish",
+        "common_carp",
+        "japanese_spider_crab",
+        "medaka",
+        "freshwater_fish"
       ],
       "businessHours": "9:00～17:00（最終入館 16:30）"
     },
@@ -1192,7 +1739,23 @@
       "officialUrl": "https://beachland.jp/",
       "id": "minamichita-beach-land",
       "creatureIds": [
-        "dolphin"
+        "dolphin",
+        "walrus",
+        "common_carp",
+        "spotted_seal",
+        "california_sea_lion",
+        "humboldt_penguin",
+        "bottlenose_dolphin",
+        "asian_small_clawed_otter",
+        "green_sea_turtle",
+        "hawksbill_turtle",
+        "ocellaris_clownfish",
+        "spotted_garden_eel",
+        "gentoo_penguin",
+        "king_penguin",
+        "loggerhead_turtle",
+        "red_stingray",
+        "sea_anemone"
       ]
     },
     {
@@ -1208,7 +1771,16 @@
       "officialUrl": "https://www.legoland.jp/resort-guide/sealife-nagoya/",
       "id": "sealife-nagoya",
       "creatureIds": [
-        "clownfish"
+        "clownfish",
+        "seahorse",
+        "giant_salamander",
+        "sea_anemone",
+        "starfish",
+        "spotted_garden_eel",
+        "goldfish",
+        "red_stingray",
+        "shark",
+        "jellyfish"
       ]
     },
     {
@@ -1224,7 +1796,26 @@
       "officialUrl": "http://www.aquarium.co.jp/",
       "id": "toba-aquarium",
       "creatureIds": [
-        "dugong"
+        "dugong",
+        "sea_otter",
+        "finless_porpoise",
+        "walrus",
+        "japanese_spiny_lobster",
+        "chambered_nautilus",
+        "japanese_tree_frog",
+        "baikal_seal",
+        "coral",
+        "seahorse",
+        "common_octopus",
+        "humboldt_penguin",
+        "poison_dart_frog",
+        "japanese_fire_belly_newt",
+        "bigfin_reef_squid",
+        "california_sea_lion",
+        "giant_pacific_octopus",
+        "electric_eel",
+        "cuttlefish",
+        "arapaima"
       ],
       "businessHours": "9:30～17:00（最終入館 16:00）"
     },
@@ -1241,7 +1832,18 @@
       "officialUrl": "https://ise-seaparadise.com",
       "id": "ise-sea-paradise",
       "creatureIds": [
-        "walrus"
+        "walrus",
+        "spotted_seal",
+        "seahorse",
+        "spotted_garden_eel",
+        "asian_small_clawed_otter",
+        "mudskipper",
+        "sea_anemone",
+        "ocellaris_clownfish",
+        "bottlenose_dolphin",
+        "african_penguin",
+        "california_sea_lion",
+        "green_sea_turtle"
       ],
       "businessHours": "9:30～17:00"
     },
@@ -1258,7 +1860,12 @@
       "officialUrl": "https://www.biwahaku.jp/",
       "id": "biwa-lake-museum",
       "creatureIds": [
-        "biwa_catfish"
+        "biwa_catfish",
+        "common_carp",
+        "crucian_carp",
+        "ayu",
+        "baikal_seal",
+        "freshwater_fish"
       ],
       "businessHours": "9:30～17:00（最終入館 16:00）"
     },
@@ -1275,7 +1882,26 @@
       "officialUrl": "https://www.kyoto-aquarium.com/",
       "id": "kyoto-aquarium",
       "creatureIds": [
-        "giant_salamander"
+        "giant_salamander",
+        "african_penguin",
+        "northern_fur_seal",
+        "bottlenose_dolphin",
+        "spotted_seal",
+        "spotted_garden_eel",
+        "moon_jellyfish",
+        "common_carp",
+        "spotted_jelly",
+        "japanese_eel",
+        "masu_salmon",
+        "diving_beetle",
+        "japanese_sea_nettle",
+        "medaka",
+        "splendid_garden_eel",
+        "clownfish",
+        "shark",
+        "freshwater_fish",
+        "starfish",
+        "humphead_wrasse"
       ]
     },
     {
@@ -1291,7 +1917,26 @@
       "officialUrl": "https://www.kaiyukan.com/",
       "id": "kaiyukan",
       "creatureIds": [
-        "whale_shark"
+        "whale_shark",
+        "rockhopper_penguin",
+        "spotted_garden_eel",
+        "coral",
+        "california_sea_lion",
+        "sand_tiger_shark",
+        "porcupinefish",
+        "japanese_spider_crab",
+        "finless_porpoise",
+        "fringed_blenny",
+        "clione",
+        "pacific_white_sided_dolphin",
+        "japanese_sardine",
+        "asian_small_clawed_otter",
+        "king_penguin",
+        "spotted_jelly",
+        "ocean_sunfish",
+        "gentoo_penguin",
+        "green_sea_turtle",
+        "moon_jellyfish"
       ],
       "businessHours": "10:00～20:00（最終入館は閉館1時間前まで）"
     },
@@ -1308,7 +1953,26 @@
       "officialUrl": "https://www.nifrel.jp/",
       "id": "nifrel",
       "creatureIds": [
-        "coral_fish"
+        "coral_fish",
+        "japanese_eel",
+        "saltwater_crocodile",
+        "japanese_fire_belly_newt",
+        "ocellaris_clownfish",
+        "african_penguin",
+        "asian_small_clawed_otter",
+        "black_ghost_knifefish",
+        "poison_dart_frog",
+        "stonefish",
+        "pufferfish",
+        "arapaima",
+        "atlantic_horseshoe_crab",
+        "banded_archerfish",
+        "blue_damselfish",
+        "chambered_nautilus",
+        "common_octopus",
+        "giant_isopod",
+        "humphead_wrasse",
+        "longhorn_cowfish"
       ]
     },
     {
@@ -1340,7 +2004,10 @@
       "officialUrl": "http://www.kujirakan.jp/",
       "id": "taiji-whale-museum",
       "creatureIds": [
-        "whale"
+        "whale",
+        "bottlenose_dolphin",
+        "pacific_white_sided_dolphin",
+        "jellyfish"
       ],
       "businessHours": "8:30～17:00"
     },
@@ -1357,7 +2024,22 @@
       "officialUrl": "http://www.kushimoto.co.jp/",
       "id": "kushimoto-marine-park",
       "creatureIds": [
-        "coral_fish"
+        "coral_fish",
+        "coral",
+        "butterflyfish",
+        "loggerhead_turtle",
+        "sea_slug",
+        "green_sea_turtle",
+        "emperor_angelfish",
+        "cleaner_shrimp",
+        "japanese_horse_mackerel",
+        "japanese_angelshark",
+        "starfish",
+        "brittle_star",
+        "japanese_amberjack",
+        "japanese_flounder",
+        "moorish_idol",
+        "spotted_jelly"
       ],
       "businessHours": "9:00～16:30"
     },
@@ -1374,7 +2056,19 @@
       "officialUrl": "https://www.adventureworld.co.jp/",
       "id": "adventure-world",
       "creatureIds": [
-        "dolphin"
+        "dolphin",
+        "emperor_penguin",
+        "king_penguin",
+        "african_penguin",
+        "bottlenose_dolphin",
+        "little_penguin",
+        "asian_small_clawed_otter",
+        "gentoo_penguin",
+        "california_sea_lion",
+        "spotted_seal",
+        "rockhopper_penguin",
+        "pacific_white_sided_dolphin",
+        "butterfly"
       ]
     },
     {
@@ -1390,7 +2084,26 @@
       "officialUrl": "https://www.seto.kyoto-u.ac.jp/aquarium/",
       "id": "shirahama-aquarium",
       "creatureIds": [
-        "jellyfish"
+        "jellyfish",
+        "starfish",
+        "hermit_crab",
+        "coral",
+        "sea_anemone",
+        "brittle_star",
+        "moon_jellyfish",
+        "japanese_spiny_lobster",
+        "feather_star",
+        "mudskipper",
+        "red_seabream",
+        "porcupinefish",
+        "japanese_angelshark",
+        "sea_slug",
+        "sea_urchin",
+        "common_octopus",
+        "japanese_spider_crab",
+        "pennant_coralfish",
+        "butterflyfish",
+        "sea_cucumber"
       ]
     },
     {
@@ -1406,7 +2119,18 @@
       "officialUrl": "https://ebikani-aquarium.com/",
       "id": "ebi-kani-aquarium",
       "creatureIds": [
-        "crab"
+        "crab",
+        "starfish",
+        "hermit_crab",
+        "japanese_spiny_lobster",
+        "japanese_spider_crab",
+        "giant_isopod",
+        "atlantic_horseshoe_crab",
+        "sea_slug",
+        "splendid_garden_eel",
+        "spotted_garden_eel",
+        "jellyfish",
+        "chambered_nautilus"
       ],
       "businessHours": "9:00～17:00（最終入館 16:20）"
     },
@@ -1423,7 +2147,26 @@
       "officialUrl": "https://marineworld.hiyoriyama.co.jp/",
       "id": "kinosaki-marine-world",
       "creatureIds": [
-        "dolphin"
+        "dolphin",
+        "walrus",
+        "spotted_garden_eel",
+        "snow_crab",
+        "coral",
+        "medaka",
+        "pacific_white_sided_dolphin",
+        "sea_urchin",
+        "starfish",
+        "california_sea_lion",
+        "humphead_wrasse",
+        "emperor_angelfish",
+        "common_octopus",
+        "seahorse",
+        "spotted_moray_eel",
+        "japanese_spider_crab",
+        "sea_anemone",
+        "giant_salamander",
+        "japanese_tree_frog",
+        "giant_pacific_octopus"
       ],
       "businessHours": "9:30～16:30"
     },
@@ -1440,7 +2183,21 @@
       "officialUrl": "https://atoa-kobe.jp/",
       "id": "atoa",
       "creatureIds": [
-        "piranha"
+        "piranha",
+        "asian_small_clawed_otter",
+        "humboldt_penguin",
+        "arapaima",
+        "electric_eel",
+        "common_carp",
+        "poison_dart_frog",
+        "spotted_garden_eel",
+        "guppy",
+        "red_lionfish",
+        "red_tail_catfish",
+        "royal_blue_tang",
+        "freshwater_fish",
+        "shark",
+        "coral_fish"
       ],
       "businessHours": "10:00～19:00（最終入場は閉館30分前）"
     },
@@ -1457,7 +2214,19 @@
       "officialUrl": "https://kobesuma-seaworld.jp/",
       "id": "kobe-suma-sea-world",
       "creatureIds": [
-        "orca"
+        "orca",
+        "humphead_wrasse",
+        "arapaima",
+        "california_sea_lion",
+        "magellanic_penguin",
+        "common_carp",
+        "mudskipper",
+        "dolphin",
+        "sea_turtle",
+        "freshwater_fish",
+        "jellyfish",
+        "seal",
+        "spotted_seal"
       ],
       "businessHours": "10:00～18:00（最終入館は閉館1時間前）"
     },
@@ -1474,7 +2243,22 @@
       "officialUrl": "https://www.city.himeji.lg.jp/aqua/",
       "id": "himeji-city-aquarium",
       "creatureIds": [
-        "sea_turtle"
+        "sea_turtle",
+        "humboldt_penguin",
+        "japanese_fire_belly_newt",
+        "spotted_garden_eel",
+        "magellanic_penguin",
+        "giant_salamander",
+        "japanese_sardine",
+        "moon_jellyfish",
+        "freshwater_fish",
+        "cleaner_shrimp",
+        "green_sea_turtle",
+        "loggerhead_turtle",
+        "mudskipper",
+        "starfish",
+        "clownfish",
+        "shark"
       ]
     },
     {
@@ -1490,7 +2274,11 @@
       "officialUrl": "https://www.city.tamano.lg.jp/site/kaihaku/",
       "id": "tamano-marine-museum",
       "creatureIds": [
-        "pufferfish"
+        "pufferfish",
+        "mudskipper",
+        "spotted_seal",
+        "freshwater_fish",
+        "sea_turtle"
       ],
       "businessHours": "9:00～17:00（入館は16:30まで）"
     },
@@ -1507,7 +2295,25 @@
       "officialUrl": "http://www.miyajima-aqua.jp/",
       "id": "miyajima-aquarium",
       "creatureIds": [
-        "finless_porpoise"
+        "finless_porpoise",
+        "asian_small_clawed_otter",
+        "goldfish",
+        "humboldt_penguin",
+        "banded_archerfish",
+        "northern_fur_seal",
+        "california_sea_lion",
+        "common_carp",
+        "arapaima",
+        "sand_tiger_shark",
+        "sea_anemone",
+        "spotted_garden_eel",
+        "axolotl",
+        "japanese_spiny_lobster",
+        "starfish",
+        "seal",
+        "freshwater_fish",
+        "jellyfish",
+        "spotted_seal"
       ],
       "businessHours": "9:00～17:00（最終入館 16:00）"
     },
@@ -1524,7 +2330,19 @@
       "officialUrl": "https://kanikko.jp/",
       "id": "tottori-karo-crab-aquarium",
       "creatureIds": [
-        "crab"
+        "crab",
+        "starfish",
+        "snow_crab",
+        "hermit_crab",
+        "japanese_bullhead_shark",
+        "japanese_flounder",
+        "japanese_spider_crab",
+        "moon_jellyfish",
+        "sturgeon",
+        "red_seabream",
+        "red_stingray",
+        "sea_urchin",
+        "starspotted_smooth_hound"
       ]
     },
     {
@@ -1540,7 +2358,16 @@
       "officialUrl": "https://aquas.or.jp/",
       "id": "aquas-shimane",
       "creatureIds": [
-        "beluga_whale"
+        "beluga_whale",
+        "california_sea_lion",
+        "humboldt_penguin",
+        "spotted_seal",
+        "shark",
+        "freshwater_fish",
+        "gentoo_penguin",
+        "hammerhead_shark",
+        "king_penguin",
+        "rockhopper_penguin"
       ],
       "businessHours": "9:00～17:00"
     },
@@ -1557,7 +2384,26 @@
       "officialUrl": "http://www.gobius.jp/",
       "id": "gobius",
       "creatureIds": [
-        "eel"
+        "eel",
+        "japanese_flounder",
+        "medaka",
+        "giant_salamander",
+        "ayu",
+        "common_carp",
+        "japanese_eel",
+        "japanese_horse_mackerel",
+        "japanese_sea_nettle",
+        "moon_jellyfish",
+        "porcupinefish",
+        "red_stingray",
+        "schlegels_black_rockfish",
+        "sea_cucumber",
+        "sturgeon",
+        "diving_beetle",
+        "hermit_crab",
+        "japanese_dace",
+        "japanese_fire_belly_newt",
+        "japanese_tree_frog"
       ],
       "businessHours": "9:30～17:00（最終入館受付 16:30）"
     },
@@ -1574,7 +2420,26 @@
       "officialUrl": "https://www.kaikyokan.com/",
       "id": "kaikyokan",
       "creatureIds": [
-        "pufferfish"
+        "pufferfish",
+        "humboldt_penguin",
+        "gentoo_penguin",
+        "finless_porpoise",
+        "king_penguin",
+        "california_sea_lion",
+        "bottlenose_dolphin",
+        "mudskipper",
+        "ocean_sunfish",
+        "spotted_seal",
+        "japanese_sardine",
+        "anglerfish",
+        "arapaima",
+        "common_octopus",
+        "coral",
+        "feather_star",
+        "japanese_flounder",
+        "japanese_sea_nettle",
+        "moon_jellyfish",
+        "red_seabream"
       ],
       "businessHours": "9:30～17:30（最終入場 17:00）"
     },
@@ -1591,7 +2456,10 @@
       "officialUrl": "https://nagisa-aquarium.com/",
       "id": "nagisa-aquarium",
       "creatureIds": [
-        "crab"
+        "crab",
+        "coral",
+        "jellyfish",
+        "shark"
       ]
     },
     {
@@ -1607,7 +2475,15 @@
       "officialUrl": "https://r.goope.jp/new-yashima-aq/",
       "id": "new-yashima-aquarium",
       "creatureIds": [
-        "manatee"
+        "manatee",
+        "humboldt_penguin",
+        "asian_small_clawed_otter",
+        "hawksbill_turtle",
+        "ocellaris_clownfish",
+        "baikal_seal",
+        "jellyfish",
+        "bottlenose_dolphin",
+        "goldfish"
       ],
       "businessHours": "10:00～16:00"
     },
@@ -1624,7 +2500,16 @@
       "officialUrl": "https://shikoku-aquarium.jp/",
       "id": "shikoku-aquarium",
       "creatureIds": [
-        "dolphin"
+        "dolphin",
+        "asian_small_clawed_otter",
+        "hammerhead_shark",
+        "african_penguin",
+        "bigfin_reef_squid",
+        "japanese_tree_frog",
+        "jellyfish",
+        "sealion",
+        "seal",
+        "ayu"
       ],
       "businessHours": "9:00～18:00（最終入館は閉館30分前）"
     },
@@ -1641,7 +2526,9 @@
       "officialUrl": "http://caretta-hiwasa.com",
       "id": "caretta-turtle-museum",
       "creatureIds": [
-        "sea_turtle"
+        "sea_turtle",
+        "loggerhead_turtle",
+        "hawksbill_turtle"
       ]
     },
     {
@@ -1657,7 +2544,19 @@
       "officialUrl": "https://katurahama-aq.jp/",
       "id": "katsurahama-aquarium",
       "creatureIds": [
-        "sealion"
+        "sealion",
+        "goldfish",
+        "spotted_jelly",
+        "california_sea_lion",
+        "sea_slug",
+        "northern_fur_seal",
+        "green_sea_turtle",
+        "humboldt_penguin",
+        "loggerhead_turtle",
+        "shark",
+        "freshwater_fish",
+        "asian_small_clawed_otter",
+        "coral_fish"
       ]
     },
     {
@@ -1673,7 +2572,23 @@
       "officialUrl": "https://www.kaiyoukan.jp/",
       "id": "ashizuri-oceanarium-satoumi",
       "creatureIds": [
-        "coral_fish"
+        "coral_fish",
+        "mudskipper",
+        "butterflyfish",
+        "japanese_sardine",
+        "starfish",
+        "ayu",
+        "striped_beakfish",
+        "brittle_star",
+        "bigfin_reef_squid",
+        "green_sea_turtle",
+        "hermit_crab",
+        "japanese_fire_belly_newt",
+        "longhorn_cowfish",
+        "porcupinefish",
+        "seahorse",
+        "tuna",
+        "clownfish"
       ],
       "businessHours": "9:00～17:00（最終入館 16:30）"
     },
@@ -1690,7 +2605,14 @@
       "officialUrl": "https://www.city.muroto.kochi.jp/pages/page0343.php",
       "id": "muroto-schoolhouse-aquarium",
       "creatureIds": [
-        "shark"
+        "shark",
+        "japanese_amberjack",
+        "sea_turtle",
+        "goldfish",
+        "green_sea_turtle",
+        "hammerhead_shark",
+        "japanese_spiny_lobster",
+        "loggerhead_turtle"
       ]
     },
     {
@@ -1706,7 +2628,16 @@
       "officialUrl": "https://marine-world.jp/",
       "id": "marine-world-uminonakamichi",
       "creatureIds": [
-        "dolphin"
+        "dolphin",
+        "finless_porpoise",
+        "bottlenose_dolphin",
+        "california_sea_lion",
+        "african_penguin",
+        "sand_tiger_shark",
+        "pacific_white_sided_dolphin",
+        "spotted_seal",
+        "starfish",
+        "jellyfish"
       ],
       "businessHours": "9:30～17:30（入館は16:30まで）"
     },
@@ -1723,7 +2654,26 @@
       "officialUrl": "https://penguin-aqua.jp/",
       "id": "nagasaki-penguin-aquarium",
       "creatureIds": [
-        "penguin"
+        "penguin",
+        "king_penguin",
+        "little_penguin",
+        "mekong_giant_catfish",
+        "gentoo_penguin",
+        "rockhopper_penguin",
+        "african_penguin",
+        "humboldt_penguin",
+        "starfish",
+        "jellyfish",
+        "freshwater_fish",
+        "magellanic_penguin",
+        "butterflyfish",
+        "coral",
+        "hermit_crab",
+        "japanese_spider_crab",
+        "medaka",
+        "moon_jellyfish",
+        "mudskipper",
+        "pennant_coralfish"
       ],
       "businessHours": "9:00～17:00"
     },
@@ -1740,7 +2690,20 @@
       "officialUrl": "https://pearlsea.jp/",
       "id": "kujukushima-pearl-sea-resort",
       "creatureIds": [
-        "dolphin"
+        "dolphin",
+        "bottlenose_dolphin",
+        "bering_wolffish",
+        "royal_blue_tang",
+        "green_sea_turtle",
+        "mandarinfish",
+        "poison_dart_frog",
+        "hermit_crab",
+        "jellyfish",
+        "giant_grouper",
+        "hawksbill_turtle",
+        "japanese_horse_mackerel",
+        "red_seabream",
+        "starfish"
       ]
     },
     {
@@ -1756,7 +2719,26 @@
       "officialUrl": "https://www.umitamago.jp/",
       "id": "umitamago",
       "creatureIds": [
-        "walrus"
+        "walrus",
+        "spotted_seal",
+        "coral",
+        "northern_fur_seal",
+        "asian_small_clawed_otter",
+        "moon_jellyfish",
+        "bottlenose_dolphin",
+        "spotted_garden_eel",
+        "arapaima",
+        "electric_eel",
+        "humphead_wrasse",
+        "magellanic_penguin",
+        "japanese_bullhead_shark",
+        "axolotl",
+        "banded_archerfish",
+        "bigfin_reef_squid",
+        "giant_isopod",
+        "hammerhead_shark",
+        "ocellaris_clownfish",
+        "porcupinefish"
       ],
       "businessHours": "通常 9:00～17:00（入場は閉館30分前まで）"
     },
@@ -1773,7 +2755,9 @@
       "officialUrl": "https://www.seadonut.jp/",
       "id": "sea-donut",
       "creatureIds": [
-        "dolphin"
+        "dolphin",
+        "red_seabream",
+        "jellyfish"
       ]
     },
     {
@@ -1789,7 +2773,26 @@
       "officialUrl": "https://iorworld.jp/",
       "id": "kagoshima-aquarium",
       "creatureIds": [
-        "whale_shark"
+        "whale_shark",
+        "bottlenose_dolphin",
+        "spotted_seal",
+        "arapaima",
+        "humphead_wrasse",
+        "starfish",
+        "spotted_jelly",
+        "porcupinefish",
+        "red_seabream",
+        "splendid_garden_eel",
+        "spotted_garden_eel",
+        "stonefish",
+        "coral",
+        "sea_anemone",
+        "bigfin_reef_squid",
+        "giant_water_bug",
+        "moon_jellyfish",
+        "ocean_sunfish",
+        "mudskipper",
+        "blue_damselfish"
       ]
     },
     {
@@ -1805,7 +2808,18 @@
       "officialUrl": "https://churaumi.okinawa/",
       "id": "churaumi-aquarium",
       "creatureIds": [
-        "whale_shark"
+        "whale_shark",
+        "bottlenose_dolphin",
+        "coral",
+        "manatee",
+        "sea_slug",
+        "hawksbill_turtle",
+        "loggerhead_turtle",
+        "green_sea_turtle",
+        "manta_ray",
+        "clownfish",
+        "jellyfish",
+        "coral_fish"
       ],
       "businessHours": "8:30～18:30（入館締切 17:30）"
     },
@@ -1822,7 +2836,26 @@
       "officialUrl": "https://kariyushi-aquarium.com/",
       "id": "dmm-kariyushi-aquarium",
       "creatureIds": [
-        "clownfish"
+        "clownfish",
+        "coral",
+        "humboldt_penguin",
+        "starfish",
+        "blue_damselfish",
+        "royal_blue_tang",
+        "moon_jellyfish",
+        "poison_dart_frog",
+        "angelfish",
+        "emperor_angelfish",
+        "green_sea_turtle",
+        "japanese_sea_nettle",
+        "spotted_jelly",
+        "asian_small_clawed_otter",
+        "japanese_bullhead_shark",
+        "porcupinefish",
+        "axolotl",
+        "discus",
+        "humphead_wrasse",
+        "ocellaris_clownfish"
       ],
       "businessHours": "9:00～19:00（最終入館は閉館60分前）"
     },
@@ -1839,7 +2872,8 @@
       "officialUrl": "https://www.adana.co.jp/jp/contents/gallery",
       "id": "nature-aquarium-gallery",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "coral_fish"
       ]
     },
     {
@@ -1855,7 +2889,11 @@
       "officialUrl": "https://www.iyoboya.jp/",
       "id": "iyoboya-kaikan",
       "creatureIds": [
-        "salmon"
+        "salmon",
+        "ayu",
+        "japanese_dace",
+        "common_carp",
+        "freshwater_fish"
       ]
     },
     {
@@ -1871,7 +2909,23 @@
       "officialUrl": "https://www.teradomari-aquarium.jp/",
       "id": "teradomari-aquarium",
       "creatureIds": [
-        "penguin"
+        "penguin",
+        "banded_archerfish",
+        "magellanic_penguin",
+        "common_carp",
+        "arapaima",
+        "black_pacu",
+        "green_sea_turtle",
+        "hermit_crab",
+        "loggerhead_turtle",
+        "ocellaris_clownfish",
+        "piranha",
+        "red_tail_catfish",
+        "sea_anemone",
+        "starfish",
+        "shark",
+        "jellyfish",
+        "freshwater_fish"
       ]
     },
     {
@@ -1903,7 +2957,13 @@
       "officialUrl": "https://www.azumino-koen.jp/",
       "id": "alps-azumino-park-classroom",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "goldfish",
+        "medaka",
+        "masu_salmon",
+        "guppy",
+        "japanese_tree_frog",
+        "coral_fish"
       ]
     },
     {
@@ -1919,7 +2979,9 @@
       "officialUrl": "https://www.tateshina-aquarium.jp/",
       "id": "tateshina-amusement-aquarium",
       "creatureIds": [
-        "arapaima"
+        "arapaima",
+        "common_carp",
+        "freshwater_fish"
       ],
       "businessHours": "9:00～18:00（入館受付 17:00まで）"
     },
@@ -1936,7 +2998,16 @@
       "officialUrl": "http://www.morinonakano-suizokukan.com/",
       "id": "mori-no-aquarium",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "hucho",
+        "rainbow_trout",
+        "ayu",
+        "crucian_carp",
+        "japanese_dace",
+        "japanese_loach",
+        "masu_salmon",
+        "medaka",
+        "sturgeon"
       ]
     },
     {
@@ -1952,7 +3023,19 @@
       "officialUrl": "https://www.marinepark.jp/",
       "id": "awashima-marine-park",
       "creatureIds": [
-        "dolphin"
+        "dolphin",
+        "coral",
+        "starfish",
+        "asian_small_clawed_otter",
+        "bigfin_reef_squid",
+        "poison_dart_frog",
+        "penguin",
+        "seal",
+        "sealion",
+        "bottlenose_dolphin",
+        "california_sea_lion",
+        "humboldt_penguin",
+        "spotted_seal"
       ],
       "businessHours": "9:30～17:00"
     },
@@ -1969,7 +3052,10 @@
       "officialUrl": "https://yo-sui.com/",
       "id": "yougyo-aquarium",
       "creatureIds": [
-        "coral_fish"
+        "coral_fish",
+        "japanese_spider_crab",
+        "butterflyfish",
+        "japanese_flounder"
       ],
       "businessHours": "10:00～18:00"
     },
@@ -1986,7 +3072,21 @@
       "officialUrl": "https://ulotto.entetsuassist-dms.com/",
       "id": "hamanako-wotto",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "japanese_eel",
+        "starspotted_smooth_hound",
+        "medaka",
+        "ayu",
+        "starfish",
+        "japanese_bullhead_shark",
+        "common_octopus",
+        "japanese_horse_mackerel",
+        "japanese_sea_nettle",
+        "porcupinefish",
+        "rainbow_trout",
+        "coral_fish",
+        "squid",
+        "crab"
       ],
       "businessHours": "9:00～16:30（入館は16:00まで）"
     },
@@ -2003,7 +3103,10 @@
       "officialUrl": "https://smartaqua-sz.jp/",
       "id": "smart-aquarium-shizuoka",
       "creatureIds": [
-        "coral_fish"
+        "coral_fish",
+        "porcupinefish",
+        "angelfish",
+        "neon_tetra"
       ]
     },
     {
@@ -2019,7 +3122,8 @@
       "officialUrl": "https://www.akatsukayama.jp/",
       "id": "gyogyo-land",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "coral_fish"
       ]
     },
     {
@@ -2035,7 +3139,8 @@
       "officialUrl": "https://www.city.yatomi.lg.jp/event_info/1001259/1005653.html",
       "id": "yatomi-kingyo-aquarium",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "goldfish"
       ]
     },
     {
@@ -2051,7 +3156,8 @@
       "officialUrl": "https://shima-marineleisure.com/",
       "id": "iruka-jima-marine-leisure-land",
       "creatureIds": [
-        "dolphin"
+        "dolphin",
+        "sealion"
       ]
     },
     {
@@ -2067,7 +3173,9 @@
       "officialUrl": "https://umigame.info",
       "id": "kihou-cho-umigame-park",
       "creatureIds": [
-        "sea_turtle"
+        "sea_turtle",
+        "green_sea_turtle",
+        "hawksbill_turtle"
       ]
     },
     {
@@ -2100,7 +3208,15 @@
       "officialUrl": "https://www.kyotohanasui.com/",
       "id": "hanazono-church-aquarium",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "axolotl",
+        "hermit_crab",
+        "arapaima",
+        "black_pacu",
+        "guppy",
+        "japanese_loach",
+        "ripsaw_catfish",
+        "coral_fish"
       ]
     },
     {
@@ -2148,7 +3264,8 @@
       "officialUrl": "https://www.kingyoen.com/",
       "id": "koriyama-kingyo-museum",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "goldfish"
       ]
     },
     {
@@ -2181,7 +3298,14 @@
       "officialUrl": "https://minatoyama.jp/",
       "id": "minatoyama-aquarium",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "rainbow_trout",
+        "asian_small_clawed_otter",
+        "common_carp",
+        "coral",
+        "medaka",
+        "spotted_garden_eel",
+        "jellyfish"
       ],
       "businessHours": "10:00～18:00"
     },
@@ -2198,7 +3322,23 @@
       "officialUrl": "http://www.hyoturi.or.jp/aqua/",
       "id": "aqua-tojo",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "common_carp",
+        "medaka",
+        "axolotl",
+        "ayu",
+        "goldfish",
+        "angelfish",
+        "blue_damselfish",
+        "butterflyfish",
+        "japanese_dace",
+        "japanese_fire_belly_newt",
+        "japanese_loach",
+        "neon_tetra",
+        "ocellaris_clownfish",
+        "rainbow_trout",
+        "eel",
+        "jellyfish"
       ],
       "businessHours": "9:30～17:30（10月～2月は10:00～16:00）"
     },
@@ -2232,7 +3372,19 @@
       "officialUrl": "https://www.fukuyama-u.ac.jp/marine-bio-center/",
       "id": "fukuyama-univ-marine-bio-center-aquarium",
       "creatureIds": [
-        "coral_fish"
+        "coral_fish",
+        "red_seabream",
+        "mudskipper",
+        "common_octopus",
+        "giant_grouper",
+        "japanese_horse_mackerel",
+        "sea_cucumber",
+        "sea_urchin",
+        "seahorse",
+        "starfish",
+        "starspotted_smooth_hound",
+        "striped_beakfish",
+        "eel"
       ],
       "businessHours": "10:00～16:00（開館日は平日）"
     },
@@ -2249,7 +3401,11 @@
       "officialUrl": "https://www.morinokuni.or.jp/",
       "id": "shimantogawa-learning-center-osakanakan",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "arapaima",
+        "asian_small_clawed_otter",
+        "penguin",
+        "humboldt_penguin"
       ],
       "businessHours": "10:00～17:00"
     },
@@ -2282,7 +3438,8 @@
       "officialUrl": "https://www.dolphin-farm.jp/",
       "id": "dolphin-farm-shimanami",
       "creatureIds": [
-        "dolphin"
+        "dolphin",
+        "bottlenose_dolphin"
       ]
     },
     {
@@ -2298,7 +3455,8 @@
       "officialUrl": "https://j-dc2.net/",
       "id": "japan-dolphin-center",
       "creatureIds": [
-        "dolphin"
+        "dolphin",
+        "bottlenose_dolphin"
       ]
     },
     {
@@ -2331,7 +3489,8 @@
       "officialUrl": "https://marine.kaiyo-kankou.jp/",
       "id": "marine-jam",
       "creatureIds": [
-        "clownfish"
+        "clownfish",
+        "coral"
       ]
     },
     {
@@ -2347,7 +3506,9 @@
       "officialUrl": "http://www.gakuyukan.com",
       "id": "shimantogawa-gakuyukan-sakanakan",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "arapaima",
+        "coral_fish"
       ],
       "businessHours": "9:00～17:00"
     },
@@ -2445,7 +3606,15 @@
       "officialUrl": "http://www.tsukumi-irukajima.jp/",
       "id": "tsukumi-iruka-jima",
       "creatureIds": [
-        "dolphin"
+        "dolphin",
+        "magellanic_penguin",
+        "northern_fur_seal",
+        "red_stingray",
+        "green_sea_turtle",
+        "spotted_garden_eel",
+        "starfish",
+        "loggerhead_turtle",
+        "red_seabream"
       ],
       "businessHours": "10:00～16:00"
     },
@@ -2462,7 +3631,13 @@
       "officialUrl": "https://www.michinoeki-yayoi.com/",
       "id": "banjou-osakanakan",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "ayu",
+        "japanese_fire_belly_newt",
+        "common_carp",
+        "crucian_carp",
+        "japanese_eel",
+        "coral_fish"
       ],
       "businessHours": "10:00～17:00（最終受付 16:45）"
     },
@@ -2479,7 +3654,10 @@
       "officialUrl": "https://asofarmland.co.jp/",
       "id": "omoshiro-aquarium-aqua",
       "creatureIds": [
-        "shark"
+        "shark",
+        "goldfish",
+        "starspotted_smooth_hound",
+        "coral_fish"
       ]
     },
     {
@@ -2495,7 +3673,8 @@
       "officialUrl": "https://www.takachiho-kanko.info/sightseeing/detail.php?log=1376377801",
       "id": "takachiho-freshwater-aquarium",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "masu_salmon"
       ]
     },
     {
@@ -2527,7 +3706,14 @@
       "officialUrl": "https://idenoyama-aquarium.weebly.com/",
       "id": "idenoyama-freshwater-fish-aquarium",
       "creatureIds": [
-        "sturgeon"
+        "sturgeon",
+        "arapaima",
+        "arowana",
+        "ayu",
+        "giant_salamander",
+        "masu_salmon",
+        "red_tail_catfish",
+        "freshwater_fish"
       ],
       "businessHours": "9:00～17:00"
     },
@@ -2544,7 +3730,9 @@
       "officialUrl": "https://oyodo.miyabunkyo.com/facility/",
       "id": "oyodogawa-learning-center",
       "creatureIds": [
-        "freshwater_fish"
+        "freshwater_fish",
+        "butterfly",
+        "masu_salmon"
       ]
     },
     {
@@ -2560,7 +3748,9 @@
       "officialUrl": "http://www.irukaland.com/",
       "id": "shibushiwan-daikoku-iruka-land",
       "creatureIds": [
-        "dolphin"
+        "dolphin",
+        "penguin",
+        "sea_turtle"
       ],
       "businessHours": "10:00～17:00（最終入場 16:00）"
     },
@@ -2577,7 +3767,11 @@
       "officialUrl": "https://www.ohama.marutani-amami.com/ocean-exhibition-hall",
       "id": "amami-marine-exhibition-hall",
       "creatureIds": [
-        "sea_turtle"
+        "sea_turtle",
+        "green_sea_turtle",
+        "coral",
+        "coral_fish",
+        "crab"
       ],
       "businessHours": "9:30～18:00（最終入館 17:30）"
     },
