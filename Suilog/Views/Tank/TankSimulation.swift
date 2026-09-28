@@ -225,6 +225,27 @@ struct TankCreatureSpec: Equatable, Identifiable {
     let isLocationCheckIn: Bool
     let colorIndex: Int
 
+    /// 水槽に同時に表示する最大数（多すぎると重なり合って窮屈になり、負荷も増える）
+    static let displayLimit = 30
+
+    /// 表示する個体を選ぶ。specs は新しい訪問順に並んでいる前提。
+    /// 種類ごとに最新の 1 匹を優先し、余った枠を新しい順で埋める。並びは元の順序を保つ。
+    static func selectForDisplay(_ specs: [TankCreatureSpec], limit: Int = displayLimit) -> [TankCreatureSpec] {
+        guard specs.count > limit else { return specs }
+
+        var seenNames = Set<String>()
+        var picked = Set<Int>()
+        for (index, spec) in specs.enumerated() where picked.count < limit {
+            if seenNames.insert(spec.creatureName).inserted {
+                picked.insert(index)
+            }
+        }
+        for index in specs.indices where picked.count < limit {
+            picked.insert(index)
+        }
+        return specs.indices.filter { picked.contains($0) }.map { specs[$0] }
+    }
+
     /// アセット画像か（"." を含むものは SF Symbol 名）
     var isCustomAsset: Bool { !creatureName.contains(".") }
 

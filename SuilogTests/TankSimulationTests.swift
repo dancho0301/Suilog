@@ -34,6 +34,31 @@ struct TankSimulationTests {
         }
     }
 
+    // MARK: - 表示数の上限
+
+    @Test("上限以下ならそのまま全部表示する")
+    func testDisplaySelectionUnderLimit() {
+        let specs = ["a", "b", "a"].enumerated().map { makeSpec($0.element, index: $0.offset) }
+        #expect(TankCreatureSpec.selectForDisplay(specs, limit: 30) == specs)
+    }
+
+    @Test("上限を超えたら種類ごとに新しい 1 匹を優先し、残りを新しい順で埋める")
+    func testDisplaySelectionPrefersVariety() {
+        // 新しい順: a, a, a, b, c
+        let specs = ["a", "a", "a", "b", "c"].enumerated().map { makeSpec($0.element, index: $0.offset) }
+        let selected = TankCreatureSpec.selectForDisplay(specs, limit: 4)
+        #expect(selected.map(\.creatureName) == ["a", "a", "b", "c"])
+        #expect(selected.map(\.id) == [specs[0].id, specs[1].id, specs[3].id, specs[4].id])
+    }
+
+    @Test("種類数が上限より多ければ新しい種類から上限まで")
+    func testDisplaySelectionTooManyKinds() {
+        let specs = (0..<40).map { makeSpec("kind\($0)", index: $0) }
+        let selected = TankCreatureSpec.selectForDisplay(specs, limit: 30)
+        #expect(selected.count == 30)
+        #expect(selected == Array(specs.prefix(30)))
+    }
+
     // MARK: - プロファイル
 
     @Test("生き物の種類に応じて動きのスタイルが決まる")

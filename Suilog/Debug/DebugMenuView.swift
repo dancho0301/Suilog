@@ -137,6 +137,16 @@ struct DebugMenuView: View {
                                 .foregroundStyle(.secondary)
                         }
 
+                        // マイ水槽の見た目・負荷確認用（1訪問 = 水槽の生き物1匹）
+                        ForEach([10, 100], id: \.self) { count in
+                            Button {
+                                addSampleVisitRecords(count: count)
+                            } label: {
+                                Label("サンプル訪問を\(count)件追加", systemImage: "plus.circle")
+                            }
+                            .disabled(aquariums.isEmpty)
+                        }
+
                         Button(role: .destructive) {
                             showingDeleteConfirmation = true
                         } label: {
@@ -247,6 +257,21 @@ struct DebugMenuView: View {
             refreshResult = "保存失敗: \(msg)"
         }
         isRefreshing = false
+    }
+
+    /// ランダムな水族館への手動チェックインを追加する
+    private func addSampleVisitRecords(count: Int) {
+        for _ in 0..<count {
+            guard let aquarium = aquariums.randomElement() else { return }
+            let visit = VisitRecord(
+                visitDate: Date().addingTimeInterval(-Double.random(in: 0...(365 * 24 * 3600))),
+                memo: "サンプル",
+                checkInType: Bool.random() ? .location : .manual,
+                aquarium: aquarium
+            )
+            modelContext.insert(visit)
+        }
+        try? modelContext.save()
     }
 
     private func deleteAllVisitRecords() {
