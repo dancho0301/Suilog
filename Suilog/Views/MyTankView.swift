@@ -176,7 +176,7 @@ private struct TankCardView: View {
     @Environment(\.scenePhase) private var scenePhase
 
     private var specs: [TankCreatureSpec] {
-        visits.enumerated().map { index, visit in
+        let all = visits.enumerated().map { index, visit in
             TankCreatureSpec(
                 id: visit.id,
                 creatureName: visit.aquarium?.representativeFish ?? "fish.fill",
@@ -185,6 +185,7 @@ private struct TankCardView: View {
                 colorIndex: index
             )
         }
+        return TankCreatureSpec.selectForDisplay(all)
     }
 
     var body: some View {

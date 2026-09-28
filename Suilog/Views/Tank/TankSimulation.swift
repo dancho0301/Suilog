@@ -13,7 +13,8 @@ import CoreGraphics
 
 /// 生き物の動きの種類
 enum SwimStyle: Equatable {
-    /// 魚・海獣など。目標点へ泳ぎ、壁際で体をひねって反転する
+    /// 魚・海獣など。画面内では反転せず前へ泳ぎ続け、画面外に出たら入り直す
+    /// （体をひねる反転は 2D の絵だと平面なのが目立つため）
     case swim
     /// クラゲ・クリオネ。拍動で浮き上がり、ゆっくり沈む
     case drift
@@ -44,8 +45,6 @@ struct SwimProfile: Equatable {
     var wavelength: Double = 0.9
     /// 上下移動時に体を傾ける最大角（ラジアン）
     var maxPitch: Double = 0.3
-    /// 反転にかかる秒数
-    var turnDuration: Double = 0.7
     /// 泳ぐ高さの範囲（水槽の高さ比）
     var verticalBand: ClosedRange<Double> = 0.12...0.8
     /// 尾の動きに合わせた体全体の上下ゆれ（pt）
@@ -60,7 +59,6 @@ struct SwimProfile: Equatable {
             p.cruiseSpeed = 38
             p.burstMultiplier = 1.8
             p.tailFrequency = 2.8
-            p.turnDuration = 0.55
 
         // 大型でゆったり泳ぐ魚
         case "Whale Shark", "Mekonggiantcatfish", "Arapaima", "Sturgeon", "Coelacanth", "Arowana":
@@ -73,7 +71,6 @@ struct SwimProfile: Equatable {
             p.undulation = 0.04
             p.wavelength = 0.7
             p.maxPitch = 0.2
-            p.turnDuration = 1.6
 
         // サンゴ礁の小魚：ちょこまか泳いで止まる
         case "Clownfish", "Coral Fish":
@@ -83,7 +80,6 @@ struct SwimProfile: Equatable {
             p.burstDuration = 0.25...0.5
             p.glideDuration = 0.6...1.6
             p.tailFrequency = 3.2
-            p.turnDuration = 0.45
 
         // フグ：ホバリングしながら少しずつ進む
         case "Pufferfish":
@@ -94,7 +90,6 @@ struct SwimProfile: Equatable {
             p.undulation = 0.015
             p.tailSweep = 0.07
             p.maxPitch = 0.15
-            p.turnDuration = 0.9
 
         // 底生の魚
         case "Biwa Catfish", "Deep-sea Fish":
@@ -138,7 +133,6 @@ struct SwimProfile: Equatable {
             p.tailSweep = 0
             p.wavelength = 0.5
             p.maxPitch = 0.5
-            p.turnDuration = 0.55
             p.bob = 1.5
 
         // ゆったりした海獣
@@ -153,7 +147,6 @@ struct SwimProfile: Equatable {
             p.tailSweep = 0
             p.wavelength = 0.45
             p.maxPitch = 0.22
-            p.turnDuration = 1.8
             p.bob = 2.5
 
         // ウミガメ：ヒレで漕ぐので体はうねらせず、ゆっくり上下させる
@@ -167,7 +160,6 @@ struct SwimProfile: Equatable {
             p.undulation = 0.01
             p.tailSweep = 0
             p.maxPitch = 0.25
-            p.turnDuration = 1.5
             p.bob = 3
 
         // カモメ：水面近くをぷかぷか
@@ -225,6 +217,27 @@ struct TankCreatureSpec: Equatable, Identifiable {
     let isLocationCheckIn: Bool
     let colorIndex: Int
 
+    /// 水槽に同時に表示する最大数（多すぎると重なり合って窮屈になり、負荷も増える）
+    static let displayLimit = 30
+
+    /// 表示する個体を選ぶ。specs は新しい訪問順に並んでいる前提。
+    /// 種類ごとに最新の 1 匹を優先し、余った枠を新しい順で埋める。並びは元の順序を保つ。
+    static func selectForDisplay(_ specs: [TankCreatureSpec], limit: Int = displayLimit) -> [TankCreatureSpec] {
+        guard specs.count > limit else { return specs }
+
+        var seenNames = Set<String>()
+        var picked = Set<Int>()
+        for (index, spec) in specs.enumerated() where picked.count < limit {
+            if seenNames.insert(spec.creatureName).inserted {
+                picked.insert(index)
+            }
+        }
+        for index in specs.indices where picked.count < limit {
+            picked.insert(index)
+        }
+        return specs.indices.filter { picked.contains($0) }.map { specs[$0] }
+    }
+
     /// アセット画像か（"." を含むものは SF Symbol 名）
     var isCustomAsset: Bool { !creatureName.contains(".") }
 
@@ -258,9 +271,10 @@ struct TankCreature: Identifiable {
     var y: Double = 0
     var vx: Double = 0
     var vy: Double = 0
-    /// 体の向き（0 = 右向き、π = 左向き。途中は体をひねっている最中）
+    /// 体の向き（0 = 右向き、π = 左向き）。泳ぐ生き物は画面外にいる間だけ切り替わる
     var yaw: Double = 0
-    var desiredYaw: Double = 0
+    /// 画面外で次に入ってくるまでの待ち時間（秒）
+    var offscreenWait: Double = 0
     /// 進行方向の上下の傾き（ラジアン、負 = 頭が上）
     var pitch: Double = 0
     var speed: Double = 0
@@ -488,20 +502,15 @@ final class TankSimulation {
         let fromLeft = Bool.random()
         let half = c.halfLength
         switch c.profile.style {
-        case .swim, .flutter:
-            // 画面外から泳いで入ってくる
+        case .swim:
+            enterFromOffscreen(&c, fromLeft: fromLeft)
+        case .flutter:
+            // 画面外から入ってくる（向きは変えない）
             c.x = fromLeft ? -half * 1.2 : width + half * 1.2
             c.y = randomY(for: c)
-            c.yaw = (fromLeft || c.profile.style == .flutter) ? 0 : .pi
-            c.desiredYaw = c.yaw
-            c.speed = c.profile.cruiseSpeed * c.depthSpeed
-            c.target = CGPoint(
-                x: fromLeft ? random(width * 0.35, width * 0.8) : random(width * 0.2, width * 0.65),
-                y: randomY(for: c)
-            )
+            c.yaw = 0
+            c.target = CGPoint(x: random(width * 0.2, width * 0.8), y: randomY(for: c))
             c.retargetTimer = random(6, 12)
-            c.isBursting = true
-            c.phaseTimer = random(c.profile.burstDuration)
         case .drift:
             // その場でふわっと現れる
             c.fadeIn = 0
@@ -518,30 +527,55 @@ final class TankSimulation {
         }
     }
 
+    /// 画面外の左右どちらかに置き、そちら側から前へ泳ぎ出す
+    private func enterFromOffscreen(_ c: inout TankCreature, fromLeft: Bool) {
+        c.x = fromLeft ? -c.halfLength * 1.2 : width + c.halfLength * 1.2
+        c.y = randomY(for: c)
+        c.yaw = fromLeft ? 0 : .pi
+        c.pitch = 0
+        c.speed = c.profile.cruiseSpeed * c.depthSpeed
+        c.target = randomSwimTarget(for: c)
+        c.retargetTimer = random(6, 12)
+        c.isBursting = true
+        c.phaseTimer = random(c.profile.burstDuration)
+    }
+
     private func updateSwim(_ c: inout TankCreature, dt: Double) {
         let p = c.profile
         let half = c.halfLength
+        let facing: Double = c.yaw == 0 ? 1 : -1
+
+        // 画面外で待機中
+        if c.offscreenWait > 0 {
+            c.offscreenWait -= dt
+            if c.offscreenWait <= 0 {
+                enterFromOffscreen(&c, fromLeft: Bool.random())
+            }
+            return
+        }
+        // 進行方向の端から出きったら、しばらく待ってから入り直す
+        let exitMargin = half * 1.2
+        if (facing > 0 && c.x > width + exitMargin) || (facing < 0 && c.x < -exitMargin) {
+            c.x = facing > 0 ? width + exitMargin : -exitMargin
+            c.vx = 0
+            c.vy = 0
+            c.offscreenWait = random(0.5, 4)
+            return
+        }
 
         var dx = Double(c.target.x) - c.x
         var dy = Double(c.target.y) - c.y
         var distance = hypot(dx, dy)
 
+        // 目標点は常に前方に置く（追い越したら次の目標へ）
         c.retargetTimer -= dt
-        if distance < max(12, half * 0.6) || c.retargetTimer <= 0 {
+        if distance < max(12, half * 0.6) || dx * facing <= 0 || c.retargetTimer <= 0 {
             c.target = randomSwimTarget(for: c)
             c.retargetTimer = random(6, 14)
             dx = Double(c.target.x) - c.x
             dy = Double(c.target.y) - c.y
             distance = hypot(dx, dy)
         }
-
-        // 目標が背後に回ったら反転（小さなズレでは振り向かない）
-        if abs(dx) > half * 0.5 {
-            c.desiredYaw = dx >= 0 ? 0 : .pi
-        }
-        c.yaw = approach(c.yaw, c.desiredYaw, maxDelta: .pi / p.turnDuration * dt)
-        let facing = cos(c.yaw)
-        let isTurning = abs(facing) < 0.95
 
         // 尾を振って加速 → 惰性で滑る、を繰り返す
         c.phaseTimer -= dt
@@ -552,13 +586,11 @@ final class TankSimulation {
         var targetSpeed = p.cruiseSpeed * c.depthSpeed * (c.isBursting ? p.burstMultiplier : p.glideMultiplier)
         // 目標に近づいたら減速
         targetSpeed *= max(0.35, min(1, distance / (half * 3 + 20)))
-        // 反転中は速度を落とす
-        if isTurning { targetSpeed *= 0.5 }
         let response = c.isBursting ? 2.5 : 0.7
         c.speed += (targetSpeed - c.speed) * min(1, response * dt)
 
         // 上下に移動するときは頭をそちらへ傾ける
-        let desiredPitch = clamp(atan2(dy, max(abs(dx), 1)), -p.maxPitch, p.maxPitch) * abs(facing)
+        let desiredPitch = clamp(atan2(dy, max(abs(dx), 1)), -p.maxPitch, p.maxPitch)
         c.pitch += (desiredPitch - c.pitch) * min(1, 2 * dt)
 
         c.vx = c.speed * facing * cos(c.pitch)
@@ -566,8 +598,8 @@ final class TankSimulation {
         c.x += c.vx * dt
         c.y = clamp(c.y + c.vy * dt, half * 0.4, height - half * 0.4)
 
-        // 尾の振り：加速中・反転中は強く速く
-        let tailTarget = (c.isBursting || isTurning) ? 1.0 : 0.25
+        // 尾の振り：加速中は強く速く
+        let tailTarget = c.isBursting ? 1.0 : 0.25
         c.tailPower += (tailTarget - c.tailPower) * min(1, 4 * dt)
         let frequency = p.tailFrequency * (0.5 + 0.7 * c.tailPower)
         c.tailPhase = wrapPhase(c.tailPhase + 2 * .pi * frequency * dt)
@@ -662,18 +694,13 @@ final class TankSimulation {
         height - c.halfLength * 0.55 - 6
     }
 
+    /// 進行方向の前方に次の目標点を置く。前方の余地がなければ画面外（出口）を目指す
     private func randomSwimTarget(for c: TankCreature) -> CGPoint {
-        let margin = c.halfLength * 0.8
-        let minX = margin
-        let maxX = max(minX, width - margin)
-        var x = random(minX, maxX)
-        // 近すぎる目標は選ばず、水槽を横切るように泳がせる
-        if abs(x - c.x) < width * 0.25 {
-            x = c.x < width / 2
-                ? random(max(minX, width * 0.55), maxX)
-                : random(minX, min(maxX, width * 0.45))
-        }
-        return CGPoint(x: x, y: randomY(for: c))
+        let facing: Double = c.yaw == 0 ? 1 : -1
+        let x = c.x + facing * random(width * 0.25, width * 0.6)
+        let exitX = facing > 0 ? width + c.halfLength * 2 : -c.halfLength * 2
+        let clampedX = facing > 0 ? min(x, exitX) : max(x, exitX)
+        return CGPoint(x: clampedX, y: randomY(for: c))
     }
 
     // MARK: 泡の更新
@@ -738,11 +765,6 @@ final class TankSimulation {
 
 private func clamp(_ value: Double, _ lower: Double, _ upper: Double) -> Double {
     min(max(value, lower), upper)
-}
-
-private func approach(_ value: Double, _ target: Double, maxDelta: Double) -> Double {
-    if value < target { return min(value + maxDelta, target) }
-    return max(value - maxDelta, target)
 }
 
 private func wrapPhase(_ phase: Double) -> Double {

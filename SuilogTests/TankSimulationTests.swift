@@ -34,6 +34,31 @@ struct TankSimulationTests {
         }
     }
 
+    // MARK: - 表示数の上限
+
+    @Test("上限以下ならそのまま全部表示する")
+    func testDisplaySelectionUnderLimit() {
+        let specs = ["a", "b", "a"].enumerated().map { makeSpec($0.element, index: $0.offset) }
+        #expect(TankCreatureSpec.selectForDisplay(specs, limit: 30) == specs)
+    }
+
+    @Test("上限を超えたら種類ごとに新しい 1 匹を優先し、残りを新しい順で埋める")
+    func testDisplaySelectionPrefersVariety() {
+        // 新しい順: a, a, a, b, c
+        let specs = ["a", "a", "a", "b", "c"].enumerated().map { makeSpec($0.element, index: $0.offset) }
+        let selected = TankCreatureSpec.selectForDisplay(specs, limit: 4)
+        #expect(selected.map(\.creatureName) == ["a", "a", "b", "c"])
+        #expect(selected.map(\.id) == [specs[0].id, specs[1].id, specs[3].id, specs[4].id])
+    }
+
+    @Test("種類数が上限より多ければ新しい種類から上限まで")
+    func testDisplaySelectionTooManyKinds() {
+        let specs = (0..<40).map { makeSpec("kind\($0)", index: $0) }
+        let selected = TankCreatureSpec.selectForDisplay(specs, limit: 30)
+        #expect(selected.count == 30)
+        #expect(selected == Array(specs.prefix(30)))
+    }
+
     // MARK: - プロファイル
 
     @Test("生き物の種類に応じて動きのスタイルが決まる")
@@ -50,7 +75,6 @@ struct TankSimulationTests {
     @Test("大型の生き物は小魚よりゆっくり泳ぐ")
     func testLargeCreaturesAreSlower() {
         #expect(SwimProfile.forCreature("Whale Shark").cruiseSpeed < SwimProfile.forCreature("Tuna").cruiseSpeed)
-        #expect(SwimProfile.forCreature("Whale").turnDuration > SwimProfile.forCreature("Clownfish").turnDuration)
     }
 
     @Test("すべてのプロファイルの範囲が妥当")
@@ -65,7 +89,6 @@ struct TankSimulationTests {
         for name in names {
             let p = SwimProfile.forCreature(name)
             #expect(p.cruiseSpeed > 0, "\(name)")
-            #expect(p.turnDuration > 0, "\(name)")
             #expect(p.tailFrequency > 0, "\(name)")
             #expect(p.verticalBand.lowerBound >= 0 && p.verticalBand.upperBound <= 1, "\(name)")
         }
@@ -133,21 +156,53 @@ struct TankSimulationTests {
         }
     }
 
-    @Test("泳ぐ生き物は左右両方に向きを変える")
-    func testSwimmersTurnAround() {
+    @Test("泳ぐ生き物は画面内で反転せず、画面外から入り直すときに向きが変わりうる")
+    func testSwimmersNeverTurnOnScreen() {
         let simulation = TankSimulation()
-        let spec = makeSpec("Clownfish")
-        simulation.sync([spec])
+        let names = ["Clownfish", "Tuna", "Dolphin", "Whale Shark", "Sea Turtle", "fish.fill"]
+        simulation.sync(names.enumerated().map { makeSpec($0.element, index: $0.offset) })
 
+        var lastVisibleYaw: [UUID: Double] = [:]
         var sawRight = false
         var sawLeft = false
-        for _ in 0..<(60 * 90) {
+        for _ in 0..<(60 * 180) {
             simulation.advance(by: 1.0 / 60.0, size: tankSize)
-            guard let c = simulation.creatures.first, c.isActive else { continue }
-            if c.yaw < 0.01 { sawRight = true }
-            if c.yaw > .pi - 0.01 { sawLeft = true }
+            for c in simulation.creatures where c.isActive {
+                // 向きは常に真横（体をひねる途中の状態がない）
+                #expect(c.yaw == 0 || c.yaw == .pi, "\(c.spec.creatureName) yaw=\(c.yaw)")
+                // 前進方向と向きが一致している
+                if c.vx != 0 { #expect((c.vx > 0) == (c.yaw == 0), "\(c.spec.creatureName)") }
+
+                let isVisible = c.x + c.halfLength > 0 && c.x - c.halfLength < tankSize.width
+                if isVisible {
+                    if let last = lastVisibleYaw[c.id] {
+                        #expect(last == c.yaw, "\(c.spec.creatureName) が画面内で反転した")
+                    }
+                    lastVisibleYaw[c.id] = c.yaw
+                } else {
+                    lastVisibleYaw[c.id] = nil
+                }
+                if c.yaw == 0 { sawRight = true } else { sawLeft = true }
+            }
         }
         #expect(sawRight && sawLeft)
+    }
+
+    @Test("泳ぐ生き物は画面を横切って、また戻ってくる")
+    func testSwimmersCrossAndReturn() {
+        let simulation = TankSimulation()
+        simulation.sync([makeSpec("Tuna")])
+
+        var exits = 0
+        var wasVisible = false
+        for _ in 0..<(60 * 180) {
+            simulation.advance(by: 1.0 / 60.0, size: tankSize)
+            guard let c = simulation.creatures.first, c.isActive else { continue }
+            let isVisible = c.x + c.halfLength > 0 && c.x - c.halfLength < tankSize.width
+            if wasVisible && !isVisible { exits += 1 }
+            wasVisible = isVisible
+        }
+        #expect(exits >= 2)
     }
 
     @Test("復帰直後などで時間が大きく飛んでもワープしない")
