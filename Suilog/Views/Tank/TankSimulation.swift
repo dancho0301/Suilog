@@ -275,6 +275,8 @@ struct TankCreature: Identifiable {
     var yaw: Double = 0
     /// 画面外で次に入ってくるまでの待ち時間（秒）
     var offscreenWait: Double = 0
+    /// レトロな動き（うねり・傾き・奥行きの色味なし）にするか
+    var isRetro = false
     /// 進行方向の上下の傾き（ラジアン、負 = 頭が上）
     var pitch: Double = 0
     var speed: Double = 0
@@ -308,29 +310,31 @@ struct TankCreature: Identifiable {
     var renderSize: Double { spec.baseSize * depthScale }
     var halfLength: Double { renderSize * 0.5 }
 
-    var opacity: Double { fadeIn * (1 - 0.3 * depth) }
-    var blurRadius: Double { depth > 0.6 ? (depth - 0.6) * 2.5 : 0 }
-    var saturation: Double { 1 - 0.35 * depth }
+    var opacity: Double { isRetro ? fadeIn : fadeIn * (1 - 0.3 * depth) }
+    var blurRadius: Double { !isRetro && depth > 0.6 ? (depth - 0.6) * 2.5 : 0 }
+    var saturation: Double { isRetro ? 1 : 1 - 0.35 * depth }
     /// 奥ほど青みがかる乗算色（RGB）
     var tint: (red: Double, green: Double, blue: Double) {
-        (1 - 0.35 * depth, 1 - 0.18 * depth, 1 - 0.04 * depth)
+        guard !isRetro else { return (1, 1, 1) }
+        return (1 - 0.35 * depth, 1 - 0.18 * depth, 1 - 0.04 * depth)
     }
 
     // MARK: 描画パラメータ
 
     /// シェーダーに渡すうねりの振幅
     var undulationAmount: Double {
-        guard profile.style == .swim else { return 0 }
+        guard profile.style == .swim, !isRetro else { return 0 }
         return profile.undulation * (0.35 + 0.65 * tailPower)
     }
 
     var tailSweepAmount: Double {
-        guard profile.style == .swim else { return 0 }
+        guard profile.style == .swim, !isRetro else { return 0 }
         return profile.tailSweep * (0.3 + 0.7 * tailPower)
     }
 
     /// 描画時の回転（ラジアン）
     var renderRotation: Double {
+        guard !isRetro else { return 0 }
         switch profile.style {
         case .swim: return pitch
         case .drift: return sin(swayPhase) * 0.07
@@ -341,6 +345,7 @@ struct TankCreature: Identifiable {
 
     /// 描画時の拡大率（拍動・羽ばたき）
     var renderScale: (x: Double, y: Double) {
+        guard !isRetro else { return (1, 1) }
         switch profile.style {
         case .swim, .crawl:
             return (1, 1)
@@ -354,6 +359,7 @@ struct TankCreature: Identifiable {
 
     /// 描画時の上下オフセット（pt）
     var renderOffsetY: Double {
+        guard !isRetro else { return 0 }
         switch profile.style {
         case .swim: return profile.bob * sin(tailPhase + .pi) * tailPower
         case .drift: return 0
@@ -404,9 +410,15 @@ final class TankSimulation {
 
     /// 1 フレームで進める最大秒数（バックグラウンド復帰時などのワープ防止）
     static let maxStep: Double = 1.0 / 15.0
+    /// レトロな動きで上下に揺れる幅（pt）
+    static let retroWobble: Double = 4
+
+    /// レトロな動き（16bit テーマ用）。一定の速さでまっすぐ横に進み、上下に少し揺れるだけにする
+    var isRetro = false
 
     /// 訪問記録の変化を反映し、date まで時間を進める
-    func update(specs: [TankCreatureSpec], date: Date, size: CGSize) {
+    func update(specs: [TankCreatureSpec], date: Date, size: CGSize, isRetro: Bool = false) {
+        self.isRetro = isRetro
         sync(specs)
         step(to: date, size: size)
     }
@@ -481,6 +493,12 @@ final class TankSimulation {
     private var height: Double { Double(size.height) }
 
     private func update(_ c: inout TankCreature, dt: Double) {
+        if c.isRetro != isRetro {
+            c.isRetro = isRetro
+            // 途中で切り替わったら、今の高さをレーンにして続ける
+            c.target.y = c.y
+            c.pitch = 0
+        }
         if !c.isActive {
             c.spawnDelay -= dt
             guard c.spawnDelay <= 0 else { return }
@@ -538,6 +556,23 @@ final class TankSimulation {
         c.retargetTimer = random(6, 12)
         c.isBursting = true
         c.phaseTimer = random(c.profile.burstDuration)
+        if c.isRetro {
+            // レーン（高さ）を決めて一定の速さで進む
+            c.target.y = c.y
+            c.swayPhase = 0
+        }
+    }
+
+    /// レトロな動き：一定の速さでまっすぐ横に進み、レーンの上下に少し揺れる
+    private func updateRetroSwim(_ c: inout TankCreature, facing: Double, dt: Double) {
+        let speed = c.profile.cruiseSpeed * c.depthSpeed
+        c.pitch = 0
+        c.speed = speed
+        c.vx = speed * facing
+        c.vy = 0
+        c.x += c.vx * dt
+        c.y = Double(c.target.y) + sin(c.swayPhase * 2) * Self.retroWobble
+        c.tailPhase = wrapPhase(c.tailPhase + 2 * .pi * c.profile.tailFrequency * dt)
     }
 
     private func updateSwim(_ c: inout TankCreature, dt: Double) {
@@ -560,6 +595,10 @@ final class TankSimulation {
             c.vx = 0
             c.vy = 0
             c.offscreenWait = random(0.5, 4)
+            return
+        }
+        if c.isRetro {
+            updateRetroSwim(&c, facing: facing, dt: dt)
             return
         }
 

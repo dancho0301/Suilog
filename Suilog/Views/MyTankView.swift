@@ -216,7 +216,12 @@ private struct TankCardView: View {
                 }
 
                 TimelineView(.animation(minimumInterval: nil, paused: scenePhase != .active)) { context in
-                    let _ = simulation.update(specs: specs, date: context.date, size: geo.size)
+                    let _ = simulation.update(
+                        specs: specs,
+                        date: context.date,
+                        size: geo.size,
+                        isRetro: theme.usesRetroTankMotion
+                    )
                     let time = simulation.time
                     let creatures = simulation.creatures
                     let bubbles = simulation.bubbles
@@ -366,7 +371,7 @@ private struct TankCreatureView: View {
             .scaleEffect(x: scale.x, y: scale.y)
             // 進行方向への傾き
             .rotationEffect(.radians(creature.renderRotation))
-            // 反転は体をひねるように Y 軸回転させる
+            // 左向きは Y 軸回転で左右反転する（向きが変わるのは画面外にいる間だけ）
             .rotation3DEffect(.radians(creature.yaw), axis: (x: 0, y: 1, z: 0), perspective: 0.4)
             // 奥行き：奥ほど青く、淡く、ぼやける
             .saturation(creature.saturation)

@@ -15,6 +15,13 @@ struct ThemeTests {
 
     // MARK: - Theme Model Tests
 
+    @Test("マイ水槽のレトロな動きは16ビットテーマだけ")
+    func testRetroTankMotionOnlyFor16bit() {
+        #expect(Theme.sixteenBit.usesRetroTankMotion)
+        #expect(!Theme.defaultTheme.usesRetroTankMotion)
+        #expect(!Theme.yumekawa.usesRetroTankMotion)
+    }
+
     @Test("全テーマリストが正しい件数")
     func testAllThemesCount() {
         // mint / coral は一時無効化中のため3テーマ

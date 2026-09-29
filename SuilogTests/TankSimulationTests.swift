@@ -205,6 +205,36 @@ struct TankSimulationTests {
         #expect(exits >= 2)
     }
 
+    @Test("レトロな動きでは一定の速さでまっすぐ横に進み、上下に少し揺れるだけ")
+    func testRetroSwimIsSimple() {
+        let simulation = TankSimulation()
+        simulation.isRetro = true
+        simulation.sync([makeSpec("Tuna"), makeSpec("Dolphin", index: 1), makeSpec("Whale Shark", index: 2)])
+
+        var laneY: [UUID: Double] = [:]
+        var speeds: [UUID: Set<Int>] = [:]
+        for _ in 0..<(60 * 120) {
+            simulation.advance(by: 1.0 / 60.0, size: tankSize)
+            for c in simulation.creatures where c.isActive && c.vx != 0 {
+                #expect(c.pitch == 0)
+                #expect(c.renderRotation == 0)
+                #expect(c.undulationAmount == 0 && c.tailSweepAmount == 0)
+                #expect(c.blurRadius == 0 && c.saturation == 1)
+                speeds[c.id, default: []].insert(Int((abs(c.vx) * 1000).rounded()))
+
+                let isVisible = c.x + c.halfLength > 0 && c.x - c.halfLength < tankSize.width
+                if isVisible, let lane = laneY[c.id] {
+                    #expect(abs(c.y - lane) <= TankSimulation.retroWobble + 0.001, "\(c.spec.creatureName)")
+                } else if !isVisible {
+                    laneY[c.id] = nil
+                }
+                if isVisible, laneY[c.id] == nil { laneY[c.id] = Double(c.target.y) }
+            }
+        }
+        // 速さは個体ごとに一定
+        #expect(speeds.values.allSatisfy { $0.count == 1 })
+    }
+
     @Test("復帰直後などで時間が大きく飛んでもワープしない")
     func testLargeTimeJumpIsClamped() {
         let simulation = TankSimulation()
