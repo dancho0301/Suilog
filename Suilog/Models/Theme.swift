@@ -120,6 +120,12 @@ struct Theme: Identifiable, Codable, Equatable {
         return "Themes/Default/\(creatureName)"
     }
 
+    /// マイ水槽の生き物をレトロな動き（まっすぐ横に進むだけ）にするか。
+    /// ドット絵はうねりや傾きを付けると不自然に見えるため
+    var usesRetroTankMotion: Bool {
+        id == "16bit"
+    }
+
     // MARK: - Equatable
 
     static func == (lhs: Theme, rhs: Theme) -> Bool {
