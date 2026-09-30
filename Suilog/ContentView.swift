@@ -14,6 +14,7 @@ struct ContentView: View {
     @EnvironmentObject var storeManager: StoreManager
     @EnvironmentObject var locationManager: LocationManager
     @Query private var aquariums: [Aquarium]
+    @Query private var visitRecords: [VisitRecord]
 
     @State private var selectedTab = 0
     @State private var showingNearbyAlert = false
@@ -95,6 +96,12 @@ struct ContentView: View {
                 .tag(3)
         }
         .tint(themeManager.currentTheme.primaryColor)
+        .syncsWidgetSnapshot(
+            visits: visitRecords,
+            theme: themeManager.currentTheme,
+            isPro: storeManager.isProUnlocked,
+            entitlementsLoaded: storeManager.hasLoadedEntitlements
+        )
         .safeAreaInset(edge: .bottom, spacing: 0) {
             CustomTabBar(
                 selected: $selectedTab,
