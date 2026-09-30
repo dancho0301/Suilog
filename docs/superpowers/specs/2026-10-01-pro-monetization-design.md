@@ -71,7 +71,7 @@
   - `visitedAquariumCount: Int`（訪問した水族館の数）
   - `visitCount: Int`（訪問回数）
   - `recentVisits: [RecentVisit]`（最近の訪問 最大3件。水族館名・訪問日・チェックインの種類）
-  - `themeId: String`
+  - `primaryHex` / `tankTopHex` / `tankBottomHex: String`（テーマの色。ウィジェット側で `Theme` を使わないため、`themeId` ではなく色を直接持つ）
   - `isPro: Bool`
   - `updatedAt: Date`
 - 訪問記録の配列・テーマ ID・Pro 状態からスナップショットを作る純粋関数を用意する（テスト対象）。
@@ -91,7 +91,7 @@
   - 小: 訪問館数と訪問回数
   - 中: 小の内容 ＋ 最近の訪問3件
 - 背景はテーマの水槽の色（`tankTop`〜`tankBottom` のグラデーション）。背景画像は使わない。
-  このため `Theme.swift` をウィジェットのターゲットにも含める。
+  色は `WidgetSnapshot` の16進数から作る（`Theme.swift` はウィジェットに含めない）。
 - Pro でない場合は「スイログ Pro で使えます」と表示する。タップでアプリを開く。
 - スナップショットがまだない場合（アプリ未起動など）は「アプリを開くと表示されます」と表示する。
 - 更新はアプリからの `reloadAllTimelines` が中心。タイムラインは数時間後の再読み込みを指定しておく。
@@ -102,6 +102,7 @@
 
 1. File → New → Target → Widget Extension で `SuilogWidget` を作成（Live Activity・Configuration Intent は含めない）。
 2. アプリとウィジェットの両ターゲットに App Groups を追加し、`group.jp.dancho.Suilog` を登録。
+3. `Suilog/Shared/WidgetSnapshot.swift` のターゲットメンバーシップに `SuilogWidget` を追加。
 
 ウィジェットのコードはすべてこちらで実装する。
 
@@ -113,6 +114,8 @@
 - 購入画面で商品を読み込めなかったとき、メッセージの下に「もう一度読み込む」ボタンを表示する。
 - 復元後に結果を表示する:「Pro を復元しました」／「復元できる購入が見つかりませんでした」。
 - Pro 購入の直後に、テーマの解放・写真上限の解除・ウィジェットの表示が反映される（1 と 2 の仕組みで自動的に反映）。
+- 起動直後は購入状態が空のため、購入状態（権利）の読み込みが終わるまで、テーマの巻き戻しとウィジェットの書き出しを行わない（`StoreManager.hasLoadedEntitlements`）。
+- テーマストアの「購入を復元」ボタンは削除し、復元は Pro の購入画面に一本化する。
 
 ### ローカルでのテスト
 
