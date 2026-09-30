@@ -155,18 +155,23 @@ class StoreManager: ObservableObject {
     }
 
     /// 購入を復元する
-    func restorePurchases() async {
+    /// - Returns: 復元の結果（画面に「復元しました」などを出すために使う）
+    @discardableResult
+    func restorePurchases() async -> RestoreOutcome {
         isLoading = true
         errorMessage = nil
+        var failed = false
 
         do {
             try await AppStore.sync()
             await updatePurchasedProducts()
         } catch {
             errorMessage = "購入の復元に失敗しました: \(error.localizedDescription)"
+            failed = true
         }
 
         isLoading = false
+        return RestoreOutcome.resolve(isProUnlocked: isProUnlocked, failed: failed)
     }
 
     /// 特定のProduct IDに対応する商品を取得
@@ -224,6 +229,32 @@ enum StoreError: LocalizedError {
         switch self {
         case .verificationFailed:
             return "購入の検証に失敗しました"
+        }
+    }
+}
+
+// MARK: - Restore Outcome
+
+/// 購入の復元の結果
+enum RestoreOutcome: Equatable {
+    /// Pro が見つかって復元された
+    case restored
+    /// 通信は成功したが、復元できる購入がなかった
+    case nothingToRestore
+    /// 復元に失敗した（理由は StoreManager.errorMessage に入る）
+    case failed
+
+    static func resolve(isProUnlocked: Bool, failed: Bool) -> RestoreOutcome {
+        if failed { return .failed }
+        return isProUnlocked ? .restored : .nothingToRestore
+    }
+
+    /// 画面に出すメッセージ。失敗時は errorMessage のアラートが別に出るので nil
+    var message: String? {
+        switch self {
+        case .restored: return "Pro を復元しました"
+        case .nothingToRestore: return "復元できる購入が見つかりませんでした"
+        case .failed: return nil
         }
     }
 }
