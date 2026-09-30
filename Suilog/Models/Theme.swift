@@ -13,8 +13,7 @@ struct Theme: Identifiable, Codable, Equatable {
     let id: String
     let name: String
     let description: String
-    let productId: String?          // App Store Connect の Product ID（nil = 無料）
-    let isDefault: Bool             // デフォルトテーマかどうか
+    let requiresPro: Bool           // true = スイログ Pro が必要（false = 無料）
 
     // アセット名
     let backgroundImageiPhone: String
@@ -142,8 +141,7 @@ extension Theme {
         id: "default",
         name: "オーシャンブルー",
         description: "明るい水色ベースの基本テーマ",
-        productId: nil,
-        isDefault: true,
+        requiresPro: false,
         backgroundImageiPhone: "Themes/Default/background_iphone",
         backgroundImageiPad: "Themes/Default/background_ipad",
         primaryColorHex: "#3FA8CB",
@@ -161,13 +159,12 @@ extension Theme {
         tankBottomHex: "#6BBBD8"
     )
 
-    /// フレッシュミント（無料）
+    /// フレッシュミント（Pro・現在は無効）
     static let mint = Theme(
         id: "mint",
         name: "フレッシュミント",
         description: "みずみずしいグリーン基調のテーマ",
-        productId: nil,
-        isDefault: true,
+        requiresPro: true,
         backgroundImageiPhone: "Themes/Default/background_iphone",
         backgroundImageiPad: "Themes/Default/background_ipad",
         primaryColorHex: "#3CAF88",
@@ -185,13 +182,12 @@ extension Theme {
         tankBottomHex: "#5CC49A"
     )
 
-    /// サンセットコーラル（無料）
+    /// サンセットコーラル（Pro・現在は無効）
     static let coral = Theme(
         id: "coral",
         name: "サンセットコーラル",
         description: "夕焼けを思わせる暖色テーマ",
-        productId: nil,
-        isDefault: true,
+        requiresPro: true,
         backgroundImageiPhone: "Themes/Default/background_iphone",
         backgroundImageiPad: "Themes/Default/background_ipad",
         primaryColorHex: "#E06B5A",
@@ -209,13 +205,12 @@ extension Theme {
         tankBottomHex: "#E8806F"
     )
 
-    /// ゆめかわテーマ（無料・既存継続）
+    /// ゆめかわテーマ（Pro）
     static let yumekawa = Theme(
         id: "yumekawa",
         name: "ゆめかわ",
         description: "パステルカラーの夢かわいい世界",
-        productId: nil,
-        isDefault: true,
+        requiresPro: true,
         backgroundImageiPhone: "Themes/Yumekawa/background_iphone",
         backgroundImageiPad: "Themes/Yumekawa/background_ipad",
         primaryColorHex: "#9B4B9B",
@@ -233,13 +228,12 @@ extension Theme {
         tankBottomHex: "#FF85C8"
     )
 
-    /// 16ビットテーマ（無料）
+    /// 16ビットテーマ（Pro）
     static let sixteenBit = Theme(
         id: "16bit",
         name: "16ビット",
         description: "レトロゲーム風の明るい水槽テーマ",
-        productId: nil,
-        isDefault: true,
+        requiresPro: true,
         backgroundImageiPhone: "Themes/16bit/background_iphone",
         backgroundImageiPad: "Themes/16bit/background_ipad",
         primaryColorHex: "#2A6496",

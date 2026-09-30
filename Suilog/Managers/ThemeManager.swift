@@ -17,8 +17,8 @@ class ThemeManager: ObservableObject {
     /// 利用可能な全テーマ
     @Published private(set) var availableThemes: [Theme] = Theme.allThemes
 
-    /// 購入済みのProduct ID一覧（StoreManagerから更新される）
-    @Published var purchasedProductIds: Set<String> = []
+    /// スイログ Pro を購入済みか（StoreManager から更新される）
+    @Published private(set) var isPro = false
 
     private let selectedThemeKey = CloudSettingsManager.selectedThemeIdKey
     private let cloudSettings = CloudSettingsManager.shared
@@ -53,20 +53,14 @@ class ThemeManager: ObservableObject {
     }
 
     /// アンロック済みのテーマ一覧
-    /// デフォルトテーマは常にアンロック、それ以外は購入済みのものだけ
+    /// 無料のテーマは常に、Pro 必須のテーマは Pro 購入後に使える
     var unlockedThemes: [Theme] {
-        availableThemes.filter { theme in
-            theme.isDefault ||
-            purchasedProductIds.contains(theme.productId ?? "") ||
-            purchasedProductIds.contains("com.suilog.theme.all_pack")
-        }
+        availableThemes.filter { isUnlocked($0) }
     }
 
     /// テーマがアンロック済みかどうか
     func isUnlocked(_ theme: Theme) -> Bool {
-        theme.isDefault ||
-        purchasedProductIds.contains(theme.productId ?? "") ||
-        purchasedProductIds.contains("com.suilog.theme.all_pack")
+        !theme.requiresPro || isPro
     }
 
     /// テーマを選択する
@@ -83,13 +77,23 @@ class ThemeManager: ObservableObject {
         return true
     }
 
-    /// 購入済みProduct IDを更新する
-    func updatePurchasedProducts(_ productIds: Set<String>) {
-        purchasedProductIds = productIds
+    /// Pro の購入状態を更新する
+    /// 選択中のテーマがロックされてしまう場合はオーシャンブルーに戻す
+    func updatePro(_ isPro: Bool) {
+        self.isPro = isPro
 
-        // 現在のテーマがアンロックされていない場合はデフォルトに戻す
         if !isUnlocked(currentTheme) {
             selectTheme(.defaultTheme)
         }
+    }
+
+    /// StoreManager の購入状態（権利）を反映する
+    /// - Parameters:
+    ///   - productIds: 購入済みの Product ID
+    ///   - isLoaded: 権利の読み込みが終わっているか。起動直後は購入状態が空のまま届くため、
+    ///     読み込み前に反映すると Pro の人のテーマがオーシャンブルーに戻って保存されてしまう
+    func applyEntitlements(_ productIds: Set<String>, isLoaded: Bool) {
+        guard isLoaded else { return }
+        updatePro(StoreManager.isPro(in: productIds))
     }
 }

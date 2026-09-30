@@ -26,22 +26,14 @@ struct StoreProductTests {
         #expect(StoreManager.tipProductIds.allSatisfy { $0.hasPrefix("com.suilog.tip.") })
     }
 
-    @Test("テーマ商品IDが従来どおり（回帰防止）")
-    @MainActor
-    func testThemeProductIdsUnchanged() {
-        #expect(StoreManager.themeProductIds == [
-            "com.suilog.theme.yumekawa",
-            "com.suilog.theme.all_pack"
-        ])
-    }
-
-    @Test("全Product IDにテーマ・Pro・チップがすべて含まれ重複しない")
+    @Test("全Product IDはProとチップだけで、テーマ商品は含まれない")
     @MainActor
     func testAllProductIds() {
         let all = StoreManager.allProductIds
-        #expect(all.count == 6) // テーマ2 + Pro1 + チップ3
-        #expect(all.isSuperset(of: StoreManager.themeProductIds))
+        #expect(all.count == 4) // Pro1 + チップ3
         #expect(all.isSuperset(of: StoreManager.tipProductIds))
         #expect(all.contains(StoreManager.proProductId))
+        #expect(!all.contains("com.suilog.theme.yumekawa"))
+        #expect(!all.contains("com.suilog.theme.all_pack"))
     }
 }

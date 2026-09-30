@@ -17,6 +17,10 @@ class StoreManager: ObservableObject {
     /// 購入済みのProduct ID一覧
     @Published private(set) var purchasedProductIds: Set<String> = []
 
+    /// 購入状態（権利）の最初の読み込みが終わったか。
+    /// 起動直後は購入済みが空のため、テーマの巻き戻しやウィジェットの書き出しはこれが true になってから行う
+    @Published private(set) var hasLoadedEntitlements = false
+
     /// 商品を読み込み中かどうか
     @Published private(set) var isLoading = false
 
@@ -28,12 +32,6 @@ class StoreManager: ObservableObject {
 
     /// トランザクション更新のリスナータスク
     private var updateListenerTask: Task<Void, Error>?
-
-    /// テーマ商品のProduct ID一覧
-    static let themeProductIds: Set<String> = [
-        "com.suilog.theme.yumekawa",
-        "com.suilog.theme.all_pack"
-    ]
 
     /// スイログ Pro（買い切り）のProduct ID
     static let proProductId = "com.suilog.pro"
@@ -47,7 +45,7 @@ class StoreManager: ObservableObject {
 
     /// App Storeから読み込む全Product ID
     static var allProductIds: Set<String> {
-        themeProductIds.union(tipProductIds).union([proProductId])
+        tipProductIds.union([proProductId])
     }
 
     /// 応援（チップ）の累計回数を保存するUserDefaultsキー
@@ -55,7 +53,12 @@ class StoreManager: ObservableObject {
 
     /// スイログ Pro を購入済みかどうか
     var isProUnlocked: Bool {
-        purchasedProductIds.contains(Self.proProductId)
+        Self.isPro(in: purchasedProductIds)
+    }
+
+    /// 購入済みの Product ID に Pro が含まれるか（テスト容易性のため純粋関数として分離）
+    static func isPro(in productIds: Set<String>) -> Bool {
+        productIds.contains(proProductId)
     }
 
     /// 応援（チップ）の累計回数
@@ -171,20 +174,6 @@ class StoreManager: ObservableObject {
         products.first { $0.id == productId }
     }
 
-    /// 全テーマパックのProduct ID（これを持っていれば全テーマがアンロックされる）
-    static let allThemesPackId = "com.suilog.theme.all_pack"
-
-    /// 特定の商品が購入済みかどうか
-    func isPurchased(_ productId: String) -> Bool {
-        Self.resolveIsPurchased(productId, in: purchasedProductIds)
-    }
-
-    /// 購入済み判定ロジック（テスト容易性のため純粋関数として分離）
-    /// 全テーマパックを所有している場合は個別テーマも購入済みとみなす
-    static func resolveIsPurchased(_ productId: String, in purchasedIds: Set<String>) -> Bool {
-        purchasedIds.contains(productId) || purchasedIds.contains(allThemesPackId)
-    }
-
     // MARK: - Private Methods
 
     /// 購入済み商品を更新する
@@ -200,6 +189,7 @@ class StoreManager: ObservableObject {
         }
 
         purchasedProductIds = purchased
+        hasLoadedEntitlements = true
     }
 
     /// トランザクションの更新をリッスンする
