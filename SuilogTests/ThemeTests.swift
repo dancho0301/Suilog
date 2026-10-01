@@ -182,6 +182,45 @@ struct ThemeTests {
         #expect(manager.isPro == false)
     }
 
+    @Test("Pro を失っても保存済みのテーマ ID は残る")
+    @MainActor
+    func testLosingProKeepsSavedThemeId() {
+        let manager = makeManager()
+        manager.updatePro(true)
+        _ = manager.selectTheme(Theme.sixteenBit)
+
+        manager.updatePro(false)
+
+        #expect(manager.currentTheme == Theme.defaultTheme)
+        #expect(CloudSettingsManager.shared.string(forKey: CloudSettingsManager.selectedThemeIdKey) == "16bit")
+    }
+
+    @Test("Pro に戻ると保存済みのテーマに戻る")
+    @MainActor
+    func testRegainingProRestoresSavedTheme() {
+        let manager = makeManager()
+        manager.updatePro(true)
+        _ = manager.selectTheme(Theme.sixteenBit)
+        manager.updatePro(false)
+
+        manager.updatePro(true)
+
+        #expect(manager.currentTheme == Theme.sixteenBit)
+    }
+
+    @Test("Pro でない端末が起動しても保存済みの Pro テーマを上書きしない")
+    @MainActor
+    func testNonProLaunchDoesNotOverwriteSavedTheme() {
+        _ = makeManager()
+        CloudSettingsManager.shared.set("yumekawa", forKey: CloudSettingsManager.selectedThemeIdKey)
+        let manager = ThemeManager()
+
+        manager.applyEntitlements([], isLoaded: true)
+
+        #expect(manager.currentTheme == Theme.defaultTheme)
+        #expect(CloudSettingsManager.shared.string(forKey: CloudSettingsManager.selectedThemeIdKey) == "yumekawa")
+    }
+
     // MARK: - 購入状態（権利）の反映
 
     @Test("applyEntitlements: 読み込み前は Pro テーマを巻き戻さない")

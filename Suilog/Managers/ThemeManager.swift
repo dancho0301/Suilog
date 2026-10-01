@@ -78,12 +78,25 @@ class ThemeManager: ObservableObject {
     }
 
     /// Pro の購入状態を更新する
-    /// 選択中のテーマがロックされてしまう場合はオーシャンブルーに戻す
+    /// 選択中のテーマがロックされてしまう場合は、この端末だけオーシャンブルーにする
+    /// （iCloud の保存値は書き換えない。Pro が戻れば保存済みのテーマに戻る）
     func updatePro(_ isPro: Bool) {
+        let wasPro = self.isPro
         self.isPro = isPro
 
         if !isUnlocked(currentTheme) {
-            selectTheme(.defaultTheme)
+            currentTheme = .defaultTheme
+        } else if isPro && !wasPro {
+            restoreSavedTheme()
+        }
+    }
+
+    /// 保存済みのテーマ ID を読み直し、アンロック済みならそのテーマにする（保存はしない）
+    private func restoreSavedTheme() {
+        if let savedThemeId = cloudSettings.string(forKey: selectedThemeKey),
+           let savedTheme = Theme.allThemes.first(where: { $0.id == savedThemeId }),
+           isUnlocked(savedTheme) {
+            currentTheme = savedTheme
         }
     }
 
