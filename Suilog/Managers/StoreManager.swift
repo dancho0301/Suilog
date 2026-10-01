@@ -70,10 +70,10 @@ class StoreManager: ObservableObject {
         // トランザクション更新をリッスン
         updateListenerTask = listenForTransactions()
 
-        // 商品と購入状態を読み込む
+        // 購入状態（端末内で完結）を先に読み、商品（オフラインで待たされうる）は後に読み込む
         Task {
-            await loadProducts()
             await updatePurchasedProducts()
+            await loadProducts()
         }
     }
 
