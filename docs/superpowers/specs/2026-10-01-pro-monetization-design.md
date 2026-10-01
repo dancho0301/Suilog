@@ -74,7 +74,7 @@
   - `primaryHex` / `tankTopHex` / `tankBottomHex: String`（テーマの色。ウィジェット側で `Theme` を使わないため、`themeId` ではなく色を直接持つ）
   - `isPro: Bool`
   - `updatedAt: Date`
-- 訪問記録の配列・テーマ ID・Pro 状態からスナップショットを作る純粋関数を用意する（テスト対象）。
+- 訪問記録の配列・テーマ（その色）・Pro 状態からスナップショットを作る純粋関数を用意する（テスト対象）。
 - App Group `group.jp.dancho.Suilog` の共有 UserDefaults に JSON で保存・読み込みする `WidgetSnapshotStore` を用意する。
 - これらは `Shared/` フォルダに置き、アプリとウィジェットの両ターゲットに含める。
 
@@ -98,11 +98,7 @@
 
 ### 手作業（ユーザー）
 
-プロジェクトファイルへのターゲット追加は手編集だと壊れやすいため、Xcode の画面で行う:
-
-1. File → New → Target → Widget Extension で `SuilogWidget` を作成（Live Activity・Configuration Intent は含めない）。
-2. アプリとウィジェットの両ターゲットに App Groups を追加し、`group.jp.dancho.Suilog` を登録。
-3. `Suilog/Shared/WidgetSnapshot.swift` のターゲットメンバーシップに `SuilogWidget` を追加。
+ターゲット、App Group の entitlements、`Shared/` フォルダのメンバーシップは project.pbxproj を直接編集して追加した（Task 7）。残る手作業は、Xcode でプロジェクトを一度開き、両ターゲットの Signing & Capabilities → App Groups を確認することだけ。
 
 ウィジェットのコードはすべてこちらで実装する。
 
@@ -124,6 +120,7 @@
 - ユニットテスト:
   - `ThemeTests`: Pro なしではオーシャンブルーのみ、Pro ありでは全テーマ、Pro を失うとオーシャンブルーに戻る。
   - `StoreManagerTests` / `StoreProductTests`: 削除した商品・関数に関するテストを整理し、`allProductIds` が Pro とチップのみであることを確認。
+  - `StoreKitConfigurationTests`: `Configuration.storekit` の中身（Pro とチップのみ）を検査。購入の一連の流れは自動テストにせず、Xcode の Run で手動確認する。
   - `WidgetSnapshotTests`: 件数の数え方、最近3件の選び方（新しい順）、JSON の往復。
 - シミュレータでの確認: 購入前はロック → Pro 購入 → テーマ選択・写真の複数追加・ウィジェット表示 → 購入の取り消し → 元に戻る。
 
