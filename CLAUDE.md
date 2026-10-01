@@ -98,6 +98,7 @@ Aquarium master data is fetched from Firebase Hosting instead of being bundled i
 - **Pro の判定**: `StoreManager.isProUnlocked`（`com.suilog.pro` の所有）だけを入口にする。写真の上限・テーマ・ウィジェットはすべてこれを見る
 - **ウィジェット**: `SuilogWidgetExtension` ターゲット（フォルダ `SuilogWidget/`、Info.plist・entitlements は `SuilogWidgetSupport/`）。表示データはアプリが `WidgetSnapshot`（`Shared/WidgetSnapshot.swift`、リポジトリ直下の同期フォルダでアプリとウィジェット両方にコンパイルされる）にして App Group `group.jp.dancho.Suilog` の共有 UserDefaults に書き出し、ウィジェットは読むだけ（SwiftData・`Theme.swift` には依存しない）
 - ウィジェットの Xcode ターゲットは project.pbxproj を直接編集して追加したので、Xcode で一度開いて Signing & Capabilities（App Groups）を確認すること
+- ウィジェットターゲット `SuilogWidgetExtension` は独自の `MARKETING_VERSION` / `CURRENT_PROJECT_VERSION` を持ち、アプリ本体と同じ値でなければならない。バージョンやビルド番号を上げるときは**両方のターゲット**を変えること（不一致だと App Store の検証で弾かれる）
 - **書き出し**: `ContentView` の `.syncsWidgetSnapshot(...)`。購入状態（権利）の読み込みが終わるまでは書き出さない（`StoreManager.hasLoadedEntitlements`）
 - **ローカルでの購入テスト**: `Suilog/Configuration.storekit` をスキームの Run に設定済み。StoreKit設定の内容は `StoreKitConfigurationTests` で検査する。購入の一連の流れは Xcode の Run（`Configuration.storekit`）で確認する
 

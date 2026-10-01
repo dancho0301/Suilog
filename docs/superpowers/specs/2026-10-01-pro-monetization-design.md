@@ -1,7 +1,7 @@
 # スイログ Pro を課金の柱にする設計
 
 - 日付: 2026-10-01
-- 状態: 承認済み（実装計画待ち）
+- 状態: 承認済み（実装済み）
 
 ## 目的
 
@@ -44,9 +44,9 @@
 - `Theme` は `Codable` だが、永続化しているのはテーマ ID のみのため、プロパティ変更による移行は不要。
 - `ThemeManager` は購入済み Product ID の一覧ではなく `isPro: Bool` を受け取る。
   - `isUnlocked(_:)` は `!theme.requiresPro || isPro`。
-  - `updatePro(_:)`（旧 `updatePurchasedProducts(_:)`）で Pro 状態を更新し、選択中のテーマがロックされていればオーシャンブルーに戻す。
+  - `updatePro(_:)`（旧 `updatePurchasedProducts(_:)`）で Pro 状態を更新し、選択中のテーマがロックされていればオーシャンブルーに戻す。この強制リセットはその端末の表示だけで、iCloud（KVS）に保存したテーマ ID は書き換えない（別端末で Pro を持つ人のテーマを巻き込まないため）。Pro が戻ったら保存済みのテーマ ID を読み直して復元する。
   - iCloud から Pro テーマへの変更が届いても、ロック中なら反映しない（現状と同じ）。
-- `SuilogApp` は `storeManager.$purchasedProductIds` の変化を受けて `themeManager.updatePro(storeManager.isProUnlocked)` を呼ぶ。
+- `SuilogApp` は `storeManager.$purchasedProductIds` と `$hasLoadedEntitlements` を組み合わせた変化を受けて `themeManager.applyEntitlements(_:isLoaded:)` を呼ぶ（権利の読み込み前は反映しない）。
 
 ### テーマストア画面（ThemeStoreView）
 

@@ -22,7 +22,7 @@
 
 - 最低 OS は **iOS 26.0**。Swift 言語モードは 5、ビルド設定は `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`。アプリとウィジェットで共有する型は `nonisolated` を付ける。
 - 新しいユニットテストは **Swift Testing**（`import Testing` / `@Test` / `#expect`）。XCTest は使わない。
-- プロジェクトは `PBXFileSystemSynchronizedRootGroup`。新規ファイルは該当フォルダに置くだけで自動的にターゲットに入る。**`project.pbxproj` は手で編集しない**（ウィジェットのターゲット追加は Xcode の画面で行う。Task 7）。
+- プロジェクトは `PBXFileSystemSynchronizedRootGroup`。新規ファイルは該当フォルダに置くだけで自動的にターゲットに入る。**`project.pbxproj` は手で編集しない**（ウィジェットのターゲット追加は Xcode の画面で行う。Task 7）（Task 7 だけは、Xcode の画面操作ができなかったため、ユーザーの許可を得て直接編集した）。
 - UI の文言は日本語。Pro の商品 ID は `com.suilog.pro`（買い切り・600円）、チップは `com.suilog.tip.small` / `.medium` / `.large`（消耗型）。
 - 無料のテーマは **オーシャンブルー（`Theme.defaultTheme`）だけ**。ゆめかわ・16ビット・mint・coral は `requiresPro = true`。`Theme.allThemes` は今のまま `[defaultTheme, yumekawa, sixteenBit]`（mint・coral は無効のまま）。
 - 写真の上限は今のまま（無料は `VisitRecord.freePhotoLimit = 1`、Pro は無制限）。
