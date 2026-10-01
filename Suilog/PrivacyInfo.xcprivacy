@@ -17,12 +17,14 @@
 	<array>
 		<dict>
 			<!-- UserDefaults: アプリ自身の設定（テーマ・データバージョン・
-			     オンボーディング完了フラグ・ニックネーム等）の保存に使用 -->
+			     オンボーディング完了フラグ・ニックネーム等）の保存に使用。
+			     1C8F.1: ウィジェットと共有する App Group の UserDefaults -->
 			<key>NSPrivacyAccessedAPIType</key>
 			<string>NSPrivacyAccessedAPICategoryUserDefaults</string>
 			<key>NSPrivacyAccessedAPITypeReasons</key>
 			<array>
 				<string>CA92.1</string>
+				<string>1C8F.1</string>
 			</array>
 		</dict>
 	</array>
