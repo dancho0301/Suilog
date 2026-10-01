@@ -2,11 +2,9 @@
 //  SuilogWidgetBundle.swift
 //  SuilogWidget
 //
-//  ウィジェット拡張の入口。
-//
 
-import SwiftUI
 import WidgetKit
+import SwiftUI
 
 @main
 struct SuilogWidgetBundle: WidgetBundle {
