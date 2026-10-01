@@ -23,6 +23,7 @@ struct SuilogWidgetView: View {
             }
         }
         .foregroundStyle(.white)
+        .shadow(color: .black.opacity(0.35), radius: 1.5, x: 0, y: 0.5)
         .containerBackground(for: .widget) { background }
     }
 
@@ -37,6 +38,7 @@ struct SuilogWidgetView: View {
             startPoint: .top,
             endPoint: .bottom
         )
+        .overlay(Color.black.opacity(0.3))
     }
 
     // MARK: - Pro の人に見せる内容
@@ -58,7 +60,7 @@ struct SuilogWidgetView: View {
         VStack(alignment: .leading, spacing: 2) {
             Text("訪問した水族館")
                 .font(.caption2)
-                .opacity(0.85)
+                .opacity(0.95)
             Text("\(snapshot.visitedAquariumCount)")
                 .font(.system(size: 40, weight: .bold, design: .rounded))
                 .minimumScaleFactor(0.6)
@@ -74,7 +76,7 @@ struct SuilogWidgetView: View {
         VStack(alignment: .leading, spacing: 6) {
             Text("最近の訪問")
                 .font(.caption2)
-                .opacity(0.85)
+                .opacity(0.95)
             if snapshot.recentVisits.isEmpty {
                 Text("まだ訪問記録がありません")
                     .font(.caption)
@@ -86,7 +88,7 @@ struct SuilogWidgetView: View {
                             .lineLimit(1)
                         Text(visit.visitDate, format: .dateTime.year().month().day())
                             .font(.caption2)
-                            .opacity(0.85)
+                            .opacity(0.95)
                     }
                 }
             }
