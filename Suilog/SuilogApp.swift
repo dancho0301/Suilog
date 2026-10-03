@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import Combine
 
 @main
 struct SuilogApp: App {
@@ -95,9 +96,9 @@ struct SuilogApp: App {
                     // 初回起動時にサンプルデータを挿入
                     await seedDataIfNeeded()
                 }
-                .onReceive(storeManager.$purchasedProductIds) { productIds in
-                    // 購入状態が変わったらThemeManagerに通知
-                    themeManager.updatePurchasedProducts(productIds)
+                .onReceive(storeManager.$purchasedProductIds.combineLatest(storeManager.$hasLoadedEntitlements)) { productIds, isLoaded in
+                    // 購入状態が変わったらThemeManagerに通知（権利の読み込みが終わるまでは反映しない）
+                    themeManager.applyEntitlements(productIds, isLoaded: isLoaded)
                 }
                 .alert("データの読み込みに失敗しました", isPresented: $showingInitialError) {
                     Button("再試行") {

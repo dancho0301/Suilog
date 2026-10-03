@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		66CB67CD48793D107A480ED9 /* SuilogWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = F7D28BAC4DADA447CD38004A /* SuilogWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		5A63BA4E2F05077B003C6494 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,12 +25,34 @@
 			remoteGlobalIDString = 5A63BA3B2F050779003C6494;
 			remoteInfo = Suilog;
 		};
+		84CF7968E394A0EBE47C9A8C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5A63BA342F050779003C6494 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FAD75C1BD697A5881E71B8CD;
+			remoteInfo = SuilogWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		EE7C4BFE938DAEB7A5A3A370 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				66CB67CD48793D107A480ED9 /* SuilogWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		5A63BA3C2F050779003C6494 /* Suilog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Suilog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A63BA4D2F05077B003C6494 /* SuilogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SuilogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A63BA572F05077B003C6494 /* SuilogUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SuilogUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7D28BAC4DADA447CD38004A /* SuilogWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SuilogWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -46,6 +72,16 @@
 				5A63BA5F2F05077B003C6494 /* Exceptions for "Suilog" folder in "Suilog" target */,
 			);
 			path = Suilog;
+			sourceTree = "<group>";
+		};
+		B8E2B64F84787A8690C955FB /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		FB554792493DAB39A402BA6B /* SuilogWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SuilogWidget;
 			sourceTree = "<group>";
 		};
 		5A63BA502F05077B003C6494 /* SuilogTests */ = {
@@ -82,6 +118,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DD8BC57F04FB121CC87ADA72 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -89,6 +132,8 @@
 			isa = PBXGroup;
 			children = (
 				5A63BA3E2F050779003C6494 /* Suilog */,
+				B8E2B64F84787A8690C955FB /* Shared */,
+				FB554792493DAB39A402BA6B /* SuilogWidget */,
 				5A63BA502F05077B003C6494 /* SuilogTests */,
 				5A63BA5A2F05077B003C6494 /* SuilogUITests */,
 				5A63BA3D2F050779003C6494 /* Products */,
@@ -101,6 +146,7 @@
 				5A63BA3C2F050779003C6494 /* Suilog.app */,
 				5A63BA4D2F05077B003C6494 /* SuilogTests.xctest */,
 				5A63BA572F05077B003C6494 /* SuilogUITests.xctest */,
+				F7D28BAC4DADA447CD38004A /* SuilogWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -115,13 +161,16 @@
 				5A63BA382F050779003C6494 /* Sources */,
 				5A63BA392F050779003C6494 /* Frameworks */,
 				5A63BA3A2F050779003C6494 /* Resources */,
+				EE7C4BFE938DAEB7A5A3A370 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				EAF5FB9FA783EB08908EAC1F /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				5A63BA3E2F050779003C6494 /* Suilog */,
+				B8E2B64F84787A8690C955FB /* Shared */,
 			);
 			name = Suilog;
 			packageProductDependencies = (
@@ -176,6 +225,29 @@
 			productReference = 5A63BA572F05077B003C6494 /* SuilogUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		FAD75C1BD697A5881E71B8CD /* SuilogWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FF9516B535579923A3056718 /* Build configuration list for PBXNativeTarget "SuilogWidgetExtension" */;
+			buildPhases = (
+				268A9AF578C12ED86B7ACB93 /* Sources */,
+				DD8BC57F04FB121CC87ADA72 /* Frameworks */,
+				BAD7037965357B957CF3AA6B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				FB554792493DAB39A402BA6B /* SuilogWidget */,
+				B8E2B64F84787A8690C955FB /* Shared */,
+			);
+			name = SuilogWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = SuilogWidgetExtension;
+			productReference = F7D28BAC4DADA447CD38004A /* SuilogWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -197,6 +269,9 @@
 						CreatedOnToolsVersion = 26.0;
 						TestTargetID = 5A63BA3B2F050779003C6494;
 					};
+					FAD75C1BD697A5881E71B8CD = {
+						CreatedOnToolsVersion = 26.0;
+					};
 				};
 			};
 			buildConfigurationList = 5A63BA372F050779003C6494 /* Build configuration list for PBXProject "Suilog" */;
@@ -216,6 +291,7 @@
 				5A63BA3B2F050779003C6494 /* Suilog */,
 				5A63BA4C2F05077B003C6494 /* SuilogTests */,
 				5A63BA562F05077B003C6494 /* SuilogUITests */,
+				FAD75C1BD697A5881E71B8CD /* SuilogWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -236,6 +312,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		5A63BA552F05077B003C6494 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BAD7037965357B957CF3AA6B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -266,6 +349,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		268A9AF578C12ED86B7ACB93 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -278,6 +368,11 @@
 			isa = PBXTargetDependency;
 			target = 5A63BA3B2F050779003C6494 /* Suilog */;
 			targetProxy = 5A63BA582F05077B003C6494 /* PBXContainerItemProxy */;
+		};
+		EAF5FB9FA783EB08908EAC1F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FAD75C1BD697A5881E71B8CD /* SuilogWidgetExtension */;
+			targetProxy = 84CF7968E394A0EBE47C9A8C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -557,6 +652,64 @@
 			};
 			name = Release;
 		};
+		0AFCE8E0D89B797CFFAD2369 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SuilogWidgetSupport/SuilogWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 6;
+				DEVELOPMENT_TEAM = 6549AY6J4G;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SuilogWidgetSupport/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "スイログ";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 3.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jp.dancho.Suilog.SuilogWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		22317A0415F20B904BE2FABC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SuilogWidgetSupport/SuilogWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 6;
+				DEVELOPMENT_TEAM = 6549AY6J4G;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SuilogWidgetSupport/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "スイログ";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 3.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jp.dancho.Suilog.SuilogWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -592,6 +745,15 @@
 			buildConfigurations = (
 				5A63BA692F05077B003C6494 /* Debug */,
 				5A63BA6A2F05077B003C6494 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FF9516B535579923A3056718 /* Build configuration list for PBXNativeTarget "SuilogWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0AFCE8E0D89B797CFFAD2369 /* Debug */,
+				22317A0415F20B904BE2FABC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

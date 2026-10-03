@@ -136,13 +136,4 @@ struct MigrationPlanTests {
         let aquariums = try context.fetch(FetchDescriptor<Aquarium>())
         #expect(aquariums.isEmpty)
     }
-
-    @Test("StoreManager のテーマProduct IDが正しい")
-    @MainActor
-    func testThemeProductIds() {
-        let ids = StoreManager.themeProductIds
-        #expect(ids.count == 2)
-        #expect(ids.contains("com.suilog.theme.yumekawa"))
-        #expect(ids.contains("com.suilog.theme.all_pack"))
-    }
 }

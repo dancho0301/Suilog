@@ -25,12 +25,6 @@ struct ThemeStoreView: View {
 
                     // テーマ一覧
                     themesGrid
-
-                    // 全テーマパック
-                    allThemesPackSection
-
-                    // 購入復元ボタン
-                    restorePurchasesButton
                 }
                 .padding()
             }
@@ -128,99 +122,6 @@ struct ThemeStoreView: View {
             }
         }
     }
-
-    // MARK: - All Themes Pack
-
-    private var allThemesPackSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("お得なセット")
-                .font(.headline)
-                .foregroundColor(.secondary)
-
-            if let allPackProduct = storeManager.product(for: "com.suilog.theme.all_pack") {
-                VStack(spacing: 12) {
-                    HStack {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("全テーマパック")
-                                .font(.title3)
-                                .fontWeight(.bold)
-
-                            Text("すべてのテーマが含まれています")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                        }
-
-                        Spacer()
-
-                        if storeManager.isPurchased("com.suilog.theme.all_pack") {
-                            Text("購入済み")
-                                .font(.subheadline)
-                                .fontWeight(.medium)
-                                .foregroundColor(.green)
-                        } else {
-                            Button {
-                                Task {
-                                    _ = await storeManager.purchase(allPackProduct)
-                                }
-                            } label: {
-                                Text(allPackProduct.displayPrice)
-                                    .font(.headline)
-                                    .foregroundColor(.white)
-                                    .padding(.horizontal, 20)
-                                    .padding(.vertical, 10)
-                                    .background(Color.blue)
-                                    .clipShape(Capsule())
-                            }
-                            .disabled(storeManager.isPurchasing)
-                        }
-                    }
-
-                    // テーマプレビュー
-                    HStack(spacing: 8) {
-                        ForEach(themeManager.availableThemes.filter { !$0.isDefault }) { theme in
-                            Image(theme.backgroundImageName)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 60, height: 90)
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                        }
-                    }
-                }
-                .padding()
-                .background(
-                    LinearGradient(
-                        colors: [Color.blue.opacity(0.1), Color.purple.opacity(0.1)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color.blue.opacity(0.3), lineWidth: 2)
-                )
-            }
-        }
-    }
-
-    // MARK: - Restore Purchases Button
-
-    private var restorePurchasesButton: some View {
-        Button {
-            Task {
-                await storeManager.restorePurchases()
-            }
-        } label: {
-            HStack {
-                Image(systemName: "arrow.clockwise")
-                Text("購入を復元")
-            }
-            .font(.subheadline)
-            .foregroundColor(.secondary)
-        }
-        .disabled(storeManager.isLoading)
-        .padding(.top, 8)
-    }
 }
 
 // MARK: - Theme Card
@@ -274,16 +175,8 @@ struct ThemeCard: View {
                             .foregroundColor(.blue)
                     }
                 } else {
-                    if let product = storeManager.product(for: theme.productId ?? "") {
-                        Text(product.displayPrice)
-                            .foregroundColor(.orange)
-                    } else if theme.isDefault {
-                        Text("無料")
-                            .foregroundColor(.green)
-                    } else {
-                        Text("読み込み中...")
-                            .foregroundColor(.secondary)
-                    }
+                    Label("Pro", systemImage: "crown.fill")
+                        .foregroundColor(.orange)
                 }
             }
             .font(.caption)
@@ -309,6 +202,7 @@ struct ThemePreviewView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var showingPurchaseError = false
+    @State private var showingProStore = false
 
     private var isPurchased: Bool {
         themeManager.isUnlocked(theme)
@@ -391,49 +285,20 @@ struct ThemePreviewView: View {
                                     .background(Color.blue)
                                     .clipShape(RoundedRectangle(cornerRadius: 12))
                             }
-                        } else if let productId = theme.productId,
-                                  !productId.isEmpty,
-                                  let product = storeManager.product(for: productId) {
-                            // 未購入で購入可能なテーマ
-                            Button {
-                                Task {
-                                    let success = await storeManager.purchase(product)
-                                    if success {
-                                        // 購入成功後にテーマを適用
-                                        await MainActor.run {
-                                            themeManager.updatePurchasedProducts(storeManager.purchasedProductIds)
-                                            themeManager.selectTheme(theme)
-                                            dismiss()
-                                        }
-                                    }
-                                }
-                            } label: {
-                                HStack {
-                                    if storeManager.isPurchasing {
-                                        ProgressView()
-                                            .tint(.white)
-                                    } else {
-                                        Text("\(product.displayPrice) で購入")
-                                    }
-                                }
-                                .font(.headline)
-                                .foregroundColor(.white)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.orange)
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                            }
-                            .disabled(storeManager.isPurchasing)
                         } else {
-                            // 商品情報読み込み中または無料テーマの場合の代替表示
-                            HStack {
-                                ProgressView()
-                                Text("読み込み中...")
+                            // Pro 限定のテーマ：Pro の購入画面へ案内する
+                            Button {
+                                showingProStore = true
+                            } label: {
+                                Label("Pro で使えるようになります", systemImage: "crown.fill")
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(Color.orange)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
                             }
-                            .font(.headline)
-                            .foregroundColor(.secondary)
-                            .padding()
-                            .frame(maxWidth: .infinity)
+                            .accessibilityIdentifier("themePreview.proButton")
                         }
                     }
                     .padding(24)
@@ -453,6 +318,11 @@ struct ThemePreviewView: View {
                 }
             }
             .ignoresSafeArea(edges: .top)
+            .sheet(isPresented: $showingProStore) {
+                ProStoreView()
+                    .environmentObject(storeManager)
+                    .environmentObject(themeManager)
+            }
             .alert("エラー", isPresented: $showingPurchaseError) {
                 Button("OK") { }
             } message: {

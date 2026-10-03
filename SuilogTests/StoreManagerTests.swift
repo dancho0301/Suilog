@@ -3,8 +3,7 @@
 //  SuilogTests
 //
 //  StoreManagerの購入判定ロジック（純粋関数部分）のテスト。
-//  StoreKit本体はテストセッションが必要なため、ここでは
-//  エンタイトルメント判定のロジックのみを検証する。
+//  StoreKit本体を使う購入のテストは ProPurchaseTests にある。
 //
 
 import Testing
@@ -14,48 +13,54 @@ import Foundation
 @Suite
 struct StoreManagerTests {
 
-    // MARK: - resolveIsPurchased
+    // MARK: - isPro(in:)
 
-    @Test("個別商品を所有していれば購入済み")
+    @Test("Pro を所有していれば Pro 扱い")
     @MainActor
-    func testOwnedDirectly() {
-        let owned: Set<String> = ["com.suilog.theme.yumekawa"]
-        #expect(StoreManager.resolveIsPurchased("com.suilog.theme.yumekawa", in: owned) == true)
+    func testOwnedPro() {
+        #expect(StoreManager.isPro(in: ["com.suilog.pro"]) == true)
     }
 
-    @Test("未所有の商品は未購入")
-    @MainActor
-    func testNotOwned() {
-        let owned: Set<String> = ["com.suilog.theme.yumekawa"]
-        #expect(StoreManager.resolveIsPurchased("com.suilog.theme.other", in: owned) == false)
-    }
-
-    @Test("全テーマパック所有時は個別テーマも購入済み扱い")
-    @MainActor
-    func testAllPackUnlocksIndividualThemes() {
-        let owned: Set<String> = ["com.suilog.theme.all_pack"]
-        #expect(StoreManager.resolveIsPurchased("com.suilog.theme.yumekawa", in: owned) == true)
-        #expect(StoreManager.resolveIsPurchased("com.suilog.theme.any_future", in: owned) == true)
-    }
-
-    @Test("全テーマパックでもパック自身は購入済み判定")
-    @MainActor
-    func testAllPackItself() {
-        let owned: Set<String> = ["com.suilog.theme.all_pack"]
-        #expect(StoreManager.resolveIsPurchased(StoreManager.allThemesPackId, in: owned) == true)
-    }
-
-    @Test("空の所有セットでは何も購入済みでない")
+    @Test("空の所有セットでは Pro ではない")
     @MainActor
     func testEmptyOwnership() {
-        let owned: Set<String> = []
-        #expect(StoreManager.resolveIsPurchased("com.suilog.pro", in: owned) == false)
-        #expect(StoreManager.resolveIsPurchased("com.suilog.theme.all_pack", in: owned) == false)
+        #expect(StoreManager.isPro(in: []) == false)
     }
 
-    @Test("全テーマパックのIDが正しい")
+    @Test("チップだけでは Pro ではない")
     @MainActor
-    func testAllThemesPackId() {
-        #expect(StoreManager.allThemesPackId == "com.suilog.theme.all_pack")
+    func testTipsAreNotPro() {
+        #expect(StoreManager.isPro(in: StoreManager.tipProductIds) == false)
+    }
+
+    @Test("販売をやめたテーマ商品を持っていても Pro 扱いにならない")
+    @MainActor
+    func testRetiredThemeProductsAreNotPro() {
+        let retired: Set<String> = ["com.suilog.theme.yumekawa", "com.suilog.theme.all_pack"]
+        #expect(StoreManager.isPro(in: retired) == false)
+    }
+
+    // MARK: - RestoreOutcome
+
+    @Test("復元: Pro が見つかれば restored")
+    func testRestoreOutcomeRestored() {
+        let outcome = RestoreOutcome.resolve(isProUnlocked: true, failed: false)
+        #expect(outcome == .restored)
+        #expect(outcome.message == "Pro を復元しました")
+    }
+
+    @Test("復元: 通信は成功したが Pro がなければ nothingToRestore")
+    func testRestoreOutcomeNothingToRestore() {
+        let outcome = RestoreOutcome.resolve(isProUnlocked: false, failed: false)
+        #expect(outcome == .nothingToRestore)
+        #expect(outcome.message == "復元できる購入が見つかりませんでした")
+    }
+
+    @Test("復元: 失敗したら failed（メッセージは errorMessage 側で出すので nil）")
+    func testRestoreOutcomeFailed() {
+        // 失敗時は、たまたま Pro を持っていても failed を優先する
+        let outcome = RestoreOutcome.resolve(isProUnlocked: true, failed: true)
+        #expect(outcome == .failed)
+        #expect(outcome.message == nil)
     }
 }

@@ -5,57 +5,17 @@
   ],
   "products" : [
     {
-      "displayPrice" : "160",
-      "familyShareable" : true,
-      "internalID" : "yumekawa_theme",
-      "localizations" : [
-        {
-          "description" : "パステルカラーの夢かわいい世界",
-          "displayName" : "ゆめかわ",
-          "locale" : "ja"
-        },
-        {
-          "description" : "A dreamy pastel colored world",
-          "displayName" : "Yumekawa",
-          "locale" : "en_US"
-        }
-      ],
-      "productID" : "com.suilog.theme.yumekawa",
-      "referenceName" : "Yumekawa Theme",
-      "type" : "NonConsumable"
-    },
-    {
-      "displayPrice" : "370",
-      "familyShareable" : true,
-      "internalID" : "all_themes_pack",
-      "localizations" : [
-        {
-          "description" : "すべてのテーマが含まれたお得なパック",
-          "displayName" : "全テーマパック",
-          "locale" : "ja"
-        },
-        {
-          "description" : "All themes bundle at a discounted price",
-          "displayName" : "All Themes Pack",
-          "locale" : "en_US"
-        }
-      ],
-      "productID" : "com.suilog.theme.all_pack",
-      "referenceName" : "All Themes Pack",
-      "type" : "NonConsumable"
-    },
-    {
       "displayPrice" : "600",
       "familyShareable" : true,
       "internalID" : "suilog_pro",
       "localizations" : [
         {
-          "description" : "写真無制限など、すべてのPro機能が使える買い切りプラン",
+          "description" : "写真の無制限保存・すべてのテーマ・ホーム画面ウィジェットが使える買い切りプラン",
           "displayName" : "スイログ Pro",
           "locale" : "ja"
         },
         {
-          "description" : "One-time purchase unlocking unlimited photos and all Pro features",
+          "description" : "One-time purchase: unlimited photos, all themes, and the home screen widget",
           "displayName" : "Suilog Pro",
           "locale" : "en_US"
         }

@@ -13,6 +13,13 @@ import SwiftUI
 @Suite
 struct ThemeTests {
 
+    /// 保存済みテーマ（iCloud KVS / UserDefaults）を消した状態の ThemeManager を作る
+    @MainActor
+    private func makeManager() -> ThemeManager {
+        CloudSettingsManager.shared.set(nil, forKey: CloudSettingsManager.selectedThemeIdKey)
+        return ThemeManager()
+    }
+
     // MARK: - Theme Model Tests
 
     @Test("マイ水槽のレトロな動きは16ビットテーマだけ")
@@ -28,13 +35,21 @@ struct ThemeTests {
         #expect(Theme.allThemes.count == 3)
     }
 
+    @Test("無料なのはオーシャンブルーだけ")
+    func testOnlyDefaultThemeIsFree() {
+        #expect(Theme.defaultTheme.requiresPro == false)
+        #expect(Theme.yumekawa.requiresPro == true)
+        #expect(Theme.sixteenBit.requiresPro == true)
+        #expect(Theme.mint.requiresPro == true)
+        #expect(Theme.coral.requiresPro == true)
+        #expect(Theme.allThemes.filter { !$0.requiresPro } == [Theme.defaultTheme])
+    }
+
     @Test("デフォルトテーマのプロパティ")
     func testDefaultThemeProperties() {
         let theme = Theme.defaultTheme
         #expect(theme.id == "default")
         #expect(theme.name == "オーシャンブルー")
-        #expect(theme.isDefault == true)
-        #expect(theme.productId == nil)
     }
 
     @Test("ゆめかわテーマのプロパティ")
@@ -42,8 +57,6 @@ struct ThemeTests {
         let theme = Theme.yumekawa
         #expect(theme.id == "yumekawa")
         #expect(theme.name == "ゆめかわ")
-        #expect(theme.isDefault == true)
-        #expect(theme.productId == nil)
     }
 
     @Test("Theme Equatable: 同じIDは等しい")
@@ -112,201 +125,145 @@ struct ThemeTests {
     @Test("ThemeManager初期化: デフォルトテーマが選択される")
     @MainActor
     func testThemeManagerInit() {
-        // ThemeManagerはCloudSettingsManager（iCloud KVS優先）から保存テーマを読むため、
-        // UserDefaultsだけでなく実際の保存先（KVS含む）をクリアする
-        CloudSettingsManager.shared.set(nil, forKey: CloudSettingsManager.selectedThemeIdKey)
-        let manager = ThemeManager()
+        let manager = makeManager()
         #expect(manager.currentTheme == Theme.defaultTheme)
+        #expect(manager.isPro == false)
     }
 
-    @Test("ThemeManager: デフォルトテーマは常にアンロック")
+    @Test("ThemeManager: Pro でなければオーシャンブルーだけ使える")
     @MainActor
-    func testDefaultThemeAlwaysUnlocked() {
-        let manager = ThemeManager()
+    func testWithoutProOnlyDefaultIsUnlocked() {
+        let manager = makeManager()
         #expect(manager.isUnlocked(Theme.defaultTheme) == true)
+        #expect(manager.isUnlocked(Theme.yumekawa) == false)
+        #expect(manager.isUnlocked(Theme.sixteenBit) == false)
+        #expect(manager.unlockedThemes == [Theme.defaultTheme])
     }
 
-    @Test("ThemeManager: ゆめかわテーマはisDefaultなのでアンロック")
+    @Test("ThemeManager: Pro ならすべてのテーマが使える")
     @MainActor
-    func testYumekawaIsDefaultUnlocked() {
-        let manager = ThemeManager()
+    func testWithProAllThemesAreUnlocked() {
+        let manager = makeManager()
+        manager.updatePro(true)
         #expect(manager.isUnlocked(Theme.yumekawa) == true)
-    }
-
-    @Test("ThemeManager: productIdありのテーマは購入が必要")
-    @MainActor
-    func testPaidThemeRequiresPurchase() {
-        let manager = ThemeManager()
-        let paidTheme = Theme(
-            id: "paid",
-            name: "有料テーマ",
-            description: "テスト用有料テーマ",
-            productId: "com.suilog.theme.paid",
-            isDefault: false,
-            backgroundImageiPhone: "bg_iphone",
-            backgroundImageiPad: "bg_ipad",
-            primaryColorHex: "#007AFF",
-            bubbleColorHex: "#FFFFFF",
-            locationCheckInColorsHex: ["#FFFF00"],
-            manualCheckInColorsHex: ["#808080"],
-            statisticsBackgroundColorHex: "#4D007AFF",
-            textColorHex: "#FFFFFF",
-            secondaryTextColorHex: "#CCFFFFFF",
-            primaryDarkHex: nil,
-            primaryLightHex: nil,
-            primaryBgHex: nil,
-            accentHex: nil,
-            tankTopHex: nil,
-            tankBottomHex: nil
-        )
-        #expect(manager.isUnlocked(paidTheme) == false)
-    }
-
-    @Test("ThemeManager: 購入済みテーマはアンロック")
-    @MainActor
-    func testPurchasedThemeIsUnlocked() {
-        let manager = ThemeManager()
-        let paidTheme = Theme(
-            id: "paid",
-            name: "有料テーマ",
-            description: "テスト用有料テーマ",
-            productId: "com.suilog.theme.paid",
-            isDefault: false,
-            backgroundImageiPhone: "bg_iphone",
-            backgroundImageiPad: "bg_ipad",
-            primaryColorHex: "#007AFF",
-            bubbleColorHex: "#FFFFFF",
-            locationCheckInColorsHex: ["#FFFF00"],
-            manualCheckInColorsHex: ["#808080"],
-            statisticsBackgroundColorHex: "#4D007AFF",
-            textColorHex: "#FFFFFF",
-            secondaryTextColorHex: "#CCFFFFFF",
-            primaryDarkHex: nil,
-            primaryLightHex: nil,
-            primaryBgHex: nil,
-            accentHex: nil,
-            tankTopHex: nil,
-            tankBottomHex: nil
-        )
-        manager.purchasedProductIds = ["com.suilog.theme.paid"]
-        #expect(manager.isUnlocked(paidTheme) == true)
-    }
-
-    @Test("ThemeManager: all_packで全テーマアンロック")
-    @MainActor
-    func testAllPackUnlocksAll() {
-        let manager = ThemeManager()
-        let paidTheme = Theme(
-            id: "paid",
-            name: "有料テーマ",
-            description: "テスト用有料テーマ",
-            productId: "com.suilog.theme.paid",
-            isDefault: false,
-            backgroundImageiPhone: "bg_iphone",
-            backgroundImageiPad: "bg_ipad",
-            primaryColorHex: "#007AFF",
-            bubbleColorHex: "#FFFFFF",
-            locationCheckInColorsHex: ["#FFFF00"],
-            manualCheckInColorsHex: ["#808080"],
-            statisticsBackgroundColorHex: "#4D007AFF",
-            textColorHex: "#FFFFFF",
-            secondaryTextColorHex: "#CCFFFFFF",
-            primaryDarkHex: nil,
-            primaryLightHex: nil,
-            primaryBgHex: nil,
-            accentHex: nil,
-            tankTopHex: nil,
-            tankBottomHex: nil
-        )
-        manager.purchasedProductIds = ["com.suilog.theme.all_pack"]
-        #expect(manager.isUnlocked(paidTheme) == true)
-    }
-
-    @Test("ThemeManager: アンロック済みテーマの選択が成功")
-    @MainActor
-    func testSelectUnlockedTheme() {
-        let manager = ThemeManager()
-        let result = manager.selectTheme(Theme.yumekawa)
-        #expect(result == true)
-        #expect(manager.currentTheme == Theme.yumekawa)
+        #expect(manager.isUnlocked(Theme.sixteenBit) == true)
+        #expect(manager.unlockedThemes.count == Theme.allThemes.count)
     }
 
     @Test("ThemeManager: ロック中テーマの選択が失敗")
     @MainActor
     func testSelectLockedTheme() {
-        let manager = ThemeManager()
-        let paidTheme = Theme(
-            id: "paid",
-            name: "有料テーマ",
-            description: "テスト用有料テーマ",
-            productId: "com.suilog.theme.paid",
-            isDefault: false,
-            backgroundImageiPhone: "bg_iphone",
-            backgroundImageiPad: "bg_ipad",
-            primaryColorHex: "#007AFF",
-            bubbleColorHex: "#FFFFFF",
-            locationCheckInColorsHex: ["#FFFF00"],
-            manualCheckInColorsHex: ["#808080"],
-            statisticsBackgroundColorHex: "#4D007AFF",
-            textColorHex: "#FFFFFF",
-            secondaryTextColorHex: "#CCFFFFFF",
-            primaryDarkHex: nil,
-            primaryLightHex: nil,
-            primaryBgHex: nil,
-            accentHex: nil,
-            tankTopHex: nil,
-            tankBottomHex: nil
-        )
-        let result = manager.selectTheme(paidTheme)
+        let manager = makeManager()
+        let result = manager.selectTheme(Theme.yumekawa)
         #expect(result == false)
-        #expect(manager.currentTheme != paidTheme)
-    }
-
-    @Test("ThemeManager: 購入状態更新でロックされたテーマはデフォルトに戻る")
-    @MainActor
-    func testUpdatePurchasedProductsResetsLockedTheme() {
-        let manager = ThemeManager()
-        let paidTheme = Theme(
-            id: "paid",
-            name: "有料テーマ",
-            description: "テスト用有料テーマ",
-            productId: "com.suilog.theme.paid",
-            isDefault: false,
-            backgroundImageiPhone: "bg_iphone",
-            backgroundImageiPad: "bg_ipad",
-            primaryColorHex: "#007AFF",
-            bubbleColorHex: "#FFFFFF",
-            locationCheckInColorsHex: ["#FFFF00"],
-            manualCheckInColorsHex: ["#808080"],
-            statisticsBackgroundColorHex: "#4D007AFF",
-            textColorHex: "#FFFFFF",
-            secondaryTextColorHex: "#CCFFFFFF",
-            primaryDarkHex: nil,
-            primaryLightHex: nil,
-            primaryBgHex: nil,
-            accentHex: nil,
-            tankTopHex: nil,
-            tankBottomHex: nil
-        )
-
-        // まず購入して選択
-        manager.purchasedProductIds = ["com.suilog.theme.paid"]
-        _ = manager.selectTheme(paidTheme)
-        #expect(manager.currentTheme == paidTheme)
-
-        // 購入状態をクリア → デフォルトに戻る
-        manager.updatePurchasedProducts([])
         #expect(manager.currentTheme == Theme.defaultTheme)
     }
 
-    @Test("ThemeManager: unlockedThemesが正しい")
+    @Test("ThemeManager: Pro なら Pro テーマを選択できる")
     @MainActor
-    func testUnlockedThemes() {
+    func testSelectProTheme() {
+        let manager = makeManager()
+        manager.updatePro(true)
+        let result = manager.selectTheme(Theme.yumekawa)
+        #expect(result == true)
+        #expect(manager.currentTheme == Theme.yumekawa)
+    }
+
+    @Test("ThemeManager: Pro が外れるとオーシャンブルーに戻る")
+    @MainActor
+    func testLosingProResetsTheme() {
+        let manager = makeManager()
+        manager.updatePro(true)
+        _ = manager.selectTheme(Theme.sixteenBit)
+        #expect(manager.currentTheme == Theme.sixteenBit)
+
+        manager.updatePro(false)
+        #expect(manager.currentTheme == Theme.defaultTheme)
+        #expect(manager.isPro == false)
+    }
+
+    @Test("Pro を失っても保存済みのテーマ ID は残る")
+    @MainActor
+    func testLosingProKeepsSavedThemeId() {
+        let manager = makeManager()
+        manager.updatePro(true)
+        _ = manager.selectTheme(Theme.sixteenBit)
+
+        manager.updatePro(false)
+
+        #expect(manager.currentTheme == Theme.defaultTheme)
+        #expect(CloudSettingsManager.shared.string(forKey: CloudSettingsManager.selectedThemeIdKey) == "16bit")
+    }
+
+    @Test("Pro に戻ると保存済みのテーマに戻る")
+    @MainActor
+    func testRegainingProRestoresSavedTheme() {
+        let manager = makeManager()
+        manager.updatePro(true)
+        _ = manager.selectTheme(Theme.sixteenBit)
+        manager.updatePro(false)
+
+        manager.updatePro(true)
+
+        #expect(manager.currentTheme == Theme.sixteenBit)
+    }
+
+    @Test("Pro でない端末が起動しても保存済みの Pro テーマを上書きしない")
+    @MainActor
+    func testNonProLaunchDoesNotOverwriteSavedTheme() {
+        _ = makeManager()
+        CloudSettingsManager.shared.set("yumekawa", forKey: CloudSettingsManager.selectedThemeIdKey)
         let manager = ThemeManager()
-        // デフォルトでは isDefault=true のテーマだけがアンロック
-        let unlocked = manager.unlockedThemes
-        #expect(unlocked.count == 3)
-        #expect(unlocked.contains(Theme.defaultTheme))
-        #expect(unlocked.contains(Theme.yumekawa))
+
+        manager.applyEntitlements([], isLoaded: true)
+
+        #expect(manager.currentTheme == Theme.defaultTheme)
+        #expect(CloudSettingsManager.shared.string(forKey: CloudSettingsManager.selectedThemeIdKey) == "yumekawa")
+    }
+
+    // MARK: - 購入状態（権利）の反映
+
+    @Test("applyEntitlements: 読み込み前は Pro テーマを巻き戻さない")
+    @MainActor
+    func testEntitlementsNotLoadedKeepsTheme() {
+        let manager = makeManager()
+        manager.updatePro(true)
+        _ = manager.selectTheme(Theme.sixteenBit)
+
+        // 起動直後は購入状態が空のまま届く。読み込み前なので無視されるべき
+        manager.applyEntitlements([], isLoaded: false)
+
+        #expect(manager.currentTheme == Theme.sixteenBit)
+        #expect(manager.isPro == true)
+    }
+
+    @Test("applyEntitlements: 読み込み後に Pro を持っていれば Pro 扱い")
+    @MainActor
+    func testEntitlementsLoadedWithPro() {
+        let manager = makeManager()
+        manager.applyEntitlements([StoreManager.proProductId], isLoaded: true)
+        #expect(manager.isPro == true)
+        #expect(manager.isUnlocked(Theme.yumekawa) == true)
+    }
+
+    @Test("applyEntitlements: 読み込み後に Pro がなければオーシャンブルーに戻る")
+    @MainActor
+    func testEntitlementsLoadedWithoutPro() {
+        let manager = makeManager()
+        manager.updatePro(true)
+        _ = manager.selectTheme(Theme.yumekawa)
+
+        manager.applyEntitlements([], isLoaded: true)
+
+        #expect(manager.isPro == false)
+        #expect(manager.currentTheme == Theme.defaultTheme)
+    }
+
+    @Test("applyEntitlements: チップだけでは Pro 扱いにならない")
+    @MainActor
+    func testTipsDoNotUnlockPro() {
+        let manager = makeManager()
+        manager.applyEntitlements(StoreManager.tipProductIds, isLoaded: true)
+        #expect(manager.isPro == false)
     }
 }

@@ -14,6 +14,7 @@ struct ProStoreView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var showingPurchaseSuccess = false
+    @State private var restoreMessage: String?
 
     private var theme: Theme { themeManager.currentTheme }
 
@@ -51,6 +52,14 @@ struct ProStoreView: View {
             } message: {
                 Text("スイログ Pro をご購入いただきました。\nこれからも水族館めぐりを楽しんでください🐠")
             }
+            .alert("購入の復元", isPresented: .init(
+                get: { restoreMessage != nil },
+                set: { if !$0 { restoreMessage = nil } }
+            )) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text(restoreMessage ?? "")
+            }
             .alert("エラー", isPresented: .init(
                 get: { storeManager.errorMessage != nil },
                 set: { if !$0 { storeManager.errorMessage = nil } }
@@ -75,7 +84,7 @@ struct ProStoreView: View {
             Text("スイログ Pro")
                 .font(SuiFont.screenTitle)
                 .foregroundColor(SuiColor.heading)
-            Text("一度の購入で、すべてのPro機能がずっと使えます")
+            Text("一度の購入で、ずっと使えます")
                 .font(SuiFont.body)
                 .foregroundColor(SuiColor.midText)
                 .multilineTextAlignment(.center)
@@ -92,9 +101,14 @@ struct ProStoreView: View {
                     caption: "1つの記録に保存できる写真が1枚 → 無制限に。思い出をまとめて残せます"
                 )
                 benefitRow(
-                    icon: "sparkles",
-                    title: "今後のPro機能をすべて利用",
-                    caption: "ウィジェットや図鑑の上級機能など、今後追加されるPro機能も追加料金なし"
+                    icon: "paintpalette.fill",
+                    title: "すべてのテーマが使える",
+                    caption: "ゆめかわ・16ビットなどのテーマを、追加料金なしで選べます"
+                )
+                benefitRow(
+                    icon: "square.grid.2x2.fill",
+                    title: "ホーム画面ウィジェット",
+                    caption: "訪問した水族館の数や最近の訪問を、ホーム画面に表示できます"
                 )
                 benefitRow(
                     icon: "heart.fill",
@@ -170,16 +184,29 @@ struct ProStoreView: View {
             ProgressView("読み込み中...")
                 .padding(.vertical, 16)
         } else {
-            Text("商品情報を取得できませんでした。\n時間をおいて再度お試しください。")
-                .font(SuiFont.label)
-                .foregroundColor(SuiColor.subText)
-                .multilineTextAlignment(.center)
+            VStack(spacing: 12) {
+                Text("商品情報を取得できませんでした。\n通信状況を確認して、もう一度お試しください。")
+                    .font(SuiFont.label)
+                    .foregroundColor(SuiColor.subText)
+                    .multilineTextAlignment(.center)
+                Button {
+                    Task { await storeManager.loadProducts() }
+                } label: {
+                    Text("もう一度読み込む")
+                        .font(SuiFont.bodyMedium)
+                        .foregroundColor(theme.primaryColor)
+                }
+                .accessibilityIdentifier("pro.reloadButton")
+            }
         }
     }
 
     private var restoreButton: some View {
         Button {
-            Task { await storeManager.restorePurchases() }
+            Task {
+                let outcome = await storeManager.restorePurchases()
+                restoreMessage = outcome.message
+            }
         } label: {
             Text("購入を復元する")
                 .font(SuiFont.label)

@@ -496,7 +496,7 @@ struct ProfileView: View {
                     title: "スイログ Pro",
                     subtitle: storeManager.isProUnlocked
                         ? "利用中 - ありがとうございます！"
-                        : "写真無制限などの追加機能"
+                        : "写真無制限・全テーマ・ウィジェット"
                 )
             }
             .buttonStyle(.plain)
